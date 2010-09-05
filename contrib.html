@@ -1,0 +1,45 @@
+---
+layout: default
+---
+<h1>Contributions</h1>
+
+<p>In addition to writing my own software, I've contributed patches to the following projects:</p>
+
+<ul>
+  <li><a href="http://x3270.bgp.nu/">c3270</a>: Fix Makefile issue to allow compilation with CFLAGS for resolver.c (in c3270 &gt;= 3.3.8p4)</li>
+  <li><a href="http://www.bittorrent.com">BitTorrent</a>: Allowed --bind to affect connections to the tracker as well as peers (in BitTorrent &gt;= 4.2.1)</li>
+  <li><a href="http://datamapper.org/">DataMapper</a>: Added 't' and 'f' true and false aliases to Sqlite3 adapter (revision 740)</li>
+  <li><a href="http://dcplusplus.sourceforge.net">DC++</a>: Make the bind address setting affect the UDP listening socket and outgoing sockets (revision 926)</li>
+  <li><a href="http://linuxdcpp.berlios.de">LinuxDC++</a>: Replaced named semaphore implementation (sem_open) with glib implementation, portability fixes for OpenBSD (2007-11-30)</li>
+  <li><a href="http://www.jruby.org">JRuby</a>: Added 6 C API functions for C extension support (b65b5dfc371b64019dc9)</li>
+  <li><a href="http://code.google.com/p/quodlibet/wiki/Development/Mutagen">Mutagen</a>: Fixed APEv2 tag creation (revision 3989)</li>
+  <li><a href="http://rack.rubyforge.org/">Rack</a>:<ul>
+    <li>Add SCGI Handler (2008-01-25)</li>
+    <li>Add Rack::ResponseCache to rack-contrib (2009-02-08)</li>
+    <li>Add Rack::RelativeRedirect to rack-contrib (2009-02-08)</li>
+  </ul></li>
+  <li><a href="http://ramaze.net/">Ramaze</a>: Add SCGI Adapter (2008-01-28)</li>
+  <li><a href="http://rubini.us/">Rubinius</a>:<ul>
+    <li>Add rb_reg_new C API method (82bb2f9441e4760a5a52 and 2b1315f7661b45fbf7a6)</li>
+    <li>Add rb_reg_nth_match C API method (8039442d4da2fbb5b7ba and 5975010ca87cf712eb1c)</li>
+    <li>Add spec for rb_str_buf_new and rb_str_set_len C API method (75e07e70d0ff86b0abb4)</li>
+    <li>Add support for rb_gv_get("$~") in the C API (2ac2c642abd808386bcc and 0e265b92727cf3536053)</li>
+  </ul></li>
+  <li><a href="http://www.ruby-lang.org">Ruby</a>:<ul>
+    <li>Fix DateTime#jisx0301 for dates before the Meiji period (revision 28950)</li> 
+    <li>Fix Date#rfc3339 to include the time (revision 29069)</li> 
+  </ul></li>
+  <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>: 
+  <ul>
+      <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
+      <li>Alias the has_and_belongs_to_many join table on eager includes (revision 3895)</li>
+      <li>Use association's :conditions when eager loading (revision 3897)</li>
+      <li>Added ActionController.filter_parameter_logging that makes it easy to remove passwords, credit card numbers, and other sensitive information from being logged when a request is handled (revision 4200)</li>
+      <li>Fix ActionView::Helpers::ActiveRecordHelper::form for when protect_from_forgery is used (revision 8626)</li>
+  </ul></li>
+  <li><a href="http://sinatrarb.com/">Sinatra</a>:
+  <ul>
+    <li>Fix optional params, i.e. get '/:name?' (2008-04-16)</li>
+    <li>Fix optional params again, include specs (2f13feabc309587959bb565f4355495a915879af)</li>
+  </ul></li>
+</ul>
