@@ -12,7 +12,13 @@ layout: default
   <li><a href="http://dcplusplus.sourceforge.net">DC++</a>: Make the bind address setting affect the UDP listening socket and outgoing sockets (revision 926)</li>
   <li><a href="http://bogomips.org/kgio/">kgio</a>: Fix build on OpenBSD (8556c2ccf64840a080a928312d8feed2834d4d29)</li>
   <li><a href="http://linuxdcpp.berlios.de">LinuxDC++</a>: Replaced named semaphore implementation (sem_open) with glib implementation, portability fixes for OpenBSD (2007-11-30)</li>
-  <li><a href="http://www.jruby.org">JRuby</a>: Added 6 C API functions for C extension support (b65b5dfc371b64019dc9)</li>
+  <li><a href="http://www.jruby.org">JRuby</a>:<ul>
+    <li>Added 6 C API functions for C extension support (b65b5dfc371b64019dc9)</li>
+    <li>Make compiling cext support on OpenBSD amd64 use correct directory (531198593b974b809bad)</li>
+    <li>Make compiling cext support on OpenBSD not assume FreeBSD (4a7ad99823fa43c4a514)</li>
+    <li>Fix prototype of rb_time_new to match definition (09e87fd7dcec1487731a56111ed4c4a6b48b1ba7)</li>
+  </ul></li>
+  <li><a href="http://mongrel2.org">mongrel2</a>: Fix build on OpenBSD, support OpenBSD amd64, add sendfile emulation (74f49b9afa)</li>
   <li><a href="http://code.google.com/p/quodlibet/wiki/Development/Mutagen">Mutagen</a>: Fixed APEv2 tag creation (revision 3989)</li>
   <li><a href="http://rack.rubyforge.org/">Rack</a>:<ul>
     <li>Add SCGI Handler (2008-01-25)</li>
@@ -25,6 +31,10 @@ layout: default
     <li>Add rb_reg_nth_match C API method (8039442d4da2fbb5b7ba and 5975010ca87cf712eb1c)</li>
     <li>Add spec for rb_str_buf_new and rb_str_set_len C API method (75e07e70d0ff86b0abb4)</li>
     <li>Add support for rb_gv_get("$~") in the C API (2ac2c642abd808386bcc and 0e265b92727cf3536053)</li>
+    <li>Use same function prototype as MRI for rb_reg_new (e60b382b8276ddbac91e30bef71211390e8b414e)</li>
+    <li>Some OpenBSD fixes (6e77e7440616d9bad341510f1a58823c89f75fae)</li>
+    <li>Build openssl ext with NO_STATIC_ENGINE on OpenBSD (27ccf0516e366f006905ab2ecd90c0474f544e31)</li>
+    <li>Fix build on OpenBSD (c5bf2408a2a1e5333802)</li>
   </ul></li>
   <li><a href="http://www.ruby-lang.org">Ruby</a>:<ul>
     <li>Fix DateTime#jisx0301 for dates before the Meiji period (revision 28950)</li> 
