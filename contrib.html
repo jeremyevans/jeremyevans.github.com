@@ -10,7 +10,11 @@ layout: default
   <li><a href="http://www.bittorrent.com">BitTorrent</a>: Allowed --bind to affect connections to the tracker as well as peers (in BitTorrent &gt;= 4.2.1)</li>
   <li><a href="http://datamapper.org/">DataMapper</a>: Added 't' and 'f' true and false aliases to Sqlite3 adapter (revision 740)</li>
   <li><a href="http://dcplusplus.sourceforge.net">DC++</a>: Make the bind address setting affect the UDP listening socket and outgoing sockets (revision 926)</li>
-  <li><a href="http://bogomips.org/kgio/">kgio</a>: Fix build on OpenBSD (8556c2ccf64840a080a928312d8feed2834d4d29)</li>
+  <li><a href="http://bogomips.org/kgio/">kgio</a>:<ul>
+    <li>Fix build on OpenBSD (8556c2ccf64840a080a928312d8feed2834d4d29)</li>
+    <li>Fix kgio_peek for !KGIO_NOPUSH systems (9900efecb60635ad97b5c00c76eb60252839b1c1)</li>
+    <li>Fix issue with getaddrinfo for strict systems (577cf3056d9f3088145aea51bbc09a0c90a7695e)</li>
+  </ul></li>
   <li><a href="http://linuxdcpp.berlios.de">LinuxDC++</a>: Replaced named semaphore implementation (sem_open) with glib implementation, portability fixes for OpenBSD (2007-11-30)</li>
   <li><a href="http://www.jruby.org">JRuby</a>:<ul>
     <li>Added 6 C API functions for C extension support (b65b5dfc371b64019dc9)</li>
@@ -20,11 +24,18 @@ layout: default
   </ul></li>
   <li><a href="http://mongrel2.org">mongrel2</a>: Fix build on OpenBSD, support OpenBSD amd64, add sendfile emulation (74f49b9afa)</li>
   <li><a href="http://code.google.com/p/quodlibet/wiki/Development/Mutagen">Mutagen</a>: Fixed APEv2 tag creation (revision 3989)</li>
+  <li><a href="http://polarssl.org">PolarSSL</a>: Fix build on OpenBSD (revision 1066)</li>
   <li><a href="http://rack.rubyforge.org/">Rack</a>:<ul>
     <li>Add SCGI Handler (2008-01-25)</li>
     <li>Add Rack::ResponseCache to rack-contrib (2009-02-08)</li>
     <li>Add Rack::RelativeRedirect to rack-contrib (2009-02-08)</li>
   </ul></li>
+  <li><a href="http://nakajima.github.com/rack-flash/">rack-flash</a>:<ul>
+    <li>Fix requiring of sinatra when testing (6c43fed776714d4a8cd82b2ed25965920fb7bb3a)</li>
+    <li>Add test for clearing of sessions (be322a22b274eb9cdb572332c0d1602d6f84cf68)</li>
+  </ul></li>
+  <li><a href="https://github.com/darkhelmet/rack-mongrel2">rack-mongrel2</a>: Fix obvious ArgumentError bug (49ce253f9ac6f8cd8c2e)</li>
+  <li><a href="http://raindrops.bogomips.org/">raindrops</a>: Fix bad rescue statements in a couple tests (a5830080b3cf6011d737342462700f7c5819942a)</li>
   <li><a href="http://ramaze.net/">Ramaze</a>: Add SCGI Adapter (2008-01-28)</li>
   <li><a href="http://rubini.us/">Rubinius</a>:<ul>
     <li>Add rb_reg_new C API method (82bb2f9441e4760a5a52 and 2b1315f7661b45fbf7a6)</li>
@@ -46,16 +57,15 @@ layout: default
     <li>Fix SystemStackError when trying to format a large block of text in REXML (revision 29827)</li>
     <li>Make addr2line.c compile on OpenBSD (revision 30517)</li>
   </ul></li>
-  <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>: 
-  <ul>
+  <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
       <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
       <li>Alias the has_and_belongs_to_many join table on eager includes (revision 3895)</li>
       <li>Use association's :conditions when eager loading (revision 3897)</li>
       <li>Added ActionController.filter_parameter_logging that makes it easy to remove passwords, credit card numbers, and other sensitive information from being logged when a request is handled (revision 4200)</li>
       <li>Fix ActionView::Helpers::ActiveRecordHelper::form for when protect_from_forgery is used (revision 8626)</li>
   </ul></li>
-  <li><a href="http://sinatrarb.com/">Sinatra</a>:
-  <ul>
+  <li><a href="http://rubygems.org/">Rubygems</a>: Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
+  <li><a href="http://sinatrarb.com/">Sinatra</a>:<ul>
     <li>Fix optional params, i.e. get '/:name?' (2008-04-16)</li>
     <li>Fix optional params again, include specs (2f13feabc309587959bb565f4355495a915879af)</li>
   </ul></li>
