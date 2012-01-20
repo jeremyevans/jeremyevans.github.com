@@ -40,7 +40,10 @@ layout: default
     <li>Add test for clearing of sessions (be322a22b274eb9cdb572332c0d1602d6f84cf68)</li>
   </ul></li>
   <li><a href="https://github.com/darkhelmet/rack-mongrel2">rack-mongrel2</a>: Fix obvious ArgumentError bug (49ce253f9ac6f8cd8c2e)</li>
-  <li><a href="http://raindrops.bogomips.org/">raindrops</a>: Fix bad rescue statements in a couple tests (a5830080b3cf6011d737342462700f7c5819942a)</li>
+  <li><a href="http://raindrops.bogomips.org/">raindrops</a>:<ul>
+    <li>Fix bad rescue statements in a couple tests (a5830080b3cf6011d737342462700f7c5819942a)</li>
+    <li>Mark some tests as linux-only (499e63e2666f88134f7d47f3bcfdfedd72396e70)</li>
+  </ul></li>
   <li><a href="http://ramaze.net/">Ramaze</a>: Add SCGI Adapter (2008-01-28)</li>
   <li><a href="http://rubini.us/">Rubinius</a>:<ul>
     <li>Add rb_reg_new C API method (82bb2f9441e4760a5a52 and 2b1315f7661b45fbf7a6)</li>
@@ -52,6 +55,7 @@ layout: default
     <li>Build openssl ext with NO_STATIC_ENGINE on OpenBSD (27ccf0516e366f006905ab2ecd90c0474f544e31)</li>
     <li>Fix build on OpenBSD (c5bf2408a2a1e5333802)</li>
     <li>Fix build on OpenBSD (59e0f1d63329ca5a86f5)</li>
+    <li>Add failing spec for String#partition with regexp setting global vars (cc92e526e43ba50579d53f3bd444473fe667cfb4)</li>
   </ul></li>
   <li><a href="http://www.ruby-lang.org">Ruby</a>:<ul>
     <li>Fix DateTime#jisx0301 for dates before the Meiji period (revision 28950)</li> 
@@ -72,17 +76,25 @@ layout: default
     <li>Fix inadvertent symbol creation in send and related methods (revision 33419)</li>
   </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
-      <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
-      <li>Alias the has_and_belongs_to_many join table on eager includes (revision 3895)</li>
-      <li>Use association's :conditions when eager loading (revision 3897)</li>
-      <li>Added ActionController.filter_parameter_logging that makes it easy to remove passwords, credit card numbers, and other sensitive information from being logged when a request is handled (revision 4200)</li>
-      <li>Fix ActionView::Helpers::ActiveRecordHelper::form for when protect_from_forgery is used (revision 8626)</li>
-      <li>Fix obvious breakage of Time.=== for Time subclasses (c10fcd26376d9cdc4d4a27b66271ab33413ca18f)</li>
+    <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
+    <li>Alias the has_and_belongs_to_many join table on eager includes (revision 3895)</li>
+    <li>Use association's :conditions when eager loading (revision 3897)</li>
+    <li>Added ActionController.filter_parameter_logging that makes it easy to remove passwords, credit card numbers, and other sensitive information from being logged when a request is handled (revision 4200)</li>
+    <li>Fix ActionView::Helpers::ActiveRecordHelper::form for when protect_from_forgery is used (revision 8626)</li>
+    <li>Fix obvious breakage of Time.=== for Time subclasses (c10fcd26376d9cdc4d4a27b66271ab33413ca18f)</li>
   </ul></li>
-  <li><a href="http://rubygems.org/">Rubygems</a>: Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
+  <li><a href="http://rubygems.org/">Rubygems</a>:</ul>
+    <li>Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
+    <li>Handle gem specification encoding that doesn't convert to internal encoding (cedac8117d5fd10e2cc6dbd501894733b0e6e3f7)<ul>
+  </ul></li>
   <li><a href="http://sinatrarb.com/">Sinatra</a>:<ul>
     <li>Fix optional params, i.e. get '/:name?' (2008-04-16)</li>
     <li>Fix optional params again, include specs (2f13feabc309587959bb565f4355495a915879af)</li>
   </ul></li>
+  <li><a href="http://sinatrarb.com/">sinatra-recipes</a>: Remove preload_app config line from example unicorn config (996c5c07b137db8fc78474a1fd9f99107e498214)</li>
   <li><a href="https://github.com/shanna/swift">Swift</a>: Fix parsing of fractional timestamps (de921bb13d06b5ab194daad328f5c02a089d5800)</li>
+  <li><a href="http://unicorn.bogomips.org/">Unicorn</a>:<ul>
+    <li>Fix t0011 test on OpenBSD (66c706acfb3cda802bac4629219e3c3e064352ed)</li>
+    <li>Ensure tests try to connect to a valid address (2fd5910969419c17aa6a31fb2119eb47a121d497)</li>
+  </ul></li>
 </ul>
