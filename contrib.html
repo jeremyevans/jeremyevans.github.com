@@ -11,6 +11,7 @@ layout: default
   <li><a href="http://datamapper.org/">DataMapper</a>: Added 't' and 'f' true and false aliases to Sqlite3 adapter (revision 740)</li>
   <li><a href="https://github.com/deepfryed/dbicpp">dbic++</a>: Treat bigint column as integer on SQLite (243c7e0ba8c95c7b747fb35acc2fe0a0ff73dd3a)</li>
   <li><a href="http://dcplusplus.sourceforge.net">DC++</a>: Make the bind address setting affect the UDP listening socket and outgoing sockets (revision 926)</li>
+  <li><a href="https://github.com/ddollar/foreman">foreman</a>: Use sh instead of bash for foreman-runner (6b77ca1e46bcd44ad0520f6923c0775ae37fad25)</li>
   <li><a href="http://github.com/rdoc/hanna-nouveau">hanna-nouveau</a>:<ul>
     <li>Fix many errors, make it work with RDoc 3.8 (3d914c8bb78)</li>
     <li>Fix class/singleton attribute anchors (4459fde45e)</li>
@@ -37,9 +38,8 @@ layout: default
     <li>Fix NODE_BITS determination using process.arch (a7be6cafae637238de45b7cade79eab829277cac)</li>
   </ul></li>
   <li><a href="https://github.com/brianc/node-postgres">node-postgres</a>: Handle "NULL" correctly in array parser (bbcbdee584652c8f0f404d45fc8de097a3fbc50e)</li>
-  <li><a href="https://github.com/ianwhite/orm_adapter">orm_adapter</a>:<ul>
-    <li>Don't require yard and git libraries to use the Rakefile (bb8be3c191405fd702f278589f99523e638445de)</li>
-  </ul></li>
+  <li><a href="https://github.com/ianwhite/orm_adapter">orm_adapter</a>: Don't require yard and git libraries to use the Rakefile (bb8be3c191405fd702f278589f99523e638445de)</li>
+  <li><a href="https://github.com/dockyard/pg_array_parser">pg_array_parser</a>: Fix handling of escaped backslashes, Refactor the parser (f0529a02fbcf2203cd7ad5bd36ea897406c0cd76)</li>
   <li><a href="http://polarssl.org">PolarSSL</a>: Fix build on OpenBSD (revision 1066)</li>
   <li><a href="http://rack.rubyforge.org/">Rack</a>:<ul>
     <li>Add SCGI Handler (2008-01-25)</li>
@@ -93,7 +93,9 @@ layout: default
     <li>Added ActionController.filter_parameter_logging that makes it easy to remove passwords, credit card numbers, and other sensitive information from being logged when a request is handled (revision 4200)</li>
     <li>Fix ActionView::Helpers::ActiveRecordHelper::form for when protect_from_forgery is used (revision 8626)</li>
     <li>Fix obvious breakage of Time.=== for Time subclasses (c10fcd26376d9cdc4d4a27b66271ab33413ca18f)</li>
+    <li>Reduce string objects created by ActiveRecord::Result#hash_rows from columns * (rows+1) to just columns (3aef5ce9b35a4659379201eb6bb1dba355a83ba4)</li>
   </ul></li>
+  <li><a href="https://github.com/ged/ruby-pg">ruby-pg</a>: Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
   <li><a href="http://rubygems.org/">Rubygems</a>:<ul>
     <li>Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
     <li>Handle gem specification encoding that doesn't convert to internal encoding (cedac8117d5fd10e2cc6dbd501894733b0e6e3f7)</li>
