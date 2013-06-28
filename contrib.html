@@ -16,7 +16,10 @@ layout: default
     <li>Fix many errors, make it work with RDoc 3.8 (3d914c8bb78)</li>
     <li>Fix class/singleton attribute anchors (4459fde45e)</li>
     <li>Respect markup in section comments (a329f0d4d7)</li>
+    <li>Fix Rdoc dependency (f755e5b)</li>
+    <li>Remove duplicate entries in method index, fix attribute links (ee0b2bc05)</li>
   </ul></li>
+  <li><a href="https://github.com/stevedekorte/io">io</a>: Ensure 16-byte alignment for amd64 coroutine stack (84c9e4f3093d26c36642bb53303e7213e48402e3)</li>
   <li><a href="http://bogomips.org/kgio/">kgio</a>:<ul>
     <li>Fix build on OpenBSD (8556c2ccf64840a080a928312d8feed2834d4d29)</li>
     <li>Fix kgio_peek for !KGIO_NOPUSH systems (9900efecb60635ad97b5c00c76eb60252839b1c1)</li>
@@ -57,6 +60,10 @@ layout: default
     <li>Mark some tests as linux-only (499e63e2666f88134f7d47f3bcfdfedd72396e70)</li>
   </ul></li>
   <li><a href="http://ramaze.net/">Ramaze</a>: Add SCGI Adapter (2008-01-28)</li>
+  <li><a href="https://github.com/rdoc/rdoc">RDoc</a>:<ul>
+    <li>Make --quiet --no-ignore-invalid still exit for invalid options (b0ddd1fa34afef286d94ea691d1d20c1347464c0)</li>
+    <li>Support linking [], []=, &lt;&lt;, and &gt;&gt; methods (4943d20849ccc724fd8b0f74a92bff3880535769)</li>
+  </ul></li>
   <li><a href="http://rubini.us/">Rubinius</a>:<ul>
     <li>Add rb_reg_new C API method (82bb2f9441e4760a5a52 and 2b1315f7661b45fbf7a6)</li>
     <li>Add rb_reg_nth_match C API method (8039442d4da2fbb5b7ba and 5975010ca87cf712eb1c)</li>
@@ -101,6 +108,7 @@ layout: default
     <li>Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
     <li>Handle gem specification encoding that doesn't convert to internal encoding (cedac8117d5fd10e2cc6dbd501894733b0e6e3f7)</li>
     <li>Keep previously loaded specs as active when refreshing gems (b61c621fb2e00e215bcc8ad7d9fe45433881da14)</li>
+    <li>Make existing executable check respect --format-executable (20fc72349aa788f95d73d7ed11f7a5ad49f14be8)</li>
   </ul></li>
   <li><a href="http://sinatrarb.com/">Sinatra</a>:<ul>
     <li>Fix optional params, i.e. get '/:name?' (2008-04-16)</li>
