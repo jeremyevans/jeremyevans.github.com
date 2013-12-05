@@ -1,0 +1,134 @@
+/* custom css and js files included at the top level of your presentation will
+ * will be included in your presentation */
+
+.slide {
+ font-family: 'Playfair Display', serif;
+ font-weight: bold;
+ color: #373333;
+ background-color: #ebe8e8;
+ text-align: left;
+}
+
+h1, pre, td, tr {
+ font-family: inherit;
+ font-weight: inherit;
+ color: inherit;
+ background-color: inherit;
+ text-align: inherit;
+ background-color: transparent;
+ margin: 0;
+ padding: 0;
+}
+pre {
+  line-height: 150%; 
+}
+td, th {
+ font-size: inherit;
+ text-align: center;
+ padding: 8px 15px;
+}
+th {
+ border-bottom: 5px solid white;
+}
+td.trans {
+  text-align: left;
+}
+
+.right {
+ text-align: right;
+}
+
+.content {
+ margin-left: 20px;
+ margin-right: 20px;
+}
+
+.bigger {
+ font-size: 180%;
+}
+.smaller {
+ font-size: 50%;
+}
+.mono, pre {
+ font-family: 'PT Mono'; 
+}
+
+.bright-red {
+ color: #A80500;
+}
+.medium-red {
+ color: #9A0300;
+}
+.dark-red {
+ color: #670100;
+}
+.black {
+ color: black;
+}
+.white {
+ color: #ebe8e8;
+}
+.gray {
+ color: #373333;
+}
+.red-gray {
+ color: #473333;
+}
+
+.trans, .it, .trans.smaller.it {
+ font-style: italic;
+}
+.trans.smaller, .trans.normal {
+ font-style: normal;
+}
+
+
+.bg1 {
+ background-color: #670100;
+ color: #ebe8e8;
+}
+.bg2 {
+ background-color: #373333;
+ color: #ebe8e8;
+}
+.bg3 {
+ background-color: #473333;
+ color: #ebe8e8;
+}
+.bg4 {
+ color: #670100;
+ background-color: #ebe8e8;
+}
+.bg-howe, .bg-karlton {
+ background-repeat: no-repeat;
+}
+
+.review {
+position: absolute;
+font-size: 70px;
+text-align: right;
+top: 105px;
+right: 15px;
+padding: 10px;
+padding-bottom: 20px;
+border: 5px black dotted;
+display: inline-block;
+-webkit-transform: rotate(30deg);
+}
+.review.bg4 {
+border: 5px #670100 dotted;
+}
+
+
+#notes {height: 260px; margin-top: -300px; z-index: 1000; position: relative; opacity: 0.9; font-size: 1.3em !important;}
+#main .content h2 {font-size: 3em; text-align: center; }
+#main {width: 1280px; }
+#topbar, #bottom {width: 1260px; }
+#preview {width: 900px; }
+#preview div.zoomed {zoom: 90%}
+#main #preso {margin-top: -5px; margin-left: -20px; }
+
+#footer {background-color: transparent;}
+#slideInfo {display: none;}
+#notesInfo {background-color: white; display: block; margin-top: 25px;}
+body {overflow: auto !important;}

@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Playfair Display Bold'), local('PlayfairDisplay-Bold'), url(PlayfairDisplay-Bold.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Playfair Display Bold Italic'), local('PlayfairDisplay-BoldItalic'), url(PlayfairDisplay-BoldItalic.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'PT Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local('PT Mono'), local('PTMono-Regular'), url(PTM55FT.ttf) format('truetype');
+}
