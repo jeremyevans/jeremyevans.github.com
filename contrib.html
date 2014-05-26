@@ -9,6 +9,7 @@ layout: default
   <li><a href="http://x3270.bgp.nu/">c3270</a>: Fix Makefile issue to allow compilation with CFLAGS for resolver.c (in c3270 &gt;= 3.3.8p4)</li>
   <li><a href="http://www.bittorrent.com">BitTorrent</a>: Allowed --bind to affect connections to the tracker as well as peers (in BitTorrent &gt;= 4.2.1)</li>
   <li><a href="http://datamapper.org/">DataMapper</a>: Added 't' and 'f' true and false aliases to Sqlite3 adapter (revision 740)</li>
+  <li><a href="https://github.com/datamapper/do">DataObjects</a>: Fix use-after-free in do_postgres_raise_error (5cec3c5b723d14b210eada26519258255a175c05)</li>
   <li><a href="https://github.com/deepfryed/dbicpp">dbic++</a>: Treat bigint column as integer on SQLite (243c7e0ba8c95c7b747fb35acc2fe0a0ff73dd3a)</li>
   <li><a href="http://dcplusplus.sourceforge.net">DC++</a>: Make the bind address setting affect the UDP listening socket and outgoing sockets (revision 926)</li>
   <li><a href="https://github.com/ddollar/foreman">foreman</a>: Use sh instead of bash for foreman-runner (6b77ca1e46bcd44ad0520f6923c0775ae37fad25)</li>
@@ -113,6 +114,7 @@ layout: default
     <li>Keep previously loaded specs as active when refreshing gems (b61c621fb2e00e215bcc8ad7d9fe45433881da14)</li>
     <li>Make existing executable check respect --format-executable (20fc72349aa788f95d73d7ed11f7a5ad49f14be8)</li>
     <li>Install files starting with '.' (caa95666f698a4a5f1c73216f357e5b1b7216fb3)</li>
+    <li>Add --no-lock option to not write Gemfile.lock (b70cccab4b40bc3ee5a696ba3aacb788ec4da33c)</li>
   </ul></li>
   <li><a href="http://sinatrarb.com/">Sinatra</a>:<ul>
     <li>Fix optional params, i.e. get '/:name?' (2008-04-16)</li>
