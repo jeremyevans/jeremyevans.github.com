@@ -1,0 +1,1958 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Deep Dive into Eager Loading Limited Associations</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href=".//css/reset.css" type="text/css"/>
+
+  <link type="text/css" href=".//css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href=".//css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href=".//css/showoff.css" type="text/css"/>
+
+  <script type="text/javascript" src=".//js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src=".//js/jquery-print.js"></script>
+  <script type="text/javascript" src=".//js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src=".//js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src=".//js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src=".//js/fg.menu.js"></script>
+  <script type="text/javascript" src=".//js/showoff.js"></script>
+  <script type="text/javascript" src=".//js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src=".//js/sh_main.min.js"></script>
+  <script type="text/javascript" src=".//js/core.js"></script>
+  <script type="text/javascript" src=".//js/showoffcore.js"></script>
+  <script type="text/javascript" src=".//js/coffee-script.js"></script>
+
+  
+    
+  
+
+  
+    
+    <link rel="stylesheet" href=".//file/fonts.css" type="text/css"/>
+  
+    
+    <link rel="stylesheet" href=".//file/something.css" type="text/css"/>
+  
+
+  
+
+  <script type="text/javascript">
+  $(function(){
+      setupPreso(false, './');
+  });
+  </script>
+
+  <link rel="stylesheet" href=".//css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src=".//js/presenter.js"></script>
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="generatePDF" href="/pdf" title="Call out to wkhtmltopdf to generate a PDF.">Generate PDF</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="slides/slides" class="slide bg-title" data-transition="none">
+  <div class="content bg-title" ref="slides/slides/1">
+
+<div class="notes">
+<p>Hello everyone. It is great to be here in Kiev. This talk is entitled &#x201C;Deep Dive into Eager Loading Limited Associations&#x201D;.</p>
+</div>
+<h1 style="font-size: 100px; text-align: left; color: white; margin-left: 20px;">
+Deep<br>
+Dive<br>
+into<br>
+Eager<br>
+Loading<br>
+Limited<br>
+Associations</br><p class="right" style="position: absolute; bottom: 20px; right: 20px;">RubyC<br>2014</br></p>
+</br>
+</br></br></br></br></h1></div>
+</div><div id="slides/slides" class="slide bg-jeremy" data-transition="none"><div class="content bg-jeremy" ref="slides/slides/2">
+
+<div class="notes">
+<p>My name is Jeremy Evans, and I have been the lead developer of the ruby Sequel library for the last 6 years.|For those of you who have not heard of the Sequel library before, it is an SQL database library for ruby and it contains an object relational mapper which is similar in basic usage to ActiveRecord.</p>
+</div>
+<h1 class="mono white" style="position: absolute; top: 170px; right: 50px; font-size: 40px; text-align: right; text-decoration: underline;">@jeremyevans0</h1></div>
+</div><div id="slides/slides" class="slide bg-boat" data-transition="none"><div class="content bg-boat" ref="slides/slides/3">
+
+<div class="notes">
+<p>We start this talk on a boat, getting briefed on the conditions underwater. Unfortunately, the water is murky, with only a few meters of visibility.</p>
+</div>
+<h2 style="font-size: 200px; margin-left: 50px; text-align: left; margin-top: 50px; color: white; ">On a</h2><h2 style="font-size: 200px; margin-right: 50px; text-align: right; margin-top: 260px; color: white; ">Boat</h2></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/4">
+
+<div class="notes">
+<p>While I&#x2019;m sure most of you are familiar with associations, let me briefly talk about associations in general. Associations are really a shortcut for querying for related objects in other tables.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 450px;">Associations</h2></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/5">
+
+<div class="notes">
+<p>Let us consider a database that stores blog posts in one table, and replies to those blog posts in a separate table. Here is a basic Sequel model for the posts table.</p>
+</div>
+<pre>
+class Post &gt; Sequel::Model
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/6">
+
+<div class="notes">
+<p>If you want to add a method that returns all replies for a post, a simple solution is something like this. This adds an instance method named replies that returns all replies where the post_id for the reply matches the id of the current post.|This is simple and straight forward. However, since methods like this are very common, it makes sense to abstract them and offer a higher level interface.</p>
+</div>
+<pre>
+class Post &gt; Sequel::Model
+<div>  def replies
+    Reply.where(post_id: id).all
+  end</div>end
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/7">
+
+<div class="notes">
+<p>That higher level interface is associations. Instead of manually writing an instance method to get the replies for the post, we call a class method that writes the instance method for us.</p>
+</div>
+<pre>
+class Post &gt; Sequel::Model
+  <span>one_to_many :replies</span>
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg0 vc" data-transition="none"><div class="content bg0 vc" ref="slides/slides/8">
+
+<div class="notes">
+<p>Calling the replies method on a post instance then runs this SQL query and returns all related replies. Now, this works great if you want to get the replies for a single post object.</p>
+</div>
+<pre>
+post = Post[1]
+post.<span>replies</span>
+
+<div>SELECT *
+FROM replies
+WHERE (post_id = 1)</div>
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/9">
+
+<div class="notes">
+<p>However, what if you have multiple post objects, and you want to get the replies for all of them?</p>
+</div>
+<pre style="font-size: 36px;">
+posts = Post.where(id: [1,2,3,4,5]).all
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/10">
+
+<div class="notes">
+<p>You could just loop over the posts, and call the replies method separately for each post.</p>
+</div>
+<pre style="font-size: 36px;">
+posts = Post.where(id: [1,2,3,4,5]).all
+<span>posts.each{|p| p.replies}</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/11">
+
+<div class="notes">
+<p>However, this will run a separate query for every post, which can be inefficient, especially if there is a significant latency between the database and the application.</p>
+</div>
+<pre style="font-size: 36px;">
+posts = Post.where(id: [1,2,3,4,5]).all
+posts.each{|p| p.replies}
+
+<div style="font-size: 32px">SELECT * FROM replies WHERE (post_id = 1)
+SELECT * FROM replies WHERE (post_id = 2)
+SELECT * FROM replies WHERE (post_id = 3)
+SELECT * FROM replies WHERE (post_id = 4)
+SELECT * FROM replies WHERE (post_id = 5)</div>
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/12">
+
+<div class="notes">
+<p>What would be optimal would be to run a single query similar to the one shown, which would return all replies for those 5 posts, and then automatically associate each reply with the correct post.</p>
+</div>
+<pre style="font-size: 36px;">
+posts = Post.where(id: [1,2,3,4,5]).all
+posts.each{|p| p.replies}
+
+<div>SELECT *
+FROM replies
+WHERE (post_id IN (1,2,3,4,5))</div>
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/13">
+
+<div class="notes">
+<p>This is the reason that eager loading was introduced. In Sequel, the default eager loading method is called eager. By calling eager, you let Sequel know that you want to eagerly load the replies for all of the returned posts.|This will automatically run the query to get all replies for those 5 posts, and it will associate each reply to the appropriate post.</p>
+</div>
+<pre style="font-size: 36px;">
+posts = Post.where(id: [1,2,3,4,5]).
+  <span>eager(:replies)</span>.all
+
+SELECT *
+FROM replies
+WHERE (post_id IN (1,2,3,4,5))
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/14">
+
+<div class="notes">
+<p>The reason for our underwater excursion today to find out in detail how to correctly handle the association if it is limited to a given number of records.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 300px;">Limited<br>Associations</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/15">
+
+<div class="notes">
+<p>Here is an association that returns the first 10 replies for a post, using the association&#x2019;s limit option.</p>
+</div>
+<pre>
+class Post &gt; Sequel::Model
+  one_to_many :first_10_replies,
+    <span>limit: 10</span>, order: :id,
+    class: :Reply
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/16">
+
+<div class="notes">
+<p>Generally, when adding a limit, you will also want to add an order, so that you get consistent results. Assuming that the replies table has a typical autoincremented primary key, ordering by id should make sure that the replies are returned in the order they were received.</p>
+</div>
+<pre>
+class Post &gt; Sequel::Model
+  one_to_many :first_10_replies,
+    limit: 10, <span>order: :id</span>,
+    class: :Reply
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/17">
+
+<div class="notes">
+<p>Taking the limit and order together, this association should return the first 10 replies received for a given post.</p>
+</div>
+<pre>
+class Post &gt; Sequel::Model
+  one_to_many :first_10_replies,
+    <span>limit: 10, order: :id</span>,
+    class: :Reply
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/18">
+
+<div class="notes">
+<p>Note that for regular association loading, where you have a single post and want the first 10 replies for that post, the query to use is simple. You start with the initial query to use for regular loading</p>
+</div>
+<pre style="margin-top: 150px;">
+post = Post[1]
+post.first_10_replies
+
+<div>SELECT *
+FROM replies
+WHERE (post_id = 1)</div>
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/19">
+
+<div class="notes">
+<p>You then order by the reply&#x2019;s id so that earlier replies come before later replies.</p>
+</div>
+<pre style="margin-top: 150px;">
+post = Post[1]
+post.first_10_replies
+
+SELECT *
+FROM replies
+WHERE (post_id = 1)
+<span>ORDER BY id</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/20">
+
+<div class="notes">
+<p>Finally you limit the number of returned records to 10 using the LIMIT clause.|While this strategy works fine for loading the replies for a single post, it cannot be used when eagerly loading.</p>
+</div>
+<pre style="margin-top: 150px;">
+post = Post[1]
+post.first_10_replies
+
+SELECT *
+FROM replies
+WHERE (post_id = 1)
+ORDER BY id
+<span>LIMIT 10</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/21">
+
+<div class="notes">
+<p>Let us look back at the query used for eagerly loading. Now let us try to use the same strategy of using the LIMIT clause.</p>
+</div>
+<pre style="margin-top: 150px;">
+Post.
+  where(id: [1,2,3,4,5]).
+  eager(:first_10_replies)
+
+<div>SELECT *
+FROM replies
+WHERE (post_id IN (1, 2, 3, 4, 5))</div>
+</pre></div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/22">
+
+<div class="notes">
+<p>You would end up with the SQL used here.|The reason this does not work is that the LIMIT 10 clause here applies to the entire result set, giving you the first 10 replies to any of the 5 posts. This may return 5 replies each for posts 1 and 2, and no replies for posts 3, 4, or 5.|What you want is first 10 replies to each of the 5 posts, which a LIMIT clause cannot handle. So if you cannot use a LIMIT clause to do eager loading, how can you get the correct results?</p>
+</div>
+<pre style="margin-top: 150px;">
+Post.
+  where(id: [1,2,3,4,5]).
+  eager(:first_10_replies)
+
+SELECT *
+FROM replies
+WHERE (post_id IN (1, 2, 3, 4, 5))
+<div>ORDER BY id
+LIMIT 10</div>
+</pre></div>
+</div><div id="slides/slides" class="slide bg-divein" data-transition="none"><div class="content bg-divein" ref="slides/slides/23">
+
+<div class="notes">
+<p>To find out, you cannot stay above the water, you need to dive in!|Just like you have rules when diving, I think there should be a rule for eager loading.</p>
+</div>
+<h2 style="font-size: 200px; text-align: right; margin-top: 20px; margin-right: 20px">Dive<br>In!</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg1 vc" data-transition="none"><div class="content bg1 vc" ref="slides/slides/24">
+
+<div class="notes">
+<p>That rule is: &#x201C;Eager loading an association for a group of records should give the same results as loading the association separately for each individual record.&#x201D;|Eager loading should be considering an optimization, and if it changes what values are returned, I think it is broken.</p>
+</div>
+<p style="font-size: 75px; text-align: left;">Eager loading an association for a group of records should give the same results as loading the association separately for each individual record.</p><h1 class="violation" style="margin-right: 70px;">Rule</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/25">
+
+<div class="notes">
+<p>With Sequel, the rule should be followed for limited associations. If you are eagerly loading the first 10 replies for a set of posts, calling the first_10_replies method on any of the returned posts will return an array containing the first 10 replies, even if the post has 1000 replies.</p>
+</div>
+<pre style="font-size: 45px; margin-top: 50px;">
+Post.eager(:first_10_replies).
+  first.
+  first_10_replies.length
+# =&gt; <span>10</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/26">
+
+<div class="notes">
+<p>This is not true if you are using ActiveRecord. ActiveRecord&#x2019;s documented behavior for eagerly loading an association with a limit, is to ignore the limit.|If the first post returned has 1000 replies, calling the first_10_replies method here will return an array containing all 1000 replies.</p>
+</div>
+<pre style="font-size: 45px; margin-top: 50px;">
+Post.includes(:first_10_replies).
+  first.
+  first_10_replies.length
+# =&gt; <span>1000</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/27">
+
+<div class="notes">
+<p>While it cannot really be considered a bug as the behavior is documented, it violates the rule, as eager loading changes the results of the first_10_replies method. It certainly would be nice if the behavior could be changed so that it did not violate the rule.</p>
+</div>
+<pre style="font-size: 45px; margin-top: 50px;">
+Post.includes(:first_10_replies).
+  first.
+  first_10_replies.length
+# =&gt; 1000
+</pre><h1 class="violation">Rule Violation</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/28">
+
+<div class="notes">
+<p>Since we are still near the surface, let us consider simple ways to handle eager loading limited associations correctly, so that the rule is not violated.</p>
+</div>
+<h2 style="font-size: 200px; text-align: right; margin-top: 50px; margin-right: 200px">
+<span style="font-size: 80px;">How to</span><br>Fix It?</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/29">
+
+<div class="notes">
+<p>The simplest way to fix it is to just not eager load in that case. Basically, if asked to eager load for an association with a limit, just do not eager load. When the first_10_replies method is called for each post, issue a query to get the first 10 replies for that post.</p>
+</div>
+<h2 style="font-size: 280px; text-align: left; margin-top: 450px; margin-left: 20px">Skip</h2></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/30">
+
+<div class="notes">
+<p>If you are only eagerly loading for a small number of posts, or the latency between the database and the application is low, this actually performs quite well in most cases.|However, as the number of posts you are eagerly loading for increases, or the latency between the database and the application increases, performance starts to degrade.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 50px; margin-right: 20px">Performance<br><span style="font-size: 250px;">Hit?</span>
+</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/31">
+
+<div class="notes">
+<p>Another simple way to handle eagerly loading the first 10 replies association is to eagerly load all associated replies, but take the resulting array of replies for each post, and use array slicing to extract the first 10 replies before returning the results to the user.</p>
+</div>
+<h2 style="font-size: 75px; text-align: center; margin-top: 50px; margin-left: 200px">Array<br><span style="font-size: 200px;">Slicing</span>
+</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/32">
+
+<div class="notes">
+<p>This was Sequel&#x2019;s original strategy for eager loading limited associations. What Sequel does is fairly simple, just using a range to slice the array to return only the first 10 repiles.|At the database level, this does not perform any differently than the ActiveRecord approach of loading all objects, and in many cases it performs worse than skipping the eager load, but at least it ensures that the user gets correct results and the rule is not violated.</p>
+</div>
+<pre style="font-size: 45px; margin-top: 50px;">
+posts.each do |post|
+  a = post.associations
+<div>  a[:first_10_replies] =
+    a[:first_10_replies][0...10]</div>end
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/33">
+
+<div class="notes">
+<p>While skipping the eager load or slicing the resulting array are easy solutions, what would be better would be to send a single query to the database that returned the first 10 replies for each of the posts being eagerly loaded.</p>
+</div>
+<h2 style="font-size: 75px; text-align: right; margin-top: 350px; margin-right: 100px">Easy, <span class="it" style="padding-right: 100px;">but</span><br><span style="font-size: 140px;">Suboptimal</span>
+</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg-divedeeper" data-transition="none"><div class="content bg-divedeeper" ref="slides/slides/34">
+
+<div class="notes">
+<p>It turns out that there are multiple ways to do that in SQL. However, you need to leave the shallows and dive deeper to figure it out.</p>
+</div>
+<h2 style="font-size: 100px; text-align: left; margin-top: 5px; margin-left: 5px; color: white; ">Diving <span class="it">Deeper</span>
+</h2></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/35">
+
+<div class="notes">
+<p>One strategy that uses a single SQL query to eagerly load limited associations is to use a correlated subquery. A correlated subquery is when a subquery references columns from the query that contains it, and for each row returned by the outer query, the subquery is evaluated separately.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 300px; margin-right: 10px">Correlated Subquery</h2></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/36">
+
+<div class="notes">
+<p>Here is the SQL that implements a correlated subquery strategy for eager loading. It is basically the same query as used for eager loading without a limit, but with the addition of the highlighted subquery to remove replies that would not be in the first 10.</p>
+</div>
+<pre>
+SELECT *
+FROM replies
+WHERE ((post_id IN (1, 2, 3, 4, 5))
+<div>AND (id IN (
+  SELECT t1.id
+  FROM replies AS t1
+  WHERE t1.post_id = replies.post_id
+  ORDER BY id
+  LIMIT 10)))</div>ORDER BY id
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/37">
+
+<div class="notes">
+<p>This highlighted part shows the correlation. The subquery&#x2019;s WHERE clause filters for rows where the replies in the subquery have the same post id as replies in the outer query. So the WHERE clause in the subquery makes it so the subquery consists of only rows in the replies table that have the same post_id as the current row in the main query.</p>
+</div>
+<pre>
+SELECT *
+FROM <span>replies</span>
+WHERE ((post_id IN (1, 2, 3, 4, 5))
+AND (id IN (
+  SELECT t1.id
+  FROM <span>replies AS t1</span>
+  WHERE <span>t1.post_id = replies.post_id</span>
+  ORDER BY id
+  LIMIT 10)))
+ORDER BY id
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/38">
+
+<div class="notes">
+<p>The LIMIT clause inside the subquery then ensures that the subquery consists of only the first 10 rows in the replies table that have the same post_id as the current row in the main query.</p>
+</div>
+<pre>
+SELECT *
+FROM replies
+WHERE ((post_id IN (1, 2, 3, 4, 5))
+AND (id IN (
+  SELECT t1.id
+  FROM replies AS t1
+  WHERE t1.post_id = replies.post_id
+  ORDER BY id
+  <span>LIMIT 10</span>)))
+ORDER BY id
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/39">
+
+<div class="notes">
+<p>Since the subquery now returns the ids of the first 10 replies for the current post, the outer query can use a IN clause, which will remove replies where the reply is not in the first 10 replies for its associated post.</p>
+</div>
+<pre>
+SELECT *
+FROM replies
+WHERE ((post_id IN (1, 2, 3, 4, 5))
+AND (<span>id IN</span> (
+  SELECT t1.id
+  FROM replies AS t1
+  WHERE t1.post_id = replies.post_id
+  ORDER BY id
+  LIMIT 10)))
+ORDER BY id
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/40">
+
+<div class="notes">
+<p>Unfortunately, this approach can be slow for large datasets, unless the database is good at optimizing correlated subqueries, and it is not too difficult to determine why. Let us say that posts 1, 2, 3, and 4 have few replies, but post 5 has 10,000 replies.</p>
+</div>
+<pre>
+SELECT *
+FROM replies
+WHERE ((post_id IN (1, 2, 3, 4, 5))
+AND (id IN (
+  SELECT t1.id
+  FROM replies AS t1
+  WHERE t1.post_id = replies.post_id
+  ORDER BY id
+  LIMIT 10)))
+ORDER BY id
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/41">
+
+<div class="notes">
+<p>Unless the database is good at optimizing correlated subqueries, what the database will probably do is run this subquery for every one of the 10,000 replies to post 5.</p>
+</div>
+<pre>
+SELECT *
+FROM replies
+WHERE ((post_id IN (1, 2, 3, 4, 5))
+AND (id IN (
+<div>  SELECT t1.id
+  FROM replies AS t1
+  WHERE t1.post_id = replies.post_id
+  ORDER BY id
+  LIMIT 10)))</div>ORDER BY id
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/42">
+
+<div class="notes">
+<p>Note that it is possible for the query to be optimized such that this subquery is only run 5 times. A good correlated subquery optimizer will realize that only expression in the subquery that references the outer query is the highlighted replies.post_id. Since this is the only expression in the correlated subquery that varies based on the current row in the outer query, you can cache the results of previous subquery evaluations by the post_id and only reevaluate the subquery if you see a post_id that is not in the cache.|This is one area where Microsoft SQL Server&#x2019;s optimizer is significantly better than PostgreSQL&#x2019;s optimizer. On Microsoft SQL Server, using a correlated subquery for eager loading can be faster than the default of slicing the array, but in PostgreSQL it can be orders of magnitude slower.</p>
+</div>
+<pre>
+SELECT *
+FROM replies
+WHERE ((post_id IN (1, 2, 3, 4, 5))
+AND (id IN (
+  SELECT t1.id
+  FROM replies AS t1
+  WHERE t1.post_id = <span>replies.post_id</span>
+  ORDER BY id
+  LIMIT 10)))
+ORDER BY id
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/43">
+
+<div class="notes">
+<p>Unfortunately, while most SQL databases support this type of correlated subquery, MySQL will not even execute it, as it does not support using the LIMIT clause on a subquery that is used in an IN clause.</p>
+</div>
+<pre>
+SELECT *
+FROM replies
+WHERE ((post_id IN (1, 2, 3, 4, 5))
+AND (id <span>IN</span> (
+  SELECT t1.id
+  FROM replies AS t1
+  WHERE t1.post_id = replies.post_id
+  ORDER BY id
+  <span>LIMIT 10</span>)))
+ORDER BY id
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/44">
+
+<div class="notes">
+<p>Sequel added support for using correlated subqueries to do eager loading in Sequel 3.28.</p>
+</div>
+<h2 style="font-size: 150px;">
+<span class="it">Added</span> in<br>Sequel 3.28</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/45">
+
+<div class="notes">
+<p>However, because on databases without good optimizers it performs poorly, and databases with good optimizers can use a more performant strategy, support for using correlated subqueries for eager loading was removed in Sequel 4.</p>
+</div>
+<h2 style="font-size: 150px;">
+<span class="it">Removed</span> in<br>Sequel 4</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/46">
+
+<div class="notes">
+<p>Another strategy to eagerly load limited associations in a single query is to use a window function to compute the order of replies for each post.|Window functions are similar to aggregate functions, but instead of using GROUP BY to combine multiple input rows into a single output row, they compute their results based on a set of rows related to the current row, called a frame.|That is probably hard to understand, so let me provide a simple example.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 350px; margin-left: 10px">Window Functions</h2></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/47">
+
+<div class="notes">
+<p>Consider the following dataset of replies, which I have stripped down to just the two columns we are interested in, the id and the post id.|In this case, there are 3 replies to post 1, 2 replies to post 2, and 1 reply to post 3. We can use a window function to determine what the order of the replies should be for each post.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT id, post_id
+FROM replies
+
+
+
+</pre><table>
+<tr>
+<th>id</th>
+<th>post_id</th>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/48">
+
+<div class="notes">
+<p>That window function is called row_number. What this row_number window function call does is provide a number for the position of the reply relative to other replies with the same post_id.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT id, post_id,
+<div>  row_number() OVER
+    (PARTITION BY post_id
+     ORDER BY id)</div>FROM replies
+</pre><table>
+<tr>
+<th>id</th>
+<th>post_id</th>
+<th>row_number</th>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td class="hl">1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td class="hl">2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td class="hl">3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td class="hl">1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td class="hl">2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+<td class="hl">1</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/49">
+
+<div class="notes">
+<p>As you can see, the window functions are specified by using the OVER clause after the function call.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT id, post_id,
+  row_number() <span>OVER</span>
+    (PARTITION BY post_id
+     ORDER BY id)
+FROM replies
+</pre><table>
+<tr>
+<th>id</th>
+<th>post_id</th>
+<th>row_number</th>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/50">
+
+<div class="notes">
+<p>The OVER clause contains a PARTITION BY clause, which specifies the column or columns that you want to use for the grouping. Here we are partitioning by post_id, which means the row_number calculation is done separately for each set of replies with the same post_id.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT id, post_id,
+  row_number() OVER
+    (<span>PARTITION BY post_id</span>
+     ORDER BY id)
+FROM replies
+</pre><table>
+<tr>
+<th>id</th>
+<th>post_id</th>
+<th>row_number</th>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/51">
+
+<div class="notes">
+<p>We are also specifying the ORDER BY clause, which specifies in which order the individual rows should be processed inside the partition. Here we are ordering by the reply&#x2019;s id, so for replies with post_id 2, it will process reply 4 before reply 5.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT id, post_id,
+  row_number() OVER
+    (PARTITION BY post_id
+     <span>ORDER BY id</span>)
+FROM replies
+</pre><table>
+<tr>
+<th>id</th>
+<th>post_id</th>
+<th>row_number</th>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/52">
+
+<div class="notes">
+<p>Putting this all together, what row_number does is for each of the replies for post 1, it orders them by their id. The first row has the row number of 1, the second row has the row number of 2, and the third row has the row number of 3.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT id, post_id,
+  row_number() OVER
+    (PARTITION BY post_id
+     ORDER BY id)
+FROM replies
+</pre><table>
+<tr>
+<th>id</th>
+<th>post_id</th>
+<th>row_number</th>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td class="hl">1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td class="hl">2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td class="hl">3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/53">
+
+<div class="notes">
+<p>Likewise for post 2, the first reply has row number 1 and the second reply has row number 2.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT id, post_id,
+  row_number() OVER
+    (PARTITION BY post_id
+     ORDER BY id)
+FROM replies
+</pre><table>
+<tr>
+<th>id</th>
+<th>post_id</th>
+<th>row_number</th>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td class="hl">1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td class="hl">2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/54">
+
+<div class="notes">
+<p>For post 3, there is only a single reply, and that reply has row number 1.|Now that we know how to specify the order of the rows, let us apply this to eager loading.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT id, post_id,
+  row_number() OVER
+    (PARTITION BY post_id
+     ORDER BY id)
+FROM replies
+</pre><table>
+<tr>
+<th>id</th>
+<th>post_id</th>
+<th>row_number</th>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+<td class="hl">1</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/55">
+
+<div class="notes">
+<p>You start by taking the basic eager loading query that uses IN with the key values.</p>
+</div>
+<pre style="margin-top: 50px;">
+
+
+  SELECT *
+  FROM replies
+  WHERE (post_id IN (1, 2, 3, 4, 5))
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/56">
+
+<div class="notes">
+<p>What would be nice is if you could just use the row_number window function in the WHERE clause to remove the rows that are over the limit for the association.|Unfortunately, this does not work as it is not valid SQL syntax. The reason for that is that window functions are not computed until after the WHERE clause has been processed, since the WHERE clause modifies the inputs to the window function. So you cannot use window functions in WHERE clauses.</p>
+</div>
+<pre style="margin-top: 50px;">
+
+
+  SELECT *
+  FROM replies
+  WHERE (post_id IN (1, 2, 3, 4, 5))
+<div>    AND row_number() OVER
+      (PARTITION BY post_id
+      ORDER BY id) &lt;= 10</div>
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/57">
+
+<div class="notes">
+<p>Since you cannot use a window function in the WHERE clause, you have to move it into the SELECT clause. Note that this does not remove replies over the limit, it just returns the row number as an additional column.</p>
+</div>
+<pre style="margin-top: 50px;">
+
+
+  SELECT *,
+<div>    row_number() OVER
+      (PARTITION BY post_id
+       ORDER BY id)</div>  FROM replies
+  WHERE (post_id IN (1, 2, 3, 4, 5))
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/58">
+
+<div class="notes">
+<p>In order to remove replies over the limit, you need to make that query a subquery and select from it, and have the outer query use a WHERE clause to remove replies where the row number is over the limit.|This can be significantly faster than skipping eager loading or slicing the resulting array. Unfortunately, it is still suboptimal. Considering our earlier example with 10,000 replies for post 5, this will probably compute the row number for all 10,000 replies returned by the subquery, and later remove 9,990 replies in the WHERE clause in the outer query.</p>
+</div>
+<pre style="margin-top: 50px;">
+SELECT *
+FROM (
+  SELECT *,
+    row_number() OVER
+      (PARTITION BY post_id
+       ORDER BY id)
+  FROM replies
+  WHERE (post_id IN (1, 2, 3, 4, 5))
+) AS t1
+WHERE (<span>row_number &lt;= 10</span>)
+ORDER BY row_number
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/59">
+
+<div class="notes">
+<p>Unless the database&#x2019;s query optimizer is smart enough to avoid computing the row numbers for rows after the limit, using window functions will always be suboptimal for eager loading limited associations.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 400px; margin-left: 10px">Suboptimal</h2></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/60">
+
+<div class="notes">
+<p>Additionally, window functions are not supported on simpler databases such as MySQL or SQLite, so you will have to use a different strategy for those databases.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 30px; margin-left: 10px">Not <span class="it">Always</span><br>Supported</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/61">
+
+<div class="notes">
+<p>The window function strategy was the first SQL eager loading strategy added to Sequel in Sequel 3.28.</p>
+</div>
+<h2 style="font-size: 150px;">
+<span class="it">Added</span> in<br>Sequel 3.28</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/62">
+
+<div class="notes">
+<p>It became the default eager loading strategy on databases that support window functions in Sequel 4.</p>
+</div>
+<h2 style="font-size: 150px;">
+<span class="it">Default</span> in<br>Sequel 4</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/63">
+
+<div class="notes">
+<p>So the main problem with using window functions is that it computes the row number for all rows after the limit. Similarly, the main problem for correlated subqueries is that they also perform unnecessary processing. Is there a way to eager load while avoiding unnecessary processing?</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 30px; margin-left: 10px">
+<span class="it">Avoid</span> Unnecessary Processing?</h2></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/64">
+
+<div class="notes">
+<p>There is actually a fairly simple way to do so. You can use a UNION to combine the results of each of queries you would use when regularly loading. The UNION strategy requires a significantly different approach than the other methods previously discussed. Instead of starting with the query for an unlimited association and adding a filter to remove rows that are over the limit, you just UNION separate regular association queries.</p>
+</div>
+<h2 style="font-size: 250px; text-align: left; margin-top: 430px; margin-left: 10px">UNION</h2></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/65">
+
+<div class="notes">
+<p>It would be nice if you could do something like this, just sticking a UNION ALL in between all of the separate clauses used to regularly load the association. Unfortunately, SQL is not that simple. The UNION clause needs to come before the ORDER and LIMIT clauses in SQL.</p>
+</div>
+<pre style="font-size: 32px;">
+SELECT * FROM replies WHERE (post_id = 1)
+  ORDER BY id LIMIT 10
+<span>UNION ALL</span>
+SELECT * FROM replies WHERE (post_id = 2)
+  ORDER BY id LIMIT 10
+<span>UNION ALL</span>
+SELECT * FROM replies WHERE (post_id = 3)
+  ORDER BY id LIMIT 10
+<span>UNION ALL</span>
+SELECT * FROM replies WHERE (post_id = 4)
+  ORDER BY id LIMIT 10
+<span>UNION ALL</span>
+SELECT * FROM replies WHERE (post_id = 5)
+  ORDER BY id LIMIT 10
+</pre></div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none"><div class="content bg2 vc" ref="slides/slides/66">
+
+<div class="notes">
+<p>So what you need to do is wrap the queries in subqueries. This certainly looks ugly, but this is the fastest way to eagerly load associations with limits. As virtually all SQL databases support the UNION ALL clause, this strategy is more widely applicable than the window function strategy. It even works on MySQL!</p>
+</div>
+<pre style="font-size: 32px;">
+SELECT * FROM (SELECT * FROM replies WHERE
+  (post_id = 1) ORDER BY id LIMIT 10) AS t1
+<span>UNION ALL</span>
+SELECT * FROM (SELECT * FROM replies WHERE
+  (post_id = 2) ORDER BY id LIMIT 10) AS t1
+<span>UNION ALL</span>
+SELECT * FROM (SELECT * FROM replies WHERE
+  (post_id = 3) ORDER BY id LIMIT 10) AS t1
+<span>UNION ALL</span>
+SELECT * FROM (SELECT * FROM replies WHERE
+  (post_id = 4) ORDER BY id LIMIT 10) AS t1
+<span>UNION ALL</span>
+SELECT * FROM (SELECT * FROM replies WHERE
+  (post_id = 5) ORDER BY id LIMIT 10) AS t1
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/67">
+
+<div class="notes">
+<p>As I mentioned, this is the fastest way to eagerly load associations with limits. It is faster than the correlated subquery and window function strategies on all databases I have tested on because it avoids unnecessary processing.</p>
+</div>
+<h2 class="it" style="font-size: 200px; text-align: left; margin-top: 30px; margin-left: 50px">Fastest</h2></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/68">
+
+<div class="notes">
+<p>Note that it is only the fastest if you index correctly. If you do not index correctly, it is much slower than the window function or array slicing strategies, since it will do a sequential scan of the replies table for every post you are eagerly loading for, instead of a single sequential scan of the replies table.</p>
+</div>
+<h2 style="font-size: 200px; text-align: left; margin-top: 30px; margin-left: 50px">
+<span class="it">If</span> Indexed</h2></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/69">
+
+<div class="notes">
+<p>How does a UNION query avoid the unnecessary processing required by the other strategies? It is because for each subquery in the union query, it can use a single index, read only the number of index entries specified by association limit, fetch only those rows from the table, and move on to the next subquery. This avoids processing rows beyond the limit for the association, which is why it is the fastest strategy.</p>
+</div>
+<h2 style="font-size: 200px; text-align: left; margin-top: 30px; margin-left: 50px"><span class="it">How?</span></h2></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/70">
+
+<div class="notes">
+<p>Unfortunately, there are some problems with the UNION strategy. On PostgreSQL, somewhere between eagerly loading replies for 5,000 posts and 10,000 posts, you start hitting the default stack limit of 2MB. You can increase PostgreSQL&#x2019;s stack limit up to 32MB, but at some point you will hit the stack limit and the query will fail. The UNION approach also takes up significantly more memory than the window function approach, so it is more likely to hit a memory limit as well.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 330px; margin-left: 50px">Resource<br><span class="it">Limits</span>
+</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/71">
+
+<div class="notes">
+<p>The good news is these limits are easy to work around. Instead of sending a single union query with 10,000 subqueries, you can send 10 union queries each with 1,000 subqueries, or 100 union queries each with 100 subqueries.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 30px; margin-right: 50px">Multiple<br>Queries</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none">
+  <div class="content bg2" ref="slides/slides/72">
+
+<div class="notes">
+<p>In my testing on PostgreSQL, I found that sending a single UNION query with 1000 subqueries was signficantly slower than sending 10 UNION queries each with 100 subqueries, which surprised me. It turns out that a UNION query with 200 subqueries is more than 2 times slower than a UNION query with 100 subqueries.| However, if you decrease the number of subqueries per UNION query, you increase the total number of queries you need to send to the database.|What I have found is that on PostgreSQL, the optimum number of subqueries per UNION query is actually a function of the latency between the database and the application.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 80px; margin-left: 350px">Latency<br><span class="it">vs.</span><br><span style="font-size: 75px">Query Complexity</span>
+</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none">
+  <div class="content bg2" ref="slides/slides/73">
+
+<div class="notes">
+<p>On a local database, where there is almost zero latency between the database and the application, the optimum number of subqueries per union query is between 5 and 20.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 80px; margin-left: 350px">0 <span style="font-size: 80%">ms</span><br><br>5-20</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none">
+  <div class="content bg2" ref="slides/slides/74">
+
+<div class="notes">
+<p>If you are using Amazon web services with a database and application on different servers in the same availability zone, there is about a half millisecond latency, and the optimium number of subqueries per union is between 20 and 30.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 80px; margin-left: 350px">1/2 <span style="font-size: 80%">ms</span><br><br>20-30</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none">
+  <div class="content bg2" ref="slides/slides/75">
+
+<div class="notes">
+<p>If the database is in a different availability zone in the same datacenter, with a 2 millisecond latency, the optimium number of subqueries per union is between 40 and 50.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 80px; margin-left: 350px">2 <span style="font-size: 80%">ms</span><br><br>40-50</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none">
+  <div class="content bg2" ref="slides/slides/76">
+
+<div class="notes">
+<p>If the database is in a different datacenter, with a 20 millisecond latency, the optimium number of subqueries per union is between 100 and 150.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 80px; margin-left: 350px">20 <span style="font-size: 80%">ms</span><br><br>100-150</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none">
+  <div class="content bg2" ref="slides/slides/77">
+
+<div class="notes">
+<p>In most cases where Sequel is used, the database is probably in the same datacenter, so Sequel assumes about a 2 millisecond latency, and therefore sets the default number of subqueries per UNION to 40. Users can modify this value via an option.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 80px; margin-left: 350px">2 <span style="font-size: 80%">ms</span><br><br>Typical</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg2 vc" data-transition="none">
+  <div class="content bg2 vc" ref="slides/slides/78">
+
+<div class="notes">
+<p>Eager loading limited associations via a UNION was added as the default strategy in Sequel 4.10. You can still select the window function or array-slicing strategy manually for the rare cases where they are faster, such as when the table does not have the appropriate indexes.</p>
+</div>
+<h2 style="font-size: 120px;">UNION<br>Strategy<br><span class="it">Added</span><br>in<br>Sequel 4.10</br></br>
+</br>
+</br></h2></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none">
+  <div class="content bg2" ref="slides/slides/79">
+
+<div class="notes">
+<p>So far I have just been discussing query-per-association eager loading. That is because it is the simpler case.</p>
+</div>
+<h2 style="font-size: 80px; text-align: center; margin-top: 50px; margin-left: 50px">
+<span class="it" style="font-size: 200px;">Beyond</span><br><br>Query-Per-Association</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg-evendeeper" data-transition="none">
+  <div class="content bg-evendeeper" ref="slides/slides/80">
+
+<div class="notes">
+<p>Handling eager loading when using JOINs is even more complex, and requires diving even deeper. First, let us discuss why you would want to eager load via JOINs at all. Here are a couple examples.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 300px; margin-left: 20px; color: white;">Eager<br>Loading<br>via JOINs</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/81">
+
+<div class="notes">
+<p>If you want to eagerly load replies for multiple posts, but wanted the posts to be ordered based on the time of the first reply or most recent reply, you need to JOIN.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 150px; margin-right: 20px">Order</h2></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/82">
+
+<div class="notes">
+<p>If you want to eagerly load replies for multiple posts, but you do not want posts unless they have a reply that is within the last hour, you need to JOIN.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 400px; margin-right: 20px">Filter</h2></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/83">
+
+<div class="notes">
+<p>Let me briefly describe how eager loading via JOINs is done for an association with no limit. In Sequel, the method that does this is called eager_graph, and it has the same API as the eager method.</p>
+</div>
+<pre style="margin-top: 10px;">
+Post.where(posts__id: [1,2]).
+  order(:replies__id).
+  <span>eager_graph(:replies)</span>.all
+
+SELECT posts.id,
+  replies.id AS replies_id,
+  replies.post_id
+FROM posts
+LEFT OUTER JOIN replies
+  ON (replies.post_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/84">
+
+<div class="notes">
+<p>This method selects all of the columns of both tables explicitly, specifying aliases where the column name would be ambiguous.</p>
+</div>
+<pre style="margin-top: 10px;">
+Post.where(posts__id: [1,2]).
+  order(:replies__id).
+  eager_graph(:replies).all
+
+<div>SELECT posts.id,
+  replies.id AS replies_id,
+  replies.post_id</div>FROM posts
+LEFT OUTER JOIN replies
+  ON (replies.post_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/85">
+
+<div class="notes">
+<p>It joins replies to posts via a LEFT OUTER JOIN, so that the query will return posts that do not have any replies.</p>
+</div>
+<pre style="margin-top: 10px;">
+Post.where(posts__id: [1,2]).
+  order(:replies__id).
+  eager_graph(:replies).all
+
+SELECT posts.id,
+  replies.id AS replies_id,
+  replies.post_id
+FROM posts
+<div>LEFT OUTER JOIN replies
+  ON (replies.post_id = posts.id)</div>WHERE (posts.id IN (1, 2))
+ORDER BY replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/86">
+
+<div class="notes">
+<p>Note that we are specifying an order by replies.id so that the query will return posts in the order of the earliest reply. This is the reason we have to eagerly load via JOINs instead of issuing a separate query for the replies.</p>
+</div>
+<pre style="margin-top: 10px;">
+Post.where(posts__id: [1,2]).
+  <span>order(:replies__id)</span>.
+  eager_graph(:replies).all
+
+SELECT posts.id,
+  replies.id AS replies_id,
+  replies.post_id
+FROM posts
+LEFT OUTER JOIN replies
+  ON (replies.post_id = posts.id)
+WHERE (posts.id IN (1, 2))
+<span>ORDER BY replies.id</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/87">
+
+<div class="notes">
+<p>Let us consider the case where you want to eager load the first 10 replies for each post via JOINs. Here is what the basic SQL would look like without any limits applied.</p>
+</div>
+<pre style="margin-top: 10px; font-size: 32px;">
+Post.where(posts__id: [1,2]).
+  order(:first_10_replies__id).
+  eager_graph(:first_10_replies).all
+
+SELECT posts.id,
+  first_10_replies.id AS first_10_replies_id,
+  first_10_replies.post_id
+FROM posts
+LEFT OUTER JOIN replies AS first_10_replies
+  ON (first_10_replies.post_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY first_10_replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/88">
+
+<div class="notes">
+<p>Note that you cannot just add a LIMIT clause. This is because the LIMIT clause would operate on the joined result set, which will almost certainly not give the result that you want. Adding a LIMIT 10 clause here, you might get only get post 1 returned, instead of getting post 1 and post 2.</p>
+</div>
+<pre style="margin-top: 10px; font-size: 32px;">
+Post.where(posts__id: [1,2]).
+  order(:first_10_replies__id).
+  eager_graph(:first_10_replies).all
+
+SELECT posts.id,
+  first_10_replies.id AS first_10_replies_id,
+  first_10_replies.post_id
+FROM posts
+LEFT OUTER JOIN replies AS first_10_replies
+  ON (first_10_replies.post_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY first_10_replies.id
+<span>LIMIT 10</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/89">
+
+<div class="notes">
+<p>The rule that eager loading an association for a group of records should give the same results as loading the association separately for each individual record still applies when eager loading via JOINs. What strategies can be used when eager loading via JOINs so that the rule is not violated?</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 200px; margin-left: 50px">Strategies?</h2></div>
+</div><div id="slides/slides" class="slide bg3 vc" data-transition="none"><div class="content bg3 vc" ref="slides/slides/90">
+
+<div class="notes">
+<p>First, we cannot skip eager loading in this case. Since the associated table has been JOINed into the query, there is no way to undue that.</p>
+</div>
+<h2 class="strike" style="font-size: 250px;">Skip</h2></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/91">
+
+<div class="notes">
+<p>However, while we cannot skip eager loading, we can slice the resulting array of replies for each post after eager loading. Just like in the query per association case, this does not save us anything at the database level, but at least it returns correct results.|Array slicing is Sequel&#x2019;s default strategy when eager loading via JOINs.</p>
+</div>
+<h2 style="font-size: 75px; text-align: center; margin-top: 50px; margin-left: 200px">Array<br><span style="font-size: 200px;">Slicing</span>
+</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/92">
+
+<div class="notes">
+<p>Note that just as in the query per association case, ActiveRecord does not even do this, it will return an array with records beyond the limit.</p>
+</div>
+<h2 style="font-size: 75px; text-align: center; margin-top: 50px; margin-left: 200px">Array<br><span style="font-size: 200px;">Slicing</span>
+</br><h1 class="violation">Rule Violation</h1></h2>
+</div>
+</div><div id="slides/slides" class="slide bg3 vc" data-transition="none"><div class="content bg3 vc" ref="slides/slides/93">
+
+<div class="notes">
+<p>We can also eliminate the union approach. We do not know which posts will be returned until the query is run, therefore we do not know which subqueries to use in the UNION query.</p>
+</div>
+<h2 class="strike" style="font-size: 250px;">UNION</h2></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/94">
+
+<div class="notes">
+<p>It is possible to use correlated subqueries for eager loading via JOINs.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 300px; margin-right: 10px">Correlated Subquery</h2></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/95">
+
+<div class="notes">
+<p>This SQL query implements a correlated subquery strategy for eager loading via JOINs. The approach is similar to the approach used for a separate query per association.|The main difference is that we filter the associated table before joining using the highlighted inline subquery.</p>
+</div>
+<pre style="margin-top: 10px; font-size: 32px; line-height: 34px;">
+Post.where(posts__id: [1,2]).
+  order(:first_10_replies__id).
+  eager_graph_with_options(:first_10_replies,
+    limit_strategy: :correlated_subquery).all
+
+SELECT posts.id,
+  first_10_replies.id AS first_10_replies_id,
+  first_10_replies.post_id
+FROM posts
+LEFT OUTER JOIN (
+<div>  SELECT *
+  FROM replies
+  WHERE (id IN (
+    SELECT t1.id
+    FROM replies AS t1
+    WHERE t1.post_id = replies.post_id
+    ORDER BY id
+    LIMIT 10))</div>) AS first_10_replies
+  ON (first_10_replies.post_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY first_10_replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/96">
+
+<div class="notes">
+<p>That subquery uses an IN expression with a correlated subquery to filter rows over the limit for the association.|On PostgreSQL and Microsoft SQL Server, this approach can perform decently, sometimes even being the fastest implementation. On databases with poorer optimizers, such as SQLite, it can perform orders of magnitude slower in some cases.</p>
+</div>
+<pre style="margin-top: 10px; font-size: 32px; line-height: 34px;">
+Post.where(posts__id: [1,2]).
+  order(:first_10_replies__id).
+  eager_graph_with_options(:first_10_replies,
+    limit_strategy: :correlated_subquery).all
+
+SELECT posts.id,
+  first_10_replies.id AS first_10_replies_id,
+  first_10_replies.post_id
+FROM posts
+LEFT OUTER JOIN (
+  SELECT *
+  FROM replies
+  WHERE (id <span>IN</span> (
+<div>    SELECT t1.id
+    FROM replies AS t1
+    WHERE t1.post_id = replies.post_id
+    ORDER BY id
+    LIMIT 10))</div>) AS first_10_replies
+  ON (first_10_replies.post_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY first_10_replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/97">
+
+<div class="notes">
+<p>In Sequel, to use an correlated subquery strategy when eager loading via JOINs, you have to use a method called eager_graph_with_options. This is because eager_graph&#x2019;s API does not allow for an options hash.|Sequel cannot determine the optimal strategy when eager loading via JOINs, as it depends on how many replies and posts would be returned. For this reason, you must specify the strategy to use on a per-call basis.</p>
+</div>
+<pre style="margin-top: 10px; font-size: 32px; line-height: 34px;">
+Post.where(posts__id: [1,2]).
+  order(:first_10_replies__id).
+  <span>eager_graph_with_options</span>(:first_10_replies,
+    <span>limit_strategy: :correlated_subquery</span>).all
+
+SELECT posts.id,
+  first_10_replies.id AS first_10_replies_id,
+  first_10_replies.post_id
+FROM posts
+LEFT OUTER JOIN (
+  SELECT *
+  FROM replies
+  WHERE (id IN (
+    SELECT t1.id
+    FROM replies AS t1
+    WHERE t1.post_id = replies.post_id
+    ORDER BY id
+    LIMIT 10))
+) AS first_10_replies
+  ON (first_10_replies.post_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY first_10_replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/98">
+
+<div class="notes">
+<p>Using correlated subqueries for eager loading via JOINs was added in Sequel 4.10. While in some cases it is much slower than other strategies, there are situations where it is the fastest strategy. In general it performs the best when eagerly loading for a small number of posts, and worst for a large number of posts.</p>
+</div>
+<h2 style="font-size: 150px;">
+<span class="it">Added</span> in<br>Sequel 4.10</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/99">
+
+<div class="notes">
+<p>You can also use a window function to eager load limited associations via JOINs.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 350px; margin-left: 10px">Window Functions</h2></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/100">
+
+<div class="notes">
+<p>This SQL query implements a window function strategy for eager loading via JOINs. This is similar to the approach used in the correlated subquery strategy. The main difference is that the subquery uses the row_number window function instead of a correlated subquery.</p>
+</div>
+<pre style="margin-top: 10px; font-size: 32px; line-height: 36px;">
+Post.where(posts__id: [1,2]).
+  order(:first_10_replies__id).
+  eager_graph_with_options(:first_10_replies,
+    limit_strategy: :window_function).all
+
+SELECT posts.id,
+  first_10_replies.id AS first_10_replies_id,
+  first_10_replies.post_id
+FROM posts
+LEFT OUTER JOIN (
+<div>  SELECT id, post_id FROM (
+    SELECT *, row_number() OVER 
+      (PARTITION BY replies.post_id ORDER BY id)
+    FROM posts
+  ) AS t1
+  WHERE (row_number &lt;= 10)</div>) AS first_10_replies
+  ON (first_10_replies.posts_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY first_10_replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/101">
+
+<div class="notes">
+<p>As when using a separate query per association, you cannot filter directly via a window function, you have to select the window function value in a subquery and then filter using the result of the window function in the outer query.|In general the window function strategy is the fastest strategy when the number of replies is large. It performs worst when the number of posts is small.</p>
+</div>
+<pre style="margin-top: 10px; font-size: 32px; line-height: 36px;">
+Post.where(posts__id: [1,2]).
+  order(:first_10_replies__id).
+  eager_graph_with_options(:first_10_replies,
+    limit_strategy: :window_function).all
+
+SELECT posts.id,
+  first_10_replies.id AS first_10_replies_id,
+  first_10_replies.post_id
+FROM posts
+LEFT OUTER JOIN (
+  SELECT id, post_id FROM (
+    SELECT *, <span>row_number()</span> OVER 
+      (PARTITION BY replies.post_id ORDER BY id)
+    FROM posts
+  ) AS t1
+  WHERE (<span>row_number &lt;= 10</span>)
+) AS first_10_replies
+  ON (first_10_replies.posts_id = posts.id)
+WHERE (posts.id IN (1, 2))
+ORDER BY first_10_replies.id
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none">
+  <div class="content bg3" ref="slides/slides/102">
+
+<div class="notes">
+<p>Support for using window functions to eagerly load associations via JOINs was added in Sequel 4.8. It is not used unless you specifically select it as an option, as it can perform much worse than the default of array slicing in cases where the number of posts is small.</p>
+</div>
+<h2 style="font-size: 150px;">
+<span class="it" style="font-size: 120px;">Added</span><br>in<br>Sequel 4.8</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none">
+  <div class="content bg3" ref="slides/slides/103">
+
+<div class="notes">
+<p>Note that if you are filtering or ordering based on columns in the associated table, the results can significantly change between using array slicing in ruby and using a SQL-based strategy.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 150px; margin-left: 10px">Filtering<br><span class="it" style="font-size: 75px; line-height: 175px; padding-left: 100px;">or</span><br>Ordering</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/104">
+
+<div class="notes">
+<p>Let us say you want to eagerly load the first 10 replies for posts 1 and 2, but you only want posts which have a reply that contains the string diving. If you use the array-slicing approach, this will look for replies that contain the word diving and return the first 10 of those replies for each post. If you use one of the SQL-based approaches, this will take the first 10 replies to each post, and remove replies that do not contain diving.|Let us say post 2 has a 100 replies, and only the 50th reply contains the word diving. With the array slicing approach, this will return post 2 with the 50th reply associated. With an SQL-based approach, this will not return post 2 at all, since none of the first 10 replies to post 2 contain diving.</p>
+</div>
+<pre style="font-size: 32px; margin-top: 150px;">
+Post.where(posts__id: [1,2]).
+  order(:first_10_replies__id).
+  eager_graph(:first_10_replies).
+  <span>where(first_10_replies__text: /diving/)</span>
+  all
+</pre></div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/105">
+
+<div class="notes">
+<p>I do not think there is a single correct approach here, as there are good arguments to be made for either approach. Sequel lets you choose which approach you want to take.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 350px; margin-right: 140px">Both Valid</h2></div>
+</div><div id="slides/slides" class="slide bg-deepestdive" data-transition="none"><div class="content bg-deepestdive" ref="slides/slides/106">
+
+<div class="notes">
+<p>This brings us to the deepest level of our dive, where I will discuss filtering by associations.</p>
+</div>
+<h2 style="font-size: 100px; text-align: right; margin-top: 5px; margin-left: 5px; color: white;">Filtering by Associations</h2></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/107">
+
+<div class="notes">
+<p>First, in case you are unfamiliar with this concept, both Sequel and ActiveRecord support filtering by many-to-one associations. For a many-to-one association, this is basically sugar for using objects instead of their foreign keys when filtering.</p>
+</div>
+<pre style="margin-top: 50px;">
+post = Post[1]
+Reply.where(post: post)
+
+SELECT *
+FROM replies
+WHERE (post_id = 1)
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/108">
+
+<div class="notes">
+<p>To filter by an association, you use the association symbol as the key in a hash you pass to the where method.</p>
+</div>
+<pre style="margin-top: 50px;">
+post = Post[1]
+Reply.where(<span>post: post</span>)
+
+SELECT *
+FROM replies
+WHERE (post_id = 1)
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/109">
+
+<div class="notes">
+<p>It will recognize that an association was used, and instead of using the post column, it will use the foreign key of the association, post_id, with the primary key value of the object passed in, which in this case is 1.</p>
+</div>
+<pre style="margin-top: 50px;">
+post = Post[<span>1</span>]
+Reply.where(post: post)
+
+SELECT *
+FROM replies
+WHERE (<span>post_id = 1</span>)
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/110">
+
+<div class="notes">
+<p>Sequel goes a step farther than ActiveRecord, allowing filtering by all types of associations. So this code allows you to select all posts that have that reply. Since this is a one-to-many association and not a many-to-many association, this should return the single post associated with the reply.|Note that while ActiveRecord appears to support this syntax, it will generate incorrect SQL, in the worst case resulting in silent failure.</p>
+</div>
+<pre style="margin-top: 50px;">
+reply = Reply.first(post_id: 1)
+Post.where(replies: reply)
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/111">
+
+<div class="notes">
+<p>This is the SQL that would be used. It is nice and simple, just looking for all posts with id 1. Since id is the primary key, this should return a single post.</p>
+</div>
+<pre style="margin-top: 50px;">
+reply = Reply.first(post_id: 1)
+Post.where(replies: reply)
+
+SELECT *
+FROM posts
+WHERE (id = 1)
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/112">
+
+<div class="notes">
+<p>Now consider the case where the association you are filtering by has a limit. In this case, using the same query is incorrect. This reply might be the hundredth reply to that post, in which case it is not one of the first 10 replies, and therefore the query should not return any posts.</p>
+</div>
+<pre style="margin-top: 50px;">
+reply = Reply.first(post_id: 1)
+Post.where(first_10_replies: reply)
+
+SELECT *
+FROM posts
+WHERE (id = 1)
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none">
+  <div class="content bg4" ref="slides/slides/113">
+
+<div class="notes">
+<p>So how can you handle filtering by limited associations? Just as in the eager loading cases, there are strategies that can be used. In general, variants on the strategies used for eager loading via JOINs will also work for filtering by limited associations.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 100px; margin-left: 10px">Filtering<br><span class="it" style="font-size: 75px; line-height: 175px; padding-right: 100px;">by</span><br>Limited Associations</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg4 vc" data-transition="none"><div class="content bg4 vc" ref="slides/slides/114">
+
+<div class="notes">
+<p>As you are not eagerly loading and you must add some sort of filter to the dataset, you cannot avoid the problem by skipping it.</p>
+</div>
+<h2 class="strike" style="font-size: 250px;">Skip</h2></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/115">
+
+<div class="notes">
+<p>Unlike when eager loading, there is no way to slice an array to fix the problem. This is because in the eager load cases, you end up with a separate array of replies for each post which you can slice based on the limit for the association. In the filtering by associations cases, it returns an array of posts, so you cannot use the association limit. You must handle the issue purely at the SQL level to get correct results.</p>
+</div>
+<h2 class="strike" style="font-size: 75px; text-align: center; margin-top: 50px; margin-left: 200px">Array<br><span style="font-size: 200px;">Slicing</span>
+</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg4 vc" data-transition="none"><div class="content bg4 vc" ref="slides/slides/116">
+
+<div class="notes">
+<p>Just like when the eager loading via JOINs, you cannot use a UNION approach, since you do not know in advance the related posts.</p>
+</div>
+<h2 class="strike" style="font-size: 250px;">UNION</h2></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/117">
+
+<div class="notes">
+<p>Similar to the eager loading cases, it is possible to filter by a limited association using a correlated subquery.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 300px; margin-right: 10px">Correlated Subquery</h2></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/118">
+
+<div class="notes">
+<p>Here is the filtering by associations query. We have to add a filter to this query that will remove posts if the given reply is not in the first 10 replies for that post.</p>
+</div>
+<pre style="font-size: 32px; margin-top: 10px;">
+reply = Reply.first(post_id: 1)
+# reply.id = 2
+Post.where(first_10_replies: reply)
+
+SELECT *
+FROM posts
+WHERE (id = 1)
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/119">
+
+<div class="notes">
+<p>Here is a filter that can be added to the query that will remove such posts. This filter uses IN with a subquery to restrict the returned posts to ones that contain that reply in the first 10 of their replies.</p>
+</div>
+<pre style="font-size: 32px; margin-top: 10px;">
+reply = Reply.first(post_id: 1)
+# reply.id = 2
+Post.where(first_10_replies: reply)
+
+SELECT *
+FROM posts
+WHERE ((posts.id = 1)
+<div>AND (posts.id IN (
+  SELECT replies.post_id
+  FROM replies 
+  WHERE ((replies.id IN (
+    SELECT t1.id
+    FROM replies AS t1
+    WHERE (t1.post_id = replies.post_id)
+    ORDER BY id
+    LIMIT 10))
+  AND (replies.id = 2)))))</div>
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/120">
+
+<div class="notes">
+<p>This subquery has two conditions. One condition is that the reply&#x2019;s id is 2, since we are only interested in posts that have that reply.</p>
+</div>
+<pre style="font-size: 32px; margin-top: 10px;">
+reply = Reply.first(post_id: 1)
+# <span>reply.id = 2</span>
+Post.where(first_10_replies: reply)
+
+SELECT *
+FROM posts
+WHERE ((posts.id = 1)
+AND (posts.id IN (
+  SELECT replies.post_id
+  FROM replies 
+  WHERE ((replies.id IN (
+    SELECT t1.id
+    FROM replies AS t1
+    WHERE (t1.post_id = replies.post_id)
+    ORDER BY id
+    LIMIT 10))
+  AND (<span>replies.id = 2</span>)))))
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/121">
+
+<div class="notes">
+<p>The other subquery condition is the more interesting one. This uses an additional subquery with IN, which removes rows from the outer subquery that are beyond the limit for the association, using the same correlated subquery strategy that you&#x2019;ve seen while eager loading.</p>
+</div>
+<pre style="font-size: 32px; margin-top: 10px;">
+reply = Reply.first(post_id: 1)
+# reply.id = 2
+Post.where(first_10_replies: reply)
+
+SELECT *
+FROM posts
+WHERE ((posts.id = 1)
+AND (posts.id IN (
+  SELECT replies.post_id
+  FROM replies 
+<div>  WHERE ((replies.id IN (
+    SELECT t1.id
+    FROM replies AS t1
+    WHERE (t1.post_id = replies.post_id)
+    ORDER BY id
+    LIMIT 10))</div>  AND (replies.id = 2)))))
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/122">
+
+<div class="notes">
+<p>This approach is actually quite fast if the number of posts being matched is small, and the number of replies for each post is not very large. However, for a large number of posts or replies, it can take a very long time.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 300px; margin-right: 10px">Correlated Subquery</h2></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/123">
+
+<div class="notes">
+<p>Just like when eager loading via JOINs, using a correlated subquery strategy for filtering by associations was added to Sequel 4.10. It is the default strategy used on databases that do not support window functions.</p>
+</div>
+<h2 style="font-size: 150px;">
+<span class="it">Added</span> in<br>Sequel 4.10</br></h2>
+</div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/124">
+
+<div class="notes">
+<p>As you might expect, the other strategy for filtering by limited associations is using window functions.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 350px; margin-left: 10px">Window Functions</h2></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/125">
+
+<div class="notes">
+<p>Here is the SQL for the window function strategy. This is basically the same SQL as used in the correlated subquery strategy, except for the inner subquery. Instead of using a correlated subquery, it uses a window function, and just as before, since you cannot filter directly on the window function, it has to run the window function in a subquery and filter that in an outer query. So instead of 2 nested subqueries it uses 3 nested subqueries.</p>
+</div>
+<pre style="font-size: 32px; margin-top: 10px;">
+reply = Reply.first(post_id: 1)
+# reply.id = 2
+Post.where(first_10_replies: reply)
+
+SELECT *
+FROM posts
+WHERE ((posts.id = 1)
+AND (posts.id IN (
+  SELECT replies.post_id
+  FROM replies 
+  WHERE ((replies.id IN (
+<div>    SELECT id FROM (
+      SELECT id, row_number() OVER 
+        (PARTITION BY post_id ORDER BY id)
+      FROM replies) AS t1
+    WHERE (row_number &lt;= 10))</div>  AND (replies.id = 2)))))
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/126">
+
+<div class="notes">
+<p>Unfortunately, it is not all roses with the window function approach. Especially in the case where you are only looking for the posts using a single reply, the correlated subquery approach can be much faster. However, the window function approach is more consistent, dealing better with larger datasets. At least, that is true on PostgreSQL.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 350px; margin-left: 10px">Window Functions</h2></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none">
+  <div class="content bg4" ref="slides/slides/127">
+
+<div class="notes">
+<p>On Microsoft SQL Server, the correlated subquery strategy was always much faster in my testing. The correlated subquery strategy also works on databases that do not support window functions, so it has wider applicability.</p>
+</div>
+<h2 style="font-size: 150px; text-align: center; margin-top: 50px; margin-left: 100px">Microsoft<br><span class="it">SQL</span><br>Server</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none">
+  <div class="content bg4" ref="slides/slides/128">
+
+<div class="notes">
+<p>Support for using window functions to implement filtering by limited associations was added in Sequel 4.8.</p>
+</div>
+<h2 style="font-size: 150px;">
+<span class="it" style="font-size: 120px;">Added</span><br>in<br>Sequel 4.8</br></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg0" data-transition="none"><div class="content bg0" ref="slides/slides/129">
+
+<div class="notes">
+<p>So, to review what I discussed today. I started the talk with a basic discussion of loading associations, as well as the general rule that eager loading an association for a group of records should give the same results as loading the association separately for each individual record.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 50px; margin-left: 100px">Rule</h2><h1 class="review bg2">Review</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/130">
+
+<div class="notes">
+<p>I talked about easy ways to handle that, such as skipping the eager loading and falling back to regular loading, or using array slicing to at least return the correct results.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 450px; margin-right: 100px">Simple Fixes</h2><h1 class="review bg2">Review</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none">
+  <div class="content bg2" ref="slides/slides/131">
+
+<div class="notes">
+<p>I then talked about eager loading limited associations using a separate query per association. I compared the UNION, correlated subquery, and window function stragies, and explained why using a UNION is almost always the fastest approach if the table is indexed correctly, and it works on the widest variety of databases.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 300px; margin-left: 100px">Query<br>Per<br>Association</br><h1 class="review bg1">Review</h1></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg3" data-transition="none"><div class="content bg3" ref="slides/slides/132">
+
+<div class="notes">
+<p>I then talked about eager loading limited associations using JOINs in a single query. I talked about how array slicing can still be done to limit results correctly at the ruby level, and also showed how to join to subqueries that use correlated subqueries or window functions to limit results correctly at the SQL level. I also explained that when you are filtering or ordering based on the columns in the associated table, the results change based on whether array slicing or an SQL-based strategy is used.</p>
+</div>
+<h2 style="font-size: 150px; text-align: right; margin-top: 300px; margin-right: 100px">JOIN</h2><h1 class="review bg1">Review</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none">
+  <div class="content bg4" ref="slides/slides/133">
+
+<div class="notes">
+<p>Finally, I talked about filtering by limited associations, how no approaches at the ruby level can handle them, and how correlated subqueries and window functions can be used filter by limited associations at the SQL level.</p>
+</div>
+<h2 style="font-size: 150px; text-align: left; margin-top: 150px; margin-left: 10px">Filtering<br><span class="it" style="font-size: 75px; line-height: 175px; padding-right: 100px;">by</span><br>Associations</br><h1 class="review bg1">Review</h1></br>
+</h2>
+</div>
+</div><div id="slides/slides" class="slide bg-black" data-transition="none"><div class="content bg-black" ref="slides/slides/134">
+
+<div class="notes">
+<p>In the interests of time and your collective sanity, I did not even talk about more complex cases, such as handling limits for associations with one or more join tables, or associations that use composite keys, or associations that have conditions or offsets in addition to limits.</p>
+</div>
+<h2 style="font-size: 150px; text-align: center; margin-top: 50px;">Unexplored Territory</h2></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/135">
+
+<div class="notes">
+<p>But worry not, as Sequel handles all of those cases for you.</p>
+</div>
+<h2 style="font-size: 150px; text-align: center; margin-top: 300px;">Sequel Handles It</h2></div>
+</div><div id="slides/slides" class="slide bg-sunset" data-transition="none"><div class="content bg-sunset" ref="slides/slides/136">
+
+<div class="notes">
+<p>That wraps this presentation up. Thank you very much for taking the deep dive with me today.</p>
+</div>
+<h2 style="margin-top: 80px; text-align: left; font-size: 250px;">Thank <span style="color: white;">You</span>
+</h2></div>
+</div><div id="slides/slides" class="slide bg-sunset" data-transition="none"><div class="content bg-sunset" ref="slides/slides/137">
+
+<div class="notes">
+<p>If you have any questions, I&#x2019;ll be happy to answer them now.</p>
+</div>
+<h2 style="margin-top: 400px; text-align: left; font-size: 150px; color: white;">Questions?</h2></div>
+</div><div id="slides/slides" class="slide vc" data-transition="none"><div class="content vc" ref="slides/slides/138">
+
+<div class="notes">
+<p>Thanks for for the pictures!</p>
+</div>
+<h2 style="font-size: 100px;">Picture Credits</h2><pre>
+<a href="https://www.flickr.com/photos/by_marty/4996656845">Title</a>
+<a href="https://www.flickr.com/photos/tobze/6718752615">Boat</a>
+<a href="https://www.flickr.com/photos/sergemelki/11253193596">Dive In</a>
+<a href="https://www.flickr.com/photos/11444813@N03/3701644268">Diving Deeper</a>
+<a href="https://www.flickr.com/photos/oleswerdlow/2811961157">Even Deeper</a>
+<a href="https://www.flickr.com/photos/noaaphotolib/12002152036">Deepest Dive</a>
+<a href="https://www.flickr.com/photos/amagard/3599771891">Sunset</a>
+</pre></div>
+</div></div>
+
+</body>
+</html>
