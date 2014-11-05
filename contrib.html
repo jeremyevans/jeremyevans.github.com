@@ -21,7 +21,12 @@ layout: default
     <li>Fix issue with getaddrinfo for strict systems (577cf3056d9f3088145aea51bbc09a0c90a7695e)</li>
   </ul></li>
   <li><a href="http://linuxdcpp.berlios.de">LinuxDC++</a>: Replaced named semaphore implementation (sem_open) with glib implementation, portability fixes for OpenBSD (2007-11-30)</li>
-  <li><a href="https://github.com/jnr/jnr-posix">jnr-posix</a>: Fix FileStat on OpenBSD (1f9b098b22, 06cecb90d2, 1501585457)</li>
+  <li><a href="https://github.com/icalendar/icalendar">iCalendar</a>: Use more specific check for ActiveSupport timezone support (e08db70a366faa640e7de965ee928ac88c0d5b1d)</li>
+  <li><a href="https://github.com/jnr/jnr-posix">jnr-posix</a>:<ul>
+    <li>Fix FileStat on OpenBSD (1f9b098b22, 06cecb90d2, 1501585457)</li></li>
+    <li>Fix FileStat on OpenBSD 5.5+ (93304ae7f57f19edb3803e1f7bf009b207af96e6)</li></li>
+    <li>Fix utimes on OpenBSD/i386 5.5+ (7d079fd9607160d0122f4c576e10cf7c17ae6cc1)</li></li>
+  </ul></li>
   <li><a href="http://www.jruby.org">JRuby</a>:<ul>
     <li>Added 6 C API functions for C extension support (b65b5dfc371b64019dc9)</li>
     <li>Make compiling cext support on OpenBSD amd64 use correct directory (531198593b974b809bad)</li>
@@ -93,6 +98,7 @@ layout: default
     <li>Make Rinda::RingFinger work correctly on OpenBSD and NetBSD (revision 44492)</li>
     <li>Fix --with-tcllib and --with-tklib configure options (revision 44574)</li>
     <li>Handle IP_MULTICAST_LOOP and IP_MULTICAST_TTL socket options correctly on OpenBSD (revision 44638)</li>
+    <li>Fix bad backport patch in REXML tests (revision 48171)</li>
   </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
     <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
