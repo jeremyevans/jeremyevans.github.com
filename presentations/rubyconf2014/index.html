@@ -1,0 +1,1565 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Roda: The Routing Tree Web Framework</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href=".//css/reset.css" type="text/css"/>
+
+  <link type="text/css" href=".//css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href=".//css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href=".//css/showoff.css" type="text/css"/>
+
+  
+    
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1280px;
+          height: 720px;
+        }
+        #footer { width: 1261px; }
+      }
+    </style>
+  
+
+  <script type="text/javascript" src=".//js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src=".//js/jquery-print.js"></script>
+  <script type="text/javascript" src=".//js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src=".//js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src=".//js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src=".//js/fg.menu.js"></script>
+  <script type="text/javascript" src=".//js/showoff.js"></script>
+  <script type="text/javascript" src=".//js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src=".//js/sh_main.min.js"></script>
+  <script type="text/javascript" src=".//js/core.js"></script>
+  <script type="text/javascript" src=".//js/showoffcore.js"></script>
+  <script type="text/javascript" src=".//js/coffee-script.js"></script>
+
+  
+    
+      <script type="text/javascript" src=".//js/sh_lang/sh_ruby.min.js"></script>
+    
+  
+
+  
+    
+    <link rel="stylesheet" href=".//file/fonts.css" type="text/css"/>
+  
+    
+    <link rel="stylesheet" href=".//file/something.css" type="text/css"/>
+  
+
+  
+
+  <script type="text/javascript">
+  $(function(){
+      setupPreso(false, './');
+  });
+  </script>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+    <tr><td class="key">n</td><td>toggle notes</td></tr>
+  </table>
+</div>
+
+<div class="buttonNav">
+  <input type="submit" onClick="prevStep();" value="prev"/>
+  <input type="submit" onClick="nextStep();" value="next"/>
+</div>
+
+<div id="preso"><center>loading presentation...</center></div>
+<div id="footer">
+  <span id="notesInfo"></span>
+  <img id="disconnected" src="/css/disconnected.png" />
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/1">
+
+<div class="notes">
+<p>Hello everyone. It is great to be here at RubyConf. This talk is entitled &#x201C;Roda: The Routing Tree Web Framework&#x201D;.</p>
+</div>
+<h1 class="roda" style="font-size: 160px; text-align: left; margin-left: 20px; margin-top: 70px;">Roda:</h1><h1 class="roda" style="font-size: 100px; position: absolute; text-align: left; left: 360px; top: 40px;">The Routing</h1><h1 class="roda" style="font-size: 100px; position: absolute; text-align: left; left: 360px; top: 110px;">Tree Web</h1><h1 class="roda" style="font-size: 100px; position: absolute; text-align: left; left: 360px; top: 180px;">Framework</h1><h1 class="roda" style="font-size: 100px; position: absolute; bottom: 40px; left: 50px;">RubyConf 2014</h1></div>
+</div><div id="slides/slides" class="slide bg-jeremy" data-transition="none"><div class="content bg-jeremy" ref="slides/slides/2">
+
+<div class="notes">
+<p>My name is Jeremy Evans, and I am the lead developer of the Roda web framework. I&#x2019;m also the lead developer of the Sequel ruby database library.</p>
+</div>
+<h1 class="mono" style="position: absolute; top: 170px; right: 50px; font-size: 40px; text-align: right; text-decoration: underline; color: white;">@jeremyevans0</h1></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/3">
+
+<div class="notes">
+<p>I think I should start off explaining why I created Roda. After all, there are a lot of ruby web frameworks, so there should be a good reason for creating another one, especially if you want to recommend that other people use it. To explain why I created Roda, I need to go back about 10 years, to when I started using Ruby.</p>
+</div>
+<h1 class="roda" style="font-size: 160px; position: absolute; top: 250px; left: 140px;">Creation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/4">
+
+<div class="notes">
+<p>I first got into Ruby in late 2004, about 6 months after Rails was first released. I think 0.8.5 was the first Rails version I used. I found that Rails made web development much easier than the frameworkless PHP I was generally using for web development at the time.|I used Rails for pretty much all of my web development for a few years, but I gradually got disillusioned by the complexity of Rails.</p>
+</div>
+<div style="text-align: center; margin-top: 25px;"><img height="660" src="file/rails.png" width="632"/></div></div>
+</div><div id="slides/slides" class="slide bg-sinatra" data-transition="none"><div class="content bg-sinatra" ref="slides/slides/5">
+
+<div class="notes">
+<p>When I found out about Sinatra in late 2007, I was amazed with the simplicity. The fact that you just specified the routes you wanted to handle and they just yielded to a block to handle the action just made developing web applications so much simpler.|In April 2008, I starting using Sinatra for all of my new web applications. Over the years, I found that as the applications I was working on got more complex, I ended up with a lot of duplication in my Sinatra routes. Since my only real basis of comparison was Rails, and the Sinatra code was still a lot simpler than what I would have written in Rails, I didn&#x2019;t really consider this too much of an issue.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/6">
+
+<div class="notes">
+<p>In July of this year, I was looking at a comparison of a bunch of lesser known ruby web frameworks, and read about Cuba. Cuba has been around since 2010, but this was my first exposure to it. Anyway, as I read about Cuba, I saw how it addressed the duplication issues that I was seeing in my more complex Sinatra applications. From reviewing some benchmarks, I also saw that Cuba was much faster than Sinatra.|After trying to convert one of my simpler Sinatra applications to Cuba, I found there were quite a few things I didn&#x2019;t like about Cuba, that were easier in Sinatra. I came to the conclusion I should create a new web framework based on Cuba that borrowed many features from Sinatra, along with some ideas I had about extensibility and nonpollution, trying to get the best web framework for the types of web applications that I develop.</p>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" height="680px" style="margin-left: 280px;" viewbox="0 0 1235 1175" width="680px">
+  <path d="M0,449h1235l-999,726 382-1175 382,1175z" fill="#cc3333"/>
+</svg></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/7">
+
+<div class="notes">
+<p>And that&#x2019;s the story of Roda&#x2019;s creation. When I originally decided to fork Cuba, I hadn&#x2019;t decided on a name, so the temporary name I used was Sinuba, since it borrowed features from Sinatra and Cuba. As I was laying in bed one night thinking of a name, I thought about what made the framework special. In my mind, the main difference between Roda and Sinatra was that in Sinatra you are iterating over an array of possible routes, while in Roda, the routing process is broken down and generally takes the form of a tree.|So Roda is named after the Roda Trees, which appear in the Ys video game series and help the main characters accomplish their goals. This picture is from Ys Origins, and shows a Roda Tree prominently.</p>
+</div>
+<h1 class="roda" style="position: absolute; bottom: 140px; right: 160px; font-size: 120px;">Roda</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/8">
+
+<div class="notes">
+<p>As I said, the main feature that separates Roda from most other ruby web frameworks is that it is designed around the idea of a routing tree. Since most programmers are not familiar with the routing tree concept, I&#x2019;m first going to talk about what a routing tree is and how it works.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 120px;">Routing</h1><h1 style="font-size: 100px; position: absolute; top: 300px; left: 670px; ">Tree</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/9">
+
+<div class="notes">
+<p>Before I can talk about a routing tree, I need to talk about routing in general.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 120px;">Routing</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/10">
+
+<div class="notes">
+<p>In general, routing a request is the process of taking the request and finding the code that should handle that request. While routing can consider any aspect of the request, in most cases only two parts of the request will be used during routing.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 120px;">Routing</h1><h1 style="font-size: 100px; position: absolute; top: 320px; left: 520px; ">Request &#x2192; Code</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/11">
+
+<div class="notes">
+<p>These two parts are both contained in the HTTP request line, which is the first data transmitted from the client to the server during an HTTP request.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 120px;">Request</h1><h1 style="font-size: 100px; position: absolute; top: 300px; left: 640px; ">Line</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/12">
+
+<div class="notes">
+<p>An HTTP request line looks like this. Here, GET is the request method, and /albums/1/tracks is the request path. It is possible to use other parts of the request during routing, such as routing using information from the request headers or the request body, but in most cases only the request method and request path are used.</p>
+</div>
+<pre style="font-size: 70px;"><code>GET /albums/1/tracks HTTP/1.1</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/13">
+
+<div class="notes">
+<p>Sinatra and other similar ruby web frameworks look at the full path of the request when deciding how to route a request. The iterate over their array of possible routes, checking each route to see if it matches the current request. A routing tree handles things differently, routing by segments of the path.</p>
+</div>
+<pre style="font-size: 70px;"><code>GET <b>/albums/1/tracks</b> HTTP/1.1</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/14">
+
+<div class="notes">
+<p>When routing a request for /albums/1/tracks, a routing tree is going to look at the first segment, albums. If the /albums segment doesn&#x2019;t match, it skips the albums branch, so that other routes under /albums are not considered.</p>
+</div>
+<pre style="font-size: 70px;"><code>GET <b>/albums</b>/1/tracks HTTP/1.1</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/15">
+
+<div class="notes">
+<p>If the /albums segment matches, it looks inside the /albums branch of the tree for a route for /1/tracks, ignoring other branches.|Incidentally, this is more or less how a file system works. When you ask a file system to open a file, it doesn&#x2019;t compare every path in the file system and see if it matches the requested path. It looks at the first segment in the path, sees if it is a directory, and if so, it looks for the rest of the path inside that directory.</p>
+</div>
+<pre style="font-size: 70px;"><code>GET /albums<b>/1/tracks</b> HTTP/1.1</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/16">
+
+<div class="notes">
+<p>If the use of a routing tree was purely a performance issue, it wouldn&#x2019;t be all that interesting. What makes routing trees interesting is that at any point during the routing, you can operate on the current request.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; top: 100px; left: 170px;">Not</h1><h1 style="font-size: 100px; position: absolute; top: 100px; left: 460px;">Just</h1><h1 style="font-size: 200px; position: absolute; top: 140px; left: 20px;">Performance</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/17">
+
+<div class="notes">
+<p>If any of you have used the Ragel state machine compiler, this is similar to Ragel&#x2019;s ability to execute arbitrary code during parsing.</p>
+</div>
+<h1 style="font-size: 200px; text-align: left; margin-top: 420px;">Ragel</h1></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/18">
+
+<div class="notes">
+<p>So now that I&#x2019;ve briefly gone over what a routing tree is, let me go over how Roda implements the routing tree concept.</p>
+</div>
+<h1 class="roda" style="position: absolute; bottom: 140px; right: 160px; font-size: 120px;">Roda</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/19">
+
+<div class="notes">
+<p>Let&#x2019;s start with Hello World, since that&#x2019;s the simplest case. This Roda app will return Hello World! as the response body for every request. While this doesn&#x2019;t show off the routing tree aspects of Roda, it does show that Roda gets the response body from the value the block returns, similar to Sinatra.</p>
+</div>
+<pre class="sh_ruby"><code>Roda.route do |r|
+  "Hello World!"
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/20">
+
+<div class="notes">
+<p>In almost all Roda apps, you are going to want to actually use Roda&#x2019;s routing tree methods. The first routing tree method I&#x2019;m going to discuss is called r.on, which creates branches in the routing tree. Here, you call r.on with the string albums, which will match the current request if the request path starts with albums. Let me break down what is going on here.</p>
+</div>
+<pre class="sh_ruby"><code>Roda.route do |r|
+  r.on "albums" do
+    "Hello Albums"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/21">
+
+<div class="notes">
+<p>In the first line, we are calling the Roda.route method, which is the start of the routing tree. All requests that come to the web application are yielded to the block you pass to Roda.route. The block is yielded a Rack::Request instance with some additional methods. By convention, the block argument is named r.</p>
+</div>
+<pre class="sh_ruby"><code><b>Roda.route do |r|</b>
+  r.on "albums" do
+    "Hello Albums"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/22">
+
+<div class="notes">
+<p>The additional methods added to the Rack::Request instance are related to routing the request. As mentioned earlier, the request&#x2019;s on method is used to create branches in the routing tree. Any arguments you pass to this method are called matchers, and are used to match the current request.|In this case, a single matcher is given, which is the string albums. In Roda, string matchers match the first segment in the request path. So if the request path starts with /albums, this will match, and the request will be routed to the block passed to on. That block returns a Hello Albums string, which Roda will use as the response body.</p>
+</div>
+<pre class="sh_ruby"><code>Roda.route do |r|
+  <b>r.on "albums" do</b>
+    "Hello Albums"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/23">
+
+<div class="notes">
+<p>If the request path is /artists, this will not match, so r.on will return nil without yielding to the block, and execution will continue after the call. In this case, there is nothing after the call to r.on, so the return value of the Roda.route block will be nil. Since the block didn&#x2019;t return a string, Roda will use a 404 response status code with an empty response body.|This provides the principal of least surprise, where if you don&#x2019;t specifically handle a request, an empty 404 response is used.</p>
+</div>
+<pre class="sh_ruby"><code>Roda.route do |r|
+  r.on "albums" do
+    "Hello Albums"
+  end
+<b>end</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/24">
+
+<div class="notes">
+<p>While it works, this code has issues, because it returns the same response for all paths under /albums, including /albums/should/not/exist. In general, that isn&#x2019;t what you want. What you probably want to do is return a 404 response for any path that you don&#x2019;t specifically handle.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 200px;"><code>Roda.route do |r|
+  r.on "albums" do
+    <b># /albums</b>
+    <b># /albums/should/not/exist</b>
+    "Hello Albums"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/25">
+
+<div class="notes">
+<p>So if you only want to handle /albums and not any paths below /albums, you can use the r.is method. r.is is similar to r.on, but it does a terminal match, so it only matches if the request path is empty after processing the matchers. So this code will not match the /albums/should/not/exist path.|The reason for the method naming here is that r.on matches ON the route&#x2019;s prefix, while r.is matches only if the match IS complete.</p>
+</div>
+<pre class="sh_ruby"><code>Roda.route do |r|
+  <b>r.is "albums" do</b>
+    <b># /albums</b>
+    "Hello Albums"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/26">
+
+<div class="notes">
+<p>So routing trees are built in Roda using a combination of the r.on and r.is methods. r.on does prefix matching on the request path, and r.is does full matching on the request path.|If you were routing purely based on the request path, then you could say that r.on creates branches in the routing tree, and r.is creates leaf nodes.|Here, r.on albums creates a branch, handling all paths under /albums.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 200px;"><code>Roda.route do |r|
+  <b>r.on "albums" do</b>
+    r.is "list" do
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/27">
+
+<div class="notes">
+<p>Here you are calling r.is list, which will match only if the current request path is /list. It may seem odd that this works, but the reason it does is that the request path is being modified as the request is being routed.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 200px;"><code>Roda.route do |r|
+  r.on "albums" do
+    <b>r.is "list" do</b>
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/28">
+
+<div class="notes">
+<p>When a request for /albums/list comes in, the routing tree uses the initial request path.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  <b># path: "/albums/list"</b>
+  r.on "albums" do
+    r.is "list" do
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/29">
+
+<div class="notes">
+<p>When the r.on albums method matches, it consumes /albums from the front of the request path.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  # path: "/albums/list"
+  <b>r.on "albums" do</b>
+    r.is "list" do
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/30">
+
+<div class="notes">
+<p>So inside of the r.on block, the request path is /list.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  # path: "/albums/list"
+  r.on "albums" do
+    <b># path: "/list"</b> 
+    r.is "list" do
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/31">
+
+<div class="notes">
+<p>r.is matches only if all of its matchers match and the request path is completely consumed by the matchers. Since the request path is /list and that matches the string given to r.is, this request matches and Hello Albums will be returned.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  # path: "/albums/list"
+  r.on "albums" do
+    # path: "/list"
+    <b>r.is "list" do</b>
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/32">
+
+<div class="notes">
+<p>If you get a request for /albums/list/all, the r.on call still matches, but the path inside the r.on block is /list/all. Since r.is list does not completely consume the request path, this request will not be matched, and Roda will return an empty 404 response.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  <b># path: "/albums/list/all"</b>
+  r.on "albums" do
+    <b># path: "/list/all"</b>
+    r.is "list" do
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/33">
+
+<div class="notes">
+<p>So far I&#x2019;ve just been focusing on routing using the request path. As I mentioned earlier, routing usually takes into account the request method as well.|Consider this routing tree, which will handle requests for /albums/new.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 20px;"><code>Roda.route do |r|
+  <b>r.on "albums" do</b>
+    <b>r.is "new" do</b>
+      r.get do
+        "Hello Albums"
+      end
+      r.post do
+        "Album Added"
+      end
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/34">
+
+<div class="notes">
+<p>In order to handle the GET and POST request methods, Roda has r.get and r.post routing methods. If you call these methods with no arguments, they match against the request method, so r.get matches the GET request method, and r.post matches the POST request method.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 20px;"><code>Roda.route do |r|
+  r.on "albums" do
+    r.is "new" do
+      <b>r.get</b> do
+        "Hello Albums"
+      end
+      <b>r.post</b> do
+        "Album Added"
+      end
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/35">
+
+<div class="notes">
+<p>Here, a GET request for /albums/new will return Hello Albums.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 20px;"><code>Roda.route do |r|
+  <b># GET /albums/new</b>
+  r.on "albums" do
+    r.is "new" do
+      r.get do
+        <b>"Hello Albums"</b>
+      end
+      r.post do
+        "Album Added"
+      end
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/36">
+
+<div class="notes">
+<p>And a POST request for /albums/new will return Album Added.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 20px;"><code>Roda.route do |r|
+  <b># POST /albums/new</b>
+  r.on "albums" do
+    r.is "new" do
+      r.get do
+        "Hello Albums"
+      end
+      r.post do
+        <b>"Album Added"</b>
+      end
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/37">
+
+<div class="notes">
+<p>So the way a routing tree is usually built in Roda is by combining the r.on, r.is, r.get, and r.post methods. You use the r.on method to branch based on the request path prefix. You use the r.is method for doing a complete match on the path, and you use the r.get or r.post methods to handle different request methods for the same request path.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 20px;"><code>Roda.route do |r|
+  # POST /albums/new
+  <b>r.on "albums"</b> do
+    <b>r.is "new"</b> do
+      <b>r.get</b> do
+        "Hello Albums"
+      end
+      <b>r.post</b> do
+        "Album Added"
+      end
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/38">
+
+<div class="notes">
+<p>As I mentioned, if you don&#x2019;t provide any matchers to the r.get or r.post methods, they just do a simple check against the request method. If you provide any matchers to the methods, they also do a terminal match on the request path, allowing for an API similar to Sinatra.|So a GET request for /albums will be matched by a r.get albums,</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  <b># GET /albums</b>
+  <b>r.get "albums"</b> do
+    "Hello Albums"
+  end
+  r.post "artists" do
+    "Album Added"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/39">
+
+<div class="notes">
+<p>and a POST request for /artists will be matched by a r.post artists,</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  <b># POST /artists</b>
+  r.get "albums" do
+    "Hello Albums"
+  end
+  <b>r.post "artists"</b> do
+    "Album Added"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/40">
+
+<div class="notes">
+<p>but a POST request for /artists/1 will not be matched by either. It won&#x2019;t be matched by r.get because it isn&#x2019;t a GET request, and it won&#x2019;t be matched by r.post because the request path will not be completely consumed by the matchers.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  <b># POST /artists/1</b>
+  r.get "albums" do
+    "Hello Albums"
+  end
+  r.post "artists" do
+    "Album Added"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/41">
+
+<div class="notes">
+<p>So when you are building a routing tree, if you only want to handle GET requests for /albums/list, and not other request methods, instead of calling r.is list and calling r.get inside of that,</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 20px;"><code>Roda.route do |r|
+  # GET /albums/list
+  r.on "albums" do
+    <b>r.is "list"</b> do
+      <b>r.get</b> do
+        "Hello Albums"
+      end
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/42">
+
+<div class="notes">
+<p>You just call r.get list, which is a more succinct way of expressing the same routing tree.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 20px;"><code>Roda.route do |r|
+  # GET /albums/list
+  r.on "albums" do
+    <b>r.get "list"</b> do
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/43">
+
+<div class="notes">
+<p>Now that we&#x2019;ve covered the the four basic routing methods, let&#x2019;s talk about the arguments that you give to these methods, which are called matchers.</p>
+</div>
+<h1 style="font-size: 200px; text-align: right; margin-top: 420px;">Matchers</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/44">
+
+<div class="notes">
+<p>We&#x2019;ve already covered one type of matcher, the string matcher. This matches the verbatim string in the first segment of the request path, so it will match /albums, but not /artists.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  <b># /albums</b>
+  r.get <b>"albums"</b> do
+    "Hello Albums"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/45">
+
+<div class="notes">
+<p>Strings can contain slashes if you want to match multiple segments in the request path. So this matches /albums/list, but not /albums/1.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  <b># /albums/list</b>
+  r.get <b>"albums/list"</b> do
+    "Hello Albums"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/46">
+
+<div class="notes">
+<p>You can use embedded colons in your strings, which will match arbitrary segments in the request path. So this matches both /albums/1 and /albums/2.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  <b># /albums/1, /albums/2</b>
+  r.get <b>"albums/:id"</b> do |album_id|
+    "Hello Album #{album_id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/47">
+
+<div class="notes">
+<p>Note that when you use an embedded colon in a string, the text that is matched by that colon is yielded to the block. In Roda, this is the primary way that data from the request path is extracted for use inside the route handling code.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  # /albums/1, /albums/2
+  r.get "albums/<b>:id</b>" do <b>|album_id|</b>
+    "Hello Album #{album_id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/48">
+
+<div class="notes">
+<p>Another way of specifying the previous matcher is to use a separate symbol matcher, like this. Just as with the embedded colon in the string, it yields the matched segment to the block.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  # /albums/1, /albums/2
+  r.get "albums", <b>:id</b> do <b>|album_id|</b>
+    "Hello Albums #{album_id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/49">
+
+<div class="notes">
+<p>Yet another way of doing it is using a regular expression. With a regular expression matcher, any regular expression captures are yielded to the block.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route do |r|
+  # /albums/1, /albums/2
+  r.get <b>/albums\/(\d+)/</b> do <b>|album_id|</b>
+    "Hello Album #{album_id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/50">
+
+<div class="notes">
+<p>There are other types of matchers that allow for more advanced matching, but in the interest of time I won&#x2019;t be going over them.</p>
+</div>
+<h1 style="font-size: 200px; text-align: right; margin-top: 420px;">Matchers</h1><h1 style="font-size: 130px; position: absolute; left: 900px; top: 370px; ">Other</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/51">
+
+<div class="notes">
+<p>I mentioned earlier that one of the main advantages of routing trees is that they have the ability to execute arbitrary code during the routing process. This may not sound important, but it is the main reason that Roda allows for simpler and DRYer code compared to most other ruby web frameworks.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; top: 80px; left: 220px; ">Code Execution</h1><h1 style="font-size: 100px; position: absolute; top: 160px; left: 370px; ">During</h1><h1 style="font-size: 200px; text-align: center; margin-top: 220px;">Routing</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/52">
+
+<div class="notes">
+<p>If you want to make sure someone is logged in before accessing these routes, you can just put the code that checks for a login as the first line in the Roda.route block.|This provides a similar feature to the capabilities of a global before filter in Rails or Sinatra, so it doesn&#x2019;t sound like anything special.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 10px; font-size: 36px;"><code>Roda.route do |r|
+  <b>require_login!</b>
+  r.on "albums" do
+    # ...
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/53">
+
+<div class="notes">
+<p>Because you can execute code at any point in the routing tree, you can put this check after the routes for logging in. I think this is more elegant than a global before filter that does a login check, which must check that the current path isn&#x2019;t the login action, or else nobody would be able to login.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 10px; font-size: 36px;"><code>Roda.route do |r|
+  r.post 'login' do
+    session[:logged_in] = true
+  end
+  <b>require_login!</b>
+  r.on "albums" do
+    # ...
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/54">
+
+<div class="notes">
+<p>This principle of executing code during routing applies at all points of the routing tree. If only certain logged in users should have access to view or update albums, you can have that check near the top of the r.on albums block.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 10px; font-size: 36px;"><code>Roda.route do |r|
+  require_login!
+  r.on "albums" do
+    <b>check_albums_access!</b>
+    # ...
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/55">
+
+<div class="notes">
+<p>The most common place this is useful is when dealing with separate request methods for the same request path. Assuming that a GET request for /albums/1 will display a form for editing the album with id 1, and a POST request for /albums/1 will process the form&#x2019;s input, the routes can share code for retrieving the album, as shown here.|Now, this isn&#x2019;t revolutionary, and you can accomplish pretty much the same thing using before filters in Rails and Sinatra. In both Rails and Sinatra, the before filters are going to be separated from the code being executed, making it harder to reason about.|Also, if you use this pattern a lot, then you need to add a separate before filter for every set of get and post routes you have, which is cumbersome, and on Sinatra negatively affects performance.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 10px; font-size: 36px;"><code>Roda.route do |r|
+  require_login!
+  r.on "albums" do
+    check_albums_access!
+    r.is :id do |album_id|
+      <b>@album = Album[album_id]</b>
+      r.get do
+        view('album')
+      end
+      r.post do
+        @album.update(params[:album])
+      end
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/56">
+
+<div class="notes">
+<p>Speaking of performance, Roda is one of the best performing Ruby web frameworks. With Ruby&#x2019;s reputation for performance, or lack thereof, you may think that&#x2019;s similar to saying Roda is one of the fastest turtles, but it is a much faster turtle than Rails or Sinatra.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 420px;">Performance</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/57">
+
+<div class="notes">
+<p>For a simple hello world app with a single route, Roda is about 2 and a half times faster than Sinatra. The reason for this is that Roda has much lower overhead than Sinatra.</p>
+</div>
+<h1 style="font-size: 400px; text-align: center; margin-top: 20px;">2.5x</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/58">
+
+<div class="notes">
+<p>Now, a hello world benchmark doesn&#x2019;t really tell you how well Roda will perform in real world applications.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; left: 220px; top: 190px;">Real</h1><h1 style="font-size: 200px; text-align: left; margin-top: 220px;">World</h1><h1 style="font-size: 100px; position: absolute; left: 170px; top: 380px;">Apps</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/59">
+
+<div class="notes">
+<p>My production applications were always faster using Roda than Rails or Sinatra. How much faster depends on the specific action, with simpler actions performing significantly faster, and more complex actions performing about the same, as most of the time for those was spent inside the action, not during routing.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 420px;">Performance</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/60">
+
+<div class="notes">
+<p>One pleasent surprise was my integration test suites sped up significantly. The exact same rack/test-based integration tests run 50% faster with Roda than Sinatra, and twice as fast after converting from Rails to Roda.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; left: 80px; top: 220px;">Much</h1><h1 style="font-size: 200px; text-align: center; margin-top: 220px;">Faster</h1><h1 style="font-size: 100px; position: absolute; left: 920px; top: 330px;">Tests</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/61">
+
+<div class="notes">
+<p>In terms of memory usage, Roda uses about 10MB memory less than Sinatra in terms of just requiring the library, but in my real world apps I&#x2019;ve only noticed about a 1MB or 2MB decrease in the amount of memory used.|When compared to Rails, it&#x2019;s a different story. On the largest app I converted from Rails to Roda, I saw memory decrease from 150MB to 80MB per unicorn worker process, and on the second largest, I saw memory decrease from 100MB to 60MB per unicorn worker process.</p>
+</div>
+<h1 style="font-size: 200px; text-align: right; margin-top: 120px;">Memory</h1><h1 style="font-size: 100px; position: absolute; left: 890px; top: 290px;">Usage</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/62">
+
+<div class="notes">
+<p>My largest app is probably about the size of the average Rails app, with about 200 routes, so this doesn&#x2019;t really tell you if Roda&#x2019;s approach scales to large applications. Since I thought this would be useful information to know if I was going to advocate that other people use Roda, I decided to see how well Roda would scale to applications with a large number of routes.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 20px;">Webscale?</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/63">
+
+<div class="notes">
+<p>You may be familiar with the c10k problem, which was stated by Dan Kegel in 2001, and said that it was time that web servers should be able to serve 10,000 clients simultaneously.</p>
+</div>
+<h1 style="font-size: 200px; text-align: left; margin-left: 150px; margin-top: 220px;">c10k</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/64">
+
+<div class="notes">
+<p>I&#x2019;m going to state the r10k problem, which is that web frameworks should be able to handle 10,000 routes efficiently. So I wrote a code generator that generates web applications with 10, 100, 1000, and 10,000 routes for Roda, Sinatra, and Rails, and I benchmarked them.</p>
+</div>
+<h1 style="font-size: 200px; text-align: right; margin-right: 150px; margin-top: 220px;">r10k</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/65">
+
+<div class="notes">
+<p>For 10 routes, r10k generates routes from /a to /j, using a single segment per request path.</p>
+</div>
+<table class="code" style="font-size: 32px; margin-top: 50px;">
+<caption>10 routes</caption>
+<tr><td>/a</td></tr>
+<tr><td>/b</td></tr>
+<tr><td>/c</td></tr>
+<tr><td>/d</td></tr>
+<tr><td>/e</td></tr>
+<tr><td>/f</td></tr>
+<tr><td>/g</td></tr>
+<tr><td>/h</td></tr>
+<tr><td>/i</td></tr>
+<tr><td>/j</td></tr>
+</table></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/66">
+
+<div class="notes">
+<p>For 100 routes, r10k generates routes /a/a to /j/j, using 2 segments per request path.|This approach extends to 1000 routes, which uses 3 segments per request path, and 10,000 routes, which uses 4 segments per request path.|Let&#x2019;s first look at the results of a comparison of Roda, Rails, and Sinatra at 10, 100, and 1000 routes.</p>
+</div>
+<table class="code" style="font-size: 32px; margin-top: 50px;">
+<caption>100 routes</caption>
+<tr>
+<td>/a/a</td>
+<td>/a/b</td>
+<td>/a/c</td>
+<td>/a/d</td>
+<td>/a/e</td>
+<td>/a/f</td>
+<td>/a/g</td>
+<td>/a/h</td>
+<td>/a/i</td>
+<td>/a/j</td>
+</tr>
+<tr>
+<td>/b/a</td>
+<td>/b/b</td>
+<td>/b/c</td>
+<td>/b/d</td>
+<td>/b/e</td>
+<td>/b/f</td>
+<td>/b/g</td>
+<td>/b/h</td>
+<td>/b/i</td>
+<td>/b/j</td>
+</tr>
+<tr>
+<td>/c/a</td>
+<td>/c/b</td>
+<td>/c/c</td>
+<td>/c/d</td>
+<td>/c/e</td>
+<td>/c/f</td>
+<td>/c/g</td>
+<td>/c/h</td>
+<td>/c/i</td>
+<td>/c/j</td>
+</tr>
+<tr>
+<td>/d/a</td>
+<td>/d/b</td>
+<td>/d/c</td>
+<td>/d/d</td>
+<td>/d/e</td>
+<td>/d/f</td>
+<td>/d/g</td>
+<td>/d/h</td>
+<td>/d/i</td>
+<td>/d/j</td>
+</tr>
+<tr>
+<td>/e/a</td>
+<td>/e/b</td>
+<td>/e/c</td>
+<td>/e/d</td>
+<td>/e/e</td>
+<td>/e/f</td>
+<td>/e/g</td>
+<td>/e/h</td>
+<td>/e/i</td>
+<td>/e/j</td>
+</tr>
+<tr>
+<td>/f/a</td>
+<td>/f/b</td>
+<td>/f/c</td>
+<td>/f/d</td>
+<td>/f/e</td>
+<td>/f/f</td>
+<td>/f/g</td>
+<td>/f/h</td>
+<td>/f/i</td>
+<td>/f/j</td>
+</tr>
+<tr>
+<td>/g/a</td>
+<td>/g/b</td>
+<td>/g/c</td>
+<td>/g/d</td>
+<td>/g/e</td>
+<td>/g/f</td>
+<td>/g/g</td>
+<td>/g/h</td>
+<td>/g/i</td>
+<td>/g/j</td>
+</tr>
+<tr>
+<td>/h/a</td>
+<td>/h/b</td>
+<td>/h/c</td>
+<td>/h/d</td>
+<td>/h/e</td>
+<td>/h/f</td>
+<td>/h/g</td>
+<td>/h/h</td>
+<td>/h/i</td>
+<td>/h/j</td>
+</tr>
+<tr>
+<td>/i/a</td>
+<td>/i/b</td>
+<td>/i/c</td>
+<td>/i/d</td>
+<td>/i/e</td>
+<td>/i/f</td>
+<td>/i/g</td>
+<td>/i/h</td>
+<td>/i/i</td>
+<td>/i/j</td>
+</tr>
+<tr>
+<td>/j/a</td>
+<td>/j/b</td>
+<td>/j/c</td>
+<td>/j/d</td>
+<td>/j/e</td>
+<td>/j/f</td>
+<td>/j/g</td>
+<td>/j/h</td>
+<td>/j/i</td>
+<td>/j/j</td>
+</tr>
+</table></div>
+</div><div id="slides/slides" class="slide bg-runtime_3" data-transition="none"><div class="content bg-runtime_3" ref="slides/slides/67">
+
+<div class="notes">
+<p>Here are the runtime results for 20,000 requests. Note that these are using the Rack API directly, so this does not include the web server overhead.|As you can see from the Roda and Rails lines, there isn&#x2019;t a significant performance decrease in runtime performance for either as the number of routes increases. This is because Roda uses a routing tree and Rails uses finite automata for routing requests.|Since Sinatra just iterates over an array of routes, performance decreases linearly as the number of routes increases. At 1000 routes Sinatra is almost as slow as Rails. Regardless of the number of routes, Roda is much faster than either Rails or Sinatra. You could probably tell where this is going, so let&#x2019;s look at the results with 10,000 routes.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide bg-runtime" data-transition="none"><div class="content bg-runtime" ref="slides/slides/68">
+
+<div class="notes">
+<p>By the time you get to 10,000 routes, Sinatra&#x2019;s performance is much worse than Rails.|Because of the scale of the graph, you can&#x2019;t really tell how long Roda is taking at 10,000 routes, but I can tell you it&#x2019;s less than 5 seconds even for 10,000 routes. Note that these numbers do not include startup time.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide bg-runtime_with_startup" data-transition="none"><div class="content bg-runtime_with_startup" ref="slides/slides/69">
+
+<div class="notes">
+<p>Adding startup time doesn&#x2019;t change the picture in general, except when using 10,000 routes in Rails, where it dramatically increases the time, with Rails taking about as long to startup as it takes to serve 20,000 requests. When trying to use 10,000 routes in Rails, almost all of the startup time spent inside routes.draw. If I had to guess, this is due to building the finite automata for the router.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide bg-memory_3" data-transition="none"><div class="content bg-memory_3" ref="slides/slides/70">
+
+<div class="notes">
+<p>Part of performance is also the amount of memory used. As mentioned earlier and as you can see here, Roda uses less memory than Sinatra, and significantly less memory than Rails, regardless of the number of routes.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide bg-memory" data-transition="none"><div class="content bg-memory" ref="slides/slides/71">
+
+<div class="notes">
+<p>This trend gets even more dramatic when you go from 1000 routes to 10,000 routes. With 10,000 routes, Roda uses less than half the memory of Sinatra, and about a fifth of the memory of Rails. Roda uses less memory with 10,000 routes than Rails uses with 10 routes.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/72">
+
+<div class="notes">
+<p>Because benchmarks are worthless unless the source is available for reproduction and criticism, you can find the source code for these benchmarks in my r10k GitHub repository. I encourage anyone to double check my work and make sure I&#x2019;m not doing anything stupid or unfair towards Sinatra or Rails.</p>
+</div>
+<pre style="font-size: 60px;"><code>http://github.com/jeremyevans/r10k</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/73">
+
+<div class="notes">
+<p>So I&#x2019;ve gone over what I think are some design and performance advantages to using Roda. However, the benefits Roda offers come at a cost.</p>
+</div>
+<h1 style="text-align: left; margin-top: 120px; font-size: 160px;">Tradeoff</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/74">
+
+<div class="notes">
+<p>And that cost is the loss of route introspection. Because all routing in Roda is done at the instance level, you can&#x2019;t introspect your routes like you can in Sinatra or Rails. In most cases, this doesn&#x2019;t matter, but there are some applications that rely on introspection of the routes, and those would need to be handled differently with Roda.</p>
+</div>
+<h1 style="text-align: left; margin-top: 120px; font-size: 160px;">Tradeoff:</h1><h1 style="position: absolute; left: 670px; top: 300px; font-size: 100px;">No</h1><h1 style="position: absolute; left: 270px; top: 350px; font-size: 160px;">Introspection</h1></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/75">
+
+<div class="notes">
+<p>Now that I&#x2019;ve talked about the advantages and disadvantages of using Roda, I&#x2019;m going to talk a little about the the history of routing tree web frameworks in ruby.</p>
+</div>
+<h1 class="roda" style="text-align: center; margin-top: 520px; font-size: 160px;">History</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/76">
+
+<div class="notes">
+<p>The first routing tree web framework for ruby was Rum, which was written in Christian Neukirchen, the author of Rack, in January 2009. Rum was never released as a gem, and was basically just a proof of concept, showing how you could use a routing tree to route requests.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 100px;">Rum</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/77">
+
+<div class="notes">
+<p>Cuba was developed by Michel Martens starting in April 2010, and started off as a simple wrapper around Rum with support for haml templates. It&#x2019;s now expanded to include support for any template library supported by tilt. Cuba was the first routing tree web framework for ruby that was released as a gem, and has enjoyed some modest success, with about 40,000 downloads.</p>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" height="680px" style="margin-left: 280px;" viewbox="0 0 1235 1175" width="680px">
+  <path d="M0,449h1235l-999,726 382-1175 382,1175z" fill="#cc3333"/>
+</svg></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/78">
+
+<div class="notes">
+<p>As I mentioned at the start of the presention, Roda was forked from Cuba, because while I liked the idea of using a routing tree, there were various aspects of Cuba&#x2019;s design and implementation that I didn&#x2019;t like. I think that forking someone else&#x2019;s software should really be a last resort, as it&#x2019;s better to collaborate and work together to achieve a common goal.|Some of these things I didn&#x2019;t like about Cuba were fundemental to Cuba&#x2019;s design or philosophy, so it wouldn&#x2019;t really have been possible to use Cuba and still accomplish the goals I was looking to accomplish with Roda.|In the case where the goals of the the fork are different than the goals of the original software, and you can&#x2019;t accomplish the goals of the fork without compromising the goals of the original software, I think forking is appropriate.</p>
+</div>
+<h1 class="roda" style="text-align: right; margin-right: 950px; font-size: 100px; margin-top: 80px;">To</h1><h1 class="roda" style="text-align: right; margin-right: 950px; font-size: 100px; margin-top: -40px;">or Not to</h1><h1 class="roda" style="position: absolute; left: 350px; top: 65px; font-size: 200px;">Fork</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/79">
+
+<div class="notes">
+<p>When I first started using Cuba, in version 3.1.1, status code handling violated the principle of least surprise.</p>
+</div>
+<h1 style="margin-top: 100px; font-size: 200px;">Status</h1><h1 style="position: absolute; left: 170px; top: 270px; font-size: 160px;">Codes</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/80">
+
+<div class="notes">
+<p>If you had this routing tree in Cuba, a request for /albums with no id would return an empty 200 response, instead of an empty 404 response, because the status code was set to 200 as soon as the on albums method matched.|This was a well known issue with Cuba, with a whole section in the README about how to work around the problem, and there was a pull request to fix the issue that had been open in Cuba&#x2019;s issue tracker for over 6 months. This was eventually fixed in Cuba about a week after Roda&#x2019;s initial release, using basically the same approach that Roda uses.</p>
+</div>
+<pre class="sh_ruby"><code>on "albums" do
+  on :id do
+    res.write "Hello Album #{album_id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/81">
+
+<div class="notes">
+<p>The second signficant issue I had with Cuba was that it didn&#x2019;t have built-in support for terminal routes.</p>
+</div>
+<h1 style="margin-top: 100px; font-size: 200px; text-align: right;">Terminal</h1><h1 style="position: absolute; left: 670px; top: 260px; font-size: 160px;">Routes</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/82">
+
+<div class="notes">
+<p>Cuba has no built in equivalent to Roda&#x2019;s r.is method, which makes sure there is a terminal match of the request path. When you use Cuba&#x2019;s on method, it only makes sure that the route has a prefix that matches. So this code will match /albums, but also /albums/1 and /albums/should/not/exist.</p>
+</div>
+<pre class="sh_ruby"><code>on 'albums' do
+  res.write '1'
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/83">
+
+<div class="notes">
+<p>Cuba&#x2019;s recommendation if you want a terminal match is to use \z at the end of a regular expression. Let&#x2019;s just say I didn&#x2019;t think this was very friendly to the user.</p>
+</div>
+<pre class="sh_ruby"><code>on <b>/albums\z/</b> do
+  res.write '1'
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/84">
+
+<div class="notes">
+<p>Another thing I didn&#x2019;t like about Cuba was that it required explicit writing of response bodies, instead of using the route block return value as the response body, which is how Sinatra operates.</p>
+</div>
+<h1 style="margin-top: 280px; font-size: 200px;">Response</h1><h1 style="position: absolute; left: 420px; top: 460px; font-size: 100px;">Bodies</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/85">
+
+<div class="notes">
+<p>Everytime you want to write a response body in Cuba, which is most requests, you have to call the res.write method explicitly. I just think the Sinatra approach is simpler, and don&#x2019;t think there is a net benefit by making the response body writing explicit. This is one of the philosphical differences between Roda and Cuba.|I was originally thinking I could just work around this issue using a Cuba plugin that made response body writing implicit.</p>
+</div>
+<pre class="sh_ruby"><code>on 'albums' do
+  <b>res.write</b> 'Hello albums'
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/86">
+
+<div class="notes">
+<p>But I found that Cuba&#x2019;s plugin system was unable to override methods defined by Cuba.</p>
+</div>
+<h1 style="margin-top: 280px; font-size: 200px; text-align: right; margin-right: 200px;">Plugin</h1><h1 style="position: absolute; left: 880px; top: 450px; font-size: 100px;">System</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/87">
+
+<div class="notes">
+<p>I wanted to write a plugin that just overrode on and called super, and if the on block returned a String, write it to the response body before returning from the block.|Unfortunately, in Cuba this does not work, at least not if you add the plugin directly to the Cuba class, and after speaking with the author, I found that this was by design.|I was used to Sequel&#x2019;s plugin system, where you can override any method and call super to get the default behavior. It was at this point that I decided to fork, and make sure the fork used a more extensible plugin system, based on Sequel&#x2019;s plugin system.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 180px"><code>def on
+  super do |*a|
+    ret = yield(*a)
+    res.write ret if ret.is_a?(String)
+    ret
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/88">
+
+<div class="notes">
+<p>After I decided to fork, I wanted to fix an issue that I had with every ruby web framework I&#x2019;ve used, which is that instance variables, methods, and constants pollute the namespace, which can cause problems for the user of the framework.|One of the things you can see in this picture is that Roda trees naturally resist the pollution that is corrupting the rest of the land.</p>
+</div>
+<h1 class="roda" style="margin-left: 490px; margin-top: 580px; font-size: 160px;">Pollution</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/89">
+
+<div class="notes">
+<p>Can anyone see the problem with this Sinatra code?</p>
+</div>
+<pre class="sh_ruby"><code>get '/response/:id' do
+  @response = Response[params[:id]]
+  erb(:response)
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/90">
+
+<div class="notes">
+<p>The problem is that the @response instance variable is already used by Sinatra internally, so this clobbers the response variable, and completely breaks Sinatra.|It just so happens that one of the apps I work on deals with a domain object called a response, so using Response as the class name and @response as the instance variable name was the most natural way to express the code.</p>
+</div>
+<pre class="sh_ruby"><code>get '/response/:id' do
+  <b>@response</b> = Response[params[:id]]
+  erb(:response)
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/91">
+
+<div class="notes">
+<p>Because I wanted it to work easily in Sinatra, I had to rename the instance variable to @agency_response. I didn&#x2019;t like this, because a name like @agency_response indicates to me that there are other types of responses that the system deals with, and that&#x2019;s not true in this case.</p>
+</div>
+<pre class="sh_ruby"><code>get '/response/:id' do
+  <b>@agency_response</b> = Response[params[:id]]
+  erb(:response)
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/92">
+
+<div class="notes">
+<p>In Roda, all instance variables used internally in the scope of the Roda.route block are prefixed with an underscore, so they won&#x2019;t conflict with instance variables the user wants to use.</p>
+</div>
+<pre class="sh_ruby"><code style="font-size: 100px;">@_variable</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/93">
+
+<div class="notes">
+<p>Namespace pollution is not just an issue with instance variables, but with constants as well.</p>
+</div>
+<h1 style="font-size: 200px; margin-top: 100px; text-align: center;">Constants</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/94">
+
+<div class="notes">
+<p>Can anyone see the problem with this Cuba code?</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 100px;"><code>require 'response'
+class App &lt; Cuba
+  define do
+    on do
+      response = Response[1]
+      res.write response.title
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/95">
+
+<div class="notes">
+<p>The problem is that even though you are requiring a top level Response class in the first line, the reference to the Response class inside the Cuba app references Cuba::Response, which is a subclass of Rack::Response, instead of the top level Response class that you required.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 100px;"><code><b>require 'response'</b>
+class App &lt; Cuba
+  define do
+    on do
+      response = <b>Response</b>[1]
+      res.write response.title
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/96">
+
+<div class="notes">
+<p>To avoid pollution of the constant namespace, Roda prefixes all constants inside the Roda namespace with Roda, so the internal classes are named Roda::RodaRequest, Roda::RodaResponse, and so on. This makes it unlikely that Roda&#x2019;s constants will conflict with your application&#x2019;s constants.</p>
+</div>
+<pre class="sh_ruby"><code style="font-size: 80px;">Roda::RodaResponse</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/97">
+
+<div class="notes">
+<p>Finally, Roda avoids polluting the method namespace. With Cuba, all of the routing methods such as on, get, and root, are instance methods in the scope of the route block, so you can&#x2019;t define view methods that conflict with them.|I don&#x2019;t want to imply that this is a problem specific to Cuba, since Cuba is actually much better than most other ruby web frameworks in this regard, with only 23 additional methods over what is defined in Object. With Sinatra, there are 68 additional methods. In Roda there are only 6 additional methods.</p>
+</div>
+<h1 style="font-size: 200px; margin-top: 400px; text-align: center;">Methods</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/98">
+
+<div class="notes">
+<p>The reason that Roda is able to have only 6 additional methods is by moving the routing methods to the Request class, which is why the Roda.route method yields the request instance to the block, and routing methods are methods called on the request instance.|Incidentally, if you look at Cuba&#x2019;s routing methods, they all have feature envy, since pretty much all they do is call methods on the request instance, so even if this wasn&#x2019;t being done to avoid pollution, it&#x2019;s still a good idea from an object oriented design perspective.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 200px;"><code>Roda.route do <b>|r|</b>
+  <b>r</b>.on "albums" do
+    <b>r</b>.is do
+      "Hello Albums"
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/99">
+
+<div class="notes">
+<p>This brings us to the final section of this talk, which is going to talk about Roda&#x2019;s plugins. Roda&#x2019;s philosophy is to have a very small core, with only the essentials. All nonessential features are added via plugins. This way you get to choose to load only the features that you need.</p>
+</div>
+<h1 class="roda" style="margin-left: 50px; margin-top: 520px; font-size: 160px;">Plugins</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/100">
+
+<div class="notes">
+<p>Loading plugins in Roda is similar to loading plugins in Sequel and Cuba, just calling the Roda.plugin method.|Like Sequel but unlike Cuba, Roda ships with a set of official plugins, but external plugins can be loaded via the same method, so whether the plugin ships with Roda or is external is transparent to the user. In this case, this loads the render plugin, which supports rendering templates using the tilt library.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :render</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/101">
+
+<div class="notes">
+<p>Usage is similar to Sinatra, except instead of having separate methods per template engine, it just has a single view method. In my experience with Sinatra, I rarely use more than one template engine in the same application, so with Roda&#x2019;s render plugin, you set the default template engine when loading the plugin. If you want to use a non-default template engine, you can specify an option to override the default when calling view.|Similar to Sinatra, the view method just returns a string, so if you call view as the last expression in your route block, the result of the view is used as the response body.</p>
+</div>
+<pre class="sh_ruby"><code>r.is "albums" do
+  <b>view('albums')</b>
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/102">
+
+<div class="notes">
+<p>Of special note in the render plugin is the :escape option, which switches the default template engine to an Erubis subclass that automatically escapes output, preventing common cross site scripting vulnerabilties.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :render, <b>escape: true</b></code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/103">
+
+<div class="notes">
+<p>When using the :escape option, the usual percent equal tag will escape the output.</p>
+</div>
+<pre><code>&lt;%= '&lt;a&gt;' %&gt;
+
+&amp;lt;a&amp;gt;
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/104">
+
+<div class="notes">
+<p>To get unescaped output, you use the percent double equal tag. The use of percent equal for escaping and percent double equal for not escaping provides most of the security benefits of the default escaping that Rails uses, without the complexity of ActiveSupport::SafeBuffer.</p>
+</div>
+<pre><code>&lt;%== '&lt;a&gt;' %&gt;
+
+&lt;a&gt;
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/105">
+
+<div class="notes">
+<p>Sinatra users may think there is nothing special about this, since Sinatra supports the :escape_html erb option, which will do roughly the same thing. This is what Sinatra recommends in its FAQ when asked about how to automatically escape HTML.</p>
+</div>
+<pre class="sh_ruby"><code>set :erb, escape_html: true</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/106">
+
+<div class="notes">
+<p>What they don&#x2019;t tell you is that this is at least partially broken, in that it doesn&#x2019;t support postfix conditionals inside percent equal tags. This is odd, as postfix conditionals inside percent equal tags are supported when not using the :escape_html option.</p>
+</div>
+<pre><code>&lt;%= '&lt;a&gt;' if true %&gt;</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/107">
+
+<div class="notes">
+<p>The reason that percent equal doesn&#x2019;t work with postfix conditionals is because it generates this ruby code, just using the percent equal tag content as the argument to escape_xml.|Unfortunately this is not valid ruby syntax, because you can&#x2019;t use a postfix conditional expression directly as a method argument.</p>
+</div>
+<pre class="sh_ruby"><code>escape_xml(<b>'&lt;a&gt;' if true</b>)</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/108">
+
+<div class="notes">
+<p>In order to make it valid ruby syntax, you need to wrap the expression in parentheses, which is what Roda does.</p>
+</div>
+<pre class="sh_ruby"><code>escape_xml(<b>('&lt;a&gt;' if true)</b>)</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/109">
+
+<div class="notes">
+<p>Roda ships with another security related plugin, csrf, which adds protection against cross site request forgery. This loads rack_csrf as one of the middleware for the application.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :csrf</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/110">
+
+<div class="notes">
+<p>It also adds some view helper methods, allowing you to easily create the necessary CSRF token tags in your views.</p>
+</div>
+<pre><code>&lt;%= crsf_tag %&gt;</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/111">
+
+<div class="notes">
+<p>If you are doing server-side rendering using the render plugin, and you want to improve performance, in addition to thinking about application performance, you also need to think about rendering performance on the client. One of the best ways to improve rendering performance on the client is to flush the head tag for the response while still preparing the reminder of the response.|The chunked plugin lets you do that, using Transfer-Encoding chunked.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :chunked</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/112">
+
+<div class="notes">
+<p>With the chunked plugin, you can use chunked instead of view as the method name, and it will stream the response to the client in chunks. By default, it will flush the top part of the layout template before rendering the content template.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>
+Roda.route do |r|
+  r.on "albums" do
+    <b>chunked('albums')</b>
+  end
+end</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/113">
+
+<div class="notes">
+<p>You can a pass block to the chunked method, which will be yielded to after the top part of the layout is flushed to the client, but before rendering the content template. This allows you to execute code necessary to render the content while the client is making requests to load the assets needed to display the page. This can significantly decrease the total time the client takes to fully render the page.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>
+Roda.route do |r|
+  r.on "albums" do
+    chunked('albums') do
+      <b># retrieve albums</b>
+    end
+  end
+end</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/114">
+
+<div class="notes">
+<p>Additionally, at any point inside the content or layout templates, you can call flush to send the partially rendered response to the client. This is mostly useful when loading large pages, where you want the client to see visible content before the all of the content is finished rendering.</p>
+</div>
+<pre><code>&lt;% flush %&gt;</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/115">
+
+<div class="notes">
+<p>The chunked plugin also has a chunk_by_default option, which makes view default to using chunked encoding if the client supports it, allowing you to speed up client rendering performance for all of your views.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :chunked,
+         <b>:chunk_by_default=&gt;true</b></code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/116">
+
+<div class="notes">
+<p>One of the issues with Roda&#x2019;s approach of having a single routing block that all requests are yielded to, is that you can&#x2019;t split a block across multiple files. For larger sites, it&#x2019;s not practical to have all routes in a single file, so Roda comes with a multi_route plugin.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :multi_route</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/117">
+
+<div class="notes">
+<p>With the multi_route plugin, in your main Roda application file, let&#x2019;s say you have a large routing subtree for paths under albums, which you want to move to a separate file.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code># file: <b>app.rb</b>
+Roda.route do |r|
+  r.on "albums" do
+    <b># ...</b>
+  end
+end</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/118">
+
+<div class="notes">
+<p>You replace the subtree with a call to r.route with the name of the route you want to use. In most cases this will be the same as the matched part of the request path.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code># file: app.rb
+Roda.route do |r|
+  r.on "albums" do
+    <b>r.route("albums")</b>
+  end
+end</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/119">
+
+<div class="notes">
+<p>You take the routing subtree you removed from the main source file, and you place it in a separate file. By convention these files are stored in a routes subdirectory, and you just require all files from the routes subdirectory in your main application file.|Inside these routing files, you call Roda.route, but you pass it the name for the route, which is the same as the name that you used in the r.route call in the main Roda application file.</p>
+</div>
+<pre class="sh_ruby"><code># file: <b>routes/albums.rb</b>
+Roda.route(<b>'albums'</b>) do |r|
+  # ...
+end</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/120">
+
+<div class="notes">
+<p>For larger apps, it&#x2019;s common to move all of your routing code to routing files. Assuming you named all of your routes with the request path prefix, you can dispatch to all of your named routes with a single r.multi_route call. In addition to DRYing up your code, this is also faster as it matches against all route prefixes simultaneously using a single regular expression.</p>
+</div>
+<pre class="sh_ruby"><code># file: app.rb
+Roda.route do |r|
+  <b>r.multi_route</b>
+end</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/121">
+
+<div class="notes">
+<p>If you are writing an app that uses the multi_route plugin, it&#x2019;s probably large enough that you may want to not use a single directory for all of your views. While you could just specify the subdirectory each time you want to render a template, that&#x2019;s not very DRY.|Roda ships with a view_subdirs plugin that allows for setting a view subdirectory to use for a given branch.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :view_subdirs</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/122">
+
+<div class="notes">
+<p>With the view_subdirs plugin, you can call set_view_subdir anywhere in your routing code, and when you call view, it will automatically prefix the template with that subdirectory. That&#x2019;s more DRY, but some people might not think it&#x2019;s DRY enough.</p>
+</div>
+<pre class="sh_ruby" style="margin-top: 150px;"><code>Roda.route('albums') do |r|
+  <b>set_view_subdir('albums')</b>
+  r.get 'list' do
+    view 'index' # <b>views/albums/list.erb</b>
+  end
+end</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/123">
+
+<div class="notes">
+<p>For the DRYest code, you can use the symbol views plugin.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :symbol_views</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/124">
+
+<div class="notes">
+<p>With the symbol views plugin, you can just have your route block return a symbol, which is interpreted as a view template name, and will render the view and use the result as the response body.|Now, some people may consider this too DRY. But the great thing about Roda is this behavior is loaded via a plugin, so if you don&#x2019;t like it, you just don&#x2019;t have to load the plugin.</p>
+</div>
+<pre class="sh_ruby"><code>r.get 'list' do
+  <b>:list</b>
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/125">
+
+<div class="notes">
+<p>Similar to the symbol_views plugin, Roda ships with a json plugin.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :json</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/126">
+
+<div class="notes">
+<p>The json plugin makes it easy to create JSON API sites. You just have your route block return either an array or a hash, and Roda will automatically convert it to JSON and use the JSON as the response body.</p>
+</div>
+<pre class="sh_ruby"><code>r.get 'list' do
+  <b>DB[:albums].to_a</b>
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/127">
+
+<div class="notes">
+<p>A common issue with most ruby web frameworks is that by default, they tend to be too liberal in terms of what they match. The symbol_matchers plugin exists to make it easier to use more exact matching.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :symbol_matchers</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/128">
+
+<div class="notes">
+<p>Take this simple route, which matches albums followed by a segment for the album&#x2019;s id. While this works, in general it is too liberal.</p>
+</div>
+<pre class="sh_ruby"><code>r.get <b>'albums/:id'</b> do |album_id|
+  @album = Album[album_id.to_i]
+  view('album')
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/129">
+
+<div class="notes">
+<p>It&#x2019;s kind of obvious it is too liberal, since you are converting the matched album_id to an integer. So what you really want to do is only match segments consisting solely of decimal digits.</p>
+</div>
+<pre class="sh_ruby"><code>r.get 'albums/:id' do <b>|album_id|</b>
+  @album = Album[<b>album_id.to_i</b>]
+  view('album')
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/130">
+
+<div class="notes">
+<p>You could switch to using a regular expression as your matcher. But then you have to specify the grouping manually, and it takes more cognitive overhead to use a regular expression.</p>
+</div>
+<pre class="sh_ruby"><code>r.get <b>/albums\/(\d+)/</b> do |album_id|
+  @album = Album[album_id.to_i]
+  view('album')
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/131">
+
+<div class="notes">
+<p>With the symbol_matchers plugin, Roda automatically treats some symbols specially, using specific regular expressions for them. One of these symbols is :d, which matches only decimal digits. So this makes sure that only albums followed by a segment with only decimal digits will be matched.</p>
+</div>
+<pre class="sh_ruby"><code>r.get <b>'albums/:d'</b> do |album_id|
+  @album = Album[album_id.to_i]
+  view('album')
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/132">
+
+<div class="notes">
+<p>The symbol_matchers plugin also makes it easy to define your own symbol matchers. Let&#x2019;s say you have lots of routes in your application that include a user&#x2019;s username. But you don&#x2019;t allow arbitrary characters in your usernames, you have a strict requirement of only lowercase ASCII letters, and usernames must be between 6 and 20 characters.</p>
+</div>
+<pre class="sh_ruby"><code>r.get <b>:username</b> do |username|
+  @user = User.first(:username=&gt;username)
+  view('user')
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/133">
+
+<div class="notes">
+<p>With the symbol_matchers plugin, you can use the symbol_matcher method, passing it the symbol you want to match, and the regular expression to use for that symbol. Then, everywhere in your app where you use that symbol, it will use that regular expression instead of the default of matching any sequence of characters. As shown in the previous examples, this works both for symbols and for embedded colons in strings.</p>
+</div>
+<pre class="sh_ruby"><code>Roda.symbol_matcher :username,
+                    <b>/([a-z]{6,20})/</b></code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/134">
+
+<div class="notes">
+<p>Roda ships with a flash plugin that adds support for flash handling, similar to Rails flash handling or the flash handling you get from sinatra-flash.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :flash</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/135">
+
+<div class="notes">
+<p>If you want to handle request methods other than GET and POST, Roda ships with an all_verbs plugin that adds routing methods for all of the HTTP request methods.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :all_verbs</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/136">
+
+<div class="notes">
+<p>Roda ships with a not_found plugin, for Sinatra-like support of specifying a block to call when no route matches.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :not_found</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/137">
+
+<div class="notes">
+<p>Roda ships with a error_handler plugin, for Sinatra-like support of specifying a block to call when an error is raised while handling a request.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :error_handler</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/138">
+
+<div class="notes">
+<p>Roda ships with a pass plugin, for a Sinatra-like pass method. The pass method jumps out of the current routing block as if it did not match, allowing it to continue the routing process.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :pass</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/139">
+
+<div class="notes">
+<p>Roda ships with an indifferent_params plugin, for support for a Sinatra-like params hash that works with both symbols and strings. You could call this stealing from Sinatra, if you didn&#x2019;t know that I&#x2019;m the one who introduced indifferent params to Sinatra in the first place.|To be fair to me, Sinatra originally symbolized all params, which opened it up to denial of service attacks, so introducing indifferent access was done to keep backwards compatibility, not because indifferent params are a good idea in general.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :indifferent_params</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/140">
+
+<div class="notes">
+<p>If you want some actual stealing from Sinatra, Roda ships with a streaming plugin with an implementation mostly borrowed from Sinatra, though it does have some significant improvements that make it easier to use safely.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :streaming</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/141">
+
+<div class="notes">
+<p>Likewise, Roda ships with a caching plugin with an implementation mostly borrowed from Sinatra, adding support for cache control, last modified, and etags.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :caching</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/142">
+
+<div class="notes">
+<p>Roda also ships with an assets plugin that allows for easily compiling and rendering your CSS and javascript assets on the fly in development, and compiling them into a single, compressed file in production for maximum performance.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :assets</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/143">
+
+<div class="notes">
+<p>Roda ships with a middleware plugin that turns your Roda app into a Rack middleware. If you have a Rails or Sinatra application that you want to speed up, but don&#x2019;t have the time to fully replace with Roda, you can use the middleware plugin to turn the Roda app into middleware, then use that middleware in your Rails or Sinatra application.|Any route that the Roda app doesn&#x2019;t handle will be forwarded to your Rails or Sinatra application, allowing you to gradually upgrade.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :middleware</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/144">
+
+<div class="notes">
+<p>Roda also ships with over 10 additional plugins, but as I&#x2019;m running out of time, I can&#x2019;t cover all of them.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 60px;"><code>Roda.plugin :*</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/145">
+
+<div class="notes">
+<p>So let me review what I think are the main advantages of using Roda over other ruby web frameworks.</p>
+</div>
+<h1 style="font-size: 140px; position: absolute; left: 360px; top: 240px;">Main</h1><h1 style="font-size: 200px; text-align: center; margin-top: 300px;">Advantages</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/146">
+
+<div class="notes">
+<p>First, I think for simple web applications Roda is about as simple to use as Sinatra, and much simpler than Rails, and the Roda codebase itself is significantly smaller and simpler than either Sinatra or Rails.</p>
+</div>
+<h1 style="font-size: 200px; margin-top: 0px;">Simple</h1><div class="review">Advantage <span class="mono">#1</span>
+</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/147">
+
+<div class="notes">
+<p>As your application gets more complex, I think Roda does a better job than Sinatra of managing the complexity, while always remaining a lot less complex than Rails.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; left: 160px; top: 200px;">Manages</h1><h1 style="font-size: 200px; margin-top: 240px;">Complexity</h1><div class="review">Advantage <span class="mono">#2</span>
+</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/148">
+
+<div class="notes">
+<p>Roda performs significantly better than Sinatra and Rails for simple sites, and scales much better than either Rails or Sinatra for truly large sites.</p>
+</div>
+<h1 style="font-size: 200px; margin-top: 160px;">Performs</h1><h1 style="font-size: 160px; position: absolute; left: 160px; top: 340px;">Well</h1><div class="review">Advantage <span class="mono">#3</span>
+</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/149">
+
+<div class="notes">
+<p>Roda doesn&#x2019;t pollute your namespaces, so you don&#x2019;t need to worry about Roda conflicting with your application code.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; left: 160px; top: 340px;">Avoids</h1><h1 style="font-size: 200px; margin-top: 440px;">Pollution</h1><div class="review">Advantage <span class="mono">#4</span>
+</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/150">
+
+<div class="notes">
+<p>Finally, because of the Sequel-based plugin system it uses, Roda is very extensible, so if you need functionality that isn&#x2019;t included in one of the plugins that ship with Roda, it&#x2019;s easy to add yourself.</p>
+</div>
+<h1 style="font-size: 200px; margin-top: 480px;">Extensible</h1><div class="review">Advantage <span class="mono">#5</span>
+</div></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/151">
+
+<div class="notes">
+<p>So that&#x2019;s why I think you should consider Roda for ruby web application development.</p>
+</div>
+<h1 class="roda" style="position: absolute; bottom: 140px; right: 160px; font-size: 120px;">Roda</h1></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/152">
+
+<div class="notes">
+<p>That concludes the presentation. Thank you all for attending and listening to me present Roda.</p>
+</div>
+<h1 class="roda" style="position: absolute; left: 80px; top: 520px; font-size: 240px;">Fin</h1><h1 class="roda" style="position: absolute; left: 35px; top: 540px; font-size: 240px;">~</h1><h1 class="roda" style="position: absolute; left: 360px; top: 540px; font-size: 240px;">~</h1></div>
+</div><div id="slides/slides" class="slide bg-title" data-transition="none"><div class="content bg-title" ref="slides/slides/153">
+
+<div class="notes">
+<p>If you have any questions about Roda, I&#x2019;ll be happy to answer them now.</p>
+</div>
+<h1 class="roda" style="margin-left: 15px; margin-top: 80px; font-size: 90px;">Questions?</h1></div>
+</div></div>
+
+</body>
+</html>
