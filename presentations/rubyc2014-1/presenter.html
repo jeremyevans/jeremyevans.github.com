@@ -17,6 +17,8 @@
 
   <link rel="stylesheet" href=".//css/showoff.css" type="text/css"/>
 
+  
+
   <script type="text/javascript" src=".//js/jquery-1.4.2.min.js"></script>
   <script type="text/javascript" src=".//js/jquery.cycle.all.js"></script>
 	<script type="text/javascript" src=".//js/jquery-print.js"></script>
@@ -49,12 +51,25 @@
 
   <script type="text/javascript">
   $(function(){
+    
+      if($(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+    
       setupPreso(false, './');
   });
   </script>
 
   <link rel="stylesheet" href=".//css/presenter.css" type="text/css"/>
   <script type="text/javascript" src=".//js/presenter.js"></script>
+
+  
+
 </head>
 
 <body>
