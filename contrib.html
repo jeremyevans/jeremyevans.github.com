@@ -10,6 +10,12 @@ layout: default
   <li><a href="https://github.com/enebo/alienist_viewer">alienist_viewer</a>:<ul>
     <li>Switch web framework from Rails to Roda (ae1be28db0f96f9972b70e59c9e2d04068b79f6b)</li>
     <li>Use bootstrap for prettier layout, fix some bugs, add tests (711bdf00372113cd9786b20725834043bfb3aac9)</li>
+    <li>Fix link to example data file (344d1b015fa3d906c19c18a4407aad5436eaa3e2)</li>
+    <li>Use instance variable instead of class variable for Memory (eb7fae06459a0b3fd59f724d409b98c7249b470b)</li>
+    <li>Add separate class for ruby arrays (68f8d3d9276af125ae22ef19493db2759d6ad5c5)</li>
+    <li>Refactor display of links (4a03851eec062e592b0b5ceffbd9d470dc9d9982)</li>
+    <li>Remove unused methods (d89a687d0ed121cdaf803c5faccc9c0daf879bc6)</li>
+    <li>Optimize StringInstance#display_name (5475e9961eb38b5543b09c08a77b6cee4b9f4fb3)</li>
   </ul></li>
   <li><a href="https://github.com/luislavena/bench-micro">bench-micro</a>: Try to make benchmarks more fair (037fa0add723a54ef91d4d63f00863771beb2097)</li>
   <li><a href="http://www.bittorrent.com">BitTorrent</a>: Allowed --bind to affect connections to the tracker as well as peers (in BitTorrent &gt;= 4.2.1)</li>
@@ -69,6 +75,7 @@ layout: default
     <li>Support linking [], []=, &lt;&lt;, and &gt;&gt; methods (4943d20849ccc724fd8b0f74a92bff3880535769)</li>
     <li>Make +NameSpaced::Constant+ work as expected (e6484b31dbb74be65f5ced9d9a45b952f2702b3f)</li>
     <li>Fix lexing of %w'1 2', %r'foo(bar)' and similar syntax (5d3310f4c314719353e6016e91c4e9229b702c67)</li>
+    <li>Use a real ruby parser to determine whether code example should be syntax highlighted (46f4c0770cc58ec80e276c19ef82669166be1507)</li>
   </ul></li>
   <li><a href="http://rubini.us/">Rubinius</a>:<ul>
     <li>Add rb_reg_new C API method (82bb2f9441e4760a5a52 and 2b1315f7661b45fbf7a6)</li>
@@ -129,6 +136,7 @@ layout: default
     <li>Fix optional params again, include specs (2f13feabc309587959bb565f4355495a915879af)</li>
     <li>Skip coffee test if execjs runtime is not available (70ed64800c3ab0741637789981eb9c2e72a7f99e)</li>
     <li>Handle encoded colons in routes (bd8e07fe26fa3c9c83169b7e7ff28d21308d0f2d)</li>
+    <li>Fix access to arbitrary .png files in ruby 1.8 development mode (e727b17930f0b3c1a4e666c5901d45d04f68a2d6)</li>
   </ul></li>
   <li><a href="http://sinatrarb.com/">sinatra-recipes</a>: Remove preload_app config line from example unicorn config (996c5c07b137db8fc78474a1fd9f99107e498214)</li>
   <li><a href="https://github.com/shanna/swift">Swift</a>: Fix parsing of fractional timestamps (de921bb13d06b5ab194daad328f5c02a089d5800)</li>
