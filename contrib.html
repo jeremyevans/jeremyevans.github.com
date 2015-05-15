@@ -45,6 +45,14 @@ layout: default
     <li>Fix prototype of rb_time_new to match definition (09e87fd7dcec1487731a56111ed4c4a6b48b1ba7)</li>
   </ul></li>
   <li><a href="https://github.com/mikel/mail">mail</a>: Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
+  <li><a href="https://github.com/seattlerb/minitest">minitest</a><ul>
+    <li>Add minitest-hooks to README (a2131a0014878225011bdd60c424d7bab24b2b25)</li>
+    <li>Add minitest-parallel_fork to README (6ae1ebfed402e6838edd384d69beb44df2b5f62a)</li>
+    <li>Add minitest-shared_description to README (a802839e7282ecf97dd7dd427b946c4fe8ede25c)</li>
+    <li>Make assert_raises to assume StandardError if given no arguments (f1a8267c53b492917ef00794bb81bc6c97347175)</li>
+    <li>Make assert_raises handle subclasses of given classes, similar to rescue (6fcecb1711535292c1fcb9abeadc1e43879b57b6)</li>
+    <li>Fix non-proc-oriented expectations on proc targets (78003e268f112dbb496d3d96ceed6a4c1f597c4a)</li>
+  </ul></li>
   <li><a href="https://github.com/seattlerb/minitest-bisect">minitest-bisect</a><ul>
     <li>Work correctly when default shell is not bash (9acd3a3dc7626c363924041e38951141dd339679)</li>
     <li>Work correctly when ruby executable is not named ruby, and work around JRuby bug (0aa0882a8e4b871e379408a82eb96a19e7d24985)</li>
@@ -58,6 +66,12 @@ layout: default
     <li>Fix NODE_BITS determination using process.arch (a7be6cafae637238de45b7cade79eab829277cac)</li>
   </ul></li>
   <li><a href="https://github.com/brianc/node-postgres">node-postgres</a>: Handle "NULL" correctly in array parser (bbcbdee584652c8f0f404d45fc8de097a3fbc50e)</li>
+  <li><a href="https://opalrb.org">opal</a>:<ul>
+    <li>Don't swallow backtrace on compiler errors (e6f327e5793306a7add19e8714cf5bd51dca4a7e)</li>
+    <li>Support tilt integration without sprockets (bac86b48e93cfb1abe101e85c4dc729550480b26, 32d1feb41f4be2838e8155b378490cf5f8f95701, 90a28989f762117b76e0cccde6941f8ecde2af71)</li>
+    <li>Make opal/builder depend on opal/paths (d680c5c9301546969be5a2c945e5dd51b62ba14a)</li>
+    <li>Don't swallow backtrace on when unable to require file in builder (7ef70fcd2c3b30e5a0181fff3cd710b94649f565)</li>
+  </li>
   <li><a href="https://github.com/ianwhite/orm_adapter">orm_adapter</a>: Don't require yard and git libraries to use the Rakefile (bb8be3c191405fd702f278589f99523e638445de)</li>
   <li><a href="https://github.com/dockyard/pg_array_parser">pg_array_parser</a>: Fix handling of escaped backslashes, Refactor the parser (f0529a02fbcf2203cd7ad5bd36ea897406c0cd76)</li>
   <li><a href="http://polarssl.org">PolarSSL</a>: Fix build on OpenBSD (revision 1066)</li>
@@ -147,6 +161,7 @@ layout: default
   </ul></li>
   <li><a href="http://sinatrarb.com/">sinatra-recipes</a>: Remove preload_app config line from example unicorn config (996c5c07b137db8fc78474a1fd9f99107e498214)</li>
   <li><a href="https://github.com/shanna/swift">Swift</a>: Fix parsing of fractional timestamps (de921bb13d06b5ab194daad328f5c02a089d5800)</li>
+  <li><a href="https://github.com/rtomayko/tilt">tilt</a>: Sort locals_keys before looking up template in @compiled_method (4e1b2ead0d4d00591f65de80512e5fd31492fab7)</li>
   <li><a href="https://github.com/rails-sqlserver/tiny_tds">tiny_tds</a>: Remove unused variable (a77e1a7fedb6775e31fe6c7615b344a8f7c233eb)</li>
   <li><a href="http://unicorn.bogomips.org/">Unicorn</a>:<ul>
     <li>Fix t0011 test on OpenBSD (66c706acfb3cda802bac4629219e3c3e064352ed)</li>
