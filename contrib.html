@@ -45,6 +45,11 @@ layout: default
     <li>Fix prototype of rb_time_new to match definition (09e87fd7dcec1487731a56111ed4c4a6b48b1ba7)</li>
   </ul></li>
   <li><a href="https://github.com/mikel/mail">mail</a>: Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
+  <li><a href="https://github.com/mime-types/ruby-mime-types">mime-types</a>:<ul>
+    <li>Reduce memory usage using columnar storage (8ce1add6c66b84ae8e56727a784cce6f1d8dcca5)</li>
+    <li>Avoid circular require for columnar store (eaeb3b6c5237eb31c71dc51905d74b050a973783)</li>
+    <li>Record all extensions when using the columnar store (6a87b8e839bf9bdef2dc795f3a6c463581e86f55)</li>
+  </ul></li>
   <li><a href="https://github.com/seattlerb/minitest">minitest</a><ul>
     <li>Add minitest-hooks to README (a2131a0014878225011bdd60c424d7bab24b2b25)</li>
     <li>Add minitest-parallel_fork to README (6ae1ebfed402e6838edd384d69beb44df2b5f62a)</li>
@@ -57,6 +62,7 @@ layout: default
     <li>Work correctly when default shell is not bash (9acd3a3dc7626c363924041e38951141dd339679)</li>
     <li>Work correctly when ruby executable is not named ruby, and work around JRuby bug (0aa0882a8e4b871e379408a82eb96a19e7d24985)</li>
   </ul></li>
+  <li><a href="https://github.com/i10a/minjs">Minjs</a>: Fix parsing of octal escapes (e75e4a08ab7fddc46d59911ddba4c067bf595dcf)</li>
   <li><a href="http://mongrel2.org">mongrel2</a>: Fix build on OpenBSD, support OpenBSD amd64, add sendfile emulation (74f49b9afa)</li>
   <li><a href="http://code.google.com/p/quodlibet/wiki/Development/Mutagen">Mutagen</a>: Fixed APEv2 tag creation (revision 3989)</li>
   <li><a href="https://github.com/eclubb/ncurses-ruby">ncurses-ruby</a>: Make tclock example work on ruby 1.9 (d6add61)</li>
@@ -73,6 +79,11 @@ layout: default
     <li>Don't swallow backtrace when unable to require file in builder (7ef70fcd2c3b30e5a0181fff3cd710b94649f565)</li>
     <li>Use \A and \z in ruby mode and ^ and $ in javascript mode for regexp anchoring (39234b44f0ef24eede0ec580fb31d5c494b55206, d4fda8f5014db553deb26f2986cfbca3edeff9bc, 9d96a7ff7f766fb2a770e1ed5c92b618829ebf00)</li>
     <li>Allow PathReader to deal with absolute and ./ and ../ relative paths (d7ae1959d567cdf94233841a7dbaf713a8fa6315)</li>
+    <li>Add Opal::Builder#use_gem for adding gems to specific buidlers (d927b50ddb52d4a5d90335ba752a45148763e3e0)</li>
+    <li>Make Opal::CLI use Opal::Builder#use_gem to not modify global state (6223ce1b86adf99cd8f7250de05cf88fa4a598f5)</li>
+    <li>Make Opal::Builder#dup duplicate internal structures (93a96817a182227970a96b9f9df7e1f77413627d)</li>
+    <li>Allow Opal::TiltTemplate to use Opal::Builder with :build or :builder options (5de03409c961125dd4a6e2379de334956dedc625)</li>
+    <li>Support the use of Tilt 2 (1117d8b3fff93534e05609c6bbfce1042afb7170)</li>
   </ul></li>
   <li><a href="https://github.com/ianwhite/orm_adapter">orm_adapter</a>: Don't require yard and git libraries to use the Rakefile (bb8be3c191405fd702f278589f99523e638445de)</li>
   <li><a href="https://github.com/dockyard/pg_array_parser">pg_array_parser</a>: Fix handling of escaped backslashes, Refactor the parser (f0529a02fbcf2203cd7ad5bd36ea897406c0cd76)</li>
