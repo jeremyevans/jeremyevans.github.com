@@ -44,7 +44,10 @@ layout: default
     <li>Make compiling cext support on OpenBSD not assume FreeBSD (4a7ad99823fa43c4a514)</li>
     <li>Fix prototype of rb_time_new to match definition (09e87fd7dcec1487731a56111ed4c4a6b48b1ba7)</li>
   </ul></li>
-  <li><a href="https://github.com/mikel/mail">mail</a>: Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
+  <li><a href="https://github.com/mikel/mail">mail</a>:<ul>
+    <li>Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
+    <li>Use mime/types/columnar if available to reduce memory usage (1012d05d4b8bf16b81ec7733da4f8b4956dfbd9d)</li>
+  </ul></li>
   <li><a href="https://github.com/mime-types/ruby-mime-types">mime-types</a>:<ul>
     <li>Reduce memory usage using columnar storage (8ce1add6c66b84ae8e56727a784cce6f1d8dcca5)</li>
     <li>Avoid circular require for columnar store (eaeb3b6c5237eb31c71dc51905d74b050a973783)</li>
@@ -90,6 +93,10 @@ layout: default
   <li><a href="http://polarssl.org">PolarSSL</a>: Fix build on OpenBSD (revision 1066)</li>
   <li><a href="http://rack.github.io/">Rack</a>:<ul>
     <li>Add SCGI Handler (2008-01-25)</li>
+    <li>Add support for serving gzipped static files (421932740bb8395f908759124c2727eab9cd6b54)</li>
+    <li>Allow specifying a params hash class to use when parsing (7e7a3890449b5cf5b86929c79373506e5f1909fb)</li>
+  </ul></li>
+  <li><a href="https://github.com/rack/rack-contrib">rack-contrib</a>:<ul>
     <li>Add Rack::ResponseCache to rack-contrib (2009-02-08)</li>
     <li>Add Rack::RelativeRedirect to rack-contrib (2009-02-08)</li>
   </ul></li>
