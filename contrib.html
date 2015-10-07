@@ -60,6 +60,7 @@ layout: default
     <li>Make assert_raises to assume StandardError if given no arguments (f1a8267c53b492917ef00794bb81bc6c97347175)</li>
     <li>Make assert_raises handle subclasses of given classes, similar to rescue (6fcecb1711535292c1fcb9abeadc1e43879b57b6)</li>
     <li>Fix non-proc-oriented expectations on proc targets (78003e268f112dbb496d3d96ceed6a4c1f597c4a)</li>
+    <li>Return early if there are no filtered methods (35ec0145be4ee09bd7b84088c809d27ce42ce746)<li>
   </ul></li>
   <li><a href="https://github.com/seattlerb/minitest-bisect">minitest-bisect</a><ul>
     <li>Work correctly when default shell is not bash (9acd3a3dc7626c363924041e38951141dd339679)</li>
@@ -90,6 +91,12 @@ layout: default
     <li>Don't swallow backtraces on parse errors (5ccaf743c73db845f8120ecd046c26db4a7c753f)</li>
     <li>Support recv.JS.meth for calling javascript methods and recv.JS[] for getting/setting javascript properties (50a0965f0733ef2f026528874861e3ef62af6572, b072744dcf38b807162f16e6c5b1ea3e95a0e5fa, 607b78f2b8c3e51f823267c7294d5488e2e6f6f0, 32bd3d3bd05d6731cd1f70cde3124ba2ad0648c9, 6d7519607ccaf451b41378de5f0e6b28fa35a8a1, 4290c95b1d9f7232a5cffd7db857a850404eec7d)</li>
     <li>Don't swallow backtraces on missing requires (99069375c21c61949a144e0cd5c39d682e436096)</li>
+    <li>Handle parser errors when lexer column is 0 (8bd43ad0c7826a0ac9fcdcadd32830e5ed4ffb27)</li>
+    <li>Add JS module for nicer calling of native javascript operators and global functions (acbce9f56e1a45dcd833f72bcc1a608bdf156df5, 7db84b96697fc064dc3ac94b7fb59b6aa8605184)</li>
+  </ul></li>
+  <li><a href="https://opalrb.org">opalrb.org</a>:<ul>
+    <li>Add more Getting Started documentation (4da98c5715ae262a7b8566695066585fa0d0abcc)</li>
+    <li>Add documentation on .JS. syntax for calling javascript methods and properties (6b838d62d6dede1fb9ab7ddac0e47f350532a676, 61a150080ae06c04efc4cfbd50835d24d17a04e9, 467cf8123698fc7a922bfabf1baf70c761045a63)</li>
   </ul></li>
   <li><a href="https://github.com/ianwhite/orm_adapter">orm_adapter</a>: Don't require yard and git libraries to use the Rakefile (bb8be3c191405fd702f278589f99523e638445de)</li>
   <li><a href="https://github.com/dockyard/pg_array_parser">pg_array_parser</a>: Fix handling of escaped backslashes, Refactor the parser (f0529a02fbcf2203cd7ad5bd36ea897406c0cd76)</li>
@@ -153,6 +160,9 @@ layout: default
     <li>Fix --with-tcllib and --with-tklib configure options (revision 44574)</li>
     <li>Handle IP_MULTICAST_LOOP and IP_MULTICAST_TTL socket options correctly on OpenBSD (revision 44638)</li>
     <li>Fix bad backport patch in REXML tests (revision 48171)</li>
+    <li>Use smaller buffer for sendmsg in tests (revision 51288)</li>
+    <li>Fix LocalJumpErrors being raised in the OpenSSL tests (revision 51531)</li>
+    <li>Fix OpenSSL tests to not require SSLv3 (revision 51649)</li>
   </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
     <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
