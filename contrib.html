@@ -20,6 +20,8 @@ layout: default
   </ul></li>
   <li><a href="https://github.com/luislavena/bench-micro">bench-micro</a>: Try to make benchmarks more fair (037fa0add723a54ef91d4d63f00863771beb2097)</li>
   <li><a href="http://www.bittorrent.com">BitTorrent</a>: Allowed --bind to affect connections to the tracker as well as peers (in BitTorrent &gt;= 4.2.1)</li>
+  <li><a href="https://github.com/wvanbergen/chunky_png"></a>: Work with ruby 2.3's --enable-frozen-string-literal (444edce952d76a2eb1a9a7964da9ea403e4add0e)</li>
+  <li><a href="http://contributor-covenant.org/">Contributor Covenant</a>: Add missing section end tag to index page (a98433469a8798986e8d5279bdf42a39c5cca940)</li>
   <li><a href="http://datamapper.org/">DataMapper</a>: Added 't' and 'f' true and false aliases to Sqlite3 adapter (revision 740)</li>
   <li><a href="https://github.com/datamapper/do">DataObjects</a>: Fix use-after-free in do_postgres_raise_error (5cec3c5b723d14b210eada26519258255a175c05)</li>
   <li><a href="https://github.com/deepfryed/dbicpp">dbic++</a>: Treat bigint column as integer on SQLite (243c7e0ba8c95c7b747fb35acc2fe0a0ff73dd3a)</li>
@@ -47,6 +49,10 @@ layout: default
   <li><a href="https://github.com/mikel/mail">mail</a>:<ul>
     <li>Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
     <li>Use mime/types/columnar if available to reduce memory usage (1012d05d4b8bf16b81ec7733da4f8b4956dfbd9d)</li>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (b34d7bde6606d395da707f1d0567b8daafa744df)</li>
+  </ul></li>
+  <li><a href="https://github.com/SamSaffron/message_bus">message_bus</a>:<ul>
+    <li>Port the test suite from rspec to minitest/spec (0323e4cc7ff3f0183b6cd4366a9f55ce8056829a)</li>
   </ul></li>
   <li><a href="https://github.com/mime-types/ruby-mime-types">mime-types</a>:<ul>
     <li>Reduce memory usage using columnar storage (8ce1add6c66b84ae8e56727a784cce6f1d8dcca5)</li>
@@ -105,6 +111,7 @@ layout: default
     <li>Add SCGI Handler (2008-01-25)</li>
     <li>Add support for serving gzipped static files (421932740bb8395f908759124c2727eab9cd6b54)</li>
     <li>Allow specifying a params hash class to use when parsing (7e7a3890449b5cf5b86929c79373506e5f1909fb)</li>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (483f747cc08fdb96270229e37e09d6467332023f)</li>
   </ul></li>
   <li><a href="https://github.com/rack/rack-contrib">rack-contrib</a>:<ul>
     <li>Add Rack::ResponseCache to rack-contrib (2009-02-08)</li>
@@ -127,6 +134,7 @@ layout: default
     <li>Fix lexing of %w'1 2', %r'foo(bar)' and similar syntax (5d3310f4c314719353e6016e91c4e9229b702c67)</li>
     <li>Use a real ruby parser to determine whether code example should be syntax highlighted (46f4c0770cc58ec80e276c19ef82669166be1507)</li>
   </ul></li>
+  <li><a href="https://github.com/mdp/rotp">rotp</a>: Work with ruby 2.3's --enable-frozen-string-literal (bf647791e5e4f0c340db832a9f92f487bc8cd2a9)</li>
   <li><a href="http://rubini.us/">Rubinius</a>:<ul>
     <li>Add rb_reg_new C API method (82bb2f9441e4760a5a52 and 2b1315f7661b45fbf7a6)</li>
     <li>Add rb_reg_nth_match C API method (8039442d4da2fbb5b7ba and 5975010ca87cf712eb1c)</li>
@@ -163,6 +171,8 @@ layout: default
     <li>Use smaller buffer for sendmsg in tests (revision 51288)</li>
     <li>Fix LocalJumpErrors being raised in the OpenSSL tests (revision 51531)</li>
     <li>Fix OpenSSL tests to not require SSLv3 (revision 51649)</li>
+    <li>Raise error in openssl extension if selected npn procotol is too long (revision 52227)</li>
+    <li>Make ERB work with --enable-frozen-string-literal (revision 53682)</li>
   </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
     <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
@@ -191,11 +201,17 @@ layout: default
     <li>Skip coffee test if execjs runtime is not available (70ed64800c3ab0741637789981eb9c2e72a7f99e)</li>
     <li>Handle encoded colons in routes (bd8e07fe26fa3c9c83169b7e7ff28d21308d0f2d)</li>
     <li>Fix access to arbitrary .png files in ruby 1.8 development mode (e727b17930f0b3c1a4e666c5901d45d04f68a2d6)</li>
+    <li>Make route params available during error handler (10cc6089468a67c13ad5c5ac448f26424f4046c7)</li>
+    <li>Unify not_found and error 404 behavior (8f398cda1b4c40c3e1848264fde1312775039f5f)</li>
   </ul></li>
   <li><a href="http://sinatrarb.com/">sinatra-recipes</a>: Remove preload_app config line from example unicorn config (996c5c07b137db8fc78474a1fd9f99107e498214)</li>
   <li><a href="https://github.com/shanna/swift">Swift</a>: Fix parsing of fractional timestamps (de921bb13d06b5ab194daad328f5c02a089d5800)</li>
-  <li><a href="https://github.com/rtomayko/tilt">tilt</a>: Sort locals_keys before looking up template in @compiled_method (4e1b2ead0d4d00591f65de80512e5fd31492fab7)</li>
+  <li><a href="https://github.com/rtomayko/tilt">tilt</a>:<ul>
+    <li>Sort locals_keys before looking up template in @compiled_method (4e1b2ead0d4d00591f65de80512e5fd31492fab7)</li>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (8af8521e06e2409f50a89ab923fe224d96997bd4)</li>
+  </ul></li>
   <li><a href="https://github.com/rails-sqlserver/tiny_tds">tiny_tds</a>: Remove unused variable (a77e1a7fedb6775e31fe6c7615b344a8f7c233eb)</li>
+  <li><a href="https://github.com/macournoyer/thin">thin</a>: Work with ruby 2.3's --enable-frozen-string-literal (6e6b1c2ab36b1da998efd82791d25c5d4c948836)</li>
   <li><a href="http://unicorn.bogomips.org/">Unicorn</a>:<ul>
     <li>Fix t0011 test on OpenBSD (66c706acfb3cda802bac4629219e3c3e064352ed)</li>
     <li>Ensure tests try to connect to a valid address (2fd5910969419c17aa6a31fb2119eb47a121d497)</li>
