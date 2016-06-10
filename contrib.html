@@ -72,7 +72,10 @@ layout: default
     <li>Work correctly when default shell is not bash (9acd3a3dc7626c363924041e38951141dd339679)</li>
     <li>Work correctly when ruby executable is not named ruby, and work around JRuby bug (0aa0882a8e4b871e379408a82eb96a19e7d24985)</li>
   </ul></li>
-  <li><a href="https://github.com/i10a/minjs">Minjs</a>: Fix parsing of octal escapes (e75e4a08ab7fddc46d59911ddba4c067bf595dcf)</li>
+  <li><a href="https://github.com/i10a/minjs">Minjs</a><ul>
+    <li>Fix parsing of octal escapes (e75e4a08ab7fddc46d59911ddba4c067bf595dcf)</li>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (69e46a09c0f5bf882683d89c91fca79ade81be9b)</li>
+  </ul></li>
   <li><a href="http://mongrel2.org">mongrel2</a>: Fix build on OpenBSD, support OpenBSD amd64, add sendfile emulation (74f49b9afa)</li>
   <li><a href="http://code.google.com/p/quodlibet/wiki/Development/Mutagen">Mutagen</a>: Fixed APEv2 tag creation (revision 3989)</li>
   <li><a href="https://github.com/eclubb/ncurses-ruby">ncurses-ruby</a>: Make tclock example work on ruby 1.9 (d6add61)</li>
@@ -99,12 +102,14 @@ layout: default
     <li>Don't swallow backtraces on missing requires (99069375c21c61949a144e0cd5c39d682e436096)</li>
     <li>Handle parser errors when lexer column is 0 (8bd43ad0c7826a0ac9fcdcadd32830e5ed4ffb27)</li>
     <li>Add JS module for nicer calling of native javascript operators and global functions (acbce9f56e1a45dcd833f72bcc1a608bdf156df5, 7db84b96697fc064dc3ac94b7fb59b6aa8605184)</li>
+    <li>Handle null and undefined in if statements (0ab7ef1d4ec3242827bfcdafc257db390c13b4f7)</li>
   </ul></li>
   <li><a href="https://opalrb.org">opalrb.org</a>:<ul>
     <li>Add more Getting Started documentation (4da98c5715ae262a7b8566695066585fa0d0abcc)</li>
     <li>Add documentation on .JS. syntax for calling javascript methods and properties (6b838d62d6dede1fb9ab7ddac0e47f350532a676, 61a150080ae06c04efc4cfbd50835d24d17a04e9, 467cf8123698fc7a922bfabf1baf70c761045a63)</li>
   </ul></li>
   <li><a href="https://github.com/ianwhite/orm_adapter">orm_adapter</a>: Don't require yard and git libraries to use the Rakefile (bb8be3c191405fd702f278589f99523e638445de)</li>
+  <li><a href="https://github.com/oysttyer/oysttyer">oysttyer</a>: Add --http1.1 flag to work with curl 7.47.0+ (dc08746bea1d59abd4c826628f70f6e4aea2f8ef)</li>
   <li><a href="https://github.com/dockyard/pg_array_parser">pg_array_parser</a>: Fix handling of escaped backslashes, Refactor the parser (f0529a02fbcf2203cd7ad5bd36ea897406c0cd76)</li>
   <li><a href="http://polarssl.org">PolarSSL</a>: Fix build on OpenBSD (revision 1066)</li>
   <li><a href="http://rack.github.io/">Rack</a>:<ul>
