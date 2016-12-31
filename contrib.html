@@ -7,6 +7,7 @@ layout: default
 
 <ul>
   <li><a href="http://x3270.bgp.nu/">c3270</a>: Fix Makefile issue to allow compilation with CFLAGS for resolver.c (in c3270 &gt;= 3.3.8p4)</li>
+  <li><a href="https://github.com/sporkmonger/addressable">addressable</a>: Fix some issues when using frozen string literals (4a32bcbce6fc666e913bccc0e762f08768cc460a)</li>
   <li><a href="https://github.com/enebo/alienist_viewer">alienist_viewer</a>:<ul>
     <li>Switch web framework from Rails to Roda (ae1be28db0f96f9972b70e59c9e2d04068b79f6b)</li>
     <li>Use bootstrap for prettier layout, fix some bugs, add tests (711bdf00372113cd9786b20725834043bfb3aac9)</li>
@@ -34,6 +35,7 @@ layout: default
     <li>Fix issue with getaddrinfo for strict systems (577cf3056d9f3088145aea51bbc09a0c90a7695e)</li>
   </ul></li>
   <li><a href="http://linuxdcpp.berlios.de">LinuxDC++</a>: Replaced named semaphore implementation (sem_open) with glib implementation, portability fixes for OpenBSD (2007-11-30)</li>
+  <li><a href="https://github.com/haml/haml">haml</a>: Fix compiler to work without deprecation on ruby 2.4 (3dff3d9004de807225a09fe2ac379020fb4a7cfb)</li>
   <li><a href="https://github.com/icalendar/icalendar">iCalendar</a>: Use more specific check for ActiveSupport timezone support (e08db70a366faa640e7de965ee928ac88c0d5b1d)</li>
   <li><a href="https://github.com/jnr/jnr-posix">jnr-posix</a>:<ul>
     <li>Fix FileStat on OpenBSD (1f9b098b22, 06cecb90d2, 1501585457)</li></li>
@@ -50,9 +52,6 @@ layout: default
     <li>Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
     <li>Use mime/types/columnar if available to reduce memory usage (1012d05d4b8bf16b81ec7733da4f8b4956dfbd9d)</li>
     <li>Work with ruby 2.3's --enable-frozen-string-literal (b34d7bde6606d395da707f1d0567b8daafa744df)</li>
-  </ul></li>
-  <li><a href="https://github.com/SamSaffron/message_bus">message_bus</a>:<ul>
-    <li>Port the test suite from rspec to minitest/spec (0323e4cc7ff3f0183b6cd4366a9f55ce8056829a)</li>
   </ul></li>
   <li><a href="https://github.com/mime-types/ruby-mime-types">mime-types</a>:<ul>
     <li>Reduce memory usage using columnar storage (8ce1add6c66b84ae8e56727a784cce6f1d8dcca5)</li>
@@ -131,6 +130,7 @@ layout: default
     <li>Fix bad rescue statements in a couple tests (a5830080b3cf6011d737342462700f7c5819942a)</li>
     <li>Mark some tests as linux-only (499e63e2666f88134f7d47f3bcfdfedd72396e70)</li>
   </ul></li>
+  <li><a href="http://puma.io/">Puma</a>: Bump required_ruby_version to 1.9.3 (b05ddf98c8d30c7c1148d9fb313500024b0ce7f0)</li>
   <li><a href="http://ramaze.net/">Ramaze</a>: Add SCGI Adapter (2008-01-28)</li>
   <li><a href="https://github.com/rdoc/rdoc">RDoc</a>:<ul>
     <li>Make --quiet --no-ignore-invalid still exit for invalid options (b0ddd1fa34afef286d94ea691d1d20c1347464c0)</li>
@@ -138,6 +138,7 @@ layout: default
     <li>Make +NameSpaced::Constant+ work as expected (e6484b31dbb74be65f5ced9d9a45b952f2702b3f)</li>
     <li>Fix lexing of %w'1 2', %r'foo(bar)' and similar syntax (5d3310f4c314719353e6016e91c4e9229b702c67)</li>
     <li>Use a real ruby parser to determine whether code example should be syntax highlighted (46f4c0770cc58ec80e276c19ef82669166be1507)</li>
+    <li>Ignore frozen_string_literal magic comment (653ac306912d28f0aef64d0a14764a168e33148b)</li>
   </ul></li>
   <li><a href="https://github.com/mdp/rotp">rotp</a>: Work with ruby 2.3's --enable-frozen-string-literal (bf647791e5e4f0c340db832a9f92f487bc8cd2a9)</li>
   <li><a href="http://rubini.us/">Rubinius</a>:<ul>
@@ -178,6 +179,9 @@ layout: default
     <li>Fix OpenSSL tests to not require SSLv3 (revision 51649)</li>
     <li>Raise error in openssl extension if selected npn procotol is too long (revision 52227)</li>
     <li>Make ERB work with --enable-frozen-string-literal (revision 53682)</li>
+    <li>Reduce malloc overhead for default buffer size (revision 55686)</li>
+    <li>Add freeze: false option to Object#clone to not freeze the clone (revision 55786)</li>
+    <li>Make all warnings call Warning.warn, instead of printing to stderr (revision 56269)</li>
   </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
     <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
@@ -198,7 +202,9 @@ layout: default
     <li>Add --no-lock option to not write Gemfile.lock (b70cccab4b40bc3ee5a696ba3aacb788ec4da33c)</li>
     <li>Make gem -g Gemfile respect --conservative (9fdffcafd6b8a11246ce44b48372d765dd8719b5)</li>
     <li>Make gem install --local not attempt remote access (4196d4fb3c60c579d12874d53b4a17be702d2bbb)</li>
+    <li>Don't output mkmf.log warning message if compilation did not fail (769290c456e429e70923ffc7bb134711879f79fa, 3b08533fbf475102889c17be848d112f448c98c5)</li>
   </ul></li>
+  <li><a href="https://github.com/sass/sass">sass</a>: Work with ruby 2.3's --enable-frozen-string-literal (3bde119f7976c64dd93b51feea110f7cacaf2d16)</li>
   <li><a href="https://github.com/SciRuby/statsample">stat_sample</a>: Remove bad check in cronbach_alpha calculation (3eaa53e072c71856932533ea584ecec887aca503)</li>
   <li><a href="http://sinatrarb.com/">Sinatra</a>:<ul>
     <li>Fix optional params, i.e. get '/:name?' (2008-04-16)</li>
@@ -214,6 +220,7 @@ layout: default
   <li><a href="https://github.com/rtomayko/tilt">tilt</a>:<ul>
     <li>Sort locals_keys before looking up template in @compiled_method (4e1b2ead0d4d00591f65de80512e5fd31492fab7)</li>
     <li>Work with ruby 2.3's --enable-frozen-string-literal (8af8521e06e2409f50a89ab923fe224d96997bd4)</li>
+    <li>Always sort locals by strings (9a00ee3c67eb660093005abaa692710d78f0a17f)</li>
   </ul></li>
   <li><a href="https://github.com/rails-sqlserver/tiny_tds">tiny_tds</a>: Remove unused variable (a77e1a7fedb6775e31fe6c7615b344a8f7c233eb)</li>
   <li><a href="https://github.com/macournoyer/thin">thin</a>: Work with ruby 2.3's --enable-frozen-string-literal (6e6b1c2ab36b1da998efd82791d25c5d4c948836)</li>
