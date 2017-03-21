@@ -84,6 +84,7 @@ layout: default
     <li>Fix NODE_BITS determination using process.arch (a7be6cafae637238de45b7cade79eab829277cac)</li>
   </ul></li>
   <li><a href="https://github.com/brianc/node-postgres">node-postgres</a>: Handle "NULL" correctly in array parser (bbcbdee584652c8f0f404d45fc8de097a3fbc50e)</li>
+  <li><a href="https://github.com/sparklemotion/nokogiri">nokogiri</a>: Only require ports GCC on OpenBSD if not using system libraries (e2c8c8e51a544f0c14544bb62b0120e4d20b4ddb)</li>
   <li><a href="https://opalrb.org">opal</a>:<ul>
     <li>Don't swallow backtrace on compiler errors (e6f327e5793306a7add19e8714cf5bd51dca4a7e)</li>
     <li>Support tilt integration without sprockets (bac86b48e93cfb1abe101e85c4dc729550480b26, 32d1feb41f4be2838e8155b378490cf5f8f95701, 90a28989f762117b76e0cccde6941f8ecde2af71)</li>
@@ -116,6 +117,7 @@ layout: default
     <li>Add support for serving gzipped static files (421932740bb8395f908759124c2727eab9cd6b54)</li>
     <li>Allow specifying a params hash class to use when parsing (7e7a3890449b5cf5b86929c79373506e5f1909fb)</li>
     <li>Work with ruby 2.3's --enable-frozen-string-literal (483f747cc08fdb96270229e37e09d6467332023f)</li>
+    <li>Add Builder#freeze_app to freeze application and all middleware instances (650659f439720bb88001d3c1d3f91576eaa7c1bd)</li>
   </ul></li>
   <li><a href="https://github.com/rack/rack-contrib">rack-contrib</a>:<ul>
     <li>Add Rack::ResponseCache to rack-contrib (2009-02-08)</li>
@@ -182,6 +184,7 @@ layout: default
     <li>Reduce malloc overhead for default buffer size (revision 55686)</li>
     <li>Add freeze: false option to Object#clone to not freeze the clone (revision 55786)</li>
     <li>Make all warnings call Warning.warn, instead of printing to stderr (revision 56269)</li>
+    <li>Change Kernel#warn to call Warning.warn (revision 57370)</li>
   </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
     <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
@@ -191,6 +194,7 @@ layout: default
     <li>Fix ActionView::Helpers::ActiveRecordHelper::form for when protect_from_forgery is used (revision 8626)</li>
     <li>Fix obvious breakage of Time.=== for Time subclasses (c10fcd26376d9cdc4d4a27b66271ab33413ca18f)</li>
     <li>Reduce string objects created by ActiveRecord::Result#hash_rows from columns * (rows+1) to just columns (3aef5ce9b35a4659379201eb6bb1dba355a83ba4)</li>
+    <li>Change ActionView ERB Handler from Erubis to Erubi (7da8d76206271bdf200ea201f7e5a49afb9bc9e7)</li>
   </ul></li>
   <li><a href="https://github.com/ged/ruby-pg">ruby-pg</a>: Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
   <li><a href="http://rubygems.org/">Rubygems</a>:<ul>
@@ -216,16 +220,25 @@ layout: default
     <li>Unify not_found and error 404 behavior (8f398cda1b4c40c3e1848264fde1312775039f5f)</li>
   </ul></li>
   <li><a href="http://sinatrarb.com/">sinatra-recipes</a>: Remove preload_app config line from example unicorn config (996c5c07b137db8fc78474a1fd9f99107e498214)</li>
+  <li><a href="https://github.com/sparklemotion/sqlite3-ruby">sqlite3-ruby</a>:<ul>
+    <li>Fix handling of error codes (d1fd5fe7e83e279a09244461ebb671b11f9df86d)</li>
+    <li>Add support for extended error codes (e4a145bfe80050cf0b1bb9957952af9b3c55a794)</li>
+  </ul></li>
   <li><a href="https://github.com/shanna/swift">Swift</a>: Fix parsing of fractional timestamps (de921bb13d06b5ab194daad328f5c02a089d5800)</li>
   <li><a href="https://github.com/rtomayko/tilt">tilt</a>:<ul>
     <li>Sort locals_keys before looking up template in @compiled_method (4e1b2ead0d4d00591f65de80512e5fd31492fab7)</li>
     <li>Work with ruby 2.3's --enable-frozen-string-literal (8af8521e06e2409f50a89ab923fe224d96997bd4)</li>
     <li>Always sort locals by strings (9a00ee3c67eb660093005abaa692710d78f0a17f)</li>
+    <li>Add support for Erubi template engine for erb and rhtml files (b7e265282d1e9811fa3ea4935720896920b6d88d)</li>
+    <li>Do not modify BasicObject during template compilation on ruby 2.0+ (448b12e4bd1a230bad56f183b433050edc492c00)</li>
   </ul></li>
   <li><a href="https://github.com/rails-sqlserver/tiny_tds">tiny_tds</a>: Remove unused variable (a77e1a7fedb6775e31fe6c7615b344a8f7c233eb)</li>
   <li><a href="https://github.com/macournoyer/thin">thin</a>: Work with ruby 2.3's --enable-frozen-string-literal (6e6b1c2ab36b1da998efd82791d25c5d4c948836)</li>
   <li><a href="http://unicorn.bogomips.org/">Unicorn</a>:<ul>
     <li>Fix t0011 test on OpenBSD (66c706acfb3cda802bac4629219e3c3e064352ed)</li>
     <li>Ensure tests try to connect to a valid address (2fd5910969419c17aa6a31fb2119eb47a121d497)</li>
+    <li>Add after_worker_exit configuration option (2af91a1fef70d6546ee03760011c170a082db667)</li>
+    <li>Add support for chroot to Worker#user (d4e0ced16710e456cd192784ab106091568ebde3)</li>
+    <li>Add after_worker_ready configuration option (d322345251e15125df896bb8f0a5b53b49a1bf3f)</li>
   </ul></li>
 </ul>
