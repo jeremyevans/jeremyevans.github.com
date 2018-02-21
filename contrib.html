@@ -35,7 +35,10 @@ layout: default
     <li>Fix issue with getaddrinfo for strict systems (577cf3056d9f3088145aea51bbc09a0c90a7695e)</li>
   </ul></li>
   <li><a href="http://linuxdcpp.berlios.de">LinuxDC++</a>: Replaced named semaphore implementation (sem_open) with glib implementation, portability fixes for OpenBSD (2007-11-30)</li>
-  <li><a href="https://github.com/haml/haml">haml</a>: Fix compiler to work without deprecation on ruby 2.4 (3dff3d9004de807225a09fe2ac379020fb4a7cfb)</li>
+  <li><a href="https://github.com/haml/haml">haml</a>:<ul>
+    <li>Fix compiler to work without deprecation on ruby 2.4 (3dff3d9004de807225a09fe2ac379020fb4a7cfb)</li>
+    <li>Fix attempt to modify frozen string (96b49e683d881d62bf0ea0b128457dce8ed0a4a4)</li>
+  </ul></li>
   <li><a href="https://github.com/icalendar/icalendar">iCalendar</a>: Use more specific check for ActiveSupport timezone support (e08db70a366faa640e7de965ee928ac88c0d5b1d)</li>
   <li><a href="https://github.com/jnr/jnr-posix">jnr-posix</a>:<ul>
     <li>Fix FileStat on OpenBSD (1f9b098b22, 06cecb90d2, 1501585457)</li></li>
@@ -52,6 +55,7 @@ layout: default
     <li>Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
     <li>Use mime/types/columnar if available to reduce memory usage (1012d05d4b8bf16b81ec7733da4f8b4956dfbd9d)</li>
     <li>Work with ruby 2.3's --enable-frozen-string-literal (b34d7bde6606d395da707f1d0567b8daafa744df)</li>
+    <li>Use Kernel#warn instead of $stderr.puts (bf418912133d0aee5fdd9a5140fe5fb44cf4091f)</li>
   </ul></li>
   <li><a href="https://github.com/mime-types/ruby-mime-types">mime-types</a>:<ul>
     <li>Reduce memory usage using columnar storage (8ce1add6c66b84ae8e56727a784cce6f1d8dcca5)</li>
@@ -84,7 +88,10 @@ layout: default
     <li>Fix NODE_BITS determination using process.arch (a7be6cafae637238de45b7cade79eab829277cac)</li>
   </ul></li>
   <li><a href="https://github.com/brianc/node-postgres">node-postgres</a>: Handle "NULL" correctly in array parser (bbcbdee584652c8f0f404d45fc8de097a3fbc50e)</li>
-  <li><a href="https://github.com/sparklemotion/nokogiri">nokogiri</a>: Only require ports GCC on OpenBSD if not using system libraries (e2c8c8e51a544f0c14544bb62b0120e4d20b4ddb)</li>
+  <li><a href="https://github.com/sparklemotion/nokogiri">nokogiri</a>:<ul>
+    <li>Only require ports GCC on OpenBSD if not using system libraries (e2c8c8e51a544f0c14544bb62b0120e4d20b4ddb)</li>
+    <li>Fix a couple installation issues on OpenBSD (6b65ecb5d44cb0477dc02d659dcb9bb442222be5)</li>
+  </ul></li>
   <li><a href="https://opalrb.org">opal</a>:<ul>
     <li>Don't swallow backtrace on compiler errors (e6f327e5793306a7add19e8714cf5bd51dca4a7e)</li>
     <li>Support tilt integration without sprockets (bac86b48e93cfb1abe101e85c4dc729550480b26, 32d1feb41f4be2838e8155b378490cf5f8f95701, 90a28989f762117b76e0cccde6941f8ecde2af71)</li>
@@ -185,6 +192,19 @@ layout: default
     <li>Add freeze: false option to Object#clone to not freeze the clone (revision 55786)</li>
     <li>Make all warnings call Warning.warn, instead of printing to stderr (revision 56269)</li>
     <li>Change Kernel#warn to call Warning.warn (revision 57370)</li>
+    <li>Document the Warning module and warn method (revision 58472)</li>
+    <li>Fix CSV to write headers even when there are no rows (revision 59640)</li>
+    <li>Make Time.parse respect timezone offset seconds (revision 60216)</li>
+    <li>Add FrozenError as a subclass of RuntimeError (revision 61131)</li>
+    <li>Add uplevel keyword to Kernel#warn and use it (revision 61155)</li>
+    <li>Add documentation for uplevel keyword to Kernel#warn (revision 62018)</li>
+  </ul></li>
+  <li><a href="https://github.com/ruby/spec">ruby/spec</a>:<ul>
+    <li>OpenBSD does not allow getsid if pid is not in same session (revision 1472757510fa1363c14de5d00738d2ceca82bb84)</li>
+    <li>OpenBSD uses US-ASCII for locale_charmap, similar to FreeBSD (revision 1b3ccfdf06168ffa4aa9a93a4e9c477702ac77de)</li>
+    <li>OpenBSD uses EPROTONOSUPPORT instead of EAFNOSUPPORT (revision 7e0d43db62149fc4fafe41910ecf313744144df4)</li>
+    <li>OpenBSD doesn't have birthtime in File::Stat (revision 0fd75d2149172fb72d22c859def66e3dd2b059aa)</li>
+    <li>OpenBSD uses EISDIR for directory access (revision 4135bc51f35a151d6b0668a2e6b7e77771dcbf2b)</li>
   </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
     <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
@@ -196,6 +216,7 @@ layout: default
     <li>Reduce string objects created by ActiveRecord::Result#hash_rows from columns * (rows+1) to just columns (3aef5ce9b35a4659379201eb6bb1dba355a83ba4)</li>
     <li>Change ActionView ERB Handler from Erubis to Erubi (7da8d76206271bdf200ea201f7e5a49afb9bc9e7)</li>
   </ul></li>
+  <li><a href="https://github.com/ruby-bench/ruby-bench-suite">ruby-bench-suite</a>: Update Sequel benchmark (e023a4c01a173026c2ec6480358757006a9e0c35)</li>
   <li><a href="https://github.com/ged/ruby-pg">ruby-pg</a>: Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
   <li><a href="http://rubygems.org/">Rubygems</a>:<ul>
     <li>Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
@@ -225,6 +246,7 @@ layout: default
     <li>Add support for extended error codes (e4a145bfe80050cf0b1bb9957952af9b3c55a794)</li>
   </ul></li>
   <li><a href="https://github.com/shanna/swift">Swift</a>: Fix parsing of fractional timestamps (de921bb13d06b5ab194daad328f5c02a089d5800)</li>
+  <li><a href="https://github.com/judofyr/temple">temple</a>: Fix issue with --enable-frozen-string-literal (bec5d4ed7f87614f42bdc6a94090cfbaff58f484)</li>
   <li><a href="https://github.com/rtomayko/tilt">tilt</a>:<ul>
     <li>Sort locals_keys before looking up template in @compiled_method (4e1b2ead0d4d00591f65de80512e5fd31492fab7)</li>
     <li>Work with ruby 2.3's --enable-frozen-string-literal (8af8521e06e2409f50a89ab923fe224d96997bd4)</li>
@@ -240,5 +262,7 @@ layout: default
     <li>Add after_worker_exit configuration option (2af91a1fef70d6546ee03760011c170a082db667)</li>
     <li>Add support for chroot to Worker#user (d4e0ced16710e456cd192784ab106091568ebde3)</li>
     <li>Add after_worker_ready configuration option (d322345251e15125df896bb8f0a5b53b49a1bf3f)</li>
+    <li>Add worker_exec configuration option (ea1a4360d66a833d75fbd887388d8cd4fe4ae299)</li>
+    <li>Check for SocketError on first ccc attempt (9cced5d3ace9fc333c95b63f443225887f774a47)</li>
   </ul></li>
 </ul>
