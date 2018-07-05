@@ -198,6 +198,7 @@ layout: default
     <li>Add FrozenError as a subclass of RuntimeError (revision 61131)</li>
     <li>Add uplevel keyword to Kernel#warn and use it (revision 61155)</li>
     <li>Add documentation for uplevel keyword to Kernel#warn (revision 62018)</li>
+    <li>Initialize condattr_monotonic via pthread_condattr_init (revision 63548)</li>
   </ul></li>
   <li><a href="https://github.com/ruby/spec">ruby/spec</a>:<ul>
     <li>OpenBSD does not allow getsid if pid is not in same session (revision 1472757510fa1363c14de5d00738d2ceca82bb84)</li>
@@ -215,9 +216,14 @@ layout: default
     <li>Fix obvious breakage of Time.=== for Time subclasses (c10fcd26376d9cdc4d4a27b66271ab33413ca18f)</li>
     <li>Reduce string objects created by ActiveRecord::Result#hash_rows from columns * (rows+1) to just columns (3aef5ce9b35a4659379201eb6bb1dba355a83ba4)</li>
     <li>Change ActionView ERB Handler from Erubis to Erubi (7da8d76206271bdf200ea201f7e5a49afb9bc9e7)</li>
+    <li>Speed up xor_byte_strings by 70% (8b10a9414dd30817b1fc9c4c8cb7600cca0d15b3)</li>
   </ul></li>
   <li><a href="https://github.com/ruby-bench/ruby-bench-suite">ruby-bench-suite</a>: Update Sequel benchmark (e023a4c01a173026c2ec6480358757006a9e0c35)</li>
-  <li><a href="https://github.com/ged/ruby-pg">ruby-pg</a>: Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
+  <li><a href="https://github.com/ged/ruby-pg">ruby-pg</a>:<ul>
+    <li>Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
+    <li>Add a text decoder for inet/cidr written in C (c65cc645505cb5bfeec039faee6a6d18308dee85)</li>
+    <li>Add numeric decoder written in C (d4ae41bb8fd447c92ef9c8810ec932acd03e0293)</li>
+  </ul></li>
   <li><a href="http://rubygems.org/">Rubygems</a>:<ul>
     <li>Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
     <li>Handle gem specification encoding that doesn't convert to internal encoding (cedac8117d5fd10e2cc6dbd501894733b0e6e3f7)</li>
