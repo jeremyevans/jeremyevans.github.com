@@ -69,7 +69,7 @@ layout: default
     <li>Make assert_raises to assume StandardError if given no arguments (f1a8267c53b492917ef00794bb81bc6c97347175)</li>
     <li>Make assert_raises handle subclasses of given classes, similar to rescue (6fcecb1711535292c1fcb9abeadc1e43879b57b6)</li>
     <li>Fix non-proc-oriented expectations on proc targets (78003e268f112dbb496d3d96ceed6a4c1f597c4a)</li>
-    <li>Return early if there are no filtered methods (35ec0145be4ee09bd7b84088c809d27ce42ce746)<li>
+    <li>Return early if there are no filtered methods (35ec0145be4ee09bd7b84088c809d27ce42ce746)</li>
   </ul></li>
   <li><a href="https://github.com/seattlerb/minitest-bisect">minitest-bisect</a><ul>
     <li>Work correctly when default shell is not bash (9acd3a3dc7626c363924041e38951141dd339679)</li>
@@ -119,6 +119,7 @@ layout: default
   <li><a href="https://github.com/oysttyer/oysttyer">oysttyer</a>: Add --http1.1 flag to work with curl 7.47.0+ (dc08746bea1d59abd4c826628f70f6e4aea2f8ef)</li>
   <li><a href="https://github.com/dockyard/pg_array_parser">pg_array_parser</a>: Fix handling of escaped backslashes, Refactor the parser (f0529a02fbcf2203cd7ad5bd36ea897406c0cd76)</li>
   <li><a href="http://polarssl.org">PolarSSL</a>: Fix build on OpenBSD (revision 1066)</li>
+  <li><a href="http://puma.io/">Puma</a>: Bump required_ruby_version to 1.9.3 (b05ddf98c8d30c7c1148d9fb313500024b0ce7f0)</li>
   <li><a href="http://rack.github.io/">Rack</a>:<ul>
     <li>Add SCGI Handler (2008-01-25)</li>
     <li>Add support for serving gzipped static files (421932740bb8395f908759124c2727eab9cd6b54)</li>
@@ -139,7 +140,7 @@ layout: default
     <li>Fix bad rescue statements in a couple tests (a5830080b3cf6011d737342462700f7c5819942a)</li>
     <li>Mark some tests as linux-only (499e63e2666f88134f7d47f3bcfdfedd72396e70)</li>
   </ul></li>
-  <li><a href="http://puma.io/">Puma</a>: Bump required_ruby_version to 1.9.3 (b05ddf98c8d30c7c1148d9fb313500024b0ce7f0)</li>
+  <li><a href="https://github.com/ruby/rake">Rake</a>: Use simpler RUBY_PLATFORM check for java in cpu_counter.rb (c376a932f93ac0f2dcac66002df71478a315ba42)</li>
   <li><a href="http://ramaze.net/">Ramaze</a>: Add SCGI Adapter (2008-01-28)</li>
   <li><a href="https://github.com/rdoc/rdoc">RDoc</a>:<ul>
     <li>Make --quiet --no-ignore-invalid still exit for invalid options (b0ddd1fa34afef286d94ea691d1d20c1347464c0)</li>
@@ -199,6 +200,8 @@ layout: default
     <li>Add uplevel keyword to Kernel#warn and use it (revision 61155)</li>
     <li>Add documentation for uplevel keyword to Kernel#warn (revision 62018)</li>
     <li>Initialize condattr_monotonic via pthread_condattr_init (revision 63548)</li>
+    <li>Support bcrypt password hashing in webrick (revision 64060)</li>
+    <li>Support optional inherit argument for Module#method_defined? (revision 64337)</li>
   </ul></li>
   <li><a href="https://github.com/ruby/spec">ruby/spec</a>:<ul>
     <li>OpenBSD does not allow getsid if pid is not in same session (revision 1472757510fa1363c14de5d00738d2ceca82bb84)</li>
@@ -219,6 +222,7 @@ layout: default
     <li>Speed up xor_byte_strings by 70% (8b10a9414dd30817b1fc9c4c8cb7600cca0d15b3)</li>
   </ul></li>
   <li><a href="https://github.com/ruby-bench/ruby-bench-suite">ruby-bench-suite</a>: Update Sequel benchmark (e023a4c01a173026c2ec6480358757006a9e0c35)</li>
+  <li><a href="https://github.com/ruby/openssl">ruby-openssl</a>: Move rb_global_variable call to directly after assignment (16156285b62e5395e25eec478b66d1cd4c4db412)</li>
   <li><a href="https://github.com/ged/ruby-pg">ruby-pg</a>:<ul>
     <li>Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
     <li>Add a text decoder for inet/cidr written in C (c65cc645505cb5bfeec039faee6a6d18308dee85)</li>
@@ -271,5 +275,8 @@ layout: default
     <li>Add after_worker_ready configuration option (d322345251e15125df896bb8f0a5b53b49a1bf3f)</li>
     <li>Add worker_exec configuration option (ea1a4360d66a833d75fbd887388d8cd4fe4ae299)</li>
     <li>Check for SocketError on first ccc attempt (9cced5d3ace9fc333c95b63f443225887f774a47)</li>
+    <li>Make Worker#user support different process primary group and log file group (47fddb53aa0b7763f353ba515cf3fb5b2059f4f7)</li>
+    <li>Support default_middleware configuration option (5985dd50a9bd72388dd5ca4886d6dffc083f87d4)</li>
   </ul></li>
+  <li><a href="https://github.com/fny/xorcist">xorcist</a>: Simplify xorcist.c (5bf56fd163bd4226131f21885fabaeeac09a32e6)</li>
 </ul>
