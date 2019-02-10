@@ -203,6 +203,10 @@ layout: default
     <li>Support bcrypt password hashing in webrick (revision 64060)</li>
     <li>Support optional inherit argument for Module#method_defined? (revision 64337)</li>
     <li>Remove HEAP_ALIGN_LOG setting in configure.ac for OpenBSD/MirOS (revision 66086)</li>
+    <li>Fix test failure if ENV["USER"] doesn't match Process.euid (revision 66428)</li>
+    <li>Freeze hash literals embedded in duphash instructions (revision 66464)</li>
+    <li>Fix Random.urandom in a chroot on OpenBSD (revision 66699)</li>
+    <li>Fix MJIT on OpenBSD when the GCC compiler is used (revision 66869)</li>
   </ul></li>
   <li><a href="https://github.com/ruby/spec">ruby/spec</a>:<ul>
     <li>OpenBSD does not allow getsid if pid is not in same session (revision 1472757510fa1363c14de5d00738d2ceca82bb84)</li>
@@ -239,6 +243,9 @@ layout: default
     <li>Make gem -g Gemfile respect --conservative (9fdffcafd6b8a11246ce44b48372d765dd8719b5)</li>
     <li>Make gem install --local not attempt remote access (4196d4fb3c60c579d12874d53b4a17be702d2bbb)</li>
     <li>Don't output mkmf.log warning message if compilation did not fail (769290c456e429e70923ffc7bb134711879f79fa, 3b08533fbf475102889c17be848d112f448c98c5)</li>
+    <li>Fix tests when --program-suffix and similar ruby configure options are used (e5f2fbe51c78a1ab62ae9bd7a7b58616707e5f8c)</li>
+    <li>Fix another test when --program-suffix and similar ruby configure options are used (763bef10988f7a0283704e5f80aeb8ed79179f05)</li>
+    <li>Fix tests when ruby --program-suffix is used without rubygems --format-executable (154c79cc6815c64db544c1376a6ab7a23090f03b)</li>
   </ul></li>
   <li><a href="https://github.com/sass/sass">sass</a>: Work with ruby 2.3's --enable-frozen-string-literal (3bde119f7976c64dd93b51feea110f7cacaf2d16)</li>
   <li><a href="https://github.com/SciRuby/statsample">stat_sample</a>: Remove bad check in cronbach_alpha calculation (3eaa53e072c71856932533ea584ecec887aca503)</li>
