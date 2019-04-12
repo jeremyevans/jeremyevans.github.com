@@ -56,6 +56,8 @@ layout: default
     <li>Use mime/types/columnar if available to reduce memory usage (1012d05d4b8bf16b81ec7733da4f8b4956dfbd9d)</li>
     <li>Work with ruby 2.3's --enable-frozen-string-literal (b34d7bde6606d395da707f1d0567b8daafa744df)</li>
     <li>Use Kernel#warn instead of $stderr.puts (bf418912133d0aee5fdd9a5140fe5fb44cf4091f)</li>
+    <li>Remove section on testing against mime-types versions from CONTRIBUTING (7b67b3d06c8031e0bf2c31a392bac22bd073a7bd)</li>
+    <li>Do not mutate argument hashes in retriever methods (fb53fb369eb2bf0494ac70675970c90cdcc3f495)</li>
   </ul></li>
   <li><a href="https://github.com/mime-types/ruby-mime-types">mime-types</a>:<ul>
     <li>Reduce memory usage using columnar storage (8ce1add6c66b84ae8e56727a784cce6f1d8dcca5)</li>
@@ -207,6 +209,7 @@ layout: default
     <li>Freeze hash literals embedded in duphash instructions (revision 66464)</li>
     <li>Fix Random.urandom in a chroot on OpenBSD (revision 66699)</li>
     <li>Fix MJIT on OpenBSD when the GCC compiler is used (revision 66869)</li>
+    <li>Fix PTY.open on OpenBSD (revision 67183)</li>
   </ul></li>
   <li><a href="https://github.com/ruby/spec">ruby/spec</a>:<ul>
     <li>OpenBSD does not allow getsid if pid is not in same session (revision 1472757510fa1363c14de5d00738d2ceca82bb84)</li>
@@ -225,6 +228,7 @@ layout: default
     <li>Reduce string objects created by ActiveRecord::Result#hash_rows from columns * (rows+1) to just columns (3aef5ce9b35a4659379201eb6bb1dba355a83ba4)</li>
     <li>Change ActionView ERB Handler from Erubis to Erubi (7da8d76206271bdf200ea201f7e5a49afb9bc9e7)</li>
     <li>Speed up xor_byte_strings by 70% (8b10a9414dd30817b1fc9c4c8cb7600cca0d15b3)</li>
+    <li>Remove roflscaling (22d82b667f9d474c56013a40d61cf36891ba4bb3, 6fe624f50d2572c6f7ac3062e9317abead07863e)</li>
   </ul></li>
   <li><a href="https://github.com/ruby-bench/ruby-bench-suite">ruby-bench-suite</a>: Update Sequel benchmark (e023a4c01a173026c2ec6480358757006a9e0c35)</li>
   <li><a href="https://github.com/ruby/openssl">ruby-openssl</a>: Move rb_global_variable call to directly after assignment (16156285b62e5395e25eec478b66d1cd4c4db412)</li>
@@ -265,6 +269,7 @@ layout: default
     <li>Add support for extended error codes (e4a145bfe80050cf0b1bb9957952af9b3c55a794)</li>
   </ul></li>
   <li><a href="https://github.com/shanna/swift">Swift</a>: Fix parsing of fractional timestamps (de921bb13d06b5ab194daad328f5c02a089d5800)</li>
+  <li><a href="https://github.com/TechEmpower/FrameworkBenchmarks"></a>: Update roda-sequel to use correct block arity (046e1b40c6c6776e9221b028813abaf6fc86a1b4)</li>
   <li><a href="https://github.com/judofyr/temple">temple</a>: Fix issue with --enable-frozen-string-literal (bec5d4ed7f87614f42bdc6a94090cfbaff58f484)</li>
   <li><a href="https://github.com/rtomayko/tilt">tilt</a>:<ul>
     <li>Sort locals_keys before looking up template in @compiled_method (4e1b2ead0d4d00591f65de80512e5fd31492fab7)</li>
@@ -285,6 +290,7 @@ layout: default
     <li>Check for SocketError on first ccc attempt (9cced5d3ace9fc333c95b63f443225887f774a47)</li>
     <li>Make Worker#user support different process primary group and log file group (47fddb53aa0b7763f353ba515cf3fb5b2059f4f7)</li>
     <li>Support default_middleware configuration option (5985dd50a9bd72388dd5ca4886d6dffc083f87d4)</li>
+    <li>Fix unicorn_rails to work with change in arity to Unicorn.builder lambda (6836d0674efdb1a6b79953285f10d8edd7e20432)</li>
   </ul></li>
   <li><a href="https://github.com/fny/xorcist">xorcist</a>: Simplify xorcist.c (5bf56fd163bd4226131f21885fabaeeac09a32e6)</li>
 </ul>
