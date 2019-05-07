@@ -51,6 +51,7 @@ layout: default
     <li>Make compiling cext support on OpenBSD not assume FreeBSD (4a7ad99823fa43c4a514)</li>
     <li>Fix prototype of rb_time_new to match definition (09e87fd7dcec1487731a56111ed4c4a6b48b1ba7)</li>
   </ul></li>
+  <li><a href="https://github.com/jruby/jruby-launcher">jruby-launcher</a>: Use --add-opens on Java 9+ (44189faec13d0a69d2ce926b370827d27b1968eb, 74c3ab100b792cefaf7f57f70b083b6dfeed6887)</li>
   <li><a href="https://github.com/mikel/mail">mail</a>:<ul>
     <li>Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
     <li>Use mime/types/columnar if available to reduce memory usage (1012d05d4b8bf16b81ec7733da4f8b4956dfbd9d)</li>
@@ -210,13 +211,16 @@ layout: default
     <li>Fix Random.urandom in a chroot on OpenBSD (revision 66699)</li>
     <li>Fix MJIT on OpenBSD when the GCC compiler is used (revision 66869)</li>
     <li>Fix PTY.open on OpenBSD (revision 67183)</li>
+    <li>Always mark the string returned by File.realpath as tainted (a15f7dd1fb1148c3d586238ee6907875f2e40379)</li>
+    <li>Fix a case where numbered parameters should not be allowed (b8f3be295b694964e88960c0228459b8aadd114a)</li>
+    <li>Fix use of numbered parameter inside proc that is default value of optarg (0c0ed1cee8aa8c538cc81f0daef26737eb2d5d0d, bb4ac7a6506971dc34b5656f1a69aadc7299fcab)</li>
   </ul></li>
   <li><a href="https://github.com/ruby/spec">ruby/spec</a>:<ul>
-    <li>OpenBSD does not allow getsid if pid is not in same session (revision 1472757510fa1363c14de5d00738d2ceca82bb84)</li>
-    <li>OpenBSD uses US-ASCII for locale_charmap, similar to FreeBSD (revision 1b3ccfdf06168ffa4aa9a93a4e9c477702ac77de)</li>
-    <li>OpenBSD uses EPROTONOSUPPORT instead of EAFNOSUPPORT (revision 7e0d43db62149fc4fafe41910ecf313744144df4)</li>
-    <li>OpenBSD doesn't have birthtime in File::Stat (revision 0fd75d2149172fb72d22c859def66e3dd2b059aa)</li>
-    <li>OpenBSD uses EISDIR for directory access (revision 4135bc51f35a151d6b0668a2e6b7e77771dcbf2b)</li>
+    <li>OpenBSD does not allow getsid if pid is not in same session (1472757510fa1363c14de5d00738d2ceca82bb84)</li>
+    <li>OpenBSD uses US-ASCII for locale_charmap, similar to FreeBSD (1b3ccfdf06168ffa4aa9a93a4e9c477702ac77de)</li>
+    <li>OpenBSD uses EPROTONOSUPPORT instead of EAFNOSUPPORT (7e0d43db62149fc4fafe41910ecf313744144df4)</li>
+    <li>OpenBSD doesn't have birthtime in File::Stat (0fd75d2149172fb72d22c859def66e3dd2b059aa)</li>
+    <li>OpenBSD uses EISDIR for directory access (4135bc51f35a151d6b0668a2e6b7e77771dcbf2b)</li>
   </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
     <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
