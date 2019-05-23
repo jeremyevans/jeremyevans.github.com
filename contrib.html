@@ -143,7 +143,6 @@ layout: default
     <li>Fix bad rescue statements in a couple tests (a5830080b3cf6011d737342462700f7c5819942a)</li>
     <li>Mark some tests as linux-only (499e63e2666f88134f7d47f3bcfdfedd72396e70)</li>
   </ul></li>
-  <li><a href="https://github.com/ruby/rake">Rake</a>: Use simpler RUBY_PLATFORM check for java in cpu_counter.rb (c376a932f93ac0f2dcac66002df71478a315ba42)</li>
   <li><a href="http://ramaze.net/">Ramaze</a>: Add SCGI Adapter (2008-01-28)</li>
   <li><a href="https://github.com/rdoc/rdoc">RDoc</a>:<ul>
     <li>Make --quiet --no-ignore-invalid still exit for invalid options (b0ddd1fa34afef286d94ea691d1d20c1347464c0)</li>
@@ -166,63 +165,6 @@ layout: default
     <li>Fix build on OpenBSD (59e0f1d63329ca5a86f5)</li>
     <li>Add failing spec for String#partition with regexp setting global vars (cc92e526e43ba50579d53f3bd444473fe667cfb4)</li>
   </ul></li>
-  <li><a href="http://www.ruby-lang.org">Ruby</a>:<ul>
-    <li>Fix DateTime#jisx0301 for dates before the Meiji period (revision 28950)</li> 
-    <li>Fix Date#rfc3339 to include the time (revision 29069)</li> 
-    <li>Fix test_aset in test_env.rb to work on OpenBSD (revision 29201)</li> 
-    <li>Make inspect_peercred in ext/socket/option.c work on OpenBSD (revision 29206)</li> 
-    <li>Fix oversight of replacing RUBY_INSTALL_NAME with RUBY_SO_NAME on OpenBSD (revision 29298)</li> 
-    <li>Fix SystemStackError when trying to format a large block of text in REXML (revision 29827)</li>
-    <li>Make addr2line.c compile on OpenBSD (revision 30517)</li>
-    <li>Fix inadvertent symbol creation in reflection methods (revision 32621)</li>
-    <li>Fix more inadvertent symbol creation in reflection methods (revision 32645)</li>
-    <li>Fix respond_to?(String) case where symbol doesn't exist and respond_to_missing? is overridden (revision 32685)</li>
-    <li>Fix even more inadvertent symbol creation in reflection methods (revision 32686)</li>
-    <li>Skip some tests on OpenBSD (revision 32707)</li>
-    <li>Use -pthread when linking on OpenBSD (revision 32730)</li>
-    <li>Remove unused variable (revision 32748)</li>
-    <li>Fix rake tests if ruby is not installed as "ruby" (revision 32797)</li>
-    <li>Fix inadvertent symbol creation in send and related methods (revision 33419)</li>
-    <li>Make Rinda::RingFinger work correctly on OpenBSD and NetBSD (revision 44492)</li>
-    <li>Fix --with-tcllib and --with-tklib configure options (revision 44574)</li>
-    <li>Handle IP_MULTICAST_LOOP and IP_MULTICAST_TTL socket options correctly on OpenBSD (revision 44638)</li>
-    <li>Fix bad backport patch in REXML tests (revision 48171)</li>
-    <li>Use smaller buffer for sendmsg in tests (revision 51288)</li>
-    <li>Fix LocalJumpErrors being raised in the OpenSSL tests (revision 51531)</li>
-    <li>Fix OpenSSL tests to not require SSLv3 (revision 51649)</li>
-    <li>Raise error in openssl extension if selected npn procotol is too long (revision 52227)</li>
-    <li>Make ERB work with --enable-frozen-string-literal (revision 53682)</li>
-    <li>Reduce malloc overhead for default buffer size (revision 55686)</li>
-    <li>Add freeze: false option to Object#clone to not freeze the clone (revision 55786)</li>
-    <li>Make all warnings call Warning.warn, instead of printing to stderr (revision 56269)</li>
-    <li>Change Kernel#warn to call Warning.warn (revision 57370)</li>
-    <li>Document the Warning module and warn method (revision 58472)</li>
-    <li>Fix CSV to write headers even when there are no rows (revision 59640)</li>
-    <li>Make Time.parse respect timezone offset seconds (revision 60216)</li>
-    <li>Add FrozenError as a subclass of RuntimeError (revision 61131)</li>
-    <li>Add uplevel keyword to Kernel#warn and use it (revision 61155)</li>
-    <li>Add documentation for uplevel keyword to Kernel#warn (revision 62018)</li>
-    <li>Initialize condattr_monotonic via pthread_condattr_init (revision 63548)</li>
-    <li>Support bcrypt password hashing in webrick (revision 64060)</li>
-    <li>Support optional inherit argument for Module#method_defined? (revision 64337)</li>
-    <li>Remove HEAP_ALIGN_LOG setting in configure.ac for OpenBSD/MirOS (revision 66086)</li>
-    <li>Fix test failure if ENV["USER"] doesn't match Process.euid (revision 66428)</li>
-    <li>Freeze hash literals embedded in duphash instructions (revision 66464)</li>
-    <li>Fix Random.urandom in a chroot on OpenBSD (revision 66699)</li>
-    <li>Fix MJIT on OpenBSD when the GCC compiler is used (revision 66869)</li>
-    <li>Fix PTY.open on OpenBSD (revision 67183)</li>
-    <li>Always mark the string returned by File.realpath as tainted (a15f7dd1fb1148c3d586238ee6907875f2e40379)</li>
-    <li>Fix a case where numbered parameters should not be allowed (b8f3be295b694964e88960c0228459b8aadd114a)</li>
-    <li>Fix use of numbered parameter inside proc that is default value of optarg (0c0ed1cee8aa8c538cc81f0daef26737eb2d5d0d, bb4ac7a6506971dc34b5656f1a69aadc7299fcab)</li>
-  </ul></li>
-  <li><a href="https://github.com/ruby/logger">ruby/logger</a>: Set filename when initializing logger with a File object (bd367aff1228f96157ec15b8425890430d77ceb4)<ul>
-  <li><a href="https://github.com/ruby/spec">ruby/spec</a>:<ul>
-    <li>OpenBSD does not allow getsid if pid is not in same session (1472757510fa1363c14de5d00738d2ceca82bb84)</li>
-    <li>OpenBSD uses US-ASCII for locale_charmap, similar to FreeBSD (1b3ccfdf06168ffa4aa9a93a4e9c477702ac77de)</li>
-    <li>OpenBSD uses EPROTONOSUPPORT instead of EAFNOSUPPORT (7e0d43db62149fc4fafe41910ecf313744144df4)</li>
-    <li>OpenBSD doesn't have birthtime in File::Stat (0fd75d2149172fb72d22c859def66e3dd2b059aa)</li>
-    <li>OpenBSD uses EISDIR for directory access (4135bc51f35a151d6b0668a2e6b7e77771dcbf2b)</li>
-  </ul></li>
   <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
     <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
     <li>Alias the has_and_belongs_to_many join table on eager includes (revision 3895)</li>
@@ -236,7 +178,6 @@ layout: default
     <li>Remove roflscaling (22d82b667f9d474c56013a40d61cf36891ba4bb3, 6fe624f50d2572c6f7ac3062e9317abead07863e)</li>
   </ul></li>
   <li><a href="https://github.com/ruby-bench/ruby-bench-suite">ruby-bench-suite</a>: Update Sequel benchmark (e023a4c01a173026c2ec6480358757006a9e0c35)</li>
-  <li><a href="https://github.com/ruby/openssl">ruby-openssl</a>: Move rb_global_variable call to directly after assignment (16156285b62e5395e25eec478b66d1cd4c4db412)</li>
   <li><a href="https://github.com/ged/ruby-pg">ruby-pg</a>:<ul>
     <li>Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
     <li>Add a text decoder for inet/cidr written in C (c65cc645505cb5bfeec039faee6a6d18308dee85)</li>
