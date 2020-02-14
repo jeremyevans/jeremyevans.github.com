@@ -21,6 +21,7 @@ layout: default
   </ul></li>
   <li><a href="https://github.com/luislavena/bench-micro">bench-micro</a>: Try to make benchmarks more fair (037fa0add723a54ef91d4d63f00863771beb2097)</li>
   <li><a href="http://www.bittorrent.com">BitTorrent</a>: Allowed --bind to affect connections to the tracker as well as peers (in BitTorrent &gt;= 4.2.1)</li>
+  <li><a href="https://github.com/bundler/bundler">bundler</a>: Fix a couple issues related to keyword argument separation (8b61b4b380b734a5cedc31985902c45971255e3b)</li>
   <li><a href="https://github.com/wvanbergen/chunky_png">chunky_png</a>: Work with ruby 2.3's --enable-frozen-string-literal (444edce952d76a2eb1a9a7964da9ea403e4add0e)</li>
   <li><a href="http://contributor-covenant.org/">Contributor Covenant</a>: Add missing section end tag to index page (a98433469a8798986e8d5279bdf42a39c5cca940)</li>
   <li><a href="http://datamapper.org/">DataMapper</a>: Added 't' and 'f' true and false aliases to Sqlite3 adapter (revision 740)</li>
@@ -73,6 +74,7 @@ layout: default
     <li>Make assert_raises handle subclasses of given classes, similar to rescue (6fcecb1711535292c1fcb9abeadc1e43879b57b6)</li>
     <li>Fix non-proc-oriented expectations on proc targets (78003e268f112dbb496d3d96ceed6a4c1f597c4a)</li>
     <li>Return early if there are no filtered methods (35ec0145be4ee09bd7b84088c809d27ce42ce746)</li>
+    <li>Add minitest-global_expectations to README (5d95229abd914ed3efd4dd53203688c80cb0d866)</li>
   </ul></li>
   <li><a href="https://github.com/seattlerb/minitest-bisect">minitest-bisect</a><ul>
     <li>Work correctly when default shell is not bash (9acd3a3dc7626c363924041e38951141dd339679)</li>
@@ -123,13 +125,6 @@ layout: default
   <li><a href="https://github.com/dockyard/pg_array_parser">pg_array_parser</a>: Fix handling of escaped backslashes, Refactor the parser (f0529a02fbcf2203cd7ad5bd36ea897406c0cd76)</li>
   <li><a href="http://polarssl.org">PolarSSL</a>: Fix build on OpenBSD (revision 1066)</li>
   <li><a href="http://puma.io/">Puma</a>: Bump required_ruby_version to 1.9.3 (b05ddf98c8d30c7c1148d9fb313500024b0ce7f0)</li>
-  <li><a href="http://rack.github.io/">Rack</a>:<ul>
-    <li>Add SCGI Handler (2008-01-25)</li>
-    <li>Add support for serving gzipped static files (421932740bb8395f908759124c2727eab9cd6b54)</li>
-    <li>Allow specifying a params hash class to use when parsing (7e7a3890449b5cf5b86929c79373506e5f1909fb)</li>
-    <li>Work with ruby 2.3's --enable-frozen-string-literal (483f747cc08fdb96270229e37e09d6467332023f)</li>
-    <li>Add Builder#freeze_app to freeze application and all middleware instances (650659f439720bb88001d3c1d3f91576eaa7c1bd)</li>
-  </ul></li>
   <li><a href="https://github.com/rack/rack-contrib">rack-contrib</a>:<ul>
     <li>Add Rack::ResponseCache to rack-contrib (2009-02-08)</li>
     <li>Add Rack::RelativeRedirect to rack-contrib (2009-02-08)</li>
@@ -197,6 +192,7 @@ layout: default
     <li>Fix another test when --program-suffix and similar ruby configure options are used (763bef10988f7a0283704e5f80aeb8ed79179f05)</li>
     <li>Fix tests when ruby --program-suffix is used without rubygems --format-executable (154c79cc6815c64db544c1376a6ab7a23090f03b)</li>
     <li>Fix setup command if format_executable is true by default (ec3c64a3de4048bec588896819df647c616cc6a8)</li>
+    <li>Fix Kernel#warn override (2041b591d17f8b4a2d7139c2f0f0fcb7621615cf)</li>
   </ul></li>
   <li><a href="https://github.com/sass/sass">sass</a>: Work with ruby 2.3's --enable-frozen-string-literal (3bde119f7976c64dd93b51feea110f7cacaf2d16)</li>
   <li><a href="https://github.com/SciRuby/statsample">stat_sample</a>: Remove bad check in cronbach_alpha calculation (3eaa53e072c71856932533ea584ecec887aca503)</li>
@@ -224,6 +220,8 @@ layout: default
     <li>Always sort locals by strings (9a00ee3c67eb660093005abaa692710d78f0a17f)</li>
     <li>Add support for Erubi template engine for erb and rhtml files (b7e265282d1e9811fa3ea4935720896920b6d88d)</li>
     <li>Do not modify BasicObject during template compilation on ruby 2.0+ (448b12e4bd1a230bad56f183b433050edc492c00)</li>
+    <li>Fix warning when using yield in templates on ruby 2.7 (dbb4df94e5bc6e533fc2ed09b2fd70df39c049c3, be625c89a9e3717fe23f90f9ded0c8a503b66a7d, b0b84e4ce7d963d27cda5a908d49eaa4204fda3f)</li>
+    <li>Handle rendering BasicObject instances (7811a2e8e3e2acf122960ec43c30744cd8bc12a2)</li>
   </ul></li>
   <li><a href="https://github.com/rails-sqlserver/tiny_tds">tiny_tds</a>: Remove unused variable (a77e1a7fedb6775e31fe6c7615b344a8f7c233eb)</li>
   <li><a href="https://github.com/macournoyer/thin">thin</a>: Work with ruby 2.3's --enable-frozen-string-literal (6e6b1c2ab36b1da998efd82791d25c5d4c948836)</li>
