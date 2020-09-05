@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Keyword Arguments: Past, Present, and Future</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1280px;
+          height: 720px;
+        }
+        #footer { width: 1261px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+      <script type="text/javascript" src="./js/sh_lang/sh_c.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+  <link rel="stylesheet" href="./css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src="./js/presenter.js"></script>
+
+    <style type="text/css">
+      #preview div.zoomed { zoom: 72%;}
+    </style>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/1">
+
+<div class="notes">
+<p>Hello everyone. In this presentation, I will discuss the history of keyword arguments, their current implementation, how keyword argument separation was handled, and future improvements to keyword arguments.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 40px; left: 16px;">Keyword Arguments:</h1><h1 class="red" style="font-size: 80px; position: absolute; top: 112px; left: 40px;">Past<span class="blue">,</span> Present<span class="blue">,</span> and Future</h1><h1 class="blue" style="font-size: 72px; position: absolute; top: 508px; right: 60px; text-align: right;">
+<span class="red">Ruby</span>Kaigi 2020</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/2">
+
+<div class="notes">
+<p>My name is Jeremy Evans. One of my main focuses since becoming a Ruby committer last year has been implementing keyword argument separation.</p>
+</div>
+
+<p><img class="profile-pic" src="./file/jeremy.jpg" style="position: absolute; top: 128px; left: 64px;"/>
+<h1 class="red" style="font-size: 48px; position: absolute; top: 288px; left: 500px;">GitHub: <span class="blue mono">jeremyevans</span>
+</h1><h1 class="red" style="font-size: 48px; position: absolute; top: 328px; left: 500px;">Twitter: <span class="blue mono">@jeremyevans0</span>
+</h1></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/3">
+
+<div class="notes">
+<p>Back when I started Ruby, around the time of Ruby 1.8, Ruby didn&#x2019;t have keyword arguments.</p>
+</div>
+<h1 class="blue" style="font-size: 280px; position: absolute; top: 200px; left: 100px;">Past</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/4">
+
+<div class="notes">
+<p>The book I used to learn Ruby programming was the first version of Programming Ruby. This book was released in December 2000 and covers Ruby 1.6. The book specifically mentions keyword arguments.</p>
+</div>
+
+<p><img src="./file/programming-ruby.jpg" style="position: absolute; top: 50px; left: 50px; width: 560px; height: 560px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/5">
+
+<div class="notes">
+<p>It states that Ruby 1.6 does not have keyword arguments (although they are scheduled to be implemented in Ruby 1.8). Looks like the schedule slipped by about 10 years, since Ruby 1.8 was released in 2003, and Ruby did not support keyword arguments until 2013, when Ruby 2.0 was released.</p>
+</div>
+
+<p><img src="./file/programming-ruby.jpg" style="position: absolute; top: 50px; left: 50px; width: 560px; height: 560px;"/>
+<blockquote style="position: absolute; top: 100px; left: 650px; font-size: 50px; line-height: 75px;">Ruby 1.6 does not have keyword arguments (<span class="red">although they are scheduled to be implemented in Ruby 1.8</span>).</blockquote></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/6">
+
+<div class="notes">
+<p>Shortly after that quote, Programming Ruby talks about how you can use hashes to achieve the same effect as keyword arguments. If you have a method like this, and you want to add keyword arguments to it,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+
+
+aList.createSearch(
+  "short jazz songs"
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/7">
+
+<div class="notes">
+<p>You can pass a hash of values. It does mention this is slightly clunky.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+
+
+aList.createSearch(
+  "short jazz songs", <b class="block">{
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+}</b> )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/8">
+
+<div class="notes">
+<p>Mostly because these braces could be mistaken for a block. However, it also mentions that the braces are optional if the hash is the last argument.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+
+
+aList.createSearch(
+  "short jazz songs", <b>{</b>
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+<b>}</b> )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/9">
+
+<div class="notes">
+<p>Resulting in this code. So while older versions of Ruby didn&#x2019;t support keyword arguments, they provided something that handled pretty much the same need. This same syntax on the caller side can work when using keyword arguments in Ruby 2.7 and Ruby 3.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+
+
+aList.createSearch(
+  "short jazz songs",
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/10">
+
+<div class="notes">
+<p>Before keyword arguments were supported, and hashes are used instead, you would list the hash as a normal parameter. This is the example given in Programming Ruby.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+<b class="block">def createSearch(name, params)
+end</b>
+aList.createSearch(
+  "short jazz songs",
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/11">
+
+<div class="notes">
+<p>However, this makes the keywords a required parameter. In general, it is much more common for such hashes to be optional parameters.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(name, <b>params</b>)
+end
+aList.createSearch(
+  "short jazz songs",
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/12">
+
+<div class="notes">
+<p>So the typical case for older Ruby code would be to use an empty hash as the default value of the parameter. This does allocate a new hash every time the method is called without an options hash, which can slow things down.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(name, <b>params={}</b>)
+end
+aList.createSearch(
+  "short jazz songs",
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/13">
+
+<div class="notes">
+<p>So high performance code generally would setup a frozen hash constant,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code><b>OPTS = {}.freeze</b>
+def createSearch(name, params={})
+end
+aList.createSearch(
+  "short jazz songs",
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/14">
+
+<div class="notes">
+<p>and use that constant as the default value of the hash parameter. This way calling the method without an options hash can avoid allocations.|Let&#x2019;s assume that this was our existing method in our Ruby 1.8 codebase, and Ruby 2.0 was released and we want to change the option hash to keyword arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>OPTS = {}.freeze
+def createSearch(name, params=<b>OPTS</b>)
+end
+aList.createSearch(
+  "short jazz songs",
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/15">
+
+<div class="notes">
+<p>In the method definition, we would replace the optional hash argument with separate keyword arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def createSearch(name,
+  <b class="block">genre: nil,
+  durationLessThan: nil</b>) end
+aList.createSearch(
+  "short jazz songs",
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/16">
+
+<div class="notes">
+<p>The keyword arguments must have default values, because when keyword arguments were introduced in Ruby 2.0, all keyword arguments were optional. Required keyword arguments were not introduced until Ruby 2.1.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def createSearch(name,
+  genre: <b>nil</b>,
+  durationLessThan: <b>nil</b>) end
+aList.createSearch(
+  "short jazz songs",
+  'genre'            =&gt; "jazz",
+  'durationLessThan' =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/17">
+
+<div class="notes">
+<p>This change requires changing callers of the method. In the Programming Ruby example, string keys are used, and keyword arguments in Ruby 2.0 only supported symbol keys.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def createSearch(name,
+  genre: nil,
+  durationLessThan: nil) end
+aList.createSearch(
+  "short jazz songs",
+  <b>'genre'</b>            =&gt; "jazz",
+  <b>'durationLessThan'</b> =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/18">
+
+<div class="notes">
+<p>So specifying keyword arguments when calling the method requires changing using symbols as keys.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def createSearch(name,
+  genre: nil,
+  durationLessThan: nil) end
+aList.createSearch(
+  "short jazz songs",
+  <b>:genre</b>             =&gt; "jazz",
+  <b>:durationLessThan</b>  =&gt; 270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/19">
+
+<div class="notes">
+<p>It would probably be fairly common to switch to the simplified hash syntax introduced in Ruby 1.9 when making this change.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def createSearch(name,
+  genre: nil,
+  durationLessThan: nil) end
+aList.createSearch(
+  "short jazz songs",
+  <b>genre:</b>                "jazz",
+  <b>durationLessThan:</b>     270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/20">
+
+<div class="notes">
+<p>If you wanted to support arbitrary keyword arguments, you could add a double splat argument to the method definition.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def createSearch(name,
+  genre: nil,
+  durationLessThan: nil, <b>**kw</b>) end
+aList.createSearch(
+  "short jazz songs",
+  genre:                "jazz",
+  durationLessThan:     270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/21">
+
+<div class="notes">
+<p>The double splat syntax could be used when calling the method if you have a hash you want to treat as keywords. In Ruby versions before 2.7, using the double splat operator is optional in most cases, since hash arguments are implicitly converted to keyword arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def createSearch(name,
+  genre: nil,
+  durationLessThan: nil, **kw) end
+aList.createSearch(
+  "short jazz songs", <b>**</b>{
+  genre:                "jazz",
+  durationLessThan:     270
+} )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/22">
+
+<div class="notes">
+<p>Ruby 2.0 tried to make the introduction of keyword arguments as backwards compatible as possible. If you were using an option hash approach.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(name, params={})
+end
+aList.createSearch(
+  "short jazz songs", <b>{</b>
+  genre:                "jazz",
+  durationLessThan:     270
+<b>}</b> )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/23">
+
+<div class="notes">
+<p>You could switch the option hash to a keyword splat, and everything would continue to work. Ruby would automatically treat the hash as keywords.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(name, <b>**params</b>)
+end
+aList.createSearch(
+  "short jazz songs", {
+  genre:                "jazz",
+  durationLessThan:     270
+} )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/24">
+
+<div class="notes">
+<p>You could even use explicit keywords with a hash argument, and this would also work, so long as all keys used in the hash were valid keywords.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code> def createSearch(name,
+  <b>genre</b>: nil,
+  <b>durationLessThan</b>: nil) end
+aList.createSearch(
+  "short jazz songs", {
+  genre:                "jazz",
+  durationLessThan:     270
+} )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/25">
+
+<div class="notes">
+<p>Since it was already valid syntax to omit braces for a final hash argument, and the same syntax is used for keyword arguments, backwards compatibility was kept for that. In general, keyword arguments and final positional hashes were considered interchangable.|In most cases, this approach worked fine and did what users wanted it to do. Unfortunately, there were a couple of cases where the approach did not do what you wanted to do.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(name, params={})
+end
+aList.createSearch(
+  "short jazz songs",
+  genre:                "jazz",
+  durationLessThan:     270
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/26">
+
+<div class="notes">
+<p>Mixing optional arguments and keyword arguments generally resulted in undesired behavior if the optional argument could be a hash.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(<b>arg=nil</b>, <b>**kw</b>)
+end
+aList.createSearch( {
+  genre:                "jazz",
+  durationLessThan:     270
+} )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/27">
+
+<div class="notes">
+<p>This is because the passed hash argument is treated as keywords instead of as the optional argument.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(arg=nil, <b>**kw</b>)
+end
+aList.createSearch( <b class="block">{
+  genre:                "jazz",
+  durationLessThan:     270
+}</b> )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/28">
+
+<div class="notes">
+<p>Similarly, if the method accepted an argument splat as well as keywords.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(<b>*args</b>, <b>**kw</b>)
+end
+aList.createSearch( {
+  genre:                "jazz",
+  durationLessThan:     270
+} )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/29">
+
+<div class="notes">
+<p>The passed hash argument is treated as keywords instead of included in the splat arrray.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(*args, <b>**kw</b>)
+end
+aList.createSearch( <b class="block">{
+  genre:                "jazz",
+  durationLessThan:     270
+}</b> )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/30">
+
+<div class="notes">
+<p>In both cases, the way to work around the problem would be to stick an empty hash as the last argument.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(*args, **kw)
+end
+aList.createSearch( {
+  genre:                "jazz",
+  durationLessThan:     270
+}, <b>{}</b>)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/31">
+
+<div class="notes">
+<p>The empty hash would then be treated as keywords.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(*args, <b>**kw</b>)
+end
+aList.createSearch( {
+  genre:                "jazz",
+  durationLessThan:     270
+}, <b>{}</b>)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/32">
+
+<div class="notes">
+<p>Allowing the preceding hash to be treated as an optional argument or member of the splat array.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(<b>*args</b>, **kw)
+end
+aList.createSearch( <b class="block">{
+  genre:                "jazz",
+  durationLessThan:     270
+}</b>, {})
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/33">
+
+<div class="notes">
+<p>The keyword argument issues didn&#x2019;t just affect literal hashes, but any object that is implicitly converted to a hash. Let&#x2019;s say you passed an instance of YAML::DBM. This class is included in the standard library. Most people reasonably expect this will get passed as the optional argument. However, that is not the case. It gets passed as keyword arguments, even though it is not a hash. Why is that?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>require 'yaml/dbm'
+def createSearch(arg=nil, **kw)
+end
+aList.createSearch(
+  <b>YAML::DBM.new('a')</b>
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/34">
+
+<div class="notes">
+<p>Examining the source code of the YAML::DBM class, near the bottom, we see that it defines the to_hash method. This is what causes the problem. In Ruby 2, all methods that accept keyword arguments and are passed more than the number of mandatory arguments will see if the final argument responds to to_hash. If the final argument responds to to_hash, it will call to_hash on the argument, take the resulting hash, and treat that hash as keywords. This caused substantial problems for libraries that defined the to_hash method in any of their classes.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+class YAML::DBM
+  def to_hash
+    # ...
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/35">
+
+<div class="notes">
+<p>One of the other strange behaviors of keyword arguments was how it handles hashes differently depending on their contents. Let&#x2019;s use a slightly different example with a method taking an optional argument, explicit keyword, and keyword splat. The method will return the argument values so we can how it handles arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/36">
+
+<div class="notes">
+<p>If we pass no arguments</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch<b>()</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/37">
+
+<div class="notes">
+<p>we get nil, nil, and the empty hash.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch
+# =&gt; <b>[nil, nil, {}]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/38">
+
+<div class="notes">
+<p>If we pass an empty hash,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch(<b>{}</b>)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/39">
+
+<div class="notes">
+<p>we still get nil, nil, and the empty hash. This is because the empty hash is treated as keywords.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch({})
+# =&gt; <b>[nil, nil, {}]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/40">
+
+<div class="notes">
+<p>If we pass a hash that has k and y symbol keys,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch(
+  <b>{k: 1, y: 2}</b>
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/41">
+
+<div class="notes">
+<p>The hash is treated as keywords, with k being set to the explicit keyword argument, and the remaining entries assigned to the keyword splat.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch(
+  {k: 1, y: 2}
+)
+# =&gt; <b>[nil, 1, {:y=&gt;2}]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/42">
+
+<div class="notes">
+<p>If we instead pass a hash that has k and y string keys,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch(
+  <b>{'k' =&gt; 1, 'y' =&gt; 2}</b>
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/43">
+
+<div class="notes">
+<p>The hash is treated as a positional argument. This is because it contains no symbol keys, and Ruby then determines it should not be treated as keywords, since between Ruby 2.0 and 2.6, keyword argument keys could only be symbols. Ruby 2.7 allows non-symbol keys in keyword splats, but because Ruby 2.6 and below and Ruby 3.0 will treat this case as passing a positional argument, Ruby 2.7 does as well.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch(
+  {'k' =&gt; 1, 'y' =&gt; 2}
+)
+# =&gt; <b>[{"k"=&gt;1, "y"=&gt;2}, nil, {}]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/44">
+
+<div class="notes">
+<p>Finally, if we instead pass a hash that has a k symbol key and a y string key,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch(
+  <b>{:k =&gt; 1, 'y' =&gt; 2}</b>
+)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/45">
+
+<div class="notes">
+<p>Ruby will take such a hash and will split it into two hashes, one containing only symbol keys and another containing all other keys. The hash of symbol keys will be treated as keywords. The other hash will be treated as a positional argument. So in this example, the optional positional argument is set to hash containing the y string key, and the hash with the k symbol key is used to set the keyword argument.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def createSearch(o=nil, k: nil, **kw)
+  [o, k, kw]
+end
+aList.createSearch(
+  {:k =&gt; 1, 'y' =&gt; 2}
+)
+# =&gt; <b>[{"y"=&gt;2}, 1, {}]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/46">
+
+<div class="notes">
+<p>That finishes my discussion of the past. Now let me discuss the present, and by that I mean Ruby 2.7, and how it changed compared to Ruby 2.6 in regards to keyword arguments.</p>
+</div>
+<h1 class="blue" style="font-size: 280px; position: absolute; top: 200px; left: 100px;">Present</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/47">
+
+<div class="notes">
+<p>In November 2017, Matz announced at the RubyConf and RubyWorld conferences that Ruby 3.0 will have real keyword arguments, or keyword arguments that are separated from positional arguments.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 300px; left: 100px;">
+<span class="red">Ruby</span>World 2017</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 400px; left: 100px;">
+<span class="red">Ruby</span>Conf 2017</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/48">
+
+<div class="notes">
+<p>The discussion of how to implement keyword argument separation occurred in feature 14183 in Ruby&#x2019;s bug tracker. This is one of the largest discussions in the bug tracker, with over 100 comments in a 2 year period.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 200px; left: 100px;">Feature #<span class="red">14183</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/49">
+
+<div class="notes">
+<p>The original proposed behavior was for full keyword argument separation, where keyword arguments would never be treated as positional arguments, and positional arguments would never be treated as keyword arguments.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 50px; left: 300px;">Full</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Keyword</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Argument</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 350px; left: 300px;">Separation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/50">
+
+<div class="notes">
+<p>So if we have this code,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(opts={}); opts end
+def bar(**kw); kw end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/51">
+
+<div class="notes">
+<p>where method foo takes a regular argument with a default value being an empty hash,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def <b>foo(opts={})</b>; opts end
+def bar(**kw); kw end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/52">
+
+<div class="notes">
+<p>and method bar takes keyword arguments,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(opts={}); opts end
+def <b>bar(**kw)</b>; kw end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/53">
+
+<div class="notes">
+<p>calling the foo method with a hash argument would be fine.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(opts={}); opts end
+def bar(**kw); kw end
+
+h = {a: 1}
+foo(h)      # OK!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/54">
+
+<div class="notes">
+<p>And calling the bar method with keyword arguments would be fine.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(opts={}); opts end
+def bar(**kw); kw end
+
+h = {a: 1}
+foo(h)      # OK!
+bar(b: 1)   # OK!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/55">
+
+<div class="notes">
+<p>However, calling the foo method would keywords would be an error,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(opts={}); opts end
+def bar(**kw); kw end
+
+h = {a: 1}
+foo(h)      # OK!
+bar(b: 1)   # OK!
+
+foo(a: 1)   # error!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/56">
+
+<div class="notes">
+<p>and calling the bar method with a hash would be an error.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(opts={}); opts end
+def bar(**kw); kw end
+
+h = {a: 1}
+foo(h)      # OK!
+bar(b: 1)   # OK!
+
+foo(a: 1)   # error!
+bar(h)      # error!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/57">
+
+<div class="notes">
+<p>My main issue with this approach was that it broke backwards compatibility for this case, where you are calling a method with keyword arguments where the method accepts an options hash. My libraries tend to use this pattern extensively.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(<b>opts={}</b>); opts end
+def bar(**kw); kw end
+
+h = {a: 1}
+foo(h)      # OK!
+bar(b: 1)   # OK!
+
+foo(<b>a: 1</b>)   # error!
+bar(h)      # error!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/58">
+
+<div class="notes">
+<p>My libraries tend to use both keyword arguments and hash arguments when calling the methods that accept options hashes. I didn&#x2019;t want to change these methods to accept keyword splats, because those are substantially worse for performance due to the hash allocations. Also, in many cases the methods that support option hashes also support non-Symbols keys in the hash, and in some cases they support non-hash objects in addition to hash objects. Using keywords would not allow me to handle either of those cases.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(opts={}); opts end
+def bar(**kw); kw end
+
+h = {a: 1}
+foo(<b>h</b>)      # OK!
+bar(b: 1)   # OK!
+
+foo(<b>a: 1</b>)   # error!
+bar(h)      # error!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/59">
+
+<div class="notes">
+<p>I was well aware of the problems with keyword arguments when also used with optional or rest arguments, which were all caused by positional argument to keyword conversion, and I agreed that we should fix these cases.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(opts={}); opts end
+def bar(<b>**kw</b>); kw end
+
+h = {a: 1}
+foo(h)      # OK!
+bar(b: 1)   # OK!
+
+foo(a: 1)   # error!
+bar(<b>h</b>)      # error!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/60">
+
+<div class="notes">
+<p>The first proof of concept patch related to keyword argument separation was posted by Endoh-san last March. This implemented full keyword argument separation. While I only had a little experience with the internals of Ruby back then, I was fairly sure I would not be able to convince Ruby developers to keep backwards compatibility for methods that did not accept keyword arguments unless I had a working proposal with updated tests.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 50px; left: 300px;">Full</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Keyword</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Argument</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 350px; left: 300px;">Separation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/61">
+
+<div class="notes">
+<p>So over the course of the next week, I learned enough about the internals to modify Endoh-san&#x2019;s patch to implement my proposal. I probably spent equal amounts of time reading existing code, and using trial and error to figure out if my understanding was correct. gdb was both my best friend and my worst enemy. Eventually, I was able to get my proposal working, being backwards compatible for methods without keyword arguments, and fixing the issues for methods with keyword arguments.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 50px; left: 300px;">More Compatible</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Keyword</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Argument</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 350px; left: 300px;">Separation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/62">
+
+<div class="notes">
+<p>When I began my work, I had a goal that all code that will break in Ruby 3.0 due to the keyword argument separation changes will issue deprecation warnings in Ruby 2.7. However, there were a couple of cases where we actually changed the behavior in Ruby 2.7.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Deprecation</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Warnings</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/63">
+
+<div class="notes">
+<p>One of the changes in Endoh-san&#x2019;s patch was to allow non-Symbol keys in keyword hashes, if the method accepts arbitrary keywords. This change was made so that more methods that currently accept option hashes can switch to accepting keywords.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(**kw) kw end
+
+hash = {'foo' =&gt; bar}
+foo(**hash)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/64">
+
+<div class="notes">
+<p>In this code were are taking a hash with a string key,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(**kw) kw end
+
+hash = <b>{'foo' =&gt; bar}</b>
+foo(**hash)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/65">
+
+<div class="notes">
+<p>and we are double splatting the key when calling the method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(**kw) kw end
+
+hash = {'foo' =&gt; bar}
+foo(<b>**hash</b>)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/66">
+
+<div class="notes">
+<p>This results in a TypeError in Ruby 2.6.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(**kw) kw end
+
+hash = {'foo' =&gt; bar}
+foo(**hash)
+# Ruby 2.6: TypeError (not a symbol)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/67">
+
+<div class="notes">
+<p>But Ruby 2.7 accepts this without an error.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(**kw) kw end
+
+hash = {'foo' =&gt; bar}
+foo(**hash)
+# Ruby 2.6: TypeError (not a symbol)
+# Ruby 2.7: no error
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/68">
+
+<div class="notes">
+<p>Shortly before modifying Endoh-san&#x2019;s patch, I realized that in order to fix the delegation issues with keyword arguments, I would need to make splatted empty keyword hashes not pass positional arguments when calling a method that does not accept keyword arguments.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Delegation</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Issues</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/69">
+
+<div class="notes">
+<p>This change was made so that you could write simple delegation methods in Ruby 3. Here is an example method named bar that accepts arbitrary arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/70">
+
+<div class="notes">
+<p>And here is a method named foo that delegates all arguments and keyword arguments it receives to bar.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/71">
+
+<div class="notes">
+<p>The problem with foo in older versions of ruby is that it does not delegate arguments correctly. If you call bar directly with an argument</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+bar(1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/72">
+
+<div class="notes">
+<p>You get the expected values returned in both Ruby 2.6 and 2.7.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+bar(1)
+# Ruby 2.6: [1]
+# Ruby 2.7: [1]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/73">
+
+<div class="notes">
+<p>However, if you call foo with an argument</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+bar(1)
+# Ruby 2.6: [1]
+# Ruby 2.7: [1]
+
+foo(1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/74">
+
+<div class="notes">
+<p>You get two arguments passed in Ruby 2.6, one being an empty hash, even though an empty hash was not provided when calling foo.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+bar(1)
+# Ruby 2.6: [1]
+# Ruby 2.7: [1]
+
+foo(1)
+# Ruby 2.6: [1, {}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/75">
+
+<div class="notes">
+<p>With the changes in Ruby 2.7, you get the expected result for calling foo, exactly the same as if you had called bar directly.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+bar(1)
+# Ruby 2.6: [1]
+# Ruby 2.7: [1]
+
+foo(1)
+# Ruby 2.6: [1, {}]
+# Ruby 2.7: [1]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/76">
+
+<div class="notes">
+<p>This is why before Ruby 2.7, delegating methods would always use regular arguments and not keyword arguments. This example still works fine in Ruby 2.7 and will work in 3.0 because bar does not accept keyword arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(<b>*args</b>) bar(<b>*args</b>) end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/77">
+
+<div class="notes">
+<p>However, it would not work if you change bar to accept keyword arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(<b>*args, **kw</b>) [args, kw] end
+def foo(*args) bar(*args) end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/78">
+
+<div class="notes">
+<p>If you call foo with keywords</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+
+foo(x: 1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/79">
+
+<div class="notes">
+<p>Ruby 2.6 is fine, since the keywords are passed as a hash to foo and the hash will be implicitly converted back to keywords when foo calls bar.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+
+foo(x: 1)
+# Ruby 2.6: [[], {:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/80">
+
+<div class="notes">
+<p>Ruby 2.7 results in the same behavior, but issues a deprecation warning, because in Ruby 3.0, the hash will no longer be implicitly converted to keywords when calling bar.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+
+foo(x: 1)
+# Ruby 2.6: [[], {:x=&gt;1}]
+# Ruby 2.7: [[], {:x=&gt;1}], warning
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/81">
+
+<div class="notes">
+<p>In Ruby 3.0, the hash remains as a positional argument when calling bar.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+
+foo(x: 1)
+# Ruby 2.6: [[], {:x=&gt;1}]
+# Ruby 2.7: [[], {:x=&gt;1}], warning
+# Ruby 3.0: [[{:x=&gt;1}], {}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/82">
+
+<div class="notes">
+<p>Delegation turned out to be a much tricker issue than I originally expected. I showed a few slides ago this way to do delegation, delegating both arguments and keyword arguments, and said that it would work correctly in Ruby 2.7. There are actually two problems with this approach.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/83">
+
+<div class="notes">
+<p>The first is, if you have a hash, and you provide it as a positional argument to the foo method</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+hash = {x: 1}
+foo(h)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/84">
+
+<div class="notes">
+<p>Ruby 2.6, 2.7, and 3.0 all return the same result.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+hash = {x: 1}
+foo(h)
+# Ruby 2.6: [{:x=&gt;1}]
+# Ruby 2.7: [{:x=&gt;1}]
+# Ruby 3.0: [{:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/85">
+
+<div class="notes">
+<p>However, Ruby 2.7 warns. This has to be a bug, right? Ruby should only be warning in cases where the behavior is going to change, it shouldn&#x2019;t warn in the case where the behavior is the same. It turns out, this is not a bug.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+hash = {x: 1}
+foo(h)
+# Ruby 2.6: [{:x=&gt;1}]
+# Ruby 2.7: [{:x=&gt;1}], warning
+# Ruby 3.0: [{:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/86">
+
+<div class="notes">
+<p>The warning here comes from this call to foo. In this call to foo, the positional hash argument is converted to keywords, and that is what is causing the wanrning.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, <b>**kw</b>) bar(*args, **kw) end
+
+hash = {x: 1}
+<b>foo(h)</b>
+# Ruby 2.6: [{:x=&gt;1}]
+# Ruby 2.7: [{:x=&gt;1}]
+# Ruby 3.0: [{:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/87">
+
+<div class="notes">
+<p>Inside foo, the hash is keyword splatted in the call to bar. Because bar does not accept keywords, the splatted hash is turned back into a regular hash argument. That doesn&#x2019;t warn because Ruby 3 will keeps compatibility with older versions of Ruby for that type of call. With the initial proposal for full keyword separation, this type of code would actually emit two warnings, not just one. It would warn once in the call to foo and again in the call to bar.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(<b>*args</b>) args end
+def foo(*args, **kw) bar(*args, <b>**kw</b>) end
+
+hash = {x: 1}
+foo(h)
+# Ruby 2.6: [{:x=&gt;1}]
+# Ruby 2.7: [{:x=&gt;1}]
+# Ruby 3.0: [{:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/88">
+
+<div class="notes">
+<p>The other problem with this approach I have already covered as a positive in terms of Ruby 2.7 behavior. This problem is that you can&#x2019;t use this approach with older versions of Ruby because you end up passing an empty hash to the target method if calling the delegating method with no keywords where the last positional argument is not a hash.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def bar(*args) args end
+def foo(*args, **kw) bar(*args, **kw) end
+
+bar(1)
+# Ruby 2.6: [1]
+# Ruby 2.7: [1]
+
+foo(1)
+# Ruby 2.6: [1, <b>{}</b>]
+# Ruby 2.7: [1]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/89">
+
+<div class="notes">
+<p>What I thought we needed was a delegation approach that would be both backwards compatible with older versions of Ruby, and would not issue a warning in cases where the behavior wouldn&#x2019;t change between Ruby 2.6 and 3.0. Unfortunately, I wasn&#x2019;t able to come up with a good approach.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Delegation</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Approach</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/90">
+
+<div class="notes">
+<p>I was only able to come up with a passable hack. I originally called the hack pass_keywords,</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Delegation</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">
+<span class="strike">Approach</span> Hack</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/91">
+
+<div class="notes">
+<p>but it is now known as ruby2_keywords.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Delegation</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">
+<span class="strike">Approach</span> Hack</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 450px; left: 300px;">ruby2_keywords</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/92">
+
+<div class="notes">
+<p>The basic idea with ruby2_keywords is that you can keep your existing delegation code that worked in previous Ruby versions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/93">
+
+<div class="notes">
+<p>However, you could use ruby2_keywords to flag the method to pass keywords through the method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+
+
+  ruby2_keywords :foo
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/94">
+
+<div class="notes">
+<p>Because the ruby2_keywords method may not be defined in previous Ruby versions, you would need to check whether you could use ruby2_keywords.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+
+if respond_to?(:ruby2_keywords, true)
+  ruby2_keywords :foo
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/95">
+
+<div class="notes">
+<p>If you called the foo method with keywords</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+
+if respond_to?(:ruby2_keywords, true)
+  ruby2_keywords :foo
+end
+
+foo(x: 1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/96">
+
+<div class="notes">
+<p>They would be converted to a hash and stored as the last element of the splat array in the method. However, the hash would have a special flag.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def bar(*args, **kw) [args, kw] end
+def foo(<b>*args</b>) bar(*args) end
+
+if respond_to?(:ruby2_keywords, true)
+  ruby2_keywords :foo
+end
+
+foo(x: 1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/97">
+
+<div class="notes">
+<p>When an array of args is used in a splat call to another method, if the last element is a hash that has that special flag</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(<b>*args</b>) end
+
+if respond_to?(:ruby2_keywords, true)
+  ruby2_keywords :foo
+end
+
+foo(x: 1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/98">
+
+<div class="notes">
+<p>Then the hash will be treated as keywords instead of as a positional argument.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def bar(*args, <b>**kw</b>) [args, kw] end
+def foo(*args) bar(*args) end
+
+if respond_to?(:ruby2_keywords, true)
+  ruby2_keywords :foo
+end
+
+foo(x: 1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/99">
+
+<div class="notes">
+<p>This results in the same behavior on Ruby 2.6, Ruby 2.7, and Ruby 3.0. It doesn&#x2019;t cause any warnings on Ruby 2.7.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def bar(*args, **kw) [args, kw] end
+def foo(*args) bar(*args) end
+
+if respond_to?(:ruby2_keywords, true)
+  ruby2_keywords :foo
+end
+
+foo(x: 1)
+# Ruby 2.6: [[], {:x=&gt;1}]
+# Ruby 2.7: [[], {:x=&gt;1}]
+# Ruby 3.0: [[], {:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/100">
+
+<div class="notes">
+<p>One of the reasons for full separation of keywords and positional arguments is that it is always possible to add keywords later without breaking any code. This is called safe keyword extension, and is something we gave up by default when we chose the more compatible approach. However, another change added in 2.7 was the ability to add safe keyword extension to a method.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Safe</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Keyword</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 350px; left: 350px;">Extension</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/101">
+
+<div class="notes">
+<p>We can implement safe keyword extension by adding syntax to indicate that it is forbidden to pass keywords to the method.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 230px;">Forbidding</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Keywords</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/102">
+
+<div class="notes">
+<p>So if we have a method named foo that takes an arbitrary number of arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args)
+  args
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/103">
+
+<div class="notes">
+<p>You could call it with a hash</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args)
+  args
+end
+
+foo({x: 1})
+# =&gt; [{:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/104">
+
+<div class="notes">
+<p>and you could call it with keywords to get the same result.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args)
+  args
+end
+
+foo({x: 1})
+# =&gt; [{:x=&gt;1}]
+
+foo(x: 1)
+# =&gt; [{:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/105">
+
+<div class="notes">
+<p>If you add keywords to the method later,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args, <b>bar: false</b>)
+  args <b>if bar</b>
+end
+
+foo({x: 1})
+# =&gt; [{:x=&gt;1}]
+
+foo(x: 1)
+# =&gt; [{:x=&gt;1}]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/106">
+
+<div class="notes">
+<p>You actually break both of these calls in Ruby 2.7, resulting in an ArgumentError.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args, bar: false)
+  args if bar
+end
+
+foo(<b>{x: 1}</b>)
+
+
+foo(<b>x: 1</b>)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/107">
+
+<div class="notes">
+<p>In the positional hash case, you also get a warning, since Ruby 2.7 will helpfully convert the positional hash to keywords and warn, before raising an error because the keywords are not valid.|In Ruby 3.0, passing a positional hash will work correctly, since the hash will be treated as a positional argument</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args, bar: false)
+  args if bar
+end
+
+foo(<b>{x: 1}</b>)
+
+
+foo(x: 1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/108">
+
+<div class="notes">
+<p>but passing keywords will not work.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args, bar: false)
+  args if bar
+end
+
+foo({x: 1})
+
+
+foo(<b>x: 1</b>)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/109">
+
+<div class="notes">
+<p>To avoid this issue, for newly defined methods where you don&#x2019;t need to worry about backwards compatibility, you can use the star-star-nil syntax when defining the method. This syntax was not valid in Ruby 2.6, but in Ruby 2.7 it is valid and means the method forbids keywords.|It changes the behavior of the method so that that method acts like it accepts explicit keywords, but no explicit keywords are defined.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args, <b>**nil</b>)
+  args
+end
+
+foo({x: 1})
+
+
+foo(x: 1)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/110">
+
+<div class="notes">
+<p>This will make using keywords with this method raise an ArgumentError.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args, **nil)
+  args
+end
+
+foo({x: 1})
+
+
+foo(x: 1)
+# ArgumentError
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/111">
+
+<div class="notes">
+<p>However, using a positional hash argument will work correctly, even in 2.7.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args, **nil)
+  args
+end
+
+foo({x: 1})
+# =&gt; [{:x=&gt;1}]
+
+foo(x: 1)
+# ArgumentError
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/112">
+
+<div class="notes">
+<p>Ruby 2.7 does not automatically convert this hash to keyword arguments, because we don&#x2019;t need to worry about backwards compatibility with Ruby 2.6, as the star-star-nil syntax is not valid in Ruby 2.6.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>def foo(*args, <b>**nil</b>)
+  args
+end
+
+foo(<b>{x: 1}</b>)
+# =&gt; [{:x=&gt;1}]
+
+foo(x: 1)
+# ArgumentError
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/113">
+
+<div class="notes">
+<p>One of the big issues with keyword argument separation was how to handle methods defined in C, both those implemented by core classes and those defined in C extensions. In Endoh-san&#x2019;s original patch, methods defined in C did not implement keyword argument separation.</p>
+</div>
+<h1 class="red" style="font-size: 620px; position: absolute; top: 0px; left: 30px;">C</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 270px; left: 230px;">Methods</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/114">
+
+<div class="notes">
+<p>In order to support keyword argument separation for C methods, there needed to be a way to expose to such methods whether the method was called with a positional hash or keywords, while keeping the API for calling the C functions the same.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Keyword</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Argument</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 350px; left: 300px;">Separation</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 450px; left: 300px;">for <span class="red">C</span> Methods</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/115">
+
+<div class="notes">
+<p>In order to give methods defined in C the ability to check if keywords were passed to the method, I added a function called rb_keyword_given_p to Ruby&#x2019;s public C-API. This is function is callable from methods defined in C to check whether keywords were passed when calling the method.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 150px; left: 100px;">rb_keyword_given_p<span class="red">()</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/116">
+
+<div class="notes">
+<p>Most methods defined in C that accept a variable number of arguments use rb_scan_args in order to parse the arguments. Previously, rb_scan_args treated a hash argument and keyword arguments the same.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args()
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/117">
+
+<div class="notes">
+<p>Here&#x2019;s an example of using rb_scan_args.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args(argc, argv, "11*:", &amp;mandatory,
+             &amp;optional, &amp;rest, &amp;keywords)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/118">
+
+<div class="notes">
+<p>The first two arguments are argc and argv, usually passed directly from the caller&#x2019;s arguments.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args(<b>argc, argv</b>, "11*:", &amp;mandatory,
+             &amp;optional, &amp;rest, &amp;keywords)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/119">
+
+<div class="notes">
+<p>The third argument is a format string that indicates how elements of argv should be assigned.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args(argc, argv, <b>"11*:"</b>, &amp;mandatory,
+             &amp;optional, &amp;rest, &amp;keywords)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/120">
+
+<div class="notes">
+<p>Remaining arguments are generally local variables that the elements of argv should be assigned to.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args(argc, argv, "11*:", <b class="block">&amp;mandatory,
+             &amp;optional, &amp;rest, &amp;keywords</b>)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/121">
+
+<div class="notes">
+<p>In this case, the first character of the format string is 1, indicating the method takes one mandatory argument.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args(argc, argv, "<b>1</b>1*:", <b>&amp;mandatory</b>,
+             &amp;optional, &amp;rest, &amp;keywords)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/122">
+
+<div class="notes">
+<p>The second character is 1, indicating one optional argument.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args(argc, argv, "1<b>1</b>*:", &amp;mandatory,
+             <b>&amp;optional</b>, &amp;rest, &amp;keywords)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/123">
+
+<div class="notes">
+<p>The third character is a star, indicating a rest argument, which combine all remaining arguments into an array.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args(argc, argv, "11<b>*</b>:", &amp;mandatory,
+             &amp;optional, <b>&amp;rest</b>, &amp;keywords)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/124">
+
+<div class="notes">
+<p>The last character is a colon, indicating keyword arguments. Up to Ruby 2.6, a final hash argument would always be treated as keywords, mirroring the behavior of methods defined in Ruby. In Ruby 2.7, this modifier uses rb_keyword_given_p to determine whether or not to emit a warning message, again to mirror behavior of methods defined in Ruby.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_scan_args(argc, argv, "11*<b>:</b>", &amp;mandatory,
+             &amp;optional, &amp;rest, <b>&amp;keywords</b>)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/125">
+
+<div class="notes">
+<p>Adding rb_keyword_given_p and fixing rb_scan_args handled most issues when calling C methods with keyword arguments.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 50px; left: 320px;">Calling</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">C Methods</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/126">
+
+<div class="notes">
+<p>However, there is another side to this coin, which is that C methods can call Ruby methods.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">C Methods</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Calling</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 350px; left: 380px;">Ruby Methods</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/127">
+
+<div class="notes">
+<p>One way to do this is to use rb_funcallv. This function takes the method receiver, an id of the method to call, the number of arguments to call the method with, and a C array of the arguments. One issue with this API is that it does not offer the ability to specify whether you are passing keyword arguments when calling the method.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+   rb_funcallv(obj,
+               rb_intern("method"),
+               argc,
+               argv);
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/128">
+
+<div class="notes">
+<p>To add the ability to pass keyword arguments when calling Ruby methods from C, I added a rb_funcallv_kw method, that accepted an additional argument for whether the call passes keywords.</p>
+</div>
+<pre class="sh_c" style="font-size: 44px; margin-top: 32px;"><code>
+rb_funcallv<b>_kw</b>(obj,
+               rb_intern("method"),
+               argc,
+               argv,
+               <b>RB_PASS_KEYWORDS</b>);
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/129">
+
+<div class="notes">
+<p>There are actually many C functions that are used to call Ruby methods, and all of these lacked the ability to specify whether keywords were passed when calling.</p>
+</div>
+<pre style="font-size: 36px; margin-top: 32px;"><code>
+rb_funcallv                 rb_enumeratorize_with_size
+rb_funcallv_public          rb_check_funcall
+rb_funcall_passing_block    rb_obj_call_init
+rb_funcall_with_block       rb_class_new_instance
+rb_call_super               rb_proc_call
+rb_yield_values             rb_proc_call_with_block
+rb_yield_splat              rb_method_call
+rb_block_call               rb_method_call_with_block
+rb_fiber_resume             rb_eval_cmd
+rb_fiber_yield
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/130">
+
+<div class="notes">
+<p>In all cases, the fix was to add a kw variant of the method that accepts an additional flag for whether keywords are passed. These methods are defined in Ruby 2.7 and later versions, and do not exist in Ruby 2.6 and earlier versions. So C extensions that want to be backwards compatible with earlier versions need to implement these using a macro if they are not defined. Ruby&#x2019;s extension documentation provides example macros for all of these.</p>
+</div>
+<pre style="font-size: 36px; margin-top: 32px;"><code>
+rb_funcallv<b>_kw</b>              rb_enumeratorize_with_size<b>_kw</b>
+rb_funcallv_public<b>_kw</b>       rb_check_funcall<b>_kw</b>
+rb_funcall_passing_block<b>_kw</b> rb_obj_call_init<b>_kw</b>
+rb_funcall_with_block<b>_kw</b>    rb_class_new_instance<b>_kw</b>
+rb_call_super<b>_kw</b>            rb_proc_call<b>_kw</b>
+rb_yield_values<b>_kw</b>          rb_proc_call_with_block<b>_kw</b>
+rb_yield_splat<b>_kw</b>           rb_method_call<b>_kw</b>
+rb_block_call<b>_kw</b>            rb_method_call_with_block<b>_kw</b>
+rb_fiber_resume<b>_kw</b>          rb_eval_cmd<b>_kw</b>
+rb_fiber_yield<b>_kw</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/131">
+
+<div class="notes">
+<p>With those changes, both methods defined in C and methods defined in Ruby could handle keyword arguments correctly in Ruby 2.7. Unfortunately, it became apparent that there were numerous special cases that still didn&#x2019;t handle keyword arguments correctly.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Special</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Cases</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/132">
+
+<div class="notes">
+<p>Here is a partial list of special cases that needed to be fixed to handle keyword arguments correctly. Unfortunately, due to limited time, I can&#x2019;t go over details for these.</p>
+</div>
+<pre style="font-size: 36px; margin-top: 32px;"><code>
+Kernel#send                        Object#dig
+Kernel#method_missing              Enumerator#size
+Symbol#to_proc                     Kernel#public_send
+Module#define_method               rb_f_send
+Module#attr_writer                 Proc#&lt;&lt;
+Kernel#lambda                      Proc#&gt;&gt;
+Class#new                          Thread.new
+Method#call                        Fiber#resume
+UnboundMethod#call                 Enumerator::Generator#each
+Object#to_enum                     Enumerator::Yielder#yield
+super-&gt;method_missing              Enumerator.produce
+Symbol#to_proc with refinements    rb_yield_block
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/133">
+
+<div class="notes">
+<p>That ends the discussion of the present status of keyword arguments as of Ruby 2.7. Let&#x2019;s finish up with a short discussion about the future of keyword arguments in Ruby.</p>
+</div>
+<h1 class="blue" style="font-size: 280px; position: absolute; top: 200px; left: 100px;">Future</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/134">
+
+<div class="notes">
+<p>In early January, the compatibility code and deprecation warnings added in Ruby 2.7 in related to keyword arguments were removed, and positional hash arguments are now never treated as keyword arguments. Keyword arguments are now never split into a positional hash and a keyword hash. Calling a method with an empty keyword splat no longer passes an empty positional hash argument. So while I&#x2019;m discussing the future, if you have been using the master branch after the release of 2.7, you&#x2019;ve already experienced these changes.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Keyword</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Argument</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 350px; left: 300px;">Separation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/135">
+
+<div class="notes">
+<p>One idea I had after the release of Ruby 2.7 was an approach to optimize keyword arguments.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 300px;">Keyword</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 250px; left: 300px;">Argument</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 350px; left: 320px;">Optimization</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/136">
+
+<div class="notes">
+<p>Here&#x2019;s an example of calling a method that takes an explicit keyword with a keyword splat. This allocates a hash on the caller side.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(bar: nil)
+  bar
+end
+hash = {bar: nil}
+foo(    <b>**hash</b>    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/137">
+
+<div class="notes">
+<p>Here&#x2019;s a slightly modified method accepts arbitrary keywords. This allocates 2 hashes, one on the caller side and one on the callee side.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(<b>**kw</b>)
+  bar
+end
+hash = {bar: nil}
+foo(    <b>**hash</b>    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/138">
+
+<div class="notes">
+<p>In both examples, I think it should be possible to avoid the hash allocation on the caller side. We can add a flag for whether the keyword argument passed during the method call is mutable. In a case like this, the flag would not be set, indicating the keyword hash is not mutable.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(bar: nil)
+  bar
+end
+hash = {bar: nil}
+foo(    <b>**hash</b>    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/139">
+
+<div class="notes">
+<p>The callee could take the hash directly and access the :bar member of the hash to set the bar keyword. So this would not allocate a hash.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(<b>bar: nil</b>)
+  bar
+end
+hash = {bar: nil}
+foo(    **hash    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/140">
+
+<div class="notes">
+<p>In the case where the method accepts arbitrary keywords, the caller would pass the hash directly and the callee would duplicate the hash, so this code would allocate one hash instead of two hashes.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(<b>**kw</b>)
+  bar
+end
+hash = {bar: nil}
+foo(    **hash    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/141">
+
+<div class="notes">
+<p>Here&#x2019;s a more advanced case with multiple hash splats when calling. In this case, the caller side has to combine these hashes into a single hash. This case would set the flag, indicating the keyword hash is mutable.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(**kw)
+  bar
+end
+hash = {bar: nil}
+foo(    <b>**hash1, **hash2</b>    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/142">
+
+<div class="notes">
+<p>If the method accepts arbitrary keywords, because the mutable flag was set, the callee would not need to duplicate the hash, it could use the hash allocated on the caller side directly, resulting in a single hash allocation instead of two hash allocations.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(<b>**kw</b>)
+  bar
+end
+hash = {bar: nil}
+foo(    **hash1, **hash2    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/143">
+
+<div class="notes">
+<p>I was able to implement this approach and it was committed in February. So calls to methods that accept keywords will not allocate more than one hash.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(**kw)
+  bar
+end
+hash = {bar: nil}
+foo(    **hash1, **hash2    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/144">
+
+<div class="notes">
+<p>And calls to a method that accepts explicit keywords using a single keyword splat would not allocate any hashes. This significantly improves the performance of most simple methods that use keywords.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 32px;"><code>
+def foo(bar: nil)
+  bar
+end
+hash = {bar: nil}
+foo(    **hash    )
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/145">
+
+<div class="notes">
+<p>I hope you had fun learning about the past, present, and future of keyword arguments.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 40px; left: 16px;">Keyword Arguments:</h1><h1 class="red" style="font-size: 80px; position: absolute; top: 112px; left: 40px;">Past<span class="blue">,</span> Present<span class="blue">,</span> and Future</h1></div>
+</div><div id="slides/slides" class="slide bg-thankyou" data-transition="none"><div class="content bg-thankyou" ref="slides/slides/146">
+
+<div class="notes">
+<p>That concludes my presentation. I would like to thank all of you for listening to me.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide credits" data-transition="none"><div class="content credits" ref="slides/slides/147">
+
+<div class="notes">
+<p>Photo credits</p>
+</div>
+<h1 style="text-align: center">Photo Credits</h1>
+<p>Thank You: rawpixel.com</p>
+</div>
+</div>
+</div>
+
+</body>
+</html>
