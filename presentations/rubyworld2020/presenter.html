@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Object Model Improvements in Ruby 3</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1920px;
+          height: 1080px;
+        }
+        #footer { width: 1901px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+  <link rel="stylesheet" href="./css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src="./js/presenter.js"></script>
+
+    <style type="text/css">
+      #preview div.zoomed { zoom: 48%;}
+    </style>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/1">
+
+<div class="notes">
+<p>Kon&#x2019;nichiwa (Good afternoon), RubyWorld attendees. I am sure many of you feel like I do, in that we wish we could be experiencing this conference in person. Unfortunately, that is not possible this year due to the global pandemic, but I hope I will be able to see you in person next year.|First, I would like to express my appreciation to the RubyPrize executive committee. I was deeply honored last year to be selected as a RubyPrize Final Nominee, and even more honored this year to be selected as the RubyPrize winner. I only hope I can continue to be worthy of this recognition.</p>
+</div>
+
+<p><img src="./file/rubyprize.svg" style="position: absolute; top: 90px; left: 360px; width: 1200px; height: 900px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/2">
+
+<div class="notes">
+<p>My name is Jeremy Evans. I became a Ruby committer last year on Endoh-san&#x2019;s recommendation. One of the big changes I focused on last year was implementing the separation of positional and keyword arguments, which is fully complete in Ruby 3. Other than that, since becoming a committer, I have mostly focused on triaging and fixing bugs that have been filed in Ruby&#x2019;s bug tracker.|One of the privileges of being selected as the RubyPrize winner is the ability to give a presentation to the attendees of RubyWorld Conference.</p>
+</div>
+
+<p><img class="profile-pic" src="./file/jeremy.jpg" style="position: absolute; top: 242px; left: 196px;"/>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 412px; left: 750px;">GitHub: <span class="blue mono">jeremyevans</span>
+</h1><h1 class="red" style="font-size: 72px; position: absolute; top: 512px; left: 750px;">Twitter: <span class="blue mono">@jeremyevans0</span>
+</h1></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/3">
+
+<div class="notes">
+<p>In my presentation, I will be discussing some changes I have worked on this year to improve Ruby&#x2019;s object model. These improvements were all the result of fixing bugs that had been filed in the bug tracker, many of them years old. You can currently test these improvements in Ruby 3 preview 2, and you will be able to benefit from them on the 25th when Ruby 3 is released.</p>
+</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 80px; left: 80px;">Object Model</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 230px; left: 80px;">Improvements in</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 380px; left: 160px;">Ruby <span class="blue">3</span>
+</h1><h1 class="blue" style="font-size: 108px; position: absolute; top: 762px; right: 90px; text-align: right;">
+<span class="red">Ruby</span>World 2020</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/4">
+
+<div class="notes">
+<p>One of the most significant improvements to the object model in Ruby 3 is that calling include on a Module affects modules that have already included the receiver.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 80px; left: 180px;">Module<span class="blue">#</span>include</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 240px; left: 180px;">Affects Modules</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 400px; left: 180px;">Including Reciever</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/5">
+
+<div class="notes">
+<p>Let me show an example of what that means.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module EachString
+  def each_string
+    each do |*x|
+      yield(*x.map(&amp;:to_s))
+    end
+  end
+end
+
+Enumerable.include EachString
+
+{a: 1}.each_string do |x|
+  p x
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/6">
+
+<div class="notes">
+<p>Here you have a module named EachString that defines an each_string method that yields values as strings.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code><b class="block">module EachString
+  def each_string
+    each do |*x|
+      yield(*x.map(&amp;:to_s))
+    end
+  end
+end</b>
+
+Enumerable.include EachString
+
+{a: 1}.each_string do |x|
+  p x
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/7">
+
+<div class="notes">
+<p>For convenience, you want to include this module in Enumerable, so the each_string method is available to all classes that include Enumerable.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module EachString
+  def each_string
+    each do |*x|
+      yield(*x.map(&amp;:to_s))
+    end
+  end
+end
+
+<b>Enumerable.include EachString</b>
+
+{a: 1}.each_string do |x|
+  p x
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/8">
+
+<div class="notes">
+<p>This should allow you to call each_string on a hash, since the Hash class includes Enumerable.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module EachString
+  def each_string
+    each do |*x|
+      yield(*x.map(&amp;:to_s))
+    end
+  end
+end
+
+Enumerable.include EachString
+
+<b class="block">{a: 1}.each_string do |x|
+  p x
+end</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/9">
+
+<div class="notes">
+<p>And in Ruby 3, that works correctly, with each value being yielded as a string. This does show that Hash#each yields a single array argument with the key and value, and not the key and hash as separate arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module EachString
+  def each_string
+    each do |*x|
+      yield(*x.map(&amp;:to_s))
+    end
+  end
+end
+
+Enumerable.include EachString
+
+{a: 1}.each_string do |x|
+  p x
+end
+<b># prints "[:a, 1]"</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/10">
+
+<div class="notes">
+<p>Kanashi ka na (Alas), in Ruby 2.7, this raises a NoMethodError. This is because before Ruby 3, including EachString in Enumerable does not affect classes that have already included Enumerable. Starting in Ruby 3, when you include EachString in Enumerable, Ruby looks at all classes that have already included Enumerable, and adds the EachString module at the appropriate point in the ancestor chain in those classes.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module EachString
+  def each_string
+    each do |*x|
+      yield(*x.map(&amp;:to_s))
+    end
+  end
+end
+
+Enumerable.include EachString
+
+{a: 1}.each_string do |x|
+  p x
+end
+<b># NoMethodError!</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/11">
+
+<div class="notes">
+<p>The historical reason that Enumerable.include did not affect the Hash class was that originally Ruby did not keep a reference in Enumerable that it was included in Hash. So there was no way to easily find the classes that had already included Enumerable.|Charlie Somerville implemented an optimization for method cache invalidation in Ruby 2.1 that added this tracking, so that when Enumerable was included in a another class or module, Enumerable kept a reference to that class or module. That list of references is what Ruby 3 uses to find all of the ancestor chains where the EachString module needs to be added.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module EachString
+  def each_string
+    each do |*x|
+      yield(*x.map(&amp;:to_s))
+    end
+  end
+end
+
+<b>Enumerable.include EachString</b>
+
+{a: 1}.each_string do |x|
+  p x
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/12">
+
+<div class="notes">
+<p>At the same time I implemented the Module#include fix, I also worked the exact same fix for Module#prepend.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 180px; left: 180px;">Module<span class="blue">#</span>prepend</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 350px; left: 180px;">Affects Modules</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 510px; left: 180px;">Including Reciever</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/13">
+
+<div class="notes">
+<p>Unfortunately, I was not able to commit that fix at the same time. Not because the fix itself was wrong, but because the fix exposed that there were many issues with internal classes called origin iclasses, which Module#prepend uses.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 180px; left: 180px;">Module<span class="blue">#</span>prepend</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 350px; left: 180px;">Affects Modules</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 510px; left: 180px;">Including Reciever</h1><div class="review">failure!</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/14">
+
+<div class="notes">
+<p>One issue was that when a module with an origin iclass was included into a class, the origin pointer in one of the created iclasses was set incorrectly. Here is an example showing the problem.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/15">
+
+<div class="notes">
+<p>Here we create a class named A with methods m and m3.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code><b class="block">class A
+  def m; "M"; end
+  def m3; "M3"; end
+end</b>
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/16">
+
+<div class="notes">
+<p>We also have a module M, which prepends an empty module, and also has a method m that calls super and a method m2 that calls m3. We only prepend the empty module to force module M to have an origin iclass.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+<b class="block">module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end</b>
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/17">
+
+<div class="notes">
+<p>Then we have a subclass of A named B, which includes module M and then aliases method m to m3.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+<b class="block">class B &lt; A
+  include M
+  alias_method :m3, :m
+end</b>
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/18">
+
+<div class="notes">
+<p>When we call the m2 method on an instance of B.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+<b>B.new.m2</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/19">
+
+<div class="notes">
+<p>It should call this m2 method, which calls m3.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  <b>def m2; m3; end</b>
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/20">
+
+<div class="notes">
+<p>We aliased the m method to m3 in class B, so this should call the m method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  <b>alias_method :m3, :m</b>
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/21">
+
+<div class="notes">
+<p>The method it should call is this one in module M. This m method just calls super, and since this method is defined in M, and M is included in B, it should call the method in the next ancestor.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  <b>def m; super end</b>
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/22">
+
+<div class="notes">
+<p>That&#x2019;s this method, in A, the superclass of B.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  <b>def m; "M"; end</b>
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/23">
+
+<div class="notes">
+<p>And that is what happens in Ruby 3. The method returns the string M.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+<b># =&gt; "M"</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/24">
+
+<div class="notes">
+<p>Kanashi ka na (Alas), in Ruby 2.7, this raises another NoMethodError.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+<b># NoMethodError</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/25">
+
+<div class="notes">
+<p>This is because in the m method of module M, the super call here cannot find a super method, because the origin pointers in the iclass were not set correctly.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  <b>def m; super end</b>
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/26">
+
+<div class="notes">
+<p>Fixing the origin iclass pointers was no small feat, since setting the correct origin pointer cannot be done when iclasses are created, since the origin iclass doesn&#x2019;t exist at that point. So we needed to add a stack to keep track of the iclasses so that when the origin iclass was created, we could set the origin pointer correctly in the original iclass to point to the origin iclass.|Making that change caused nondeterministic failures in garbage collection, so the garbage collector needed to be modified to treat origin iclasses differently. It also caused virtual machine assertion failures, so the virtual machine needed to be modified to also treat origin iclasses differently. All of this to fix a seemingly small issue, but this was a necessary step.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 18px;"><code>class A
+  def m; "M"; end
+  def m3; "M3"; end
+end
+module M
+  prepend Module.new
+  def m; super end
+  def m2; m3; end
+end
+class B &lt; A
+  include M
+  alias_method :m3, :m
+end
+B.new.m2
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/27">
+
+<div class="notes">
+<p>The next bug fix was making this code work. This code does not even use prepend, but fixing it used an approach that fixed other issues that allowed Module#prepend to affect existing classes including the receiver.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 18px;"><code>module M; end
+
+class C
+  include M
+end
+
+module R
+  refine M do
+    def refined_method
+      :rm
+    end
+  end
+end
+using R
+
+class A
+  include M
+end
+
+C.new.refined_method
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/28">
+
+<div class="notes">
+<p>We start by defining a module M and a class C that includes it.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 18px;"><code><b class="block">module M; end
+
+class C
+  include M
+end</b>
+
+module R
+  refine M do
+    def refined_method
+      :rm
+    end
+  end
+end
+using R
+
+class A
+  include M
+end
+
+C.new.refined_method
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/29">
+
+<div class="notes">
+<p>We then define a module R that refines M to add a method, and then uses that refinement.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 18px;"><code>module M; end
+
+class C
+  include M
+end
+
+<b class="block">module R
+  refine M do
+    def refined_method
+      :rm
+    end
+  end
+end
+using R</b>
+
+class A
+  include M
+end
+
+C.new.refined_method
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/30">
+
+<div class="notes">
+<p>We then create another class named A that also includes M.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 18px;"><code>module M; end
+
+class C
+  include M
+end
+
+module R
+  refine M do
+    def refined_method
+      :rm
+    end
+  end
+end
+using R
+
+<b class="block">class A
+  include M
+end</b>
+
+C.new.refined_method
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/31">
+
+<div class="notes">
+<p>Then you try to call the method added by refinement R on an instance of C. This should work because C includes M and R refines M.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 18px;"><code>module M; end
+
+class C
+  include M
+end
+
+module R
+  refine M do
+    def refined_method
+      :rm
+    end
+  end
+end
+using R
+
+class A
+  include M
+end
+
+<b>C.new.refined_method</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/32">
+
+<div class="notes">
+<p>And in Ruby 3, it does work, returning the expected value.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 18px;"><code>module M; end
+
+class C
+  include M
+end
+
+module R
+  refine M do
+    def refined_method
+      :rm
+    end
+  end
+end
+using R
+
+class A
+  include M
+end
+
+C.new.refined_method
+<b># =&gt; :rm</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/33">
+
+<div class="notes">
+<p>Kanashi ka na (Alas), in Ruby 2.7, you get yet another NoMethodError. Internally what happens is the refined method moves to a separate internal iclass that is in the ancestor chain of A but not in the ancestor chain of C.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 18px;"><code>module M; end
+
+class C
+  include M
+end
+
+module R
+  refine M do
+    def refined_method
+      :rm
+    end
+  end
+end
+using R
+
+class A
+  include M
+end
+
+C.new.refined_method
+<b># NoMethodError</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/34">
+
+<div class="notes">
+<p>Fixing this case in Ruby 3 was accomplished by creating origin iclasses for all modules that were included, prepended, or refined. Unfortunately, that heavy-handed approach bloated memory in some large applications due to the additional iclass objects created. Thankfully, Alan Wu was able to optimize this and only create origin iclasses for modules that are prepended, by looking at all classes that had already included the module and modifying them at the same time. This change to automatically create origin iclasses exposed a multiple additional issues that needed to be fixed.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 18px;"><code>module M; end
+
+class C
+  include M
+end
+
+module R
+  refine M do
+    def refined_method
+      :rm
+    end
+  end
+end
+using R
+
+class A
+  include M
+end
+
+C.new.refined_method
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/35">
+
+<div class="notes">
+<p>One bug it exposed was that duping or cloning a class that had any modules prepended resulted in a incorrect ancestor chain.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>class C
+  def b; 2 end
+  prepend Module.new
+end
+
+C2 = C.dup
+
+class C
+  def b; 1; end
+end
+
+C2.new.b
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/36">
+
+<div class="notes">
+<p>Here we have a class named C that defines a method named b and prepends an empty module. Again, the module itself doesn&#x2019;t matter, what matters is this forces the class to have an origin iclass.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code><b class="block">class C
+  def b; 2 end
+  prepend Module.new
+end</b>
+
+C2 = C.dup
+
+class C
+  def b; 1; end
+end
+
+C2.new.b
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/37">
+
+<div class="notes">
+<p>We then create a copy of class C and name it C2.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>class C
+  def b; 2 end
+  prepend Module.new
+end
+
+<b>C2 = C.dup</b>
+
+class C
+  def b; 1; end
+end
+
+C2.new.b
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/38">
+
+<div class="notes">
+<p>We then overide the b method on the original class to return a different result.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>class C
+  def b; 2 end
+  prepend Module.new
+end
+
+C2 = C.dup
+
+<b class="block">class C
+  def b; 1; end
+end</b>
+
+C2.new.b
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/39">
+
+<div class="notes">
+<p>Finally, we call the b method on an instance of C2.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>class C
+  def b; 2 end
+  prepend Module.new
+end
+
+C2 = C.dup
+
+class C
+  def b; 1; end
+end
+
+<b>C2.new.b</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/40">
+
+<div class="notes">
+<p>This should return the value 2, since at the time we copied C, the method returned 2. And in Ruby 3, that is what you get.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>class C
+  def b; 2 end
+  prepend Module.new
+end
+
+C2 = C.dup
+
+class C
+  def b; 1; end
+end
+
+C2.new.b
+<b># =&gt; 2</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/41">
+
+<div class="notes">
+<p>Kanashi ka na (Alas), in Ruby 2.7, this method returns 1. That is because the ancestor chain for C2 includes the origin iclass of C, instead of a separate origin iclass for C2. Fixing this required significant changes to Module#initialize_copy, making the duped class use a separate copy of all iclasses between the receiver and the receiver&#x2019;s origin iclass.|In addition to this issue, the switch to automatically create origin iclasses for modules also uncovered method cache invalidation bugs for modules with origin iclasses, and those needed to be fixed as well.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>class C
+  def b; 2 end
+  prepend Module.new
+end
+
+C2 = C.dup
+
+class C
+  def b; 1; end
+end
+
+C2.new.b
+<b># =&gt; 1</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/42">
+
+<div class="notes">
+<p>Thankfully, after fixing those issues, I was able to make Module#prepend affect modules already including the receiver, without any tests breaking.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 180px; left: 180px;">Module<span class="blue">#</span>prepend</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 350px; left: 180px;">Affects Modules</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 510px; left: 180px;">Including Reciever</h1><div class="review">success!</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/43">
+
+<div class="notes">
+<p>Another bug in the object model that I was able to fix in Ruby 3 was a case where Module#include ends up operating as Module#prepend, inserting a module before the current class instead of after the current class in the ancestor chain. I think this was the oldest bug in the bug tracker related to the object model, filed by Endoh-san just before the release of Ruby 2.0.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 180px; left: 180px;">Module<span class="blue">#</span>include</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 330px; left: 280px;">operates like</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 480px; left: 180px;">Module<span class="blue">#</span>prepend</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/44">
+
+<div class="notes">
+<p>Here is a example showing the problem.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module P; end
+module M; end
+class C; end
+
+M.prepend P
+C.prepend P
+
+C.ancestors[0, 3]
+# =&gt; [P, C, Object]
+
+C.include M
+
+C.ancestors[0, 3]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/45">
+
+<div class="notes">
+<p>We create modules P and M, and class C.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code><b class="block">module P; end
+module M; end
+class C; end</b>
+
+M.prepend P
+C.prepend P
+
+C.ancestors[0, 3]
+# =&gt; [P, C, Object]
+
+C.include M
+
+C.ancestors[0, 3]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/46">
+
+<div class="notes">
+<p>We prepend module P to both module M and class C.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module P; end
+module M; end
+class C; end
+
+<b class="block">M.prepend P
+C.prepend P</b>
+
+C.ancestors[0, 3]
+# =&gt; [P, C, Object]
+
+C.include M
+
+C.ancestors[0, 3]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/47">
+
+<div class="notes">
+<p>We can check and at this point, the ancestor chain for C starts with P, then C, then Object. This makes sense because C prepends P, and the superclass of C is Object.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module P; end
+module M; end
+class C; end
+
+M.prepend P
+C.prepend P
+
+<b class="block">C.ancestors[0, 3]
+# =&gt; [P, C, Object]</b>
+
+C.include M
+
+C.ancestors[0, 3]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/48">
+
+<div class="notes">
+<p>We then include module M in class C.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module P; end
+module M; end
+class C; end
+
+M.prepend P
+C.prepend P
+
+C.ancestors[0, 3]
+# =&gt; [P, C, Object]
+
+<b>C.include M</b>
+
+C.ancestors[0, 3]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/49">
+
+<div class="notes">
+<p>Then we check what the ancestor chain of C starts with.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module P; end
+module M; end
+class C; end
+
+M.prepend P
+C.prepend P
+
+C.ancestors[0, 3]
+# =&gt; [P, C, Object]
+
+C.include M
+
+<b>C.ancestors[0, 3]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/50">
+
+<div class="notes">
+<p>In Ruby 3, this works as we expect, putting M after C, since C included M and did not prepend M.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module P; end
+module M; end
+class C; end
+
+M.prepend P
+C.prepend P
+
+C.ancestors[0, 3]
+# =&gt; [P, C, Object]
+
+C.include M
+
+C.ancestors[0, 3]
+<b># =&gt; [P, C, M]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/51">
+
+<div class="notes">
+<p>Kanashi ka na (Alas), in Ruby 2.7, the module M is inserted before class C instead of after class C in the ancestor chain. This happens because module M prepends module P, and so it first needs to include module P in the ancestor chain before including module M. However, since module P is already in the ancestor chain, it just inserts module M directly after it, even though it is before class C. In Ruby 3, Module#include always waits until after the class before inserting modules in the ancestor chain.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 18px;"><code>module P; end
+module M; end
+class C; end
+
+M.prepend P
+C.prepend P
+
+C.ancestors[0, 3]
+# =&gt; [P, C, Object]
+
+C.include M
+
+C.ancestors[0, 3]
+<b># =&gt; [P, M, C]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/52">
+
+<div class="notes">
+<p>The final bug fix I would like to discuss is related to an interaction between super_method and aliases.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 18px;"><code>class C0
+  def m1; [:C0_m1] end
+  def m2; [:C0_m2] end
+end
+class C1 &lt; C0
+  def m1; [:C1_m1] + super end
+  alias m2 m1
+end
+class C2 &lt; C1
+  def m2; [:C2_m2] + super end
+end
+
+o = C2.new
+o.m2
+# =&gt; [:C2_m2, :C1_m1, :C0_m1]
+
+o.method(:m2).super_method.super_method.call
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/53">
+
+<div class="notes">
+<p>Here we setup three classes, C0, subclass C1, and subclass of that C2. We also define m1 or m2 methods that will show which methods are called.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 18px;"><code><b class="block">class C0
+  def m1; [:C0_m1] end
+  def m2; [:C0_m2] end
+end
+class C1 &lt; C0
+  def m1; [:C1_m1] + super end
+  alias m2 m1
+end
+class C2 &lt; C1
+  def m2; [:C2_m2] + super end
+end</b>
+
+o = C2.new
+o.m2
+# =&gt; [:C2_m2, :C1_m1, :C0_m1]
+
+o.method(:m2).super_method.super_method.call
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/54">
+
+<div class="notes">
+<p>Unlike the other methods, in C1, the m1 method is aliased as m2.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 18px;"><code>class C0
+  def m1; [:C0_m1] end
+  def m2; [:C0_m2] end
+end
+class C1 &lt; C0
+  def m1; [:C1_m1] + super end
+  <b>alias m2 m1</b>
+end
+class C2 &lt; C1
+  def m2; [:C2_m2] + super end
+end
+
+o = C2.new
+o.m2
+# =&gt; [:C2_m2, :C1_m1, :C0_m1]
+
+o.method(:m2).super_method.super_method.call
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/55">
+
+<div class="notes">
+<p>If we call the m2 method on an instance of C2, we get the expected result, C2_m2, then C1_m1 because C1 aliased m1 to m2, then C0_m1 because the aliased method called super.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 18px;"><code>class C0
+  def m1; [:C0_m1] end
+  def m2; [:C0_m2] end
+end
+class C1 &lt; C0
+  def m1; [:C1_m1] + super end
+  alias m2 m1
+end
+class C2 &lt; C1
+  def m2; [:C2_m2] + super end
+end
+
+<b class="block">o = C2.new
+o.m2
+# =&gt; [:C2_m2, :C1_m1, :C0_m1]</b>
+
+o.method(:m2).super_method.super_method.call
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/56">
+
+<div class="notes">
+<p>If we call the method method on the C2 instance to get a Method object, and then call super_method twice, we should get the Method in C0 that will be called.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 18px;"><code>class C0
+  def m1; [:C0_m1] end
+  def m2; [:C0_m2] end
+end
+class C1 &lt; C0
+  def m1; [:C1_m1] + super end
+  alias m2 m1
+end
+class C2 &lt; C1
+  def m2; [:C2_m2] + super end
+end
+
+o = C2.new
+o.m2
+# =&gt; [:C2_m2, :C1_m1, :C0_m1]
+
+<b>o.method(:m2).super_method.super_method.call</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/57">
+
+<div class="notes">
+<p>In Ruby 3, if we call that Method, we get the expected result, with C0_m1 being returned.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 18px;"><code>class C0
+  def m1; [:C0_m1] end
+  def m2; [:C0_m2] end
+end
+class C1 &lt; C0
+  def m1; [:C1_m1] + super end
+  alias m2 m1
+end
+class C2 &lt; C1
+  def m2; [:C2_m2] + super end
+end
+
+o = C2.new
+o.m2
+# =&gt; [:C2_m2, :C1_m1, :C0_m1]
+
+o.method(:m2).super_method.super_method.call
+<b># =&gt; [:C0_m1]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/58">
+
+<div class="notes">
+<p>Kanashi ka na (Alas), in Ruby 2.7, the method returns C0_m2, since it used the Method&#x2019;s called id instead of the method&#x2019;s original id when looking for the super method. Thankfully, fixing this was straightforward, and it did not cause any additional bugs.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 18px;"><code>class C0
+  def m1; [:C0_m1] end
+  def m2; [:C0_m2] end
+end
+class C1 &lt; C0
+  def m1; [:C1_m1] + super end
+  alias m2 m1
+end
+class C2 &lt; C1
+  def m2; [:C2_m2] + super end
+end
+
+o = C2.new
+o.m2
+# =&gt; [:C2_m2, :C1_m1, :C0_m1]
+
+o.method(:m2).super_method.super_method.call
+<b># =&gt; [:C0_m2]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide bg-thankyou" data-transition="none"><div class="content bg-thankyou" ref="slides/slides/59">
+
+<div class="notes">
+<p>That concludes my presentation. I hope you had fun learning about the object model improvements in Ruby 3. Thank all of you for listening to me.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide credits" data-transition="none"><div class="content credits" ref="slides/slides/60">
+
+<div class="notes">
+<p>Photo credits</p>
+</div>
+<h1 style="text-align: center">Photo Credits</h1>
+<p>Thank You: rawpixel.com</p>
+</div>
+</div>
+</div>
+
+</body>
+</html>
