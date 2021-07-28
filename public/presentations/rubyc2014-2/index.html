@@ -1,0 +1,1523 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Give-and-Go with PostgreSQL and Sequel</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href=".//css/reset.css" type="text/css"/>
+
+  <link type="text/css" href=".//css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href=".//css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href=".//css/showoff.css" type="text/css"/>
+
+  
+
+  <script type="text/javascript" src=".//js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src=".//js/jquery-print.js"></script>
+  <script type="text/javascript" src=".//js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src=".//js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src=".//js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src=".//js/fg.menu.js"></script>
+  <script type="text/javascript" src=".//js/showoff.js"></script>
+  <script type="text/javascript" src=".//js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src=".//js/sh_main.min.js"></script>
+  <script type="text/javascript" src=".//js/core.js"></script>
+  <script type="text/javascript" src=".//js/showoffcore.js"></script>
+  <script type="text/javascript" src=".//js/coffee-script.js"></script>
+
+  
+    
+  
+
+  
+    
+    <link rel="stylesheet" href=".//file/something.css" type="text/css"/>
+  
+    
+    <link rel="stylesheet" href=".//file/fonts.css" type="text/css"/>
+  
+
+  
+
+  <script type="text/javascript">
+  $(function(){
+    
+      if($(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+    
+      setupPreso(false, './');
+  });
+  </script>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+    <tr><td class="key">n</td><td>toggle notes</td></tr>
+  </table>
+</div>
+
+<div class="buttonNav">
+  <input type="submit" onClick="prevStep();" value="prev"/>
+  <input type="submit" onClick="nextStep();" value="next"/>
+</div>
+
+<div id="preso"><center>loading presentation...</center></div>
+<div id="footer">
+  <span id="notesInfo"></span>
+  <img id="disconnected" src="/css/disconnected.png" />
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="slides/slides" class="slide " data-transition="none">
+  <div class="content " ref="slides/slides/1">
+
+<div class="notes">
+<p>Hello everyone, it&#x2019;s me again. Unfortunately, since a speaker had to drop out of the conference, I get the privilege of giving a second talk. This talk is entitled &#x201C;Give-and-Go with PostgreSQL and Sequel&#x201D;.</p>
+</div>
+<h1 style="font-size: 120px; text-align: left;">
+<span class="medium-red trans">Give-and-Go</span>
+<span class="smaller trans">with</span><br>
+<span class="medium-red it">PostgreSQL</span>
+<span class="smaller trans">and</span><br>
+<span class="medium-red it">Sequel</span>
+</br><p class="right" style="position: absolute; bottom: 50px; right: 50px;">RubyC<br>2014</br></p>
+</br>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none">
+  <div class="content " ref="slides/slides/2">
+
+<div class="notes">
+<p>To eliminate the possibility of confusion, when I refer to Sequel, I&#x2019;m talking about the ruby library. When I refer to SQL, I&#x2019;m talking about the database query language.</p>
+</div>
+<h1 style="font-size: 250px; text-align: center; line-height: 200px;">
+<span class="bright-red">Sequel</span><br>
+<span class="trans smaller">vs.</span><br>
+<span class="dark-red">SQL</span>
+</br><h1 class="trans" style="font-size: 40px; position: absolute; top: 210px; left: 560px;">ruby library</h1><h1 class="trans" style="font-size: 40px; position: absolute; bottom: 70px; left: 620px;">query language</h1></br>
+</h1>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none">
+  <div class="content " ref="slides/slides/3">
+
+<div class="notes">
+<p>Also, because PostgreSQL isn&#x2019;t easy to pronounce, I&#x2019;ll be referring to it as Postgres in the rest of the presentation.</p>
+</div>
+<h1 style="font-size: 180px; text-align: center; line-height: 200px;">
+<span class="bright-red">PostgreSQL</span><br>
+<span class="trans smaller">vs.</span><br>
+<span class="dark-red">Postgres</span>
+</br><h1 class="trans" style="font-size: 30px; position: absolute; top: 180px; left: 475px;">hard to pronounce</h1><h1 class="trans" style="font-size: 40px; position: absolute; bottom: 120px; left: 620px;">easier</h1></br>
+</h1>
+</div>
+</div><div id="slides/slides" class="slide bg-goal" data-transition="none"><div class="content bg-goal" ref="slides/slides/4">
+
+<div class="notes">
+<p>There is a saying in hockey, don&#x2019;t go through life without goals. With that in mind, the goal of this presentation is to show off a lot of awesome Postgres features, and how you can easily make use of them with Sequel.</p>
+</div>
+<h1 class="medium-red trans" style="position: absolute; bottom: 50px; left: 20px; font-size: 90px; text-align: left; width: 750px;">"Don't go through life without goals"</h1></div>
+</div><div id="slides/slides" class="slide bg-givego" data-transition="none"><div class="content bg-givego" ref="slides/slides/5">
+
+<div class="notes">
+<p>I think one of the reasons that Postgres is not used in more places, is that the advanced features that Postgres offers are sometimes not easy to use without good client library support. Sequel makes it easy to use many advanced Postgres features, and this presentation will separate those features into three categories.</p>
+</div>
+<h1 class="dark-red" style="position: absolute; top: 130px; left: 10px; font-size: 90px; text-align: right;">Sequel</h1><h1 style="position: absolute; top: 635px; right: 10px; font-size: 90px; text-align: right;">PostgreSQL</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/6">
+
+<div class="notes">
+<p>The first category is related to the data types that Postgres supports. Unlike many SQL databases, Postgres supports a number of complex datatypes, such as arrays, hash tables, JSON, ranges, and composite types.</p>
+</div>
+<h1 class="trans" style="margin-top: 50px; font-size: 250px; text-align: left;">Types</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/7">
+
+<div class="notes">
+<p>The second category is query types that Postgres supports. I will be talking about recursive common table expressions, integrated full text search, as well as returning data from insert, update, and delete queries.</p>
+</div>
+<h1 class="trans" style="font-size: 220px; text-align: center; margin-top: 250px;">Queries</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/8">
+
+<div class="notes">
+<p>The final category is really just a catch all for features that do not fit cleanly into one of the previous two categories. I will be talking about delayed validation of constraints, prepared transactions, procedural languages, and notification channels.</p>
+</div>
+<h1 class="trans" style="font-size: 150px; text-align: right; margin-top: 400px;">Other Features</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/9">
+
+<div class="notes">
+<p>So let&#x2019;s jump right in and talk about some of the advanced data types supported by Postgres. Most SQL databases deal with simple scalar types, such as strings, numbers, and dates, requiring multiple columns or references to other tables to deal with combinations of scalar types.|Postgres has numerous types that store combinations of scalar types in a single column, allowing you to store more complex data in a single row.</p>
+</div>
+<h1 class="trans" style="margin-top: 50px; font-size: 250px; text-align: left;">Types</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/10">
+
+<div class="notes">
+<p>The simplest combination type offered by Postgres is the array. A Postgres array type contains an arbitrary number of values of the same type of data. Postgres supports both single and multidimensional arrays.</p>
+</div>
+<h1 class="trans" style="font-size: 200px; text-align: left; margin-top: 350px; margin-left: 30px;">Array</h1></div>
+</div><div id="slides/slides" class="slide a bg1" data-transition="none"><div class="content a bg1" ref="slides/slides/11">
+
+<div class="notes">
+<p>In standard SQL, you would generally store this information in a separate table. But then you need to do a JOIN or separate queries to work with the results. This can be slow for large datasets. By using an array type, you can eliminate JOINs from your queries, allowing substantial speedups.</p>
+</div>
+<h1 style="font-size: 150px; text-align: center; margin-top: 250px;">
+<span class="trans black">Eliminate</span><br><span class="trans">JOINs</span>
+</br></h1>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/12">
+
+<div class="notes">
+<p>Depending on the type of queries you are doing, with proper indexes, using arrays instead of a separate join table can be up to 20x faster.</p>
+</div>
+<h1 class="trans" style="font-size: 150px; text-align: center; margin-top: 150px;">
+<span class="trans">Up to</span>
+<span class="trans bigger black">20x</span>
+<span class="trans">Faster</span>
+</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/13">
+
+<div class="notes">
+<p>There are a couple of tradeoffs you have to make to get such a speedup. One is that your application becomes Postgres-specific. The second is that you need to have support in your client library for the array types.|Note that these tradeoffs are pretty much the case for all advanced Postgres types, so while I won&#x2019;t mention them again, you should assume they apply to the other types as well.</p>
+</div>
+<h1 class="trans" style="font-size: 130px; text-align: center; margin-top: 250px;">Tradeoffs</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/14">
+
+<div class="notes">
+<p>If you don&#x2019;t have special support in your client library, you&#x2019;ll probably have arrays returned as strings in Postgres array format.</p>
+</div>
+<pre style="font-size: 180px; text-align: center; margin-top: 250px;">"{1,2,3}"</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/15">
+
+<div class="notes">
+<p>You need client library support so that the array types are recognized and parsed correctly into ruby array-like objects.</p>
+</div>
+<pre style="font-size: 180px; text-align: center; margin-top: 250px;">[1,2,3]</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/16">
+
+<div class="notes">
+<p>Sequel ships with such support in the form of an extension. If you are going to be using array types, you just load the pg_array extension into your Sequel::Database instance, and then it correctly deals with Postgres array types. It supports most common Postgres array types by default, and it also supports registering custom array types.</p>
+</div>
+<h1 style="font-size: 100px; text-align: left; margin-top: 150px; margin-left: 100px;">pg_array</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/17">
+
+<div class="notes">
+<p>Sequel also ships with an additional extension called pg_array_ops, which provides DSL support for Postgres array functions and operators.</p>
+</div>
+<h1 style="font-size: 100px; text-align: right; margin-top: 400px; margin-right: 50px;">pg_array_ops</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/18">
+
+<div class="notes">
+<p>Let&#x2019;s say you are looking for all rows where the array column contains both 3 and 1. You can use the pg_array method to tell Sequel that the argument should be treated as a Postgres array, and then you can call the contains method to check if it contains the given elements. This translates into the SQL you see on screen.</p>
+</div>
+<pre style="font-size: 45px; text-align: left; margin-top: 250px; margin-left: 10px;">
+Sequel.pg_array(:array_column).
+  contains([3,1])
+<span class="bg2">"array_column" @&gt; ARRAY[3,1]</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/19">
+
+<div class="notes">
+<p>So not only does Sequel allow you to treat Postgres arrays as ruby array-like objects, it also represents the SQL operations on Postgres arrays as ruby expression objects.</p>
+</div>
+<h1 style="font-size: 145px; margin-top: 420px; text-align: right;">SQL <span class="trans black">in</span><br> Ruby</br></h1>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/20">
+
+<div class="notes">
+<p>This extends into emulating the Postgres type system. For example, the return value of the contains operator in Postgres is a boolean, so the value Sequel returns for the contains method is a boolean expression. The return value of the concatenation operator on two Postgres arrays is a Postgres array, so the value Sequel returns for the concat method is an array expression.</p>
+</div>
+<pre class="mono" style="font-size: 45px; text-align: left; margin-top: 250px; margin-left: 10px;">
+op = Sequel.pg_array(:array_column)
+op.contains([3,1]) <span class="bg2 trans">Boolean</span>
+op.concat([1]) <span class="bg2 trans">Array</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/21">
+
+<div class="notes">
+<p>This allows you to chain the methods together intelligently. For example, if you have a row with two array columns, you can see if their concatenation contains both numbers, by calling contains on the array expression object returned by concat.</p>
+</div>
+<pre class="mono" style="font-size: 45px; text-align: left; margin-top: 250px; margin-left: 10px;">
+Sequel.pg_array(:array_column).
+  concat(:other_array_column).
+  contains([3,1])
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/22">
+
+<div class="notes">
+<p>In addition to making it easier to use Postgres arrays in your own code, Sequel also ships with a model plugin called pg_array_associations, which implements many to many associations by storing foreign keys in an array.</p>
+</div>
+<h1 style="font-size: 90px; text-align: right; margin-top: 450px;">pg_array_associations</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/23">
+
+<div class="notes">
+<p>Here is the classic JOIN table usage in a many to many association. With a table for albums and a table for tags, the association between albums and tags is stored in a join table, which has foreign keys pointing to both the albums table and the tags table.</p>
+</div>
+<pre style="font-size: 50px; text-align: left; margin-top: 0px; margin-left: 100px;">
+      albums_tags
+      ------------
+------| album_id |
+|     | tag_id   |-----|
+|     ------------     |
+|   albums     tags    |
+|  --------  --------  |
+|-&gt;| id   |  | id   |&lt;-|
+   | name |  | name |
+   --------  --------
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/24">
+
+<div class="notes">
+<p>Using the pg_array_associations plugin, you can eliminate the join table, by storing the tag foreign keys in an array column in the albums table. This means you can then get all tags related to a given album without doing a JOIN.|The Sequel::Model API is almost identical to the JOIN table case, and the plugin handles advanced Sequel::Model association features, such as multiple methods of eager loading, filtering by associations, and dataset associations.</p>
+</div>
+<pre style="font-size: 65px; text-align: left; margin-top: 100px; margin-left: 25px;">
+  albums          tags
+-----------     --------
+| id      |  |-&gt;| id   |
+| name    |  |  | name |
+| tag_ids |--|  --------
+-----------
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/25">
+
+<div class="notes">
+<p>Unfortunately, the current downside to storing foreign keys in an array is that you lose automatic referential integrity, so you can&#x2019;t ensure that all of the foreign keys in the array continue to reference existing rows.|There have been patches for Postgres 9.2 and 9.3 to add support for array element foreign keys, but they were not merged. Hopefully a future version of Postgres will support them, but it doesn&#x2019;t seem to be high on the priority list. In the meantime, it is possible to emulate referential integrity for foreign keys in arrays using triggers.</p>
+</div>
+<h1 style="font-size: 120px; text-align: right; margin-top: 50px;">
+<span class="trans black" style="font-size: 300px">No</span><br>
+<span class="trans">Referential Integrity</span>
+</br></h1>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/26">
+
+<div class="notes">
+<p>The next type I want to talk about is hstore. The hstore type is a hash table stored in a single column, where keys and values are both strings. Unlike arrays, hstore is not a core Postgres type. It ships with Postgres as an extension, and it is one of the most commonly used extensions.</p>
+</div>
+<h1 class="trans" style="font-size: 200px; text-align: right;">Hstore</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none">
+  <div class="content bg1" ref="slides/slides/27">
+
+<div class="notes">
+<p>In standard SQL, the general way to represent a hash table is using the &#x201C;entity-attribute-value&#x201D; model, with a separate table that has a foreign key pointing to the current row, and two string columns, one for the attribute name and one for the attribute value.</p>
+</div>
+<h1 class="trans" style="font-size: 120px; text-align: center; margin-top: 250px;">
+<span class="trans black">Eliminate</span><br>
+<span class="trans">Entity</span> <span class="bg2 smaller trans">foreign key</span><br>
+<span class="trans">Attribute</span> <span class="bg2 smaller trans">string</span><br>
+<span class="trans">Value</span> <span class="bg2 smaller trans">string</span>
+</br></br>
+</br>
+</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/28">
+
+<div class="notes">
+<p>With proper indexes, using hstores instead of a separate entity attribute value table can be up to 15x faster.</p>
+</div>
+<h1 style="font-size: 150px; text-align: center; margin-top: 150px;">
+<span class="trans">Up to</span>
+<span class="trans bigger black">15x</span>
+<span class="trans">Faster</span>
+</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/29">
+
+<div class="notes">
+<p>So I&#x2019;ve used the phrase &#x201C;with proper indexes&#x201D; a couple of times, which is pretty vague. Postgres advanced types would be mostly useless without good index support.</p>
+</div>
+<h1 class="trans" style="font-size: 220px; text-align: center; margin-top: 250px;">Indexes</h1></div>
+</div><div id="slides/slides" class="slide bg-howe" data-transition="none">
+  <div class="content bg-howe" ref="slides/slides/30">
+
+<div class="notes">
+<p>The hockey great Gordie Howe once said, You can always get someone to do your thinking for you. Thankfully, Postgres does a good job of thinking for you, supporting multiple advanced index types that you probably wouldn&#x2019;t be able to think up yourself.</p>
+</div>
+<h1 style="font-size: 75px; text-align: left; float:right; width: 400px; margin-top: 100px; margin-right: 20px;">
+<span class="trans">"You can always get someone to do your thinking for you"</span><br><br>
+<span class="small">Gordie Howe</span>
+</br></br>
+</h1>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/31">
+
+<div class="notes">
+<p>Postgres has GIN and GIST index types that it can use to index the advanced data types that Postgres supports. Arrays can be indexed with GIN, allowing index usage for queries where the array contains an entry, a subset or superset of entries, or has any overlap with set of entries. Hstores can be indexed with both GIN and GIST, allowing index usage for queries where the hstore contains a given key, any or all of a set of keys, or a subset of keys and values.</p>
+</div>
+<h1 class="trans" style="font-size: 200px; margin-top: 250px;">
+GIN
+<span class="trans black">and</span>
+GIST<br>
+</br></h1>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/32">
+
+<div class="notes">
+<p>Sequel ships with a pg_hstore extension for the hstore type. Loading this extension into your Database object makes it return the hstore type as a ruby hash-like object.</p>
+</div>
+<h1 style="font-size: 100px; text-align: left; margin-top: 400px; margin-left: 10px;">pg_hstore</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/33">
+
+<div class="notes">
+<p>Similarly, Sequel ships with a pg_hstore_ops extension for DSL support for hstore operators and functions.</p>
+</div>
+<h1 style="font-size: 100px; text-align: right; margin-top: 50px; margin-left: 10px;">pg_hstore_ops</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/34">
+
+<div class="notes">
+<p>Let&#x2019;s say you are looking for all rows where the hstore column contains a key of foo with a value of bar. You can use code very similar to the array code I showed earlier to do so, just wrapping the column using the hstore method, and using the contains method.</p>
+</div>
+<pre style="font-size: 45px; text-align: left; margin-top: 250px; margin-left: 10px;">
+Sequel.hstore(:hstore_column).
+  contains('foo'=&gt;'bar')
+<span class="bg2">"hstore_column" @&gt; '"foo"=&gt;"bar"'</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none">
+  <div class="content bg1" ref="slides/slides/35">
+
+<div class="notes">
+<p>In addition to replacing the entity-attribute-value model, hstores can also be used to combine multiple columns into a single column. For example, if you have 10 columns where the values for most rows are NULL, you could combine them into a single hstore column for ease of maintenance and possibly better performance.</p>
+</div>
+<h1 style="font-size: 150px; text-align: right; margin-top: 150px;">
+<span class="trans">Replace</span><br>
+<span class="smaller black trans">(mostly)</span>
+NULL<br>
+<span class="trans">columns</span>
+</br></br>
+</h1>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/36">
+
+<div class="notes">
+<p>hstores were the first Postgres type that allowed for schemaless design, even if the implementation was limited to just strings.</p>
+</div>
+<h1 class="trans" style="font-size: 150px; text-align: left; margin-top: 100px;">Schemaless</h1><h1 class="trans smaller black it" style="position: absolute; top: 100px; left: 240px; font-size: 46px;">for strings only</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/37">
+
+<div class="notes">
+<p>What if you want to do a full schemaless design, similar to document databases such as MongoDB? While the merits of a fully schemaless design are debateable, if you want to go that route, Postgres has a type for that.</p>
+</div>
+<h1 class="trans" style="font-size: 150px; text-align: left; margin-top: 100px;">Schemaless</h1><h1 class="trans smaller black it" style="position: absolute; top: 100px; left: 240px; font-size: 46px;">for everything?</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/38">
+
+<div class="notes">
+<p>That is the JSON type. As you might expect, this allows you to store nested data using Javascript objects, arrays, numbers, and strings. The JSON type is a fairly recent addition to Postgres, appearing first in 9.2, but with many additional features in 9.3 and 9.4.</p>
+</div>
+<h1 style="font-size: 380px; text-align: right; margin-top: 150px;">JSON</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/39">
+
+<div class="notes">
+<p>As you might expect, Sequel ships with an extension for the json type, returning values as ruby hash-like or array-like objects.</p>
+</div>
+<h1 style="font-size: 100px; text-align: right; margin-top: 400px; margin-right: 50px;">pg_json</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/40">
+
+<div class="notes">
+<p>A Postgres replacement for a MongoDB collection would look something like the following in Sequel. Basically, just a UUID primary key and a schemaless JSON hash for the attributes.</p>
+</div>
+<pre style="font-size: 45px; text-align: left; margin-top: 220px; margin-left: 10px;">
+Sequel.create_table(:collection) do
+  uuid :_id, :primary_key=&gt;true
+  json :attributes
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/41">
+
+<div class="notes">
+<p>Let&#x2019;s take a look at an example of using these types in a real application. This application is called KaeruEra, which is a error aggregator for ruby web applications, similar to Airbrake or Errbit. Basically, it logs errors that happen in other web applications, and provides a way to view, search, and track fixes to the errors.</p>
+</div>
+<h1 style="font-size: 200px; text-align: right; margin-top: 50px; margin-right: 50px;">
+<span class="black trans">Example:</span>
+KaeruEra
+</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/42">
+
+<div class="notes">
+<p>As you might expect, the main table in the application stores errors. Using Postgres types, there is only a single row created for every error. Here are some of the fields that are stored.|First is the exception class and message, which are both stored as plain strings. Then there is the backtrace for the exception, which is stored as an array of strings. It also stores the request environment, which fits nicely into an hstore, since keys and values are generally strings. Finally, it stores the request params and session variables as json, since they often contain nested structures.|Without the advanced types provided by Postgres, storing similar information in any sort of structured and queryable format would require inserting hundreds of rows across 5 different tables.</p>
+</div>
+<div class="black" style="font-size: 60px; line-height: 90px; margin-top: 100px; float: left; text-align: left;">
+  <div class="trans">Exception Class</div>
+  <div class="trans">Message</div>
+  <div class="trans">Backtrace</div>
+  <div class="trans">Request Environment</div>
+  <div class="trans">Request Params</div>
+  <div class="trans">Session Variables</div>
+</div><div class="black" style="font-size: 60px; line-height: 90px; margin-top: 100px; float: right; text-align: right;">
+  <div>text</div>
+  <div>text</div>
+  <div>text[]</div>
+  <div>hstore</div>
+  <div>json</div>
+  <div>json</div>
+</div></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/43">
+
+<div class="notes">
+<p>You may be wondering why you would want to use an hstore type if you can use the json type, since the json type supports nested structures and the hstore type does not. One reason is that there is no automatic indexing support for the json type, unlike the hstore type.|You can still create indexes based on a specific member in a json column, even a nested object member, but you have to create specific indexes for each type of search.</p>
+</div>
+<h1 class="trans" style="font-size: 130px; text-align: left; margin-top: 200px; margin-right: 80px;">Tradeoffs</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/44">
+
+<div class="notes">
+<p>Note that these tradeoffs are going away in Postgres 9.4.</p>
+</div>
+<h1 class="trans" style="font-size: 130px; text-align: left; margin-top: 200px; margin-right: 80px;">Tradeoffs</h1><h1 class="trans black" style="font-size: 60px; text-align: left; margin-top: 30px; margin-left: 80px;">Not For Much Longer</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/45">
+
+<div class="notes">
+<p>PostgreSQL 9.4 introduces a new type called JSONB, which can store JSON data, but in a way that it allows it to be indexed with GIN and GIST indexes. So you get all of the flexibility of JSON, but with all the performance of hstore.|Sequel 4.11, which will be released in a few days, will add support for the JSONB type.</p>
+</div>
+<h1 style="font-size: 280px; text-align: right; margin-top: 150px;">JSONB</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/46">
+
+<div class="notes">
+<p>I mentioned earlier that Postgres added a whole lot more capabilities to json in 9.3 and 9.4. Those capabilities were in the form of additional json operators and functions, most of which operate on both the json and jsonb types. Sequel&#x2019;s pg_json_ops extension adds DSL support for these new operators and functions.</p>
+</div>
+<h1 style="font-size: 100px; text-align: center; margin-top: 500px;">pg_json_ops</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/47">
+
+<div class="notes">
+<p>Let&#x2019;s say you were using the JSON displayed here and storing it in a jsonb column</p>
+</div>
+<pre style="font-size: 45px; text-align: left; margin-top: 250px; margin-left: 10px;">
+# {"a": 1, "b": 2, "c": 3}
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/48">
+
+<div class="notes">
+<p>If you want to search to see if the jsonb column contains a key a with value 1, you can call wrap the column with Sequel.pg_jsonb, and then call the contains methods with the hash used for search, just like when using hstore.</p>
+</div>
+<pre style="font-size: 45px; text-align: left; margin-top: 250px; margin-left: 10px;">
+# {"a": 1, "b": 2, "c": 3}
+Sequel.pg_jsonb(:jsonb_column).
+  contains('a'=&gt;1)
+<span class="bg2">"jsonb_column" @&gt; '{"a":1}'::jsonb</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/49">
+
+<div class="notes">
+<p>What if you want the benefits of having nested data in your row but want the consistency benefits that come from using a defined schema?</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: left; margin-top: 180px; margin-left: 50px;">Document Databases with Schemas</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/50">
+
+<div class="notes">
+<p>Postgres supports this with composite types, where a single column contains a data structure with multiple subtypes. When you combine composite types with array types, you basically have the power to store full documents with unlimited nesting in a single row.</p>
+</div>
+<h1 class="trans" style="font-size: 130px; text-align: left; margin-top: 180px; margin-left: 50px;">Composite Types</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/51">
+
+<div class="notes">
+<p>Postgres allows for user defined types using the CREATE TYPE syntax, which is very similar to CREATE TABLE, taking the list of columns in the type.</p>
+</div>
+<pre style="font-size: 120px; text-align: center; margin-top: 150px;">CREATE TYPE</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/52">
+
+<div class="notes">
+<p>Additionally, for every table you create with CREATE TABLE, a corresponding type is created.</p>
+</div>
+<pre style="font-size: 120px; text-align: center; margin-top: 450px;">CREATE TABLE</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/53">
+
+<div class="notes">
+<p>Let&#x2019;s say you have a music database and want to store each album in single row, including the full tracklist. A typical JSON representation would be something like this, storing the name and length of the album, and then an array of tracks, with each track having a name, length, and reference to the related artist.</p>
+</div>
+<pre style="font-size: 50px; text-align: left; ">
+{"name": "Some Album",
+"length": 3600,
+"tracks": [
+  {"name": "Track 1",
+   "length": 290,
+   "artist_id": 1},
+  {"name": "Track 2",
+   "length": 310,
+   "artist_id": 2}]}
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/54">
+
+<div class="notes">
+<p>Here is how you could structure the data using Postgres arrays and composite types. You have a separate track type with a name, length, and reference to artist. Then your albums table has a column for the name, a column for the album length, and a column containing the tracklist as an array of track types.|This approach allows you to keep an entire album including all tracks in a single row. It combines the benefit of a document database, getting an entire object in a single JOIN-less query, but still retains the data consistency benefits that come from using a defined schema. I actually use a design similar to this in one of my applications, though for a different reason.</p>
+</div>
+<pre style="font-size: 40px; text-align: left; ">
+track type:
+ name <span class="bg2">text</span>
+ length <span class="bg2">integer</span>
+ artist_id <span class="bg2">foreign key</span>
+
+album type:
+ name <span class="bg2">text</span>
+ length <span class="bg2">integer</span>
+ tracks <span class="bg2">track[]</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/55">
+
+<div class="notes">
+<p>I&#x2019;m sure most of you have heard of Heroku, the platform-as-a-service provider. One of the many benefits of Heroku is that they offer a completely free way to run low-traffic web applications, including a free Postgres database.|When Heroku first started, this free database was limited to 5MB of data. A couple years ago, they switched from 5MB of data, to 10,000 rows of data. At the time, I had an application that was over 10,000 rows, but had less than 5MB of data. It stored tracks in a separate table from albums with one row per track.|Using an array of composite types, I was able to eliminate the separate tracks table and just store the tracks alongside the related album, getting me under the 10,000 row limit. I was able to do this while increasing performance and still allowing for indexed querying by track name, using Postgres advanced indexing features.</p>
+</div>
+
+<p><img heigth="300" src="file/heroku.svg" style="margin-top: 250px" width="900"/></p>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/56">
+
+<div class="notes">
+<p>Postgres allows you to combine the schemaless and relational approaches and get the benefits of both worlds, using a defined schema for the columns you know you need, but having a schemaless json or hstore column in the cases where you want to trade consistency for flexibility.</p>
+</div>
+<pre style="font-size: 40px; text-align: left; ">
+track type:
+ name <span class="bg2">text</span>
+ length <span class="bg2">integer</span>
+ times_played <span class="bg2">integer</span>
+ <span class="bg4">attributes</span> <span class="bg2">json/jsonb/hstore</span>
+
+album type:
+ name <span class="bg2">text</span>
+ length <span class="bg2">integer</span>
+ artist_id <span class="bg2">foreign key</span>
+ tracks <span class="bg2">track[]</span>
+ <span class="bg4">attributes</span> <span class="bg2">json/jsonb/hstore</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/57">
+
+<div class="notes">
+<p>Sequel ships with a pg_row extension that enables composite type support, returning values as ruby hash-like objects. Additionally, Sequel also ships with a pg_row model plugin, which allows you to represent composite types as Sequel::Model instances.</p>
+</div>
+<h1 style="font-size: 100px; text-align: right; margin-top: 400px; margin-right: 50px;">pg_row</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/58">
+
+<div class="notes">
+<p>The final Postgres data type I&#x2019;d like to talk about is the range type. Range types in Postgres are similar to ruby ranges, but they are a bit more flexible. For example, Postgres ranges can be unbounded on either end, and they allow for exclusive beginnings, neither of which ruby allows.|Postgres has built in support for numeric, date, and timestamp ranges, and also allows you to define your own custom range types.</p>
+</div>
+<h1 class="trans" style="font-size: 130px; text-align: left; margin-top: 180px; margin-left: 50px;">Range Types</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/59">
+
+<div class="notes">
+<p>Sequel ships with a pg_range extension that enables support for range types, returning Postgres range types as ruby range-like objects, and allowing you to use ruby ranges to represent range types in queries.</p>
+</div>
+<h1 style="font-size: 100px; text-align: left; margin-top: 400px; margin-left: 50px;">pg_range</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/60">
+
+<div class="notes">
+<p>And to make using Postgres ranges easier, Sequel also ships with a pg_range_ops extension that adds DSL support for range operators and functions.</p>
+</div>
+<h1 style="font-size: 100px; text-align: left; margin-top: 75px; margin-left: 75px;">pg_range_ops</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/61">
+
+<div class="notes">
+<p>Let&#x2019;s say you have a hotel reservation system, and you want to see which reservations include today&#x2019;s date, you could use the following code. By design, it looks similar to the hstore, array, and jsonb code, just wrapping the object with pg_range and using the contains method.</p>
+</div>
+<pre style="font-size: 44px; text-align: left; margin-top: 250px; margin-left: 10px;">
+Sequel.pg_range(:reservation_dates).
+  contains(Date.today)
+<span class="bg2">"reservation_dates" @&gt; '2014-06-01'</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/62">
+
+<div class="notes">
+<p>Range types by themselves are only marginally useful, since they can be emulated by using separate columns for the beginning and the end of the range. However, there is another Postgres feature that makes range types very useful.</p>
+</div>
+<h1 class="trans" style="font-size: 120px; text-align: center; margin-top: 50px;">Benefits?</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/63">
+
+<div class="notes">
+<p>That feature is exclusion constraints. Exclusion constraints are similar to unique constraints, but instead of protecting against duplicate values, they protect against overlapping values. For any work where overlapping values are not allowed, such as when scheduling access to a limited resource, Postgres exclusion constraints are probably the best approach to the problem.</p>
+</div>
+<h1 class="trans" style="font-size: 130px; text-align: center; margin-top: 250px;">Exclusion Constraints</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/64">
+
+<div class="notes">
+<p>Let&#x2019;s say you want to book a reservation for room 1 from May 30 to June 1. Assuming nothing else has already reserved room 1 in that time period, this will work correctly.</p>
+</div>
+<pre style="font-size: 50px; text-align: left; margin-top: 200px; margin-left: 10px;">
+r = Date.new(2014, 5, 30)..
+    Date.new(2014, 6, 1)
+DB[:reservations].
+  insert(:room_id=&gt;1,
+    :reservation_dates=&gt;r)
+<span class="bg2 trans" style="font-style: normal">Insert successful</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/65">
+
+<div class="notes">
+<p>Later, if something else tries to reserve room 1 from June 1 to June 3, it will fail, because that overlaps with the existing reservation from May 30 to June 1.</p>
+</div>
+<pre style="font-size: 50px; text-align: left; margin-top: 200px; margin-left: 10px;">
+r = Date.new(2014, 6, 1)..
+    Date.new(2014, 6, 3)
+DB[:reservations].
+  insert(:room_id=&gt;1,
+    :reservation_dates=&gt;r)
+<span class="bg2 trans" style="font-style: normal">Error raised!</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/66">
+
+<div class="notes">
+<p>When the exclusion constraint fails, Sequel will recognize it as an exclusion constraint violation, and raise a specific exception class. You can then rescue that exception class in your application code and be confident that the exclusion constraint is what caused the error.|You can then alert the user that the room is already reserved during that time frame, and offer to book a different room at the same time or the same room at a different time.</p>
+</div>
+<pre style="font-size: 55px; text-align: left; margin-top: 200px; margin-left: 10px;">Sequel::Postgres::<br>ExclusionConstraintViolation</br></pre>
+</div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/67">
+
+<div class="notes">
+<p>So let me briefly review the types I discussed.</p>
+</div>
+<h1 class="trans" style="margin-top: 100px; font-size: 250px; text-align: left;">Types</h1><h1 class="review trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/68">
+
+<div class="notes">
+<p>First was the array type, good for keeping multiple instances of the same type of data, instead of using a separate table.</p>
+</div>
+<h1 class="trans" style="font-size: 200px; text-align: left; margin-top: 350px; margin-left: 30px;">Array</h1><h1 class="review trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/69">
+
+<div class="notes">
+<p>Next was the hstore type, for keeping simple attribute keys and values in a single column.</p>
+</div>
+<h1 class="trans" style="font-size: 200px; text-align: right; margin-top: 300px;">Hstore</h1><h1 class="review trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/70">
+
+<div class="notes">
+<p>Then I talked about the JSON and JSONB types, for fully schemaless documents.</p>
+</div>
+<h1 style="font-size: 240px; text-align: center; margin-top: 250px;">JSON(B)</h1><h1 class="review trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/71">
+
+<div class="notes">
+<p>After that I talked about composite types, for the nesting benefits of using documents, but with the data consistency benefits that come from using a defined schema.</p>
+</div>
+<h1 class="trans" style="font-size: 130px; text-align: left; margin-top: 180px; margin-left: 50px;">Composite Types</h1><h1 class="review trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg1" data-transition="none"><div class="content bg1" ref="slides/slides/72">
+
+<div class="notes">
+<p>Finally, I talked about range types and how using them with exclusion constraints can make it much easier to automatically protect against overlapping values.</p>
+</div>
+<h1 class="trans" style="font-size: 150px; text-align: left; margin-top: 280px; margin-left: 20px;">Range Types</h1><h1 class="review trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/73">
+
+<div class="notes">
+<p>So that brings us to the second part of the presentation, where I&#x2019;ll be talking about some of the advanced query types that Postgres supports.</p>
+</div>
+<h1 class="trans" style="font-size: 220px; text-align: center; margin-top: 250px;">Queries</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/74">
+
+<div class="notes">
+<p>The first type of query I&#x2019;ll be talking about is the common table expression query.</p>
+</div>
+<h1 class="medium-red" style="font-size: 220px; text-align: left; margin-top: 250px;">
+C<span class="white" style="font-size: 40px;">ommon</span>
+T<span class="white" style="font-size: 40px;">able</span>
+E<span class="white" style="font-size: 40px;">xpression</span>
+</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/75">
+
+<div class="notes">
+<p>A basic common table expression is a way to give a subquery a name for just the period of a single query, equivalent to defining a temporary view.|In this example, we are creating a named subquery called current_reservations, which selects the rows in the reversations table that include the current date. The outer query then selects from that subquery, and then joins to the rooms table.|Note that in this example, this doesn&#x2019;t give you any additional features that you didn&#x2019;t already have, since you could just filter the rows in the main query.|So why did I spend time discussing this? Well, it turns out that while basic common table expressions are uninteresting, they have an interesting variant.</p>
+</div>
+<pre style="font-size: 40px; margin-top: 100px;">
+WITH current_reservations AS (
+<span class="bg1">SELECT * FROM reservations
+  WHERE reservation_dates @&gt;
+        CURRENT_DATE</span>)
+SELECT * FROM <span class="bg1">current_reservations</span>
+JOIN rooms ON (room_id = rooms.id)
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/76">
+
+<div class="notes">
+<p>That variant is the recursive common table expression. A recursive expression has similar syntax to a basic common table expression, but it recursively queries itself using the output from the previous iteration as input to the following iteration, and when no more output is produced, returning the combined output from all iterations as the result set of the view.|That&#x2019;s hard to reason about abstractly, so let me give you a concrete example.</p>
+</div>
+<h1 class="medium-red" style="font-size: 220px; text-align: left; margin-top: 30px;">
+R<span class="white" style="font-size: 40px;">ecursive</span><br>
+C<span class="white" style="font-size: 40px;">ommon</span>
+T<span class="white" style="font-size: 40px;">able</span>
+E<span class="white" style="font-size: 40px;">xpression</span>
+</br></h1>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/77">
+
+<div class="notes">
+<p>Here&#x2019;s the simplest possible recursive common table expression I can think of. Note the use of RECURSIVE to signal that this is a recursive query. This query will return ten rows with with a value starting at 1 and ending at 10. Let me break down how it works.|First, as you can see here, recursive expressions are broken into two parts separated by a union. The part before the union is referred to as the base case, and cannot refer the recursive expression internally.|The part after the union is the recursive case, and when it refers to the recursive expression, for the first iteration it receives the output of the base case. On future iterations, it receives the results of the previous iteration. This continues until the recursive part produces no output.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 50px;">
+WITH <span class="bg4">RECURSIVE</span> a AS (<span class="bg1">
+  SELECT 1 AS b
+<span class="bg4">  UNION ALL</span>
+  SELECT a.b + 1
+  FROM a
+  WHERE a.b &lt; 10</span>)
+SELECT * FROM a
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/78">
+
+<div class="notes">
+<p>Here is the base case. This is pretty simple, it just returns a single column with the value of 1.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 50px;">
+WITH RECURSIVE a AS (
+  <span class="bg1">SELECT 1 AS b</span>
+  UNION ALL
+  SELECT a.b + 1
+  FROM a
+  WHERE a.b &lt; 10)
+SELECT * FROM a
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/79">
+
+<div class="notes">
+<p>Here is the recursive case. The first time the recursive case runs, the value of a.b will be 1, since that is what the base case returned. Since a.b is less than 10, this will return 1 row, with the value of a.b plus 1, which is 2.|Since it returned output, another iteration will run, this time where a.b is 2. These iterations will keep running until a.b is 10. When a.b is 10, the recursive case will not return any rows, at which point the recursion stops.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 50px;">
+WITH RECURSIVE a AS (
+  SELECT 1 AS b
+  UNION ALL
+<span class="bg1">  SELECT a.b + 1
+  FROM a
+  WHERE a.b &lt; 10</span>)
+SELECT * FROM a
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/80">
+
+<div class="notes">
+<p>When the recursion has finished, all output from both the base case and all recursive case iterations are combined into a single result set, which is returned. That result set will be all numbers between 1 and 10.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 50px;">
+WITH RECURSIVE a AS (
+  SELECT 1 AS b
+  UNION ALL
+  SELECT a.b + 1
+  FROM a
+  WHERE a.b &lt; 10)
+<span class="bg1">SELECT * FROM a</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/81">
+
+<div class="notes">
+<p>If a simpler counter is fun, surely using a recursive expression to return all fibonacci numbers under 100 is even more fun. You can do that by iterating using two columns, where the each iteration returns the larger number and the sum of the two numbers in the previous iteration. Since these examples might be too simplistic, let&#x2019;s move on to a real example.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 50px;">
+WITH RECURSIVE a AS (
+  SELECT <span class="bg1">1 AS b, 1 AS c</span>
+  UNION ALL
+  SELECT <span class="bg1">a.c, a.b + a.c</span>
+  FROM a
+  WHERE a.b &lt; 100)
+SELECT <span class="bg1">b</span> FROM a
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/82">
+
+<div class="notes">
+<p>Let&#x2019;s say you are using the reservations table we discussed early, storing a date range. You get a new 5-day reservation and attempt to save it, but it turns out that it overlaps with an existing reservation, so an ExclusionConstraintViolation is raised. What should you do?|Well, to be helpful to the user, you may want to scan the reservations table and try to find the next available 5-day reservation that doesn&#x2019;t overlap with an existing reservation. How can you do that?</p>
+</div>
+<pre style="font-size: 55px; text-align: left; margin-top: 200px; margin-left: 10px;">Sequel::Postgres::<br>ExclusionConstraintViolation</br></pre>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/83">
+
+<div class="notes">
+<p>If you guessed using a recursive expression, have the person next to you pat you on the back. Here&#x2019;s example code that does that. While this is a fairly complex example, I&#x2019;ll try to break down how it works.</p>
+</div>
+<pre style="font-size: 32px;">
+WITH RECURSIVE range AS (
+  SELECT CURRENT_DATE AS i,
+    daterange(CURRENT_DATE,
+      (CURRENT_DATE + 5)) AS r
+  UNION ALL
+  (SELECT (
+    SELECT max(upper(reservation_dates))
+    FROM reservations
+    WHERE (reservation_dates &amp;&amp;
+      daterange((range.i), (range.i + 5)))
+  ), daterange((range.i), (range.i + 5))
+  FROM range
+  WHERE ((range.i - CURRENT_DATE) &lt; 30)))
+SELECT r
+FROM range
+WHERE (i IS NULL)
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/84">
+
+<div class="notes">
+<p>As usual, we&#x2019;ll start with the base case, which returns two values. The first value is the date to start looking for reservations, which for this example is the current date. The second value is the starting range of dates we are looking in, which for this example is the 5-day date range starting the current date.</p>
+</div>
+<pre style="font-size: 32px;">
+WITH RECURSIVE range AS (
+  SELECT <span class="bg1">CURRENT_DATE AS i</span>,
+    <span class="bg1">daterange(CURRENT_DATE,</span>
+      <span class="bg1">(CURRENT_DATE + 5)) AS r</span>
+  UNION ALL
+  (SELECT (
+    SELECT max(upper(reservation_dates))
+    FROM reservations
+    WHERE (reservation_dates &amp;&amp;
+      daterange((range.i), (range.i + 5)))
+  ), daterange((range.i), (range.i + 5))
+  FROM range
+  WHERE ((range.i - CURRENT_DATE) &lt; 30)))
+SELECT r
+FROM range
+WHERE (i IS NULL)
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/85">
+
+<div class="notes">
+<p>To test for overlap, in the recursive case we create a 5-day date range using the starting date returned by the previous iteration. We test for overlap using a subquery of the reservations table, comparing the date range we created in this iteration to the existing date ranges in the reservation_dates column.</p>
+</div>
+<pre style="font-size: 32px;">
+WITH RECURSIVE range AS (
+  SELECT CURRENT_DATE AS i,
+    daterange(CURRENT_DATE,
+      (CURRENT_DATE + 5)) AS r
+  UNION ALL
+  (SELECT (
+    SELECT max(upper(reservation_dates))
+    FROM reservations
+    WHERE (<span class="bg1">reservation_dates &amp;&amp;</span>
+      <span class="bg1">daterange((range.i), (range.i + 5))</span>)
+  ), daterange((range.i), (range.i + 5))
+  FROM range
+  WHERE ((range.i - CURRENT_DATE) &lt; 30)))
+SELECT r
+FROM range
+WHERE (i IS NULL)
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/86">
+
+<div class="notes">
+<p>We select two values in the recursive case. The first value is the maximum upper bound of any overlapping date range. If there is overlap, this will the starting point of the next iteration. If there is no overlap, this will be NULL. We choose this value because it allows us to skip over days inside the overlapping range, which we know would also overlap.|We also select the new date range we used to test for overlap. On the next iteration, if there was no overlap on the previous iteration, the WHERE clause evaluates to NULL and the recursion will stop.|We limit our search to 30 days in the future so that it only searches the time frame we are interested in.</p>
+</div>
+<pre style="font-size: 32px;">
+WITH RECURSIVE range AS (
+  SELECT CURRENT_DATE AS i,
+    daterange(CURRENT_DATE,
+      (CURRENT_DATE + 5)) AS r
+  UNION ALL
+  (SELECT (
+    SELECT <span class="bg1">max(upper(reservation_dates))</span>
+    FROM reservations
+    WHERE (reservation_dates &amp;&amp;
+      daterange((range.i), (range.i + 5)))
+  ), <span class="bg1">daterange((range.i), (range.i + 5))</span>
+  FROM range
+  WHERE <span class="bg4">((range.i - CURRENT_DATE) &lt; 30)))</span>
+SELECT r
+FROM range
+WHERE (i IS NULL)
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/87">
+
+<div class="notes">
+<p>When the recursion stops, the common table expression will return the rows used for all iterations. The only row we care about is the one where there is no overlap, which is when the first value is NULL, so we filter for rows where the first value is NULL, and select the second value, which is the non-overlapping date range.|The advantage of using this approach to find open reservations is that it is fairly fast as it runs completely on the server, it skips unnecessary testing of date ranges that we know would overlap, it returns as soon as it finds an open reservation, and it is probably easier than writing a function in a database procedural language that does the same thing.</p>
+</div>
+<pre style="font-size: 32px;">
+WITH RECURSIVE range AS (
+  SELECT CURRENT_DATE AS i,
+    daterange(CURRENT_DATE,
+      (CURRENT_DATE + 5)) AS r
+  UNION ALL
+  (SELECT (
+    SELECT max(upper(reservation_dates))
+    FROM reservations
+    WHERE (reservation_dates &amp;&amp;
+      daterange((range.i), (range.i + 5)))
+  ), daterange((range.i), (range.i + 5))
+  FROM range
+  WHERE ((range.i - CURRENT_DATE) &lt; 30)))
+SELECT <span class="bg1">r</span>
+FROM range
+WHERE (<span class="bg1">i IS NULL</span>)
+</pre></div>
+</div><div id="slides/slides" class="slide bg-orr" data-transition="none">
+  <div class="content bg-orr" ref="slides/slides/88">
+
+<div class="notes">
+<p>As you&#x2019;ve seen in the previous example, recursive expression syntax can be somewhat complex, and it does take some time to learn how to write recursive queries. However, as hockey great Bobby Orr used to say, Forget about style, worry about results.</p>
+</div>
+<h1 class="white" style="font-size: 50px; text-align: left; float:right; width: 400px; margin-top: 60px; margin-right: 10px;">
+<span class="trans">"Forget about style; worry about results"</span><br><br>
+<span class="small">Bobby Orr</span>
+</br></br>
+</h1>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/89">
+
+<div class="notes">
+<p>Well, Sequel doesn&#x2019;t always forget about style. It offers helper methods for writing recursive queries. The SQL in the previous example wasn&#x2019;t written by hand, it was generated from this Sequel dataset.|Sequel has a with_recursive method to generate recursive expressions. You pass this method the name of the recursive expression, a dataset for the base case, represented here with a red background, and a dataset for the recursive case, represented here with a white background.</p>
+</div>
+<pre style="font-size: 32px;">
+range = proc{|d| Sequel.function(
+  :daterange, d, Sequel.+(d, 5))}
+c = :reservation_dates
+cd = Sequel::CURRENT_DATE
+DB[:range].
+  select(:r).
+  where(:i=&gt;nil).
+  with_recursive(:range,
+    <span class="bg1">DB.select(cd.as(:i), range[cd].as(:r))</span>,
+    <span class="bg4">DB[:range].
+      select{[DB[:reservations].
+        select{max(upper(c))}.
+        where(Sequel.pg_range(c).
+          overlaps(range[:range__i])),
+        range[:range__i]]}.
+      where{range__i - cd &lt; 30}</span>)
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/90">
+
+<div class="notes">
+<p>Note that this Sequel code is more concise than the SQL it generates, because it is able reuse expressions. For example, there are three separate calls to create a date range in the SQL, but the Sequel code just uses 3 calls to the same proc.</p>
+</div>
+<pre style="font-size: 32px;">
+<span class="bg1">range = proc{|d| Sequel.function(
+  :daterange, d, Sequel.+(d, 5))}</span>
+c = :reservation_dates
+cd = Sequel::CURRENT_DATE
+DB[:range].
+  select(:r).
+  where(:i=&gt;nil).
+  with_recursive(:range,
+    DB.select(cd.as(:i), <span class="bg1">range[cd]</span>.as(:r)),
+    DB[:range].
+      select{[DB[:reservations].
+        select{max(upper(c))}.
+        where(Sequel.pg_range(c).
+          overlaps(<span class="bg1">range[:range__i]</span>)),
+        <span class="bg1">range[:range__i]</span>]}.
+      where{range__i - cd &lt; 30})
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/91">
+
+<div class="notes">
+<p>It&#x2019;s also easier to change the starting date or the number of days in the reservation by modifying a single value instead of modifying values in multiple places in the SQL.</p>
+</div>
+<pre style="font-size: 32px;">
+range = proc{|d| Sequel.function(
+  :daterange, d, Sequel.+(d, <span class="bg1">5</span>))}
+c = :reservation_dates
+cd = <span class="bg1">Sequel::CURRENT_DATE</span>
+DB[:range].
+  select(:r).
+  where(:i=&gt;nil).
+  with_recursive(:range,
+    DB.select(cd.as(:i), range[cd].as(:r)),
+    DB[:range].
+      select{[DB[:reservations].
+        select{max(upper(c))}.
+        where(Sequel.pg_range(c).
+          overlaps(range[:range__i])),
+        range[:range__i]]}.
+      where{range__i - cd &lt; 30})
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/92">
+
+<div class="notes">
+<p>The previous examples I&#x2019;ve given haven&#x2019;t shown this, but recursive expressions allow Postgres to run the same types of queries that you previously would use a graph database for. You can write queries that traverse trees and graphs and return all related objects.</p>
+</div>
+<h1 class="trans" style="font-size: 170px; text-align: center; margin-top: 250px;">Graph Database</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/93">
+
+<div class="notes">
+<p>Sequel ships with a model plugin that uses recursive expressions for tree traversal, called rcte_tree.</p>
+</div>
+<pre style="font-size: 180px; text-align: center; margin-top: 500px;">rcte_tree</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/94">
+
+<div class="notes">
+<p>You just load the plugin into your model class, and it adds methods load all ancestors or descendants for a given node or set of nodes in the tree in a single recursive query.</p>
+</div>
+<pre style="font-size: 55px; margin-top: 100px;">
+class Node &lt; Sequel::Model
+  plugin :rcte_tree
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/95">
+
+<div class="notes">
+<p>If you call the descendants method, it runs a recursive query similar to this. The base case starts with selecting all children of the current node, which are nodes where the parent_id is 2. The recursive case selects children of the output of the previous case, until there are no such children.</p>
+</div>
+<pre style="font-size: 40px; line-height: 45px; margin-top: 75px;">
+Node[2].descendants
+
+WITH t AS (
+  SELECT *
+  FROM nodes
+  WHERE (<span class="bg1">parent_id = 2</span>)
+  UNION ALL
+  SELECT nodes.*
+  FROM nodes
+  INNER JOIN t
+    ON (<span class="bg1">t.id = nodes.parent_id</span>)
+)
+SELECT * FROM t
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/96">
+
+<div class="notes">
+<p>Sequel even has the ability to eagerly load only the first few levels of descendants, instead of loading all descendants. This can be a good middle ground between loading all descendants at once, and loading each level of descendants in a separate query.|This query is similar to the previous query, except we are keeping track of the root node separately as we are eagerly loading, and we are incrementing the level on each iteration and only returning results up to the level selected.</p>
+</div>
+<pre style="font-size: 36px; line-height: 40px; margin-top: 0px;">
+Node.
+  where(:id=&gt;2).
+  eager(:descendants=&gt;3)
+
+WITH t AS (
+  SELECT parent_id AS root,
+    nodes.*, <span class="bg1">0 AS level</span>
+  FROM nodes
+  WHERE (parent_id IN (2))
+  UNION ALL
+  SELECT t.root,
+    nodes.*, <span class="bg1">t.level + 1 AS level</span>
+  FROM nodes
+  INNER JOIN t ON
+    (t.id = nodes.parent_id)
+  WHERE <span class="bg1">t.level &lt; 2</span>
+) 
+SELECT * FROM t
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/97">
+
+<div class="notes">
+<p>If you are familar with nested sets, using recursive queries to load trees allows basically all of the features of nested sets, but it has much simpler storage, a much simpler implementation, and is orders of magnitudes faster in many use cases.</p>
+</div>
+<h1 class="trans" style="font-size: 160px; margin-top: 150px;">Nested Sets</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/98">
+
+<div class="notes">
+<p>The next query type I&#x2019;d like to discuss is the use of the RETURNING clause. Unlike standard SQL, where only SELECT can return rows, Postgres supports the RETURNING clause on INSERT, UPDATE, and DELETE statements, which returns the rows inserted, updated, or deleted.</p>
+</div>
+<h1 style="font-size: 100px; text-align: right; margin-top: 350px; margin-right: 50px;">RETURNING</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/99">
+
+<div class="notes">
+<p>For example, if you want to insert a row into a table, and have the values of the inserted row returned, you can use a query like this, with RETURNING star. This is useful as it automatically returns any default values set by the database. While you could get the information separately using a SELECT query, this combines the INSERT and SELECT into a single query, which is faster and avoids race conditions.</p>
+</div>
+<pre style="font-size: 60px; text-align: left; margin-top: 250px;">
+INSERT INTO players (name)
+VALUES ('Jeremy')
+<span class="bg1">RETURNING *</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/100">
+
+<div class="notes">
+<p>By default, when you create new model instances, Sequel will use the primary key of the inserted row to retrieve the inserted row values with a SELECT query. However, since Postgres supports RETURNING, Sequel does the insert and select in a single query that uses RETURNING star, speeding up all model creation automatically.</p>
+</div>
+<pre style="font-size: 80px; text-align: center; margin-top: 250px;">Sequel::Model.create</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/101">
+
+<div class="notes">
+<p>Additionally, Sequel datasets have a returning method, allowing you to specify which columns to return in insert, update, and delete queries. This allows you to express the previous SQL query as a simple dataset.</p>
+</div>
+<pre style="font-size: 60px; text-align: left; margin-top: 150px;">
+DB[:players].
+  returning.
+  insert(:name=&gt;'Jeremy')
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/102">
+
+<div class="notes">
+<p>You can use this syntax to do things like update archive tables by automatically inserting rows deleted from one table into another table.|This example uses a common table expression with DELETE RETURNING, and has the outer query insert the output of the common table expression into the archive table.</p>
+</div>
+<pre style="font-size: 55px; text-align: left; margin-top: 50px;">
+DB[:old_players].
+  with(:deleted_players,
+   DB[:players].
+    where(:name=&gt;'Jeremy').
+    <span class="bg1">returning.
+    with_sql(:delete_sql)</span>).
+  <span class="bg4">insert(DB[:deleted_players])</span>
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/103">
+
+<div class="notes">
+<p>The last query type I&#x2019;d like to talk about is full-text search. Unlike most SQL databases, Postgres has good built-in full text search features, with full transactional support.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: left; margin-top: 250px; margin-left: 50px;">Full Text Search</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/104">
+
+<div class="notes">
+<p>Here is the basic full text search query in Postgres. You wrap the column containing the text to search in a tsvector, and the terms you are searching for in a tsquery, and use the @@ operator to perform the search.|The first argument to these functions is the language you want to use for the search. Since that is pretty ugly, Sequel simplifies it for you.</p>
+</div>
+<pre style="font-size: 55px; text-align: left; margin-top: 100px;">
+SELECT *
+FROM players 
+WHERE <span class="bg1">to_tsvector('<span class="trans normal">english</span>',</span>
+                  <span class="bg1">biography)</span>
+   @@ <span class="bg1">to_tsquery('<span class="trans normal">english</span>',</span>
+           <span class="bg1">'<span class="trans normal">example text</span>')</span>;
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/105">
+
+<div class="notes">
+<p>Sequel has a full_text_search method that takes the column to search, the search terms, and accepts the language as an option so you don&#x2019;t need to specify it twice.</p>
+</div>
+<pre style="font-size: 65px; text-align: left; margin-top: 150px;">
+DB[:players].
+  full_text_search(
+    :biography,
+    '<span class="trans normal">example text</span>',
+    :language=&gt;'<span class="trans normal">english</span>')
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/106">
+
+<div class="notes">
+<p>One of the best things about the full text search in Postgres is how flexible it is. If you remember the KaeruEra example I discussed earlier, let&#x2019;s say I want to add full text searching to the backtrace column, which is an array, and the environment variable column, which is an hstore.|We can convert the backtrace array to a string, and the environment hstore to an array and then to a string, and then do full text searching on the concatenation of those two strings.|Now, all these conversions are going to be slow for large numbers of records by default. To speed things up, you&#x2019;ll have to add an index.</p>
+</div>
+<pre style="font-size: 32px; text-align: left; margin-top: 150px;">
+DB[:errors].
+  full_text_search(
+    <span class="bg1">Sequel.expr{[
+      array_to_string(backtrace, ' '),
+      array_to_string(hstore_to_array(env), ' ')
+    ]}</span>,
+    '<span class="trans normal">example text</span>',
+    :language=&gt;'<span class="trans normal">english</span>')
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/107">
+
+<div class="notes">
+<p>Adding a full text index in Sequel is very easy, since the syntax is very similar to the syntax you use for a full text search. The great part about this is you don&#x2019;t need to actually store the string containing the concatenated full text of both the backtrace array and the environment hstore in a column, which saves you space and makes querying faster and easier. Once you setup a full text index, full text searches are generally very fast.</p>
+</div>
+<pre style="font-size: 32px; text-align: left; margin-top: 150px;">
+DB.alter_table(:errors) do
+  add_full_text_index(
+    <span class="bg1">Sequel.expr{[
+      array_to_string(backtrace, ' '),
+      array_to_string(hstore_to_array(env), ' ')
+    ]}</span>,
+    :language=&gt;'<span class="trans normal">english</span>',
+    :name=&gt;:errors_ftidx)
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/108">
+
+<div class="notes">
+<p>Let me briefly review the query types I discussed.</p>
+</div>
+<h1 class="trans" style="font-size: 220px; text-align: center; margin-top: 250px;">Queries</h1><h1 class="review bg4 trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/109">
+
+<div class="notes">
+<p>First is the recursive common table expression, allowing for incremental scanning of tables and efficient traversal of trees and graphs.</p>
+</div>
+<h1 class="medium-red" style="font-size: 220px; text-align: left; margin-top: 30px;">
+R<span class="white" style="font-size: 40px;">ecursive</span><br>
+C<span class="white" style="font-size: 40px;">ommon</span>
+T<span class="white" style="font-size: 40px;">able</span>
+E<span class="white" style="font-size: 40px;">xpression</span>
+</br><h1 class="review bg4 trans">Review</h1></h1>
+</div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/110">
+
+<div class="notes">
+<p>After that, I talked about the RETURNING clause, used to return rows from INSERT, UPDATE, and DELETE statements.</p>
+</div>
+<h1 style="font-size: 100px; text-align: left; margin-top: 450px; margin-left: 50px;">RETURNING</h1><h1 class="review bg4 trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg2" data-transition="none"><div class="content bg2" ref="slides/slides/111">
+
+<div class="notes">
+<p>Finally, I talked about the advanced full text search features offered by Postgres.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: left; margin-top: 300px; margin-left: 50px;">Full Text Search</h1><h1 class="review bg4 trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/112">
+
+<div class="notes">
+<p>That brings us to the final section of the talk, which will cover some other interesting features of Postgres.</p>
+</div>
+<h1 class="trans" style="font-size: 150px; text-align: right; margin-top: 400px;">Other Features</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/113">
+
+<div class="notes">
+<p>The first feature I&#x2019;m going to discuss in this section is defining foreign key and check constraints with delayed validation, using NOT VALID. NOT VALID constraints fix a long standing issue, which is that adding a constraint to a table requires a table scan and lock to ensure that the constraint is not violated, and if any row violates the constraint, adding the constraint fails. During this table scan, the table is locked.|However, when the constraint is marked NOT VALID, the table scan and lock are not done. The constraint is still enforced for all new rows and updates to existing rows, so you can sure that new invalid data is not introduced. After adding the constraint, you can clean up the existing invalid data by updating invalid rows to not violate the constraint.</p>
+</div>
+<pre style="font-size: 150px; text-align: left; margin-top: 100px;">NOT VALID</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/114">
+
+<div class="notes">
+<p>After you have removed the invalid rows from the table, you can then vaildate the constraint using VALIDATE CONSTRAINT. This still requires a table scan to ensure existing rows do not violate the constraint, but it requires a lesser lock on the table.</p>
+</div>
+<pre style="font-size: 150px; text-align: left; margin-top: 200px;">VALIDATE
+CONSTRAINT</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/115">
+
+<div class="notes">
+<p>Sequel supports both of these syntaxes, with a :not_valid option when defining constraints, and a validate_constraint method for validating them later.</p>
+</div>
+<pre style="font-size: 50px; text-align: left; margin-top: 100px;">
+DB.alter_table(:players) do
+  add_constraint({
+    <span class="bg1">:not_valid=&gt;true</span>,
+    :name=&gt;valid_player_number},
+    :number=&gt;0..99)
+  <span class="bg2">validate_constraint</span> \
+    :valid_player_number
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/116">
+
+<div class="notes">
+<p>The next feature I&#x2019;d like to discuss is the use of LISTEN and NOTIFY to send and receive messages on notification channels. This is basically a self contained interprocess communication mechanism, where database clients can send messages to each other. One of the most common uses for this is to notify clients when data has changed.|For example, you can add a insert trigger that uses NOTIFY to notify a channel of all inserted rows, with the primary key of the inserted row. Then you can have another process that listens for these notifications and acts on them.</p>
+</div>
+<pre style="font-size: 150px; text-align: left; margin-top: 30px;">LISTEN</pre><pre style="font-size: 150px; text-align: right; margin-top: 230px;">NOTIFY</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/117">
+
+<div class="notes">
+<p>Let&#x2019;s assume that you have added such a trigger, and you want to automatically tweet every time a player is added to your favorite team. You can use Sequel&#x2019;s support for listening on channels to receive notifications on the players table, and then automatically tweet the results. There are a couple things to note here.|First is the arguments to listen, the first of which is the notification channel name. This can also be an array if you want to listen on multiple channels simultaneously. The second argument is the options hash. In this case, the loop option is used, so that you continually listen for notifications, yielding them as they come in.|The second thing to note is the three arguments the block receives. The first is the channel the message was received on. The second is the pid of the backend process that generated the notification. The third is the payload of the message notification, which in this case we assume is the id of the player added.</p>
+</div>
+<pre style="font-size: 30px; text-align: left; margin-top: 30px;">
+DB.listen(<span class="bg1">:players, :loop=&gt;true</span>) do |<span class="bg2">chan, pid, id</span>|
+  p = DB[:players].
+    first(:id=&gt;id, :team_id=&gt;2)
+  if p
+    s = "#{p[:name]} <span class="trans normal">joined HC Sokil</span>"
+    Twitter.update(s)
+  end
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/118">
+
+<div class="notes">
+<p>After we receive the notification, we need to check the players table to get the information on the inserted player. Since we only care about players that join our favorite team, so we check to see if the player has that team id. If so, we tweet that the player joined our favorite team.|This is a fairly contrived example, but a similar approach can be used to solve a real problem.</p>
+</div>
+<pre style="font-size: 30px; text-align: left; margin-top: 30px;">
+DB.listen(:players, :loop=&gt;true) do |chan, pid, id|
+  p = DB[:players].
+    first(<span class="bg1">:id=&gt;id, :team_id=&gt;2</span>)
+  if p
+    s = "#{p[:name]} <span class="trans normal">joined HC Sokil</span>"
+    <span class="bg2">Twitter.update(s)</span>
+  end
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg-karlton" data-transition="none">
+  <div class="content bg-karlton" ref="slides/slides/119">
+
+<div class="notes">
+<p>Phil Karlton, in addition to having an awesome mustache, working on X11, and playing roller hockey, was also famous for the saying that There are only two hard things in Computer Science: cache invalidation and naming things. While this is obviously a tongue-in-cheek comment, it is telling that of all the hard problems he could pick to stand next to naming things, he chose cache invalidation.</p>
+</div>
+<h1 style="font-size: 40px; text-align: right; margin-top: 50px; margin-left: 460px; color: white;">
+<span class="trans">"There are only two hard things in Computer Science: cache invalidation and naming things."</span><br><br>Phil Karlton</br></br>
+</h1>
+</div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/120">
+
+<div class="notes">
+<p>It turns out that the combination of LISTEN and NOTIFY is actually great at handling cache invalidation. You have a trigger that uses NOTIFY whenever a table changes, and you then have your caching application use LISTEN to be notified whenever changes are committed, so it can modify the related cache.|Sequel ships with a model plugin called static_cache that caches entire small and infrequently updated model tables, so that many common model operations do not require database queries.|Historically, the static_cache plugin could only be used if the underlying model table was never updated at runtime. However, last year I added an option to the plugin which allows the table to be updated at runtime, but it requires the user to manually reload the cache in that case.</p>
+</div>
+<pre style="font-size: 100px; text-align: left; margin-top: 600px;">static_cache</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/121">
+
+<div class="notes">
+<p>To make this easier on the user, Sequel ships with a pg_static_cache_updater extension, which makes it easy to define triggers on the underlying model tables that use NOTIFY to signal changes. It also has a method that creates a thread in your application that LISTENs for changes, so that any time the underlying database table for a model changes, all of the application processes automatically update their in-process cache for that model. So while naming things is still hard, cache invalidation becomes a little bit easier.</p>
+</div>
+<pre style="font-size: 70px; text-align: right; margin-top: 300px;">pg_static_cache_updater</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/122">
+
+<div class="notes">
+<p>The next feature I would like to talk about is prepared transactions. Prepared transactions are also known as two-phase commit, and are used in distributed database transactions to ensure that either all sides commit or neither side commits.|With distributed databases, using a regular transaction is not sufficient. You can&#x2019;t commit before receiving confirmation from the other database, since the other database may not commit, and then you cannot roll the transaction back. You can&#x2019;t wait until after receiving confirmation from the other database to commit, because there may be a deferred constraint violation or some other issue that causes the current database to rollback.|In either of those cases, the two databases would be out of sync, and that&#x2019;s not a good situation to be in.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: left; margin-top: 200px;">Prepared Transactions</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/123">
+
+<div class="notes">
+<p>It just so happens that Sequel has full support for Postgres prepared transactions. To create a prepared transaction, you just use the prepare option to Sequel&#x2019;s transaction method. The value for this option should be the transaction id string related to the current transaction. Then you just write the rest of the transaction code like you would normally.|The difference between a prepared transaction and a regular transaction is that after the transaction block ends, it appears to the outside world like the transaction has not been committed. However, the locks required by the transaction are still in effect, so you can&#x2019;t do things that will cause the prepared transaction to not be committed.</p>
+</div>
+<pre style="font-size: 40px; text-align: left; margin-top: 250px;">
+DB.transaction(:prepare=&gt;'foobar') do
+  # <span class="trans">Your code here</span>
+end
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/124">
+
+<div class="notes">
+<p>After you have received confirmation from the other side that the transaction has been committed, you can call the commit_prepared_transaction method with that transaction id string to commit the transaction you just prepared.</p>
+</div>
+<pre style="font-size: 36px; text-align: left; margin-top: 250px;">
+DB.commit_prepared_transaction('foobar')
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/125">
+
+<div class="notes">
+<p>If for some reason the other side was not able to successfully commit the transaction, you can roll it back on the current database using the rollback_prepared_transaction method. This ensures that the two databases are kept in sync.</p>
+</div>
+<pre style="font-size: 36px; text-align: left; margin-top: 250px;">
+DB.rollback_prepared_transaction('foobar')
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/126">
+
+<div class="notes">
+<p>The final feature I&#x2019;d like to talk about is Postgres&#x2019;s support for procedural languages. Unlike most SQL databases, which support a single procedural language or maybe two, Postgres supports many different procedural languages.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: center; margin-top: 250px; margin-left: 50px; margin-right: 50px;">Procedural Languages</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/127">
+
+<div class="notes">
+<p>Here are some of the procedural languages supported by Postgres. The languages in red ship with Postgres, and the ones in black are available as external downloads. Hopefully some languages here are familiar to you.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: center; margin-top: 250px; margin-left: 50px; margin-right: 50px;">Procedural Languages</h1><h1 style="font-size: 50px; position: absolute; top: 180px; left: 110px;">pgSQL</h1><h1 style="font-size: 50px; position: absolute; top: 600px; left: 800px;">Tcl</h1><h1 style="font-size: 50px; position: absolute; top: 160px; left: 700px;">Perl</h1><h1 style="font-size: 50px; position: absolute; top: 370px; left: 50px;">Python</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 550px; left: 200px;">Lua</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 60px; left: 800px;">Java</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 500px; left: 600px;">Javascript</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 100px; left: 300px;">Coffeescript</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 350px; left: 850px;">R</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 620px; left: 50px;">PHP</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 30px; left: 30px;">Scheme</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 550px; left: 400px;">Shell</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 630px; left: 450px; text-decoration: line-through; padding: 25px;">Ruby</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/128">
+
+<div class="notes">
+<p>Unfortunately, as you can see, I put a line through Ruby. While there is support for using ruby as a procedural language, in my experience it&#x2019;s not stable and shouldn&#x2019;t be used.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: center; margin-top: 250px; margin-left: 50px; margin-right: 50px;">Procedural Languages</h1><h1 style="font-size: 50px; position: absolute; top: 180px; left: 110px;">pgSQL</h1><h1 style="font-size: 50px; position: absolute; top: 600px; left: 800px;">Tcl</h1><h1 style="font-size: 50px; position: absolute; top: 160px; left: 700px;">Perl</h1><h1 style="font-size: 50px; position: absolute; top: 370px; left: 50px;">Python</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 550px; left: 200px;">Lua</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 60px; left: 800px;">Java</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 500px; left: 600px;">Javascript</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 100px; left: 300px;">Coffeescript</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 350px; left: 850px;">R</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 620px; left: 50px;">PHP</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 30px; left: 30px;">Scheme</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 550px; left: 400px;">Shell</h1><h1 class="black" style="font-size: 50px; position: absolute; top: 630px; left: 450px; text-decoration: line-through; padding: 20px; border-radius: 100px; border: solid 5px black;">Ruby</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/129">
+
+<div class="notes">
+<p>Another interesting feature is the ability to execute anonymous functions at runtime, without defining them separately, using a DO statement.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: center; margin-top: 250px;">Anonymous Functions: DO</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/130">
+
+<div class="notes">
+<p>Naturally, Sequel supports this, using the do method. Here&#x2019;s an example that uses an anonymous function written in the plpgsql procedural language to insert a row. What if you want to get a little meta?</p>
+</div>
+<pre style="font-size: 38px; line-height: 120%; text-align: left; margin-top: 0px;">
+DB.do(&lt;&lt;DO, :language=&gt;'plpgsql')
+BEGIN
+ EXECUTE $$INSERT INTO players (name)
+  VALUES ('Jeremy');$$;
+END
+DO
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/131">
+
+<div class="notes">
+<p>Let&#x2019;s say you want to have your anonymous plpgsql function call a anonymous function written in perl to insert the row.</p>
+</div>
+<pre style="font-size: 38px; line-height: 120%; text-align: left; margin-top: 0px;">
+DB.do(&lt;&lt;DO, :language=&gt;'plpgsql')
+BEGIN
+ EXECUTE $$DO LANGUAGE plperl $pl$
+  spi_exec_query(&lt;&lt;'PL')
+   INSERT INTO players (name)
+   VALUES ('Jeremy');
+PL
+$pl$;$$;
+END
+DO
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/132">
+
+<div class="notes">
+<p>Or have that perl function call a anonymous function written in python.</p>
+</div>
+<pre style="font-size: 38px; line-height: 120%; text-align: left; margin-top: 0px;">
+DB.do(&lt;&lt;DO, :language=&gt;'plpgsql')
+BEGIN
+ EXECUTE $$DO LANGUAGE plperl $pl$
+  spi_exec_query(&lt;&lt;'PL')
+   DO LANGUAGE plpythonu $py$
+    plpy.execute("""INSERT INTO players
+     (name) VALUES ('Jeremy');""") $py$
+PL
+$pl$;$$;
+END
+DO
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/133">
+
+<div class="notes">
+<p>Or have that python function call a anonymous function written in javascript.</p>
+</div>
+<pre style="font-size: 38px; line-height: 120%; text-align: left; margin-top: 0px;">
+DB.do(&lt;&lt;DO, :language=&gt;'plpgsql')
+BEGIN
+ EXECUTE $$DO LANGUAGE plperl $pl$
+  spi_exec_query(&lt;&lt;'PL')
+   DO LANGUAGE plpythonu $py$
+    plpy.execute("""DO LANGUAGE plv8 $js$
+     plv8.execute("INSERT INTO players" +
+      "(name) VALUES ('Jeremy');");
+   $js$""")$py$
+PL
+$pl$;$$;
+END
+DO
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/134">
+
+<div class="notes">
+<p>Or even have that javascript function call run some shell code. I&#x2019;ve tested this and it actually works. So this is an anonymous plpgsql function calling an anonymous perl function calling an anonymous python function calling an anonymous javascript function running some shell code that uses the psql program to insert a row into the database.|The hardest part in getting this to work was getting the quoting correct. This makes extensive use of Postgres dollar quoting, which is similar to but more flexible than ruby heredoc syntax.</p>
+</div>
+<pre style="font-size: 38px; line-height: 120%; text-align: left; margin-top: 0px;">
+DB.do(&lt;&lt;DO, :language=&gt;'plpgsql')
+BEGIN
+ EXECUTE $$DO LANGUAGE plperl $pl$
+  spi_exec_query(&lt;&lt;'PL')
+   DO LANGUAGE plpythonu $py$
+    plpy.execute("""DO LANGUAGE plv8 $js$
+     plv8.execute("DO LANGUAGE plsh " +
+      "$sh$#!/bin/sh\\npsql -c\\" " +
+      "INSERT INTO players (name) " +
+      "VALUES ('Jeremy');\\"$sh$");$js$
+    """)$py$
+PL
+$pl$;$$;
+END
+DO
+</pre></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/135">
+
+<div class="notes">
+<p>So that finishes up the final section of this presentation. Let me briefly review what I talked about.</p>
+</div>
+<h1 class="trans" style="font-size: 150px; text-align: right; margin-top: 400px;">Other Features</h1><h1 class="review bg1 trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/136">
+
+<div class="notes">
+<p>I talked about adding constraints and delaying validation until after you have had a chance to clean up existing invalid rows.</p>
+</div>
+<pre style="font-size: 150px; text-align: left; margin-top: 300px;">NOT VALID</pre><h1 class="review bg1 trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/137">
+
+<div class="notes">
+<p>I talked about the use of LISTEN and NOTIFY for simple interprocess communication and cache invalidation using Postgres notification channels.</p>
+</div>
+<pre style="font-size: 150px; text-align: left; margin-top: 30px;">LISTEN</pre><pre style="font-size: 150px; text-align: right; margin-top: 230px;">NOTIFY</pre><h1 class="review bg1 trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/138">
+
+<div class="notes">
+<p>I talked about using prepared transactions to keep distributed databases in sync.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: left; margin-top: 200px;">Prepared Transactions</h1><h1 class="review bg1 trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg4" data-transition="none"><div class="content bg4" ref="slides/slides/139">
+
+<div class="notes">
+<p>Finally, I talked about Postgres&#x2019;s support for many procedural languages, and using anonymous functions written in those languages.</p>
+</div>
+<h1 class="trans" style="font-size: 100px; text-align: center; margin-top: 250px;">Procedural Languages</h1><h1 class="review bg1 trans">Review</h1></div>
+</div><div id="slides/slides" class="slide bg-gretzky" data-transition="none"><div class="content bg-gretzky" ref="slides/slides/140">
+
+<div class="notes">
+<p>That is pretty much all of the Postgres features I wanted to talk about. I&#x2019;d like to leave you with a quote from one of the greatest hockey players, Wayne Gretzky, who said that a good hockey player plays where the puck is. A great hockey player plays where the puck is going to be.|When you are designing an application where the data actually matters, when it comes time to choose a database, you can&#x2019;t just think about today, but about many years in the future. In any situation where the data you are dealing with is important, your database will probably last longer than your application.|Over the last 10 years, I&#x2019;ve watched Postgres get better with every single release. I fully believe Postgres is the best database choice for most applications, and that if you are writing your application in ruby, that Sequel is the best way to access it. Hopefully this presentation has shown off some of the cool things you can do with Postgres.|If you have any questions about anything I&#x2019;ve covered, I&#x2019;ll be happy to answer them now.</p>
+</div>
+<h1 class="white" style="font-size: 50px; text-align: left; margin-top: 20px; margin-left: 610px;">
+<span class="trans">"A good hockey player plays where the puck is. A great hockey player plays where the puck is going to be."</span><br>
+<span class="small">Wayne Gretzky</span>
+</br></h1>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/141">
+
+<div class="notes">
+<p>Photo Credits</p>
+</div>
+<p>Gordie Howe <span class="trans" style="font-style: normal">photo</span> (c) Jordan Cooper http://www.flickr.com/photos/jordoncooper/</p><p>Bobby Orr <span class="trans" style="font-style: normal">photo</span> (c) Andrew Reilly http://www.flickr.com/photos/reillyandrew/</p><p>Wayne Gretzky <span class="trans" style="font-style: normal">photo</span> (c) Martin Labelle http://www.flickr.com/photos/bestter/</p><p><span class="trans" style="font-style: normal">Other hockey photos</span> (c) Dinur Blum http://www.flickr.com/photos/dinur/</p></div>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,1231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Better Routing Through Trees</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href=".//css/reset.css" type="text/css"/>
+
+  <link type="text/css" href=".//css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href=".//css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href=".//css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href=".//css/showoff.css" type="text/css"/>
+
+  
+
+  <script type="text/javascript" src=".//js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src=".//js/jquery-print.js"></script>
+  <script type="text/javascript" src=".//js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src=".//js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src=".//js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src=".//js/fg.menu.js"></script>
+  <script type="text/javascript" src=".//js/showoff.js"></script>
+  <script type="text/javascript" src=".//js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src=".//js/sh_main.min.js"></script>
+  <script type="text/javascript" src=".//js/core.js"></script>
+  <script type="text/javascript" src=".//js/showoffcore.js"></script>
+  <script type="text/javascript" src=".//js/coffee-script.js"></script>
+
+  
+    
+      <script type="text/javascript" src=".//js/sh_lang/sh_ruby.min.js"></script>
+    
+  
+
+  
+    
+    <link rel="stylesheet" href=".//file/fonts.css" type="text/css"/>
+  
+    
+    <link rel="stylesheet" href=".//file/something.css" type="text/css"/>
+  
+
+  
+
+  <script type="text/javascript">
+  
+  $(function(){
+    
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+    
+      setupPreso(false, './');
+  });
+  </script>
+
+  <link rel="stylesheet" href=".//css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src=".//js/presenter.js"></script>
+
+  
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="generatePDF" href="/pdf" title="Call out to wkhtmltopdf to generate a PDF.">Generate PDF</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="slides/slides" class="slide " data-transition="none">
+  <div class="content " ref="slides/slides/1">
+
+<div class="notes">
+<p>Hello everyone. It is great to be back here at Mountain West Ruby Conf. The first time I presented at a conference was back in 2009 here at Mountain West. I&#x2019;d like to apologize to those of you in the audience who had to endure that.|I last had the privilege of speaking at Mountain West back in 2010, and I&#x2019;m thrilled to be back in 2015 giving a presentation on &#x201C;Better Routing Through Trees&#x201D;.</p>
+</div>
+<div id="bg_tree" style="position: absolute; left: 250px; top: 200px; height: 793px; width: 573px;">&#xA0;</div><h1 style="font-size: 100px; text-align: left; float: left; margin-left: 0px; margin-top: 10px;">Better<br>Routing</br><h1 style="font-size: 100px; text-align: right; float: right; margin-left: 0px; margin-top: 10px;">Through<br>Trees</br><h1 class="roda" style="font-size: 80px; position: absolute; bottom: 10px; right: 50px;">Mountain West Ruby Conf 2015</h1></h1>
+</h1>
+</div>
+</div><div id="slides/slides" class="slide bg-jeremy" data-transition="none"><div class="content bg-jeremy" ref="slides/slides/2">
+
+<div class="notes">
+<p>My name is Jeremy Evans. I&#x2019;m the lead developer of the Sequel ruby database library, and the author of quite a few other ruby libraries. I&#x2019;m also the maintainer of ruby ports for the OpenBSD operating system.</p>
+</div>
+<h1 class="mono" style="position: absolute; top: 660px; right: 200px; font-size: 40px; text-align: right; color: white;">Twitter &#xA0;@jeremyevans0<br>
+GitHub &#xA0; jeremyevans </br></h1>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/3">
+
+<div class="notes">
+<p>In this presentation, I&#x2019;m going to discuss an approach to routing web requests that I call a routing tree, and explain the advantages that a routing tree offers compared to routing approaches used by other ruby web frameworks.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; top: 210px; left: 270px;">Routing</h1><h1 style="font-size: 160px; position: absolute; top: 250px; left: 160px;">Trees</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/4">
+
+<div class="notes">
+<p>Before I can speak to benefits of a routing tree, I need to first discuss earlier approaches to routing. So let&#x2019;s first delve into a brief history of routing web requests in Ruby.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; top: 310px; left: 170px;">In</h1><h1 style="font-size: 100px; position: absolute; top: 310px; left: 400px;">the</h1><h1 style="font-size: 160px; position: absolute; top: 350px; left: 60px;">Beginning</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/5">
+
+<div class="notes">
+<p>I first starting using ruby in late 2004. At the time, there were only a few choices for web development in ruby. One approach was the old school approach of using CGI without a framework. With CGI, in general you had separate ruby files for each page, and the routing was handled by Apache, so routing wasn&#x2019;t really an issue.</p>
+</div>
+<h1 style="font-size: 200px; text-align: right; margin-top: 420px; margin-right: 160px;">CGI</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/6">
+
+<div class="notes">
+<p>Another choice was Nitro, which is a web framework I&#x2019;m guessing many of you have never heard of, since the last release was in 2006. At the time, Nitro used static routing, where the first segment in the request path specified a render class, and the second segment was the method to call on that class.</p>
+</div>
+<h1 style="font-size: 200px; text-align: left; margin-top: 120px; margin-left: 160px;">Nitro</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/7">
+
+<div class="notes">
+<p>Another choice was Rails, which at the time was at version 0.8.5. Back then, Rails didn&#x2019;t even perform routing. You could use Rails to generate pretty URLs, but Rails couldn&#x2019;t actually route such URLs by itself.</p>
+</div>
+<div style="text-align: center; margin-top: 25px;"><img height="660" src="file/rails.png" width="632"/></div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/8">
+
+<div class="notes">
+<p>If you wanted to use Rails with Apache, you had to use RewriteRules in Apache. Here&#x2019;s an example from the apache.conf that shipped with Rails 0.9.1. It takes the /controller/action/id path and turns them into separate parameters for the controller, action, and id. This example implemented the static routing that Rails supported by default, but by using more advanced RewriteRules in Apache, you could get Rails to do custom routing.</p>
+</div>
+<pre style="font-size: 28px; margin-top: 250px;"><code>RewriteRule ^([-_a-zA-Z0-9]+)/([-_a-zA-Z0-9]+)/([0-9]+)$ \
+  ?controller=$1&amp;action=$2&amp;id=$3 [QSA,L]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/9">
+
+<div class="notes">
+<p>In addition to supporting Apache, Rails at the time also worked with Webrick. However, if you were using Webrick, you were restricted to the controller/action/id static routing, which was hard coded into the Webrick integration. There was no way to support custom routing when using Webrick.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 250px;"><code>parsed_ok, controller, action, id = \
+  DispatchServlet.parse_uri(req.request_uri.path)
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/10">
+
+<div class="notes">
+<p>Rails started supporting custom routing in 0.10.0. The default was still the controller/action/id supported by the previous static routing, but you could use different patterns to support custom routing.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 250px;"><code>map.connect ':controller/:action/:id'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/11">
+
+<div class="notes">
+<p>Internally, Rails stored each route in an array.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>class RouteSet
+  def initialize
+    <b>@routes = []</b>
+  end
+  
+  def add_route(route)
+    <b>@routes &lt;&lt; route</b>
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/12">
+
+<div class="notes">
+<p>When a request came in, Rails would iterate over the stored routes, checking each to see if it matched the request.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code><b>self.each do |route|</b>
+  controller, options = \
+    route.recognize(path)
+  if controller
+    request.path_parameters = options
+    return controller
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/13">
+
+<div class="notes">
+<p>As soon as it recognized the request path, routing would return the appropriate controller class, which would then handle the request.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>self.each do |route|
+  controller, options = \
+    route.recognize(path)
+  <b>if controller</b>
+    request.path_parameters = options
+    <b>return controller</b>
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/14">
+
+<div class="notes">
+<p>Rails continues to use this basic approach of iterating over an array of routes for over three years. This code is from Rails 2.0 which still iterated over every route looking for a match.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px;"><code><b>routes.each do |route|</b>
+  result = route.recognize(path, environment) \
+    and return result
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide bg-sinatra" data-transition="none"><div class="content bg-sinatra" ref="slides/slides/15">
+
+<div class="notes">
+<p>Around the same time, Sinatra is released, with a radical simplification for how web applications can be developed, by specifying the routes directly, with each route yielding to a block to handle the action.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 310px;"><code>get '/' do
+  'Hello World'
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/16">
+
+<div class="notes">
+<p>While externally, Sinatra looks much simpler than Rails, internally they use a similar process for routing, storing routes in an array, and iterating over the set of routes when a request comes in, stopping at the first matching route.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 50px;"><code>def events
+  <b>@events || []</b>
+end
+
+def register_event(event)
+  <b>(@events ||= []) &lt;&lt; event</b>
+end
+
+def determine_event(verb, path)
+  event = <b>events.find do |e|</b>
+    e.verb == verb &amp;&amp; e.recognize(path)
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/17">
+
+<div class="notes">
+<p>Over the years, Sinatra&#x2019;s basic approach hasn&#x2019;t changed much. This is the current Sinatra code for routing, slightly simplified. The main change from the original implementation is that it now uses separate arrays of routes per request method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 28px;"><code>if <b>routes = base.routes[@request.request_method]</b>
+  routes.each do |pattern, keys, conditions, block|
+    process_route(pattern, keys, conditions) do |*args|
+      env['sinatra.route'] = block.route_name
+      route_eval { block[*args] }
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/18">
+
+<div class="notes">
+<p>However, after getting the array of routes for the request method, it still iterates over the array of routes, checking each route until it finds a match.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 28px;"><code>if routes = base.routes[@request.request_method]
+  <b>routes.each do |pattern, keys, conditions, block|</b>
+    process_route(pattern, keys, conditions) do |*args|
+      env['sinatra.route'] = block.route_name
+      route_eval { block[*args] }
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/19">
+
+<div class="notes">
+<p>While Sinatra&#x2019;s basic approach hasn&#x2019;t changed much, Rails&#x2019; approach has changed significantly. From Rails 2.1 to 2.3, Rails tries to optimize route matching by checking for initially matching segments in the path, and if the current route&#x2019;s prefix doesn&#x2019;t match the current request, skipping subsequent routes with the same prefix.|As I wasn&#x2019;t able to find another web framework that uses a similar approach, and modern versions of Rails use a different approach, I won&#x2019;t be discussing this approach further.</p>
+</div>
+<h1 style="font-size: 80px; position: absolute; top: 370px; right: 320px;">Rails</h1><h1 style="font-size: 200px; position: absolute; top: 350px; right: 60px;">2.1 - 2.3</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/20">
+
+<div class="notes">
+<p>In Rails 3.0 and 3.1, Rails uses rack-mount to handle routing. rack-mount is a dynamic tree-based router. It organizes routes into a tree based on parameters you provide, such that it can also skip similar routes if the current route does not match.</p>
+</div>
+<h1 style="font-size: 150px; text-align: center; margin-top: 220px;">rack-mount</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/21">
+
+<div class="notes">
+<p>In case you want to use rack-mount for routing but don&#x2019;t want the overhead of Rails, there&#x2019;s a web framework called Synfeld that is a thin wrapper over rack-mount.</p>
+</div>
+<h1 style="font-size: 150px; text-align: left; margin-top: 120px;">Synfeld</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/22">
+
+<div class="notes">
+<p>In Rails 3.2, Rails switched to Journey for route handling, which it still uses. Journey implements a deterministic finite automata engine for request path matching in pure ruby, which can take a request path and return all routes that could possibly match it.|Journey then iterates over the possibly matching routes to see if they actually match the request, then sorts routes by priority. In general the first of these resulting routes will be used to handle the request.</p>
+</div>
+<h1 style="font-size: 150px; text-align: center; margin-top: 220px;">Journey</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/23">
+
+<div class="notes">
+<p>In case you want to use Journey for routing but don&#x2019;t want the overhead of Rails, there&#x2019;s a web framework called NYNY that offers a Sinatra-like DSL, but uses Journey internally for routing.</p>
+</div>
+<h1 style="font-size: 200px; text-align: right; margin-top: 120px;">NYNY</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/24">
+
+<div class="notes">
+<p>Back in January 2009, while Rails was at version 2.2, Christian Neukirchen, the author of Rack, was working on a proof of concept router named Rum.</p>
+</div>
+<h1 style="font-size: 200px; text-align: left; margin-top: 320px;">Rum</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/25">
+
+<div class="notes">
+<p>The fundemental difference between Rum and the other routing approaches I&#x2019;ve previous discussed is that in Rum, routing is not separated from request handling.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>Rum.new do
+  on get, path('greet') do
+    on param('person') do |name|
+      puts 'Hello, ' + name
+    end
+    on default do
+      puts 'Hello, world!'
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/26">
+
+<div class="notes">
+<p>Instead, for each request, Rum yields to the block.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code><b>Rum.new do</b>
+  on get, path('greet') do
+    on param('person') do |name|
+      puts 'Hello, ' + name
+    end
+    on default do
+      puts 'Hello, world!'
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/27">
+
+<div class="notes">
+<p>Routing is performed by calling the on method with arguments. If all the arguments are true, on will yield to the block passed to it. If not, on returns nil without yielding.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>Rum.new do
+  <b>on get, path('greet') do</b>
+    on param('person') do |name|
+      puts 'Hello, ' + name
+    end
+    on default do
+      puts 'Hello, world!'
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/28">
+
+<div class="notes">
+<p>The get, path, and param methods here are predicates that check against the current request. The get method returns true if the current request uses the GET request method. The path method with the greet argument returns true if the first segment in the request path is greet. The param method with the person argument returns true if the request has a parameter named person.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>Rum.new do
+  on <b>get</b>, <b>path('greet')</b> do
+    on <b>param('person')</b> do |name|
+      puts 'Hello, ' + name
+    end
+    on default do
+      puts 'Hello, world!'
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/29">
+
+<div class="notes">
+<p>By nesting these calls to on, you build what is basically a tree using Rum&#x2019;s DSL. At any point in any of these on blocks, you can handle the current request.|One issue with Rum is that it was never published as a gem.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>Rum.new do
+  <b>on</b> get, path('greet') do
+    <b>on</b> param('person') do |name|
+      puts 'Hello, ' + name
+    end
+    <b>on</b> default do
+      puts 'Hello, world!'
+    end
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/30">
+
+<div class="notes">
+<p>In April 2010, Michael Martins took Rum and added support for haml templates, and released the Cuba gem. And over the next 4 years he and others improved on Rum&#x2019;s initial design.</p>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" height="720px" style="margin-left: 140px;" viewbox="0 0 1235 1175" width="720px">
+  <path d="M0,449h1235l-999,726 382-1175 382,1175z" fill="#cc3333"/>
+</svg><h1 style="position: absolute; top: 320px; left: 400px; font-size: 100px; color: white;">Cuba</h1></div>
+</div><div id="slides/slides" class="slide bg-sinatra" data-transition="none"><div class="content bg-sinatra" ref="slides/slides/31">
+
+<div class="notes">
+<p>In July of last year, after many years of using of using Sinatra as my primary web framework, I was trying out Cuba, and found that using a routing tree made certain aspects of web application development significantly simpler, but some aspects of Cuba&#x2019;s design and implementation had issues that made it more cumbersome to use than Sinatra.</p>
+</div>
+<svg xmlns="http://www.w3.org/2000/svg" height="360px" style="margin-left: 600px;" viewbox="0 0 1235 1175" width="360px">
+  <path d="M0,449h1235l-999,726 382-1175 382,1175z" fill="#cc3333"/>
+</svg></div>
+</div><div id="slides/slides" class="slide bg-roda" data-transition="none"><div class="content bg-roda" ref="slides/slides/32">
+
+<div class="notes">
+<p>So I forked Cuba and released Roda, keeping the basic routing tree approach introduced by Rum, but otherwise trying to make it more friendly and Sinatra-like, as well as significantly faster.</p>
+</div>
+<h1 class="roda" style="margin-left: 60px; margin-top: 580px; font-size: 150px; color: white;">Roda</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/33">
+
+<div class="notes">
+<p>So let me go over the routing approaches I&#x2019;ve discussed so far.</p>
+</div>
+<h1 style="font-size: 120px; position: absolute; top: 250px; left: 180px;">Routing</h1><h1 style="font-size: 150px; position: absolute; top: 320px; left: 70px;">Approaches</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/34">
+
+<div class="notes">
+<p>The first was completely static routing, either using separate files using CGI, or using very early versions of Nitro or Rails. While static routing is fast, it also inflexible, and these days I don&#x2019;t think anyone would consider a web framework that didn&#x2019;t support custom routing.</p>
+</div>
+<h1 style="font-size: 150px; position: absolute; top: 100px; left: 20px;">Static</h1><h1 style="font-size: 100px; position: absolute; top: 220px; left: 180px;">Routing</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/35">
+
+<div class="notes">
+<p>The next approach was used by early versions of Rails and still used by Sinatra, by storing routes in an array, and just iterating over the array of routes, testing each route to see if it matches the current request. This process is fairly simple to implement and understand, but makes routing performance decrease linearly as the number of routes increases.</p>
+</div>
+<h1 style="font-size: 90px; position: absolute; top: 390px; left: 510px;">Array</h1><h1 style="font-size: 90px; position: absolute; top: 390px; left: 770px;">of</h1><h1 style="font-size: 200px; position: absolute; top: 420px; left: 350px;">Routes</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/36">
+
+<div class="notes">
+<p>Next we have rack-mount, the underlying router used in Rails 3.0 and 3.1, and also by Synfeld. rack-mount organizes routes into a tree by considering things like matching prefixes shared by multiple routes. This can significantly increase routing performance, but at a large increase in complexity.</p>
+</div>
+<h1 style="font-size: 150px; text-align: left; margin-top: 320px;">rack-mount</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/37">
+
+<div class="notes">
+<p>Next we have Journey, used by modern versions of Rails, and also by NYNY. While it is generally faster than the previous approaches used by Rails, it is probably the most difficult for the average ruby programmer to understand.</p>
+</div>
+<h1 style="font-size: 150px; text-align: right; margin-top: 320px;">Journey</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/38">
+
+<div class="notes">
+<p>Finally, we have the routing tree based approach that was introduced by Rum and is currently implemented in Cuba and Roda.</p>
+</div>
+<h1 style="font-size: 120px; position: absolute; top: 280px; left: 150px;">Routing</h1><h1 style="font-size: 200px; position: absolute; top: 320px; left: 20px;">Tree</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/39">
+
+<div class="notes">
+<p>I think there are three basic ways these routing implementations are different from one another. The first way is a quantitive difference.</p>
+</div>
+<h1 style="font-size: 450px; position: absolute; top: 180px; left: 20px;">3</h1><h1 style="font-size: 100px; position: absolute; top: 480px; left: 240px;">Differences</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/40">
+
+<div class="notes">
+<p>The quantitative difference is in the performance. These different routing implementations all show different performance characteristics, especially as the number of routes increases.</p>
+</div>
+<h1 style="font-size: 150px; text-align: center; margin-top: 120px;">Performance</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/41">
+
+<div class="notes">
+<p>In order to determine what the performance differences are, you need to benchmark the implementations with a varying number of routes. The issue here is that comparative benchmarks in general are biased specifically to show the advantages of the benchmark creator&#x2019;s preferred choice.</p>
+</div>
+<h1 style="font-size: 120px; text-align: center; margin-top: 120px;">Benchmarking</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/42">
+
+<div class="notes">
+<p>And the benchmark I&#x2019;m using is no different. The benchmark is called r10k, and it benchmarks each of these routing implementations using 10, 100, 1000, and 10,000 routes. I wrote r10k because the only other comparative benchmark I could find only benchmarked hello world applications with a single route.|While the structure of the sites benchmarked by r10k is certainly friendly to a routing tree approach, it should also be friendly to most other routing approaches.</p>
+</div>
+<h1 style="font-size: 200px; text-align: center; margin-top: 120px;">r10k</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/43">
+
+<div class="notes">
+<p>r10k is open source on my GitHub, and I welcome external review to make sure I&#x2019;m not doing anything stupid or unfair to the other routing implementations I&#x2019;m benchmarking.|Let&#x2019;s first look at the runtime results for 10, 100, and 1000 routes.</p>
+</div>
+<h1 style="font-size: 50px; text-align: right; margin-top: 170px;">http://github.com/jeremyevans/r10k</h1></div>
+</div><div id="slides/slides" class="slide bg-runtime_3" data-transition="none"><div class="content bg-runtime_3" ref="slides/slides/44">
+
+<div class="notes">
+<p>Here are the runtime results. Pay no attention to the absolute numbers, as it is only the relative performance differences that matter. One thing to note about these numbers is that r10k benchmarks using the Rack API directly, so this does not include the web server overhead.|From this graph, you can see that at 10 and 100 routes, Rails is an outlier, taking about three times as the next slowest framework. However, when get you to 1000 routes, Synfeld takes much longer than Rails and Sinatra takes almost as much time.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide bg-runtime" data-transition="none"><div class="content bg-runtime" ref="slides/slides/45">
+
+<div class="notes">
+<p>When you go to 10,000 routes, Synfeld and Sinatra take much more time than all the other frameworks put together. I&#x2019;m not sure why Synfeld performs so poorly in this benchmark. It&#x2019;s supposed to be a very thin layer over rack-mount, so it&#x2019;s possibly an issue with rack-mount, or how Synfeld uses rack-mount. Anyway, because Synfeld, Sinatra, and Rails all throw off the scale of the graph, let&#x2019;s take them out of the picture.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide bg-runtime-fast" data-transition="none"><div class="content bg-runtime-fast" ref="slides/slides/46">
+
+<div class="notes">
+<p>So with those frameworks gone, the performance picture is a little more clear. Near the bottom is the static-route implementation, which is basically the fastest routing you can get, but again, I don&#x2019;t think anyone would use a static routing framework these days.|Next fastest is Roda, followed by NYNY and then Cuba. From this graph, you can see that a routing tree approach isn&#x2019;t necessarily the fastest, performance is also highly dependent on the specific implementation.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide bg-memory_3" data-transition="none"><div class="content bg-memory_3" ref="slides/slides/47">
+
+<div class="notes">
+<p>Part of performance is also the amount of memory used. Here are the memory results for 10, 100, and 1000 routes. As you can see, up till 100 routes, all the webframeworks except Rails are clustered around 20MB of memory. At 1000 routes, there are three basic groups, with the static routing implementation, Cuba, and Roda using under 20MB, Sinatra, NYNY, and Synfeld using between 30 and 40MB, and then Rails up around 70MB.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide bg-memory" data-transition="none"><div class="content bg-memory" ref="slides/slides/48">
+
+<div class="notes">
+<p>When you get to 10,000 routes, the picture is pretty much the same, except that Synfeld jumps to the top of the memory list. At 10,000 routes, Sinatra uses about twice the memory of the routing tree implementations, and Rails about four times the memory of routing tree implementations.|One of the reasons routing tree implementations are very friendly on memory is that the routes themselves are not directly stored in a datastructure. The tree in a routing tree is really ruby&#x2019;s abstract syntax tree for the routing tree block.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/49">
+
+<div class="notes">
+<p>From a review of the benchmarks, other than the static routing approach, which I don&#x2019;t think anyone would consider these days, Roda has the fastest implementation and uses the least memory, especially as the number of routes increases. NYNY does fairly well, showing the Journey&#x2019;s approach to routing is also fast. Next comes Cuba, which performs much better than Rails or Sinatra, but is significantly slower than Roda despite using a similar approach.|Rails is a fairly heavyweight framework, but it&#x2019;s performance doesn&#x2019;t change drastically even with large numbers of routes. Finally, we have Synfeld and Sinatra, which both have significant performance issues with large numbers of routes.</p>
+</div>
+<h1 style="text-align: left; margin-top: 220px; font-size: 160px;">Performance</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/50">
+
+<div class="notes">
+<p>One thing to keep in mind is that these performance numbers are pure routing performance numbers. In many if not most applications, routing performance will not be the bottleneck in the application, as the application will spend much more time handling a request than routing it.|However, I can say in the applications I&#x2019;ve converted to Roda, performance is noticeably faster compared to Sinatra or Rails, as shown by the time it takes to run the tests. Using the same rack-test-based integration tests, after I converted applications from Sinatra to Roda, the tests ran about 50% faster, and after I converted applications from Rails to Roda, the tests ran about twice as fast. But that is probably due to Roda having lower per-request overhead, not because of its faster routing performance.</p>
+</div>
+<h1 style="margin-top: 120px; font-size: 160px;">Impact</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/51">
+
+<div class="notes">
+<p>I mentioned earlier that there were three ways the routing implementations differ. The second way the routing implementations differ is a qualitative difference.</p>
+</div>
+<h1 style="font-size: 450px; position: absolute; top: 180px; left: 20px;">3</h1><h1 style="font-size: 100px; position: absolute; top: 480px; left: 240px;">Differences</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/52">
+
+<div class="notes">
+<p>That qualitative difference is the internal complexity of each implementation. These routing approaches vary widely in their internal complexity.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; top: 180px; right: 20px;">Implementation</h1><h1 style="font-size: 100px; position: absolute; top: 260px; right: 60px;">Complexity</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/53">
+
+<div class="notes">
+<p>Static routing is the simplest in terms of complexity, just parsing the request path using a single regular expression, and using the captures from the regular expression to call a method on an object.</p>
+</div>
+<h1 style="font-size: 150px; position: absolute; top: 100px; left: 20px;">Static</h1><h1 style="font-size: 100px; position: absolute; top: 220px; left: 180px;">Routing</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/54">
+
+<div class="notes">
+<p>Interating over an array of routes and checking each route to see if it matches the request is also fairly simple and easy for the average ruby programmer to understand.</p>
+</div>
+<h1 style="font-size: 90px; position: absolute; top: 390px; left: 510px;">Array</h1><h1 style="font-size: 90px; position: absolute; top: 390px; left: 770px;">of</h1><h1 style="font-size: 200px; position: absolute; top: 420px; left: 350px;">Routes</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/55">
+
+<div class="notes">
+<p>rack-mount&#x2019;s approach of analyzing the route set and building a tree is much more complex, and I think the average ruby programmer would have trouble understanding how it works without significant time to study it.</p>
+</div>
+<h1 style="font-size: 150px; text-align: left; margin-top: 320px;">rack-mount</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/56">
+
+<div class="notes">
+<p>Journey is even more complex than that, and if you want to try to understand it, you should probably have at good memory of the compiler courses you took in college, or get ready to do some research into how compilers are implemented.</p>
+</div>
+<h1 style="font-size: 150px; text-align: right; margin-top: 320px;">Journey</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/57">
+
+<div class="notes">
+<p>The routing tree approach is similar in complexity to an array of routes. You start off at the top of the routing tree block. Each method call checks to see if the current route matches the request. If so, the process is repeated for the block you pass to the method, otherwise you continue to the next method.|So a routing tree&#x2019;s processing is equivalent to iterating over a small array of routes for each branch in the tree, instead of one large array of routes.</p>
+</div>
+<h1 style="font-size: 120px; position: absolute; top: 280px; left: 150px;">Routing</h1><h1 style="font-size: 200px; position: absolute; top: 320px; left: 20px;">Tree</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/58">
+
+<div class="notes">
+<p>So the second type of difference between the routing approaches is the implementation complexity. Static routing, iterating over an array of routes, and using a routing tree all have fairly simple implementations that are easy to understand. Both rack-mount and Journey have much more complex implementations that would take a lot of time for the average ruby programmer to understand.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; top: 280px; right: 20px;">Implementation</h1><h1 style="font-size: 100px; position: absolute; top: 360px; right: 60px;">Complexity</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/59">
+
+<div class="notes">
+<p>How does the internal complexity of the routing implementation impact users of the framework? Well, the higher the implementation complexity, the more difficult it is to find other programmers who can understand the code, add features to it, and fix bugs in it. In general, more complex code is harder to debug than simpler code. As a general rule, unless there is a substantial benefit from complexity, simplicity should be preferred.|Ulimately though, most users of a framework treat the internal complexity as an externality, something that does not affect them directly, and therefore does not affect their decision whether or not to use a framework.</p>
+</div>
+<h1 style="text-align: right; margin-top: 120px; font-size: 160px;">Impact</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/60">
+
+<div class="notes">
+<p>So we come back to the 3 types of differences between the routing implementations. The first two were performance and implementation complexity. The third way the routing implementations differ is also a qualitative difference.</p>
+</div>
+<h1 style="font-size: 450px; position: absolute; top: 180px; left: 20px;">3</h1><h1 style="font-size: 100px; position: absolute; top: 480px; left: 240px;">Differences</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/61">
+
+<div class="notes">
+<p>That difference is how routing integrates with request handling. Routing a request is not an end in itself, it is purely a means to make sure the request is handled correctly.</p>
+</div>
+<h1 style="text-align: right; margin-top: 420px; font-size: 160px;">Integration</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/62">
+
+<div class="notes">
+<p>With a routing tree, routing is not separate from request handling, the two are integrated. So as you are routing a request, you can also be handling the request.</p>
+</div>
+<h1 style="font-size: 120px; position: absolute; top: 280px; left: 150px;">Routing</h1><h1 style="font-size: 200px; position: absolute; top: 320px; left: 20px;">Tree</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/63">
+
+<div class="notes">
+<p>For all of the other implementations I&#x2019;ve discussed, routing is separate from request handling.</p>
+</div>
+<h1 style="font-size: 120px; position: absolute; top: 280px; right: 220px;">All</h1><h1 style="font-size: 200px; position: absolute; top: 320px; right: 20px;">Others</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/64">
+
+<div class="notes">
+<p>This integration may not sound interesting, but I think it has by far the most impact. So I&#x2019;m going to discuss the advantages of integrating routing with request handling, and then talk about what web frameworks that lack this integration offer in terms of similar functionality.</p>
+</div>
+<h1 style="text-align: center; margin-top: 220px; font-size: 160px;">Impact</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/65">
+
+<div class="notes">
+<p>Let me first start with some example Sinatra code. This is fairly simple, we just have two routes, both related to a specific album, one for GET and one for POST. When I was using Sinatra, this was pretty typical in many of my applications.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>get '/albums/:id' do
+  @album = Album[params[:id]]
+  erb(:album)
+end
+
+post '/albums/:id' do
+  @album = Album[params[:id]]
+  @album.update(params[:album])
+  redirect "/albums/#{@album.id}"
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/66">
+
+<div class="notes">
+<p>The main issue with this approach is that it leads to duplication. Here you see the path is duplicated in both of the routes.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>get <b>'/albums/:id'</b> do
+  @album = Album[params[:id]]
+  erb(:album)
+end
+
+post <b>'/albums/:id'</b> do
+  @album = Album[params[:id]]
+  @album.update(params[:album])
+  redirect "/albums/#{@album.id}"
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/67">
+
+<div class="notes">
+<p>The retrieval of the album from the database is also duplicated in both of the routes.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>get '/albums/:id' do
+  <b>@album = Album[params[:id]]</b>
+  erb(:album)
+end
+
+post '/albums/:id' do
+  <b>@album = Album[params[:id]]</b>
+  @album.update(params[:album])
+  redirect "/albums/#{@album.id}"
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/68">
+
+<div class="notes">
+<p>Using a routing tree, you can simplify things.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>is 'albums/:id' do |id|
+  @album = Album[id]
+
+  get do
+    view(:album)
+  end
+
+  post do
+    @album.update(params[:album])
+    redirect "/albums/#{@album.id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/69">
+
+<div class="notes">
+<p>Instead of duplicating the path in both cases, it is specified once in the branch.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>is <b>'albums/:id'</b> do |id|
+  @album = Album[id]
+
+  get do
+    view(:album)
+  end
+
+  post do
+    @album.update(params[:album])
+    redirect "/albums/#{@album.id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/70">
+
+<div class="notes">
+<p>As soon as the branch is taken, the album is retreived from the database.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>is 'albums/:id' do |id|
+  <b>@album = Album[id]</b>
+
+  get do
+    view(:album)
+  end
+
+  post do
+    @album.update(params[:album])
+    redirect "/albums/#{@album.id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/71">
+
+<div class="notes">
+<p>In both the get and post routes, the @album instance variable is available for use.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>is 'albums/:id' do |id|
+  @album = Album[id]
+
+  get do
+    <b>view(:album)</b>
+  end
+
+  post do
+    <b>@album</b>.update(params[:album])
+    redirect "/albums/#{<b>@album</b>.id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/72">
+
+<div class="notes">
+<p>So one of the primary advantages of a routing tree is that it allows you to easily eliminate redundant code, by moving it to the highest branch where it is shared by all routes under that branch.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>is <b>'albums/:id'</b> do |id|
+  <b>@album = Album[id]</b>
+
+  get do
+    view(:album)
+  end
+
+  post do
+    @album.update(params[:album])
+    redirect "/albums/#{@album.id}"
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/73">
+
+<div class="notes">
+<p>Now, it&#x2019;s certainly possible to do something similar in Sinatra. You can use before blocks in Sinatra and provide a path to the before block, and Sinatra will iterate over all of the before blocks before routing the request, checking each to see if the request path prefix matches the before block. If so, it will yield to the before block. So using this you can still only retrieve the album from the database in a single place.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code><b>before</b> '/albums/:id' do
+  @album = Album[params[:id]]
+end
+
+get '/albums/:id' do
+  erb(:album)
+end
+
+post '/albums/:id' do
+  @album.update(params[:album])
+  redirect "/albums/#{@album.id}"
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/74">
+
+<div class="notes">
+<p>However, now note that you need to specify the path itself three times, instead of just once.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>before <b>'/albums/:id'</b> do
+  @album = Album[params[:id]]
+end
+
+get <b>'/albums/:id'</b> do
+  erb(:album)
+end
+
+post <b>'/albums/:id'</b> do
+  @album.update(params[:album])
+  redirect "/albums/#{@album.id}"
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/75">
+
+<div class="notes">
+<p>Unlike the routing tree example, the shared behavior is in a separate lexical scope, which I think makes it more difficult to understand the connection between the shared behavior and the two routes. The two routes are also in separate lexical scopes, which makes it more difficult to understand how they are connected.|Additionally, using before blocks like this in Sinatra has a negative effect on performance. Before blocks are processed pretty much the same way as route blocks, so adding a before block is equivalent to adding a route, and since routing performance degrades linearly as the number of routes increases, adding before blocks like this hurts preformance for the entire application.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>before '/albums/:id' do
+  @album = Album[params[:id]]
+end
+
+get '/albums/:id' do
+  erb(:album)
+end
+
+post '/albums/:id' do
+  @album.update(params[:album])
+  redirect "/albums/#{@album.id}"
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/76">
+
+<div class="notes">
+<p>In Rails, you specify the routes in the config/routes.rb file, and the code to handle the routes goes in a controller class in a separate controller file, using a separate method per route.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px;"><code>def show
+  @album = Album.find(params[:id])
+  render(action: 'edit')
+end
+
+def update
+  @album = Album.find(params[:id])
+  @album.update_attributes(params[:product])
+  redirect_to @album
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/77">
+
+<div class="notes">
+<p>As in the initial Sinatra example, this duplicates the retrieval of the album from the database in both methods.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px;"><code>def show
+  <b>@album = Album.find(params[:id])</b>
+  render(action: 'edit')
+end
+
+def update
+  <b>@album = Album.find(params[:id])</b>
+  @album.update_attributes(params[:product])
+  redirect_to @album
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/78">
+
+<div class="notes">
+<p>Rails also offers a way to eliminate the redundant code, using a before filter to specify a method to call before the action, for a given set of actions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 50px;"><code><b>before_filter</b> :find_album, only: [:show, :update]
+
+def show
+  render(action: 'edit')
+end
+
+def update
+  @album.update_attributes(params[:product])
+  redirect_to @album
+end
+
+private
+
+def find_album
+  @album = Album.find(params[:id])
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/79">
+
+<div class="notes">
+<p>The main issue with this approach is that if you add more routes where you want to retrieve the album, you need to remember to update the only option to the before filter.|Also, as in the second Sinatra example, the shared behavior is in a separate lexical scope, which I think makes it more difficult to understand how it is connected.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 50px;"><code>before_filter :find_album, <b>only: [:show, :update]</b>
+
+def show
+  render(action: 'edit')
+end
+
+def update
+  @album.update_attributes(params[:product])
+  redirect_to @album
+end
+
+private
+
+def find_album
+  @album = Album.find(params[:id])
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/80">
+
+<div class="notes">
+<p>So Sinatra and Rails and most other web frameworks can use before filters to emulate code placed at the top of a routing tree block. However, as a routing tree is just standard ruby code, you can execute arbitrary code at any point during routing, not just at the top of the blocks.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>route do
+  r.post 'login' do
+    session[:logged_in] = true
+  end
+
+  require_login!
+
+  on 'albums' do
+    # ...
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/81">
+
+<div class="notes">
+<p>One of the common places where this is useful is when doing access control. For example, if part of your site allows anonymous access, and part of your site does not, you can place the part that allows anonymous access first, and then run the check for a login, and then have the rest of the routes where anonymous access is not allowed.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>route do
+  r.post 'login' do
+    session[:logged_in] = true
+  end
+
+  <b>require_login!</b>
+
+  on 'albums' do
+    # ...
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/82">
+
+<div class="notes">
+<p>Note that this is an issue with most sites that supports logins, since the login action is usually available to anonymous users.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>route do
+  <b>r.post 'login' do</b>
+    session[:logged_in] = true
+  end
+
+  require_login!
+
+  on 'albums' do
+    # ...
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/83">
+
+<div class="notes">
+<p>This type of access control is more complex to handle in Sinatra. When I was using Sinatra, the usual way I would handle this would be to specifically whitelist each path or prefix that allowed anonymous access. This works OK if you only have a small number of paths that allow anonymous access, but quickly becomes difficult if you have a large number of separate paths that allow anonymous access.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px;"><code>before do
+  unless env['PATH_INFO'] =~ \
+    %r{\A/login|/foo|/bar/baz}
+      require_login! 
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/84">
+
+<div class="notes">
+<p>Similarly, this type of access control is more complex in Rails. Usually in Rails, this would be handled by using a before filter in ApplicationController that required a login.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 28px;"><code>ApplicationController.<b>before_filter</b> :require_login!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/85">
+
+<div class="notes">
+<p>Then, in each controller where you want to allow anonymous access, you need to skip the before filter. This spreads the access control handling to multiple places in the application, and again requires you to specifically whitelist all of the allowed actions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 28px;"><code>ApplicationController.before_filter :require_login!
+LoginController.<b>skip_before_filter</b> :require_login!
+FooController.<b>skip_before_filter</b> :require_login!, \
+  except: [:index]
+BarController.<b>skip_before_filter</b> :require_login!, \
+  except: [:baz]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/86">
+
+<div class="notes">
+<p>Because a routing tree is directly executed, you can include arbitrary logic that affects routing. In this example, you have a routing tree that makes the list of albums available to everyone.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 70px;"><code>on 'albums' do
+  <b>get 'list' do</b>
+    view(:album_list)
+  end
+
+  if admin?
+    run AdminSite 
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/87">
+
+<div class="notes">
+<p>For admins, it also routes other requests to an AdminSite rack application.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 70px;"><code>on 'albums' do
+  get 'list' do
+    view(:album_list)
+  end
+
+  <b>if admin?</b>
+    <b>run AdminSite</b>
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/88">
+
+<div class="notes">
+<p>In Sinatra, this is more difficult. You have to add routes for each request you want to support, with splats so that Sinatra will only do a prefix match on the request path.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px;"><code>get '/albums/list' do
+  erb(:album_list)
+end
+
+block = proc do
+  pass if admin?
+  e = env.dup
+  e['PATH_INFO']=e['PATH_INFO'].sub('/albums', '')
+  e['SCRIPT_NAME']=e['SCRIPT_NAME'] + '/albums'
+  AdminSite.call(e)
+end
+<b>get '/albums/*'</b>, &amp;block
+<b>post '/albums/*'</b>, &amp;block
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/89">
+
+<div class="notes">
+<p>You then have the block pass if it isn&#x2019;t an admin request.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px;"><code>get '/albums/list' do
+  erb(:album_list)
+end
+
+block = proc do
+  <b>pass if admin?</b>
+  e = env.dup
+  e['PATH_INFO']=e['PATH_INFO'].sub('/albums', '')
+  e['SCRIPT_NAME']=e['SCRIPT_NAME'] + '/albums'
+  AdminSite.call(e)
+end
+get '/albums/*', &amp;block
+post '/albums/*', &amp;block
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/90">
+
+<div class="notes">
+<p>If it is an admin request, you need to create a new environment to call the AdminSite rack app with. Then you need to call the AdminSite rack app.|I&#x2019;m sure this is possible in Rails too, but in the interests of time I won&#x2019;t provide an example.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 32px;"><code>get '/albums/list' do
+  erb(:album_list)
+end
+
+block = proc do
+  pass if admin?
+  <b>e = env.dup</b>
+  <b>e['PATH_INFO']=e['PATH_INFO'].sub('/albums', '')</b>
+  <b>e['SCRIPT_NAME']=e['SCRIPT_NAME'] + '/albums'</b>
+  <b>AdminSite.call(e)</b>
+end
+get '/albums/*', &amp;block
+post '/albums/*', &amp;block
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/91">
+
+<div class="notes">
+<p>These improvements may seem small, but taken together, they can result in much simpler applications. While it is possible to eliminate the redundant code without a routing tree using before filters, in most Sinatra applications I&#x2019;ve looked at, that isn&#x2019;t done as it isn&#x2019;t natural. The usual case is code is just copied into all routes that need it.|This doesn&#x2019;t surprise me, because when I was writing Sinatra applications, that&#x2019;s what I would do. Using a separate before filter for every set of GET and POST routes, while possible in Sinatra, feels unnatural.</p>
+</div>
+<h1 style="text-align: left; margin-top: 120px; font-size: 160px;">Impact</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/92">
+
+<div class="notes">
+<p>I analyzed one of the applications I&#x2019;ve worked on a couple years, which is a process automation system my office uses. This application was originally built using Sinatra, and it was switched to Roda last year.|When it was using Sinatra, it had redundant code in most of the routes. When I switched it to a using a routing tree, I was able to eliminate the redundant code by moving it up to the highest enclosing branch where it was shared by all the routes.</p>
+</div>
+<h1 style="font-size: 100px; position: absolute; left: 220px; top: 190px;">Real</h1><h1 style="font-size: 200px; text-align: left; margin-top: 220px;">World</h1><h1 style="font-size: 100px; position: absolute; left: 170px; top: 380px;">Numbers</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/93">
+
+<div class="notes">
+<p>Currently, the application has 79 total routes.</p>
+</div>
+<h1 style="font-size: 450px; position: absolute; top: 180px; left: 20px;">79</h1><h1 style="font-size: 100px; position: absolute; top: 480px; left: 470px;">Routes</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/94">
+
+<div class="notes">
+<p>To get to those 79 routes, there are a total of 36 branches in the routing tree where the branch contains multiple routes.</p>
+</div>
+<h1 style="font-size: 450px; position: absolute; top: 180px; left: 20px;">36</h1><h1 style="font-size: 100px; position: absolute; top: 480px; left: 480px;">Branches</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/95">
+
+<div class="notes">
+<p>Of those 36 branches containing multiple routes, 25 contain code that is shared by all routes under the branch. In most cases, the code that is shared is either retrieving objects from the database or enforcing access control.</p>
+</div>
+<h1 style="font-size: 450px; position: absolute; top: 180px; left: 20px;">25</h1><h1 style="font-size: 100px; position: absolute; top: 380px; left: 480px;">Share</h1><h1 style="font-size: 100px; position: absolute; top: 480px; left: 480px;">Code</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/96">
+
+<div class="notes">
+<p>That means 70% of the time there are branches in the routing tree, the integration of routing and request handling is resulting in the elimination of redundant code.|It also means that if I wanted to eliminate the same redundant code in Sinatra or Rails, I would have to add 25 separate before filters.</p>
+</div>
+<h1 style="font-size: 450px; position: absolute; top: 260px; left: 20px;">70%</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/97">
+
+<div class="notes">
+<p>Using a routing tree makes sharing code for all routes under a branch natural, so web applications that use a routing tree tend to avoid redundant code naturally. Using before filters to eliminate redundant code isn&#x2019;t natural in most other web frameworks, so even though it is possible, it often isn&#x2019;t done, and the natural approach leads to redundant code.</p>
+</div>
+<h1 style="text-align: right; margin-top: 420px; margin-right: 100px; font-size: 160px;">Natural</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/98">
+
+<div class="notes">
+<p>Note that in order to extract maximum benefit from a routing tree, you need to structure your paths in such a way that shared behavior can be determined before the entire path has been routed. These days, this type of path structure is pretty natural.</p>
+</div>
+<h1 style="font-size: 200px; position: absolute; top: 180px; left: 20px;">Path</h1><h1 style="font-size: 150px; position: absolute; top: 330px; left: 80px;">Structure</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/99">
+
+<div class="notes">
+<p>For example, if you structure paths like this, they are naturally routing tree friendly.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 100px; margin-left: 50px;"><code>/albums/1
+/albums/1/tracks
+/albums/1/similar
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/100">
+
+<div class="notes">
+<p>That&#x2019;s because as soon as the routing tree has routed the /albums/1 prefix, it can retrieve the album from the database, so all the routes under the /albums/1 branch can share it.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 100px; margin-left: 50px;"><code><b>/albums/1</b>
+<b>/albums/1</b>/tracks
+<b>/albums/1</b>/similar
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/101">
+
+<div class="notes">
+<p>However, if you use Rails 1 style /controller/action/id routes, you can&#x2019;t derive as much benefit from a routing tree.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 400px; margin-left: 50px;"><code>/albums/show/1
+/albums/tracks/1
+/albums/similar/1
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/102">
+
+<div class="notes">
+<p>This is because the segment containing the albums&#x2019;s id appears at the end of the path, after the branching for the show/tracks/similar segments has already taken place.|I have multiple applications that were initially developed using pre-Rails 1.0, and were updated all the way to Rails 4.1 without changing the path structure, and when I switched them to using a routing tree, I still ended up with redundant code in many routes.</p>
+</div>
+<pre style="font-size: 60px; margin-top: 400px; margin-left: 50px;"><code>/albums/show/<b>1</b>
+/albums/tracks/<b>1</b>
+/albums/similar/<b>1</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/103">
+
+<div class="notes">
+<p>You should keep these path structure considerations in mind if you are planning to convert an existing web application to use a routing tree web framework.|Obviously if you are creating a new application, or are willing to change the path structure of an existing application, you can design the paths to be friendly to a routing tree approach.</p>
+</div>
+<h1 style="font-size: 200px; position: absolute; top: 180px; left: 20px;">Path</h1><h1 style="font-size: 150px; position: absolute; top: 330px; left: 80px;">Structure</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/104">
+
+<div class="notes">
+<p>So far I&#x2019;ve discussed what I think are the main advantages to using routing trees. However, I would be remiss if I did not mention that there is a tradeoff when using a routing tree approach.</p>
+</div>
+<h1 style="text-align: left; margin-top: 120px; font-size: 160px;">Tradeoff</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/105">
+
+<div class="notes">
+<p>And that tradeoff is the loss of route introspection. Because routes are not stored in a data structure when using a routing tree, since a routing tree is really just ruby code, you can&#x2019;t introspect your routes like you can in most other ruby web frameworks.|In my applications, this doesn&#x2019;t matter, but there are some applications that rely on introspection of the routes, and those would need to be handled differently when using a routing tree.</p>
+</div>
+<h1 style="position: absolute; left: 80px; top: 330px; font-size: 80px;">No</h1><h1 style="position: absolute; left: 20px; top: 350px; font-size: 160px;">Introspection</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/106">
+
+<div class="notes">
+<p>Again, this is something you need to keep in mind if you are converting an existing application to use a routing tree. You need to check that it is not relying on introspection of the routes, or provide an alternative if it is.</p>
+</div>
+<h1 style="text-align: left; margin-top: 120px; font-size: 160px;">Tradeoff</h1><div class="review">Review</div></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/107">
+
+<div class="notes">
+<p>I&#x2019;d like to finish up this presentation by reviewing the advantages I&#x2019;ve found from using a routing tree approach.</p>
+</div>
+<h1 style="text-align: left; margin-top: 120px; font-size: 160px;">Advantages</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/108">
+
+<div class="notes">
+<p>First and most importantly, a routing tree approach makes it simple and natural to eliminate redundant code.|This make not seem like such a big deal, but when converting applications with redundant code to a routing tree approach, I noticed that there were unintended differences in the redundant code, because changes were made to only one of the routes when it should have been made to all routes under a given branch.|By using a routing tree, you eliminate the redundant code, and you only need to make changes in one place to have it affect all related routes.</p>
+</div>
+<h1 style="position: absolute; left: 80px; top: 130px; font-size: 120px;">Eliminate</h1><h1 style="position: absolute; left: 20px; top: 230px; font-size: 160px;">Redundancy</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/109">
+
+<div class="notes">
+<p>By eliminating redundancy in your code, the code becomes easier to read and understand, which makes maintenance easier.|I have been the only programmer where I work for over 12 years, and have continually maintained multiple applications for over a decade, so ease of maintenance is very important to me.</p>
+</div>
+<h1 style="position: absolute; right: 300px; top: 170px; font-size: 120px;">Ease</h1><h1 style="position: absolute; right: 20px; top: 230px; font-size: 160px;">Maintenance</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/110">
+
+<div class="notes">
+<p>In most cases, moving to a routing tree approach, especially using Roda, will improve performance of your application. This isn&#x2019;t just because Roda is fast at routing, but also because it has lower per-request overhead.</p>
+</div>
+<h1 style="position: absolute; right: 115px; top: 185px; font-size: 100px;">Improve</h1><h1 style="position: absolute; right: 20px; top: 230px; font-size: 160px;">Performance</h1></div>
+</div><div id="slides/slides" class="slide bg-roda" data-transition="none"><div class="content bg-roda" ref="slides/slides/111">
+
+<div class="notes">
+<p>If you are interested in using a routing tree, I recommend checking out Roda. It&#x2019;s the fastest and most featureful ruby web framework that uses a routing tree.|It has an very small core, but it ships with plugins for a wide variety of use cases. These plugins add support for simple features like rendering templates and JSON, to more advanced features like template streaming, asset packaging, and sending emails using a routing tree. The plugins are tested along side the core codebase, to ensure that they continue to work as Roda evolves.</p>
+</div>
+<h1 class="roda" style="margin-left: 60px; margin-top: 580px; font-size: 150px; color: white;">Roda</h1></div>
+</div><div id="slides/slides" class="slide bg-roda" data-transition="none"><div class="content bg-roda" ref="slides/slides/112">
+
+<div class="notes">
+<p>If you are interested in learning more about Roda, please visit the website at roda.jeremyevans.net, hop on IRC, post on the Google Group, or just come talk to me.</p>
+</div>
+<h1 style="text-align: left; margin-left: 50px; margin-top: 630px; font-size: 50px; color: white;">http://roda.jeremyevans.net</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/113">
+
+<div class="notes">
+<p>That concludes my presentation. I want to thank you all for listening to me talk about routing trees and other approaches to routing.</p>
+</div>
+<h1 style="text-align: center; margin-top: 120px; font-size: 260px;">Thank You</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/114">
+
+<div class="notes">
+<p>If you have any questions, I&#x2019;ll be happy to answer them now.</p>
+</div>
+<h1 style="text-align: left; margin-top: 120px; font-size: 160px;">Questions?</h1></div>
+</div></div>
+
+</body>
+</html>

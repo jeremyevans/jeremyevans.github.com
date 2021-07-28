@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+     "http://www.w3.org/TR/html4/transitional.dtd">
+<html>
+<head>
+  <meta HTTP-EQUIV=CONTENT-TYPE CONTENT="text/html; charset=utf-8">
+  <title>Slide 105</title>
+</head>
+<body>
+<center>
+<a href="img0.html">First page</a> <a href="img103.html">Back</a> <a href="img105.html">Continue</a> <a href="img115.html">Last page</a> <a href="sequel-rubykaigi2009.html">Overview</a> <a href="text104.html">Text</a></center><br>
+<center><img src="img104.jpg" alt=""></center>
+<h3>Notes:</h3><br>
+
+<p><p style="direction:ltr;">This is mainly due to Sequel's superior connection pool design.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">Sequel was designed to use a connection pool from the very beginning.  It doesn't checkout a connection from the pool until it is needed, and returns it as soon as it is not needed.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">ActiveRecord checks out a connection when it is needed, but you need to check the connection in manually, it doesn't do so automatically.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">Sequel is safe to use in any threaded code, whereas ActiveRecord requires you to handle the connection pool checkins manually if used in threaded code.</p>
+
+</p>
+</body>
+</html>

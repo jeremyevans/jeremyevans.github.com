@@ -1,0 +1,200 @@
+/* custom css and js files included at the top level of your presentation will
+ * will be included in your presentation */
+
+.slide {
+ font-family: 'Playfair Display', serif;
+ font-weight: bold;
+ color: #090974;
+ background-color: #e8e8eb;
+ text-align: left;
+}
+
+h1, pre, td, tr {
+ font-family: inherit;
+ font-weight: inherit;
+ color: inherit;
+ background-color: inherit;
+ text-align: inherit;
+ background-color: transparent;
+ margin: 0;
+ padding: 0;
+}
+pre {
+  line-height: 125%; 
+}
+td, th {
+ font-size: inherit;
+ text-align: center;
+ padding: 8px 15px;
+}
+th {
+ border-bottom: 5px solid white;
+}
+td.trans {
+  text-align: left;
+}
+
+.right {
+ text-align: right;
+}
+
+.content {
+ margin-left: 20px;
+ margin-right: 20px;
+}
+
+.bigger {
+ font-size: 180%;
+}
+.smaller {
+ font-size: 50%;
+}
+.mono, pre {
+ font-family: 'PT Mono'; 
+}
+
+.bright-blue {
+ color: #7373d9;
+}
+.medium-blue {
+ color: #4f4fd9;
+}
+.dark-blue {
+ color: #090974;
+}
+.black {
+ color: black;
+}
+.white {
+ color: #e8e8eb;
+}
+.gray {
+ color: #373333;
+}
+.blue-gray {
+ color: #313186;
+}
+
+.it {
+ font-style: italic;
+}
+
+.sky {
+  height: 111px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, yellow 0%, #e8e8eb 60%);
+}
+.bg0 {
+ color: #090974;
+ background-color: #e8e8eb;
+}
+.bg1 {
+ background-color: #3333b9;
+ color: #e8e8eb;
+}
+.bg2 {
+ background-color: #1f1f99;
+ color: #e8e8eb;
+}
+.bg3 {
+ background-color: #090974;
+ color: #e8e8eb;
+}
+.bg4 {
+ background-color: #040438;
+ color: #e8e8eb;
+}
+.bg-black {
+ background-color: #010110;
+ color: #e8e8eb;
+}
+.bg-fade {
+  background: #4f4fd9;
+  background: linear-gradient(to bottom, #3333b9 0%, #010110 100%);
+  color: #e8e8eb;
+}
+.bg-fade .content {
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  margin: auto;
+  font-size: 45px;
+  margin-top: 20px;
+}
+
+.slide .content pre {
+  text-align: left;
+  font-size: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 250px;
+}
+.slide.vc .content pre {
+  margin-top: 0;
+}
+.slide.bg0 .content pre span,
+.slide.bg0 .content pre div
+{
+ background-color: #1f1f99;
+ color: #e8e8eb;
+}
+.slide .content pre span,
+.slide .content table td.hl,
+.slide .content pre div
+{
+ color: #090974;
+ background-color: #e8e8eb;
+}
+.slide .content pre div {
+  margin: 0;
+}
+
+.violation {
+position: absolute;
+font-size: 50px;
+text-align: right;
+bottom: 105px;
+right: 15px;
+padding: 10px;
+padding-bottom: 20px;
+border: 5px black dotted;
+display: inline-block;
+background-color: #500;
+-webkit-transform: rotate(-30deg);
+-moz-transform: rotate(-30deg);
+transform: rotate(-30deg);
+}
+.review {
+position: absolute;
+font-size: 70px;
+text-align: right;
+top: 105px;
+right: 15px;
+padding: 10px;
+padding-bottom: 20px;
+border: 5px black dotted;
+display: inline-block;
+-webkit-transform: rotate(30deg);
+-moz-transform: rotate(30deg);
+transform: rotate(30deg);
+}
+.strike {
+  text-decoration: line-through;
+}
+
+.slide.bg-jeremy {background-image: url('jeremy.jpg')}
+.slide.bg-title {background-image: url('title.jpg'); background-size: cover;}
+.slide.bg-boat {background-image: url('boat.jpg'); background-size: 100%;}
+.slide.bg-divein {background-image: url('divein.jpg'); background-size: 100%;}
+.slide.bg-divedeeper {background-image: url('divedeeper.jpg'); background-size: 100%;}
+.slide.bg-evendeeper {background-image: url('evendeeper.jpg'); background-size: 100%;}
+.slide.bg-deepestdive {background-image: url('deepestdive.jpg'); background-size: 100%;}
+.slide.bg-sunset {background-image: url('sunset.jpg'); background-size: 100%;}
+

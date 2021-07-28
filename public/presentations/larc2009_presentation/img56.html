@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+     "http://www.w3.org/TR/html4/transitional.dtd">
+<html>
+<head>
+  <meta HTTP-EQUIV=CONTENT-TYPE CONTENT="text/html; charset=utf-8">
+  <title>Slide 57</title>
+</head>
+<body>
+<center>
+<a href="img0.html">First page</a> <a href="img55.html">Back</a> <a href="img57.html">Continue</a> <a href="img84.html">Last page</a> <a href="sequel-larc2009-pres.html">Overview</a> <a href="text56.html">Text</a></center><br>
+<center><img src="img56.jpg" alt=""></center>
+<h3>Notes:</h3><br>
+
+<p><p style="direction:ltr;">Alright, last query.  This one uses a filter with a block.  </p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">Inside the block, instance methods without arguments, such as date, refer to SQL columns and instance methods with arguments, such as date_part, refer to SQL functions.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">The exclude method operates as an inverse filter.  Using a hash with a nil value would generally set up an IS NULL condition, and exclude changes it to IS NOT NULL.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">Finally, see how you can reference existing columns when setting new values, which is how the new value of price can depend on the existing price.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">This is powerful as it allows you to update prices for all filtered records at once, instead of retrieving all filtered records, determining what the new price should be, and updating each record individually.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">When possible, you should attempt to update multiple records in a single query unless you have a good reason not to.</p>
+
+</p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+     "http://www.w3.org/TR/html4/transitional.dtd">
+<html>
+<head>
+  <meta HTTP-EQUIV=CONTENT-TYPE CONTENT="text/html; charset=utf-8">
+  <title>Slide 14</title>
+</head>
+<body>
+<center>
+<a href="img0.html">First page</a> <a href="img12.html">Back</a> <a href="img14.html">Continue</a> <a href="img105.html">Last page</a> <a href="mwrc2010.html">Overview</a> <a href="text13.html">Text</a></center><br>
+<center><img src="img13.jpg" alt=""></center>
+<h3>Notes:</h3><br>
+
+<p><p style="direction:ltr;">I'm going to attempt to explain ruby's method lookup quickly, with some simplification, imprecision, and inaccuracy.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">Basically, when a method is called on any ruby object, it's going to first look in it's singleton class, and then any modules included in that singleton class, in reverse order of inclusion.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">If the method hasn't been found or the found method calls super, it substitutes the singleton class with the singleton class's superclass, and then restrarts the lookup.</p>
+
+</p>
+</body>
+</html>

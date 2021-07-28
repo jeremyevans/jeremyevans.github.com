@@ -1,0 +1,125 @@
+/* custom css and js files included at the top level of your presentation will
+ * will be included in your presentation */
+
+.roda {
+  font-family: 'Italianno', cursive;
+}
+.bg-title h1 { color: white; }
+.bg-title p { color: #141; }
+
+.slide {
+ font-family: 'Playfair Display', serif;
+ font-weight: bold;
+ color: #141;
+ background-color: #ded;
+ text-align: left;
+}
+
+h1, pre, td, tr {
+ font-family: inherit;
+ font-weight: inherit;
+ color: inherit;
+ background-color: inherit;
+ text-align: inherit;
+ background-color: transparent;
+ margin: 0;
+ padding: 0;
+}
+pre {
+  line-height: 125%; 
+}
+td, th {
+ font-size: inherit;
+ text-align: center;
+ padding: 8px 15px;
+}
+th {
+ border-bottom: 5px solid white;
+}
+td.trans {
+  text-align: left;
+}
+
+.right {
+ text-align: right;
+}
+
+.content {
+ margin-left: 20px;
+ margin-right: 20px;
+}
+
+.bigger {
+ font-size: 180%;
+}
+.smaller {
+ font-size: 50%;
+}
+.mono, pre, table.code {
+ font-family: 'PT Mono'; 
+}
+table.code caption {
+ font-size: 64px;
+ margin-bottom: 30px;
+}
+
+#notesInfo {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  padding: 10px;
+}
+
+table {
+  margin: auto;
+  font-size: 45px;
+  margin-top: 20px;
+}
+
+.slide .content pre {
+  text-align: left;
+  font-size: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 100px;
+}
+.slide.vc .content pre {
+  margin-top: 0;
+}
+.slide .content pre div {
+  margin: 0;
+}
+
+div pre.sh_sourceCode {
+  background-color: transparent;
+}
+div pre.sh_sourceCode b, div pre b {
+  background-color: white;
+  border: 1px solid #141;
+}
+
+.review {
+position: absolute;
+font-size: 70px;
+text-align: right;
+top: 75px;
+right: 15px;
+padding: 10px;
+padding-bottom: 20px;
+border: 5px #141 dotted;
+background-color: white;
+color: #141;
+display: inline-block;
+-webkit-transform: rotate(30deg);
+-moz-transform: rotate(30deg);
+transform: rotate(30deg);
+}
+
+.slide.bg-jeremy {background-image: url('jeremy.jpg')}
+#bg_tree {background-image: url('tree.svg'); background-size: 100%; background-position: top left; background-repeat: no-repeat}
+.slide.bg-roda {background-image: url('roda.jpg'); background-size: cover; background-position: center center;}
+.slide.bg-sinatra {background-image: url('sinatra.gif'); background-repeat: no-repeat; background-color: white; background-position: center top;}
+.slide.bg-runtime {background-image: url('runtime.png'); }
+.slide.bg-runtime-fast {background-image: url('runtime-fast.png'); }
+.slide.bg-memory {background-image: url('memory.png'); }
+.slide.bg-runtime_3 {background-image: url('runtime_3.png'); ;}
+.slide.bg-memory_3 {background-image: url('memory_3.png'); }

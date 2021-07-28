@@ -1,0 +1,251 @@
+<h1>Contributions</h1>
+
+<p>In addition to writing my own software, I've contributed patches to the following projects:</p>
+
+<ul>
+  <li><a href="http://x3270.bgp.nu/">c3270</a>: Fix Makefile issue to allow compilation with CFLAGS for resolver.c (in c3270 &gt;= 3.3.8p4)</li>
+  <li><a href="https://github.com/sporkmonger/addressable">addressable</a>: Fix some issues when using frozen string literals (4a32bcbce6fc666e913bccc0e762f08768cc460a)</li>
+  <li><a href="https://github.com/enebo/alienist_viewer">alienist_viewer</a>:<ul>
+    <li>Switch web framework from Rails to Roda (ae1be28db0f96f9972b70e59c9e2d04068b79f6b)</li>
+    <li>Use bootstrap for prettier layout, fix some bugs, add tests (711bdf00372113cd9786b20725834043bfb3aac9)</li>
+    <li>Fix link to example data file (344d1b015fa3d906c19c18a4407aad5436eaa3e2)</li>
+    <li>Use instance variable instead of class variable for Memory (eb7fae06459a0b3fd59f724d409b98c7249b470b)</li>
+    <li>Add separate class for ruby arrays (68f8d3d9276af125ae22ef19493db2759d6ad5c5)</li>
+    <li>Refactor display of links (4a03851eec062e592b0b5ceffbd9d470dc9d9982)</li>
+    <li>Remove unused methods (d89a687d0ed121cdaf803c5faccc9c0daf879bc6)</li>
+    <li>Optimize StringInstance#display_name (5475e9961eb38b5543b09c08a77b6cee4b9f4fb3)</li>
+    <li>Work with capybara 2+ (324cb5bcb1d68db681ce41fbc602e602dc61f43d)</li>
+  </ul></li>
+  <li><a href="https://github.com/luislavena/bench-micro">bench-micro</a>: Try to make benchmarks more fair (037fa0add723a54ef91d4d63f00863771beb2097)</li>
+  <li><a href="http://www.bittorrent.com">BitTorrent</a>: Allowed --bind to affect connections to the tracker as well as peers (in BitTorrent &gt;= 4.2.1)</li>
+  <li><a href="https://github.com/bundler/bundler">bundler</a>: Fix a couple issues related to keyword argument separation (8b61b4b380b734a5cedc31985902c45971255e3b)</li>
+  <li><a href="https://github.com/wvanbergen/chunky_png">chunky_png</a>:<ul>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (444edce952d76a2eb1a9a7964da9ea403e4add0e)</li>
+    <li>Set required_ruby_version to &gt;=2.0.0 in gemspec (a59b150686d857a65c06f0b96fd081c1b5807400)</li>
+  </ul></li>
+  <li><a href="http://contributor-covenant.org/">Contributor Covenant</a>: Add missing section end tag to index page (a98433469a8798986e8d5279bdf42a39c5cca940)</li>
+  <li><a href="https://github.com/mame/coverage-helpers">coverage-helpers</a>: Fix typo (7706c1593511a7e67bcfdbcb807d63ba63d47596)</li>
+  <li><a href="http://datamapper.org/">DataMapper</a>: Added 't' and 'f' true and false aliases to Sqlite3 adapter (revision 740)</li>
+  <li><a href="https://github.com/datamapper/do">DataObjects</a>: Fix use-after-free in do_postgres_raise_error (5cec3c5b723d14b210eada26519258255a175c05)</li>
+  <li><a href="https://github.com/deepfryed/dbicpp">dbic++</a>: Treat bigint column as integer on SQLite (243c7e0ba8c95c7b747fb35acc2fe0a0ff73dd3a)</li>
+  <li><a href="http://dcplusplus.sourceforge.net">DC++</a>: Make the bind address setting affect the UDP listening socket and outgoing sockets (revision 926)</li>
+  <li><a href="https://github.com/ddollar/foreman">foreman</a>: Use sh instead of bash for foreman-runner (6b77ca1e46bcd44ad0520f6923c0775ae37fad25)</li>
+  <li><a href="https://github.com/stevedekorte/io">io</a>: Ensure 16-byte alignment for amd64 coroutine stack (84c9e4f3093d26c36642bb53303e7213e48402e3)</li>
+  <li><a href="http://bogomips.org/kgio/">kgio</a>:<ul>
+    <li>Fix build on OpenBSD (8556c2ccf64840a080a928312d8feed2834d4d29)</li>
+    <li>Fix kgio_peek for !KGIO_NOPUSH systems (9900efecb60635ad97b5c00c76eb60252839b1c1)</li>
+    <li>Fix issue with getaddrinfo for strict systems (577cf3056d9f3088145aea51bbc09a0c90a7695e)</li>
+  </ul></li>
+  <li><a href="http://linuxdcpp.berlios.de">LinuxDC++</a>: Replaced named semaphore implementation (sem_open) with glib implementation, portability fixes for OpenBSD (2007-11-30)</li>
+  <li><a href="https://github.com/haml/haml">haml</a>:<ul>
+    <li>Fix compiler to work without deprecation on ruby 2.4 (3dff3d9004de807225a09fe2ac379020fb4a7cfb)</li>
+    <li>Fix attempt to modify frozen string (96b49e683d881d62bf0ea0b128457dce8ed0a4a4)</li>
+  </ul></li>
+  <li><a href="https://github.com/icalendar/icalendar">iCalendar</a>: Use more specific check for ActiveSupport timezone support (e08db70a366faa640e7de965ee928ac88c0d5b1d)</li>
+  <li><a href="https://github.com/jnr/jnr-posix">jnr-posix</a>:<ul>
+    <li>Fix FileStat on OpenBSD (1f9b098b22, 06cecb90d2, 1501585457)</li></li>
+    <li>Fix FileStat on OpenBSD 5.5+ (93304ae7f57f19edb3803e1f7bf009b207af96e6)</li></li>
+    <li>Fix utimes on OpenBSD/i386 5.5+ (7d079fd9607160d0122f4c576e10cf7c17ae6cc1)</li></li>
+  </ul></li>
+  <li><a href="http://www.jruby.org">JRuby</a>:<ul>
+    <li>Added 6 C API functions for C extension support (b65b5dfc371b64019dc9)</li>
+    <li>Make compiling cext support on OpenBSD amd64 use correct directory (531198593b974b809bad)</li>
+    <li>Make compiling cext support on OpenBSD not assume FreeBSD (4a7ad99823fa43c4a514)</li>
+    <li>Fix prototype of rb_time_new to match definition (09e87fd7dcec1487731a56111ed4c4a6b48b1ba7)</li>
+  </ul></li>
+  <li><a href="https://github.com/jruby/jruby-launcher">jruby-launcher</a>: Use --add-opens on Java 9+ (44189faec13d0a69d2ce926b370827d27b1968eb, 74c3ab100b792cefaf7f57f70b083b6dfeed6887)</li>
+  <li><a href="https://github.com/mikel/mail">mail</a>:<ul>
+    <li>Allow more options when using Message#add_file (b04bfb061e739a443607b2432807854de8911b29)</li>
+    <li>Use mime/types/columnar if available to reduce memory usage (1012d05d4b8bf16b81ec7733da4f8b4956dfbd9d)</li>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (b34d7bde6606d395da707f1d0567b8daafa744df)</li>
+    <li>Use Kernel#warn instead of $stderr.puts (bf418912133d0aee5fdd9a5140fe5fb44cf4091f)</li>
+    <li>Remove section on testing against mime-types versions from CONTRIBUTING (7b67b3d06c8031e0bf2c31a392bac22bd073a7bd)</li>
+    <li>Do not mutate argument hashes in retriever methods (fb53fb369eb2bf0494ac70675970c90cdcc3f495)</li>
+  </ul></li>
+  <li><a href="https://github.com/mime-types/ruby-mime-types">mime-types</a>:<ul>
+    <li>Reduce memory usage using columnar storage (8ce1add6c66b84ae8e56727a784cce6f1d8dcca5)</li>
+    <li>Avoid circular require for columnar store (eaeb3b6c5237eb31c71dc51905d74b050a973783)</li>
+    <li>Record all extensions when using the columnar store (6a87b8e839bf9bdef2dc795f3a6c463581e86f55)</li>
+  </ul></li>
+  <li><a href="https://github.com/seattlerb/minitest">minitest</a><ul>
+    <li>Add minitest-hooks to README (a2131a0014878225011bdd60c424d7bab24b2b25)</li>
+    <li>Add minitest-parallel_fork to README (6ae1ebfed402e6838edd384d69beb44df2b5f62a)</li>
+    <li>Add minitest-shared_description to README (a802839e7282ecf97dd7dd427b946c4fe8ede25c)</li>
+    <li>Make assert_raises to assume StandardError if given no arguments (f1a8267c53b492917ef00794bb81bc6c97347175)</li>
+    <li>Make assert_raises handle subclasses of given classes, similar to rescue (6fcecb1711535292c1fcb9abeadc1e43879b57b6)</li>
+    <li>Fix non-proc-oriented expectations on proc targets (78003e268f112dbb496d3d96ceed6a4c1f597c4a)</li>
+    <li>Return early if there are no filtered methods (35ec0145be4ee09bd7b84088c809d27ce42ce746)</li>
+    <li>Add minitest-global_expectations to README (5d95229abd914ed3efd4dd53203688c80cb0d866)</li>
+  </ul></li>
+  <li><a href="https://github.com/seattlerb/minitest-bisect">minitest-bisect</a><ul>
+    <li>Work correctly when default shell is not bash (9acd3a3dc7626c363924041e38951141dd339679)</li>
+    <li>Work correctly when ruby executable is not named ruby, and work around JRuby bug (0aa0882a8e4b871e379408a82eb96a19e7d24985)</li>
+  </ul></li>
+  <li><a href="https://github.com/i10a/minjs">Minjs</a><ul>
+    <li>Fix parsing of octal escapes (e75e4a08ab7fddc46d59911ddba4c067bf595dcf)</li>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (69e46a09c0f5bf882683d89c91fca79ade81be9b)</li>
+  </ul></li>
+  <li><a href="http://mongrel2.org">mongrel2</a>: Fix build on OpenBSD, support OpenBSD amd64, add sendfile emulation (74f49b9afa)</li>
+  <li><a href="http://code.google.com/p/quodlibet/wiki/Development/Mutagen">Mutagen</a>: Fixed APEv2 tag creation (revision 3989)</li>
+  <li><a href="https://github.com/eclubb/ncurses-ruby">ncurses-ruby</a>: Make tclock example work on ruby 1.9 (d6add61)</li>
+  <li><a href="https://github.com/laverdet/node-fibers">node-fibers</a>:<ul>
+    <li>Use bin/sh instead of bin/bash for tests (dd1b25ee5bb54c118b213a8745969236b5f018b8)</li>
+    <li>Build correctly on OpenBSD (83a4b9bed08381cf7efed6246921aa1fa02d98e9)</li>
+    <li>Fix NODE_BITS determination using process.arch (a7be6cafae637238de45b7cade79eab829277cac)</li>
+  </ul></li>
+  <li><a href="https://github.com/brianc/node-postgres">node-postgres</a>: Handle "NULL" correctly in array parser (bbcbdee584652c8f0f404d45fc8de097a3fbc50e)</li>
+  <li><a href="https://github.com/sparklemotion/nokogiri">nokogiri</a>:<ul>
+    <li>Only require ports GCC on OpenBSD if not using system libraries (e2c8c8e51a544f0c14544bb62b0120e4d20b4ddb)</li>
+    <li>Fix a couple installation issues on OpenBSD (6b65ecb5d44cb0477dc02d659dcb9bb442222be5)</li>
+  </ul></li>
+  <li><a href="https://opalrb.com">opal</a>:<ul>
+    <li>Don't swallow backtrace on compiler errors (e6f327e5793306a7add19e8714cf5bd51dca4a7e)</li>
+    <li>Support tilt integration without sprockets (bac86b48e93cfb1abe101e85c4dc729550480b26, 32d1feb41f4be2838e8155b378490cf5f8f95701, 90a28989f762117b76e0cccde6941f8ecde2af71)</li>
+    <li>Make opal/builder depend on opal/paths (d680c5c9301546969be5a2c945e5dd51b62ba14a)</li>
+    <li>Don't swallow backtrace when unable to require file in builder (7ef70fcd2c3b30e5a0181fff3cd710b94649f565)</li>
+    <li>Use \A and \z in ruby mode and ^ and $ in javascript mode for regexp anchoring (39234b44f0ef24eede0ec580fb31d5c494b55206, d4fda8f5014db553deb26f2986cfbca3edeff9bc, 9d96a7ff7f766fb2a770e1ed5c92b618829ebf00)</li>
+    <li>Allow PathReader to deal with absolute and ./ and ../ relative paths (d7ae1959d567cdf94233841a7dbaf713a8fa6315)</li>
+    <li>Add Opal::Builder#use_gem for adding gems to specific buidlers (d927b50ddb52d4a5d90335ba752a45148763e3e0)</li>
+    <li>Make Opal::CLI use Opal::Builder#use_gem to not modify global state (6223ce1b86adf99cd8f7250de05cf88fa4a598f5)</li>
+    <li>Make Opal::Builder#dup duplicate internal structures (93a96817a182227970a96b9f9df7e1f77413627d)</li>
+    <li>Allow Opal::TiltTemplate to use Opal::Builder with :build or :builder options (5de03409c961125dd4a6e2379de334956dedc625)</li>
+    <li>Support the use of Tilt 2 (1117d8b3fff93534e05609c6bbfce1042afb7170)</li>
+    <li>Don't swallow backtraces on parse errors (5ccaf743c73db845f8120ecd046c26db4a7c753f)</li>
+    <li>Support recv.JS.meth for calling javascript methods and recv.JS[] for getting/setting javascript properties (50a0965f0733ef2f026528874861e3ef62af6572, b072744dcf38b807162f16e6c5b1ea3e95a0e5fa, 607b78f2b8c3e51f823267c7294d5488e2e6f6f0, 32bd3d3bd05d6731cd1f70cde3124ba2ad0648c9, 6d7519607ccaf451b41378de5f0e6b28fa35a8a1, 4290c95b1d9f7232a5cffd7db857a850404eec7d)</li>
+    <li>Don't swallow backtraces on missing requires (99069375c21c61949a144e0cd5c39d682e436096)</li>
+    <li>Handle parser errors when lexer column is 0 (8bd43ad0c7826a0ac9fcdcadd32830e5ed4ffb27)</li>
+    <li>Add JS module for nicer calling of native javascript operators and global functions (acbce9f56e1a45dcd833f72bcc1a608bdf156df5, 7db84b96697fc064dc3ac94b7fb59b6aa8605184)</li>
+    <li>Handle null and undefined in if statements (0ab7ef1d4ec3242827bfcdafc257db390c13b4f7)</li>
+  </ul></li>
+  <li><a href="https://opalrb.com">opalrb.com</a>:<ul>
+    <li>Add more Getting Started documentation (4da98c5715ae262a7b8566695066585fa0d0abcc)</li>
+    <li>Add documentation on .JS. syntax for calling javascript methods and properties (6b838d62d6dede1fb9ab7ddac0e47f350532a676, 61a150080ae06c04efc4cfbd50835d24d17a04e9, 467cf8123698fc7a922bfabf1baf70c761045a63)</li>
+  </ul></li>
+  <li><a href="ihttps://github.com/OpenVPN/openvpn">OpenVPN</a>: Switch assertion failure to returning false (984bd1e1601e4b9562dbc88b02a8db60b884286f)</li>
+  <li><a href="https://github.com/ianwhite/orm_adapter">orm_adapter</a>: Don't require yard and git libraries to use the Rakefile (bb8be3c191405fd702f278589f99523e638445de)</li>
+  <li><a href="https://github.com/oysttyer/oysttyer">oysttyer</a>: Add --http1.1 flag to work with curl 7.47.0+ (dc08746bea1d59abd4c826628f70f6e4aea2f8ef)</li>
+  <li><a href="https://github.com/dockyard/pg_array_parser">pg_array_parser</a>: Fix handling of escaped backslashes, Refactor the parser (f0529a02fbcf2203cd7ad5bd36ea897406c0cd76)</li>
+  <li><a href="http://polarssl.org">PolarSSL</a>: Fix build on OpenBSD (revision 1066)</li>
+  <li><a href="http://puma.io/">Puma</a>: Bump required_ruby_version to 1.9.3 (b05ddf98c8d30c7c1148d9fb313500024b0ce7f0)</li>
+  <li><a href="https://github.com/rack/rack-contrib">rack-contrib</a>:<ul>
+    <li>Add Rack::ResponseCache to rack-contrib (2009-02-08)</li>
+    <li>Add Rack::RelativeRedirect to rack-contrib (2009-02-08)</li>
+  </ul></li>
+  <li><a href="http://nakajima.github.com/rack-flash/">rack-flash</a>:<ul>
+    <li>Fix requiring of sinatra when testing (6c43fed776714d4a8cd82b2ed25965920fb7bb3a)</li>
+    <li>Add test for clearing of sessions (be322a22b274eb9cdb572332c0d1602d6f84cf68)</li>
+  </ul></li>
+  <li><a href="https://github.com/darkhelmet/rack-mongrel2">rack-mongrel2</a>: Fix obvious ArgumentError bug (49ce253f9ac6f8cd8c2e)</li>
+  <li><a href="http://raindrops.bogomips.org/">raindrops</a>:<ul>
+    <li>Fix bad rescue statements in a couple tests (a5830080b3cf6011d737342462700f7c5819942a)</li>
+    <li>Mark some tests as linux-only (499e63e2666f88134f7d47f3bcfdfedd72396e70)</li>
+  </ul></li>
+  <li><a href="http://ramaze.net/">Ramaze</a>: Add SCGI Adapter (2008-01-28)</li>
+  <li><a href="https://github.com/rdoc/rdoc">RDoc</a>:<ul>
+    <li>Make --quiet --no-ignore-invalid still exit for invalid options (b0ddd1fa34afef286d94ea691d1d20c1347464c0)</li>
+    <li>Support linking [], []=, &lt;&lt;, and &gt;&gt; methods (4943d20849ccc724fd8b0f74a92bff3880535769)</li>
+    <li>Make +NameSpaced::Constant+ work as expected (e6484b31dbb74be65f5ced9d9a45b952f2702b3f)</li>
+    <li>Fix lexing of %w'1 2', %r'foo(bar)' and similar syntax (5d3310f4c314719353e6016e91c4e9229b702c67)</li>
+    <li>Use a real ruby parser to determine whether code example should be syntax highlighted (46f4c0770cc58ec80e276c19ef82669166be1507)</li>
+    <li>Ignore frozen_string_literal magic comment (653ac306912d28f0aef64d0a14764a168e33148b)</li>
+    <li>Treat multiple Ruby methods calling the same C method as aliases (0ead78616bbddfbdc4d21a3776df16abc25ab811)</li>
+  </ul></li>
+  <li><a href="https://github.com/mdp/rotp">rotp</a>:<ul>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (bf647791e5e4f0c340db832a9f92f487bc8cd2a9)</li>
+    <li>Fix issue when using --enable-frozen-string-literal Ruby option (5ec60dfb55e04d205242b9349fde279eb680ceaf)</li>
+  </ul></li>
+  <li><a href="https://github.com/whomwah/rqrcode">rqrcode</a>: Relax required ruby vesion in gemspec to allow installation on Ruby 3 (9e1ef85b0c6a3ed39af3b4eb05707292f31614f3)</li>
+  <li><a href="https://github.com/whomwah/rqrcode-core">rqrcode-core</a>: Relax required ruby vesion in gemspec to allow installation on Ruby 3 (e93a20613587db2ead90506722684a096fb3938d)</li>
+  <li><a href="http://rubini.us/">Rubinius</a>:<ul>
+    <li>Add rb_reg_new C API method (82bb2f9441e4760a5a52 and 2b1315f7661b45fbf7a6)</li>
+    <li>Add rb_reg_nth_match C API method (8039442d4da2fbb5b7ba and 5975010ca87cf712eb1c)</li>
+    <li>Add spec for rb_str_buf_new and rb_str_set_len C API method (75e07e70d0ff86b0abb4)</li>
+    <li>Add support for rb_gv_get("$~") in the C API (2ac2c642abd808386bcc and 0e265b92727cf3536053)</li>
+    <li>Use same function prototype as MRI for rb_reg_new (e60b382b8276ddbac91e30bef71211390e8b414e)</li>
+    <li>Some OpenBSD fixes (6e77e7440616d9bad341510f1a58823c89f75fae)</li>
+    <li>Build openssl ext with NO_STATIC_ENGINE on OpenBSD (27ccf0516e366f006905ab2ecd90c0474f544e31)</li>
+    <li>Fix build on OpenBSD (c5bf2408a2a1e5333802)</li>
+    <li>Fix build on OpenBSD (59e0f1d63329ca5a86f5)</li>
+    <li>Add failing spec for String#partition with regexp setting global vars (cc92e526e43ba50579d53f3bd444473fe667cfb4)</li>
+  </ul></li>
+  <li><a href="http://www.rubyonrails.com">Ruby on Rails</a>:<ul>
+    <li>Added options hash as third argument to FormHelper#input, so you can do input('person', 'zip', :size=&gt;10) (revision 1851)</li>
+    <li>Alias the has_and_belongs_to_many join table on eager includes (revision 3895)</li>
+    <li>Use association's :conditions when eager loading (revision 3897)</li>
+    <li>Added ActionController.filter_parameter_logging that makes it easy to remove passwords, credit card numbers, and other sensitive information from being logged when a request is handled (revision 4200)</li>
+    <li>Fix ActionView::Helpers::ActiveRecordHelper::form for when protect_from_forgery is used (revision 8626)</li>
+    <li>Fix obvious breakage of Time.=== for Time subclasses (c10fcd26376d9cdc4d4a27b66271ab33413ca18f)</li>
+    <li>Reduce string objects created by ActiveRecord::Result#hash_rows from columns * (rows+1) to just columns (3aef5ce9b35a4659379201eb6bb1dba355a83ba4)</li>
+    <li>Change ActionView ERB Handler from Erubis to Erubi (7da8d76206271bdf200ea201f7e5a49afb9bc9e7)</li>
+    <li>Speed up xor_byte_strings by 70% (8b10a9414dd30817b1fc9c4c8cb7600cca0d15b3)</li>
+    <li>Remove roflscaling (22d82b667f9d474c56013a40d61cf36891ba4bb3, 6fe624f50d2572c6f7ac3062e9317abead07863e)</li>
+  </ul></li>
+  <li><a href="https://github.com/ruby-bench/ruby-bench-suite">ruby-bench-suite</a>: Update Sequel benchmark (e023a4c01a173026c2ec6480358757006a9e0c35)</li>
+  <li><a href="https://github.com/ged/ruby-pg">ruby-pg</a>:<ul>
+    <li>Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
+    <li>Add a text decoder for inet/cidr written in C (c65cc645505cb5bfeec039faee6a6d18308dee85)</li>
+    <li>Add numeric decoder written in C (d4ae41bb8fd447c92ef9c8810ec932acd03e0293)</li>
+  </ul></li>
+  <li><a href="http://rubygems.org/">Rubygems</a>:<ul>
+    <li>Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
+    <li>Handle gem specification encoding that doesn't convert to internal encoding (cedac8117d5fd10e2cc6dbd501894733b0e6e3f7)</li>
+    <li>Keep previously loaded specs as active when refreshing gems (b61c621fb2e00e215bcc8ad7d9fe45433881da14)</li>
+    <li>Make existing executable check respect --format-executable (20fc72349aa788f95d73d7ed11f7a5ad49f14be8)</li>
+    <li>Install files starting with '.' (caa95666f698a4a5f1c73216f357e5b1b7216fb3)</li>
+    <li>Add --no-lock option to not write Gemfile.lock (b70cccab4b40bc3ee5a696ba3aacb788ec4da33c)</li>
+    <li>Make gem -g Gemfile respect --conservative (9fdffcafd6b8a11246ce44b48372d765dd8719b5)</li>
+    <li>Make gem install --local not attempt remote access (4196d4fb3c60c579d12874d53b4a17be702d2bbb)</li>
+    <li>Don't output mkmf.log warning message if compilation did not fail (769290c456e429e70923ffc7bb134711879f79fa, 3b08533fbf475102889c17be848d112f448c98c5)</li>
+    <li>Fix tests when --program-suffix and similar ruby configure options are used (e5f2fbe51c78a1ab62ae9bd7a7b58616707e5f8c)</li>
+    <li>Fix another test when --program-suffix and similar ruby configure options are used (763bef10988f7a0283704e5f80aeb8ed79179f05)</li>
+    <li>Fix tests when ruby --program-suffix is used without rubygems --format-executable (154c79cc6815c64db544c1376a6ab7a23090f03b)</li>
+    <li>Fix setup command if format_executable is true by default (ec3c64a3de4048bec588896819df647c616cc6a8)</li>
+    <li>Fix Kernel#warn override (2041b591d17f8b4a2d7139c2f0f0fcb7621615cf)</li>
+    <li>Fix Kernel#warn override to handle backtrace location with nil path (511935645af83bd2b6a8ab9888a291e3b5d0452f)</li>
+    <li>Add Bundler#Definition.no_lock accessor (bbc2128df769af7af62815f97cf874990abb0834)</li>
+  </ul></li>
+  <li><a href="https://github.com/sass/sass">sass</a>: Work with ruby 2.3's --enable-frozen-string-literal (3bde119f7976c64dd93b51feea110f7cacaf2d16)</li>
+  <li><a href="https://github.com/SciRuby/statsample">stat_sample</a>: Remove bad check in cronbach_alpha calculation (3eaa53e072c71856932533ea584ecec887aca503)</li>
+  <li><a href="http://sinatrarb.com/">Sinatra</a>:<ul>
+    <li>Fix optional params, i.e. get '/:name?' (2008-04-16)</li>
+    <li>Fix optional params again, include specs (2f13feabc309587959bb565f4355495a915879af)</li>
+    <li>Skip coffee test if execjs runtime is not available (70ed64800c3ab0741637789981eb9c2e72a7f99e)</li>
+    <li>Handle encoded colons in routes (bd8e07fe26fa3c9c83169b7e7ff28d21308d0f2d)</li>
+    <li>Fix access to arbitrary .png files in ruby 1.8 development mode (e727b17930f0b3c1a4e666c5901d45d04f68a2d6)</li>
+    <li>Make route params available during error handler (10cc6089468a67c13ad5c5ac448f26424f4046c7)</li>
+    <li>Unify not_found and error 404 behavior (8f398cda1b4c40c3e1848264fde1312775039f5f)</li>
+  </ul></li>
+  <li><a href="http://sinatrarb.com/">sinatra-recipes</a>: Remove preload_app config line from example unicorn config (996c5c07b137db8fc78474a1fd9f99107e498214)</li>
+  <li><a href="https://github.com/johnnagro/spider">Spider</a>: Use Integer instead of Fixnum to avoid warning on ruby 2.4+ (4eaab2c3e104cc9682e414ca4f83fbe12ac616b2)</li>
+  <li><a href="https://github.com/sparklemotion/sqlite3-ruby">sqlite3-ruby</a>:<ul>
+    <li>Fix handling of error codes (d1fd5fe7e83e279a09244461ebb671b11f9df86d)</li>
+    <li>Add support for extended error codes (e4a145bfe80050cf0b1bb9957952af9b3c55a794)</li>
+  </ul></li>
+  <li><a href="https://github.com/shanna/swift">Swift</a>: Fix parsing of fractional timestamps (de921bb13d06b5ab194daad328f5c02a089d5800)</li>
+  <li><a href="https://github.com/TechEmpower/FrameworkBenchmarks"></a>: Update roda-sequel to use correct block arity (046e1b40c6c6776e9221b028813abaf6fc86a1b4)</li>
+  <li><a href="https://github.com/judofyr/temple">temple</a>: Fix issue with --enable-frozen-string-literal (bec5d4ed7f87614f42bdc6a94090cfbaff58f484)</li>
+  <li><a href="https://github.com/rtomayko/tilt">tilt</a>:<ul>
+    <li>Sort locals_keys before looking up template in @compiled_method (4e1b2ead0d4d00591f65de80512e5fd31492fab7)</li>
+    <li>Work with ruby 2.3's --enable-frozen-string-literal (8af8521e06e2409f50a89ab923fe224d96997bd4)</li>
+    <li>Always sort locals by strings (9a00ee3c67eb660093005abaa692710d78f0a17f)</li>
+    <li>Add support for Erubi template engine for erb and rhtml files (b7e265282d1e9811fa3ea4935720896920b6d88d)</li>
+    <li>Do not modify BasicObject during template compilation on ruby 2.0+ (448b12e4bd1a230bad56f183b433050edc492c00)</li>
+    <li>Fix warning when using yield in templates on ruby 2.7 (dbb4df94e5bc6e533fc2ed09b2fd70df39c049c3, be625c89a9e3717fe23f90f9ded0c8a503b66a7d, b0b84e4ce7d963d27cda5a908d49eaa4204fda3f)</li>
+    <li>Handle rendering BasicObject instances (7811a2e8e3e2acf122960ec43c30744cd8bc12a2)</li>
+  </ul></li>
+  <li><a href="https://github.com/rails-sqlserver/tiny_tds">tiny_tds</a>: Remove unused variable (a77e1a7fedb6775e31fe6c7615b344a8f7c233eb)</li>
+  <li><a href="https://github.com/macournoyer/thin">thin</a>: Work with ruby 2.3's --enable-frozen-string-literal (6e6b1c2ab36b1da998efd82791d25c5d4c948836)</li>
+  <li><a href="http://unicorn.bogomips.org/">Unicorn</a>:<ul>
+    <li>Fix t0011 test on OpenBSD (66c706acfb3cda802bac4629219e3c3e064352ed)</li>
+    <li>Ensure tests try to connect to a valid address (2fd5910969419c17aa6a31fb2119eb47a121d497)</li>
+    <li>Add after_worker_exit configuration option (2af91a1fef70d6546ee03760011c170a082db667)</li>
+    <li>Add support for chroot to Worker#user (d4e0ced16710e456cd192784ab106091568ebde3)</li>
+    <li>Add after_worker_ready configuration option (d322345251e15125df896bb8f0a5b53b49a1bf3f)</li>
+    <li>Add worker_exec configuration option (ea1a4360d66a833d75fbd887388d8cd4fe4ae299)</li>
+    <li>Check for SocketError on first ccc attempt (9cced5d3ace9fc333c95b63f443225887f774a47)</li>
+    <li>Make Worker#user support different process primary group and log file group (47fddb53aa0b7763f353ba515cf3fb5b2059f4f7)</li>
+    <li>Support default_middleware configuration option (5985dd50a9bd72388dd5ca4886d6dffc083f87d4)</li>
+    <li>Fix unicorn_rails to work with change in arity to Unicorn.builder lambda (6836d0674efdb1a6b79953285f10d8edd7e20432)</li>
+  </ul></li>
+  <li><a href="https://github.com/fny/xorcist">xorcist</a>: Simplify xorcist.c (5bf56fd163bd4226131f21885fabaeeac09a32e6)</li>
+</ul>

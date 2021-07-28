@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Parsing Advanced PostgreSQL Types</title>
+
+  <meta name="viewport" content="width=device-width"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" >
+
+  
+    <link rel="stylesheet" href="file/something.css" type="text/css"/>
+  
+
+  
+
+  <script type="text/javascript">
+  $(function(){
+      setupPreso(false, './');
+  });
+  </script>
+
+</head>
+
+<body>
+
+<a tabindex="0" href="#search-engines" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="navmenu"><span class="ui-icon ui-icon-triangle-1-s"></span>slides</a>
+<div id="navigation" class="hidden"></div>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">c, t</td><td>table of contents (vi)</td></tr>
+    <tr><td class="key">f</td><td>toggle footer</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+    <tr><td class="key">n</td><td>toggle notes</td></tr>
+    <tr><td class="key">p</td><td>run preshow</td></tr>
+  </table>
+</div>
+
+<div class="buttonNav">
+  <input type="submit" onClick="prevStep();" value="prev"/>
+  <input type="submit" onClick="nextStep();" value="next"/>
+</div>
+
+<div id="preso">loading presentation...</div>
+<div id="footer">
+  <span id="slideInfo"></span>
+  <span id="debugInfo"></span>
+  <span id="notesInfo"></span>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div class="slide" data-transition="none"><div class="content center" ref="slides/slides/1">
+<p class="notes">Note: This is a <a href="https://github.com/schacon/showoff/">showoff</a> presentation. Use space to move to the next slide, or the arrow keys.<br /><br />Hi everybody.  Tonight I'll be discussing some of PostgreSQL advanced types and how to parse them in ruby</p>
+
+<h1>Parsing Advanced PostgreSQL Types</h1>
+
+<h2>Jeremy Evans</h2>
+
+<h3>Sacramento Ruby Meetup</h3>
+
+<h3>July 2012</h3></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/2">
+<p class="notes">PostgreSQL has a very expressive type system.  In addition to a large number of built in types, it also allows you to define your own custom types.</p>
+
+<h1>Types</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/3">
+<p class="notes">PostgreSQL natively supports arrays for virtually all types.</p>
+
+<h1>Arrays</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/4">
+<p class="notes">For example, if you want to store an array of integers in a column, you would just add brackets at the end of the integer type.</p>
+
+<h1>integer[]</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/5">
+<p class="notes">PostgreSQL ships with an extension called hstore which adds the hstore type, which allows for a key/value mapping table to be stored in a single column.</p>
+
+<h1>Hstore</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/6">
+<p class="notes">PostgreSQL allows columns to have a composite type, allowing you to store row like objects in a single column.  Every table you create in PostgreSQL has its own row type, and another table can use that table's name as the type for one of its columns.</p>
+
+<h1>Composite Types</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/7">
+<p class="notes">PostgreSQL 9.2 adds support for range types.  PostgreSQL range types are similar to ruby's range objects, though they are more flexible.  They allow exclusive beginning elements in addition to exclusive ending elements. They support unbounded and empty ranges as well.</p>
+
+<h1>Ranges</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/8">
+<p class="notes">PostgreSQL 9.2 also adds support for the json type, allowing you to store a json object in a single row.</p>
+
+<h1>JSON</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/9">
+<p class="notes">When you retrieve data from PostgreSQL, you usually get that data in the form of a string, with additional metadata letting you know the type id of the column.</p>
+
+<h1>Retrieving Data</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/10">
+<p class="notes">So when you retrieve an integer from PostgreSQL, you get it in the form of a string, but the type id lets you know it is a integer.</p>
+
+<h1>Type IDs</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/11">
+<p class="notes">For example, the boolean type on PostgreSQL always has type id 16, so if you retrieve a column from PostgreSQL and the type id is 16, you know you should cast the string to a ruby true or false value.</p>
+
+<h1>boolean =&gt; 16</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/12">
+<p class="notes">The type ids for all of the types that PostgreSQL supports by default are fixed, in that all PostgreSQL installations use the same type id for that type.</p>
+
+<h1>Fixed Type IDs</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/13">
+<p class="notes">However, custom types such as hstore and the tables you create yourselves do not have a fixed type, but are assigned one by the system.</p>
+
+<h1>Floating Type IDs</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/14">
+<p class="notes">It's possible to map a type name to a given type id by looking at the pg_type system table.</p>
+
+<h1>pg_type</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/15">
+<p class="notes">With the background out of the way, let's jump right into parsing these advanced PostgreSQL types.</p>
+
+<h1>Parsing</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/16">
+<p class="notes">PostgreSQL arrays can be either single dimensional or multi-dimensional.  Each dimension in the array is surrounded by braces, and each element is separated by a comma.  If entries in the array contain commas or other characters, the whole member is quoted and, if necessary, escaped.</p>
+
+<h1>Arrays</h1>
+
+<pre><code>{1,2,3,4}
+{{1,2},{3,4}}
+{"some,","\\\"text"}
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/17">
+<p class="notes">Hstore values look similar to ruby hashes with strings for keys and values, using the hash rocket to separate the key from the value, and the comma between key/value pairs.  Hstore values are always quoted and escaped on output.</p>
+
+<h1>Hstore</h1>
+
+<pre><code>"a"=&gt;"b"
+"a"=&gt;"b", "c"=&gt;"\"\\d"
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/18">
+<p class="notes">Composite types are similar to arrays, except they are only single dimensional, they use parantheses instead of braces, and embedded quotes inside quoted values are escaped by doubling them instead of via a backslash.</p>
+
+<h1>Composite Types</h1>
+
+<pre><code> (1,a)
+ (1,"a""\\")
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/19">
+<p class="notes">Range types are either empty, or they are surrounded by a bracket and/or paranthesis.  Similar to mathematical notation, bracket indicates inclusive beginning or end and parenthesis indicates exclusive beginning or end.  If there is no value for a beginning or end, the range is unbounded in that direction.</p>
+
+<h1>Ranges</h1>
+
+<pre><code> [1,10)
+ (,50]
+ empty
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/20">
+<p class="notes">The JSON type unsurprisingly stores the type as JSON.</p>
+
+<h1>JSON</h1>
+
+<pre><code>{a: "b"}
+[1, 2, 3]
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/21">
+<p class="notes">For arrays, composite types, and ranges, it's not enough to just be able to parse the general structure of the type.  For these elements, you need to parse each member of the type.</p>
+
+<h1>Parsing Members</h1>
+
+<pre><code>{1,2,3} =&gt; ['1', '2', '3']
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/22">
+<p class="notes">For example, for an array of integers, by default an array parser would give you an array of strings.  You need to tell the parser what the type of the members is, so it while it parses each element from the array string, it casts it to the correct type.</p>
+
+<h1>integer[]</h1>
+
+<pre><code>{1,2,3} =&gt; [1, 2, 3]
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/23">
+<p class="notes">Range types are similar, with both the beginning and ending element needing to be parsed.</p>
+
+<h1>Ranges</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/24">
+<p class="notes">Composite types are even more tricky, as each element in the composite type may need a separate converter.</p>
+
+<h1>Composite Types</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/25">
+<p class="notes">It gets even better, you can have arrays of composite types.  For example, if I take the composite type examples I gave earlier and put them into an array, I get something like this.  Note all of the backslashes needed.</p>
+
+<h1>Array of Composite Types</h1>
+
+<pre><code>{"(1,a)","(1,\"a\"\"\\\\\")"}
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/26">
+<p class="notes">Likewise, you can have composite types containing arrays.  Note the doubled backslashes and the doubled quotes.</p>
+
+<h1>Composite Types Containing Arrays</h1>
+
+<pre><code>("{1,2,3}","{a,b,""\\\\c\\""""}")
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/27">
+<p class="notes">PostgreSQL types can be nested arbitrarily, allowing arrays of composite types containing arrays of ranges.</p>
+
+<h1>Array of Composite Types Containing Arrays of Date Ranges</h1>
+
+<pre><code>{"(\"{\"\"[2012-07-31,2012-08-14)\"\"}\")"}
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/28">
+<p class="notes">How do you deal with parsing something like that?  Well, I think the best way is to use function composition.</p>
+
+<h1>Parsing</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/29">
+<p class="notes">With function composition, you have the main function that parses the outer layer, and it also has a pointer to a function that know how to parse the next level.</p>
+
+<h1>Function Composition</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/30">
+<p class="notes">So parsing using function composition is like an onion.  Each function parses a layer, and hands off the underlying data to the next function.</p>
+
+<h1>Onion</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/31">
+<p class="notes">It's also like an onion in that if you deal with parsing to much, you are likely to have the urge to cry.</p>
+
+<h1>Cry</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/32">
+<p class="notes">So lets parse this nasty array of composite types of arrays of date ranges.</p>
+
+<h1>Let's get started!</h1>
+
+<pre><code>{"(\"{\"\"[2012-07-31,2012-08-14)\"\"}\")"}
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/33">
+<p class="notes">You actually build the parser from the outside in.  You start out with a simple date parser, which can parse the 2012-07-31 string to give you a ruby date.  Using that, you create a range parser, with a member parser that will parse dates.  Then you create an array parser, passing in the date range parser as the parser for the members of the array. You pass that parser to the composite type parser as the parser for the first member of the composite, and take the resulting parser and use that to create another array parser.</p>
+
+<h1>First Step: Build Parser</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/34">
+<p class="notes">So the outer parser is an array parser, with a member parser that parses composites containing arrays of date ranges.  So let's apply that.  For simplicity, there's only a single element in this array, so after parsing the array, we are left with this string.</p>
+
+<h1>Parsing Step 1</h1>
+
+<pre><code>("{""[2012-07-31,2012-08-14)""}")
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/35">
+<p class="notes">We pass this string to our that composite parser, which has a parser for the first member of the composite that parses arrays of date ranges.  This composite only has a single member for simplicity.  After parsing the composite, we are left with this string:</p>
+
+<h1>Parsing Step 2</h1>
+
+<pre><code>{"[2012-07-31,2012-08-14)"}
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/36">
+<p class="notes">We pass this string to the next parser, which parses arrays, with a member parser that parses date ranges.  Again, there is only a single element in this range for simplicity.</p>
+
+<h1>Parsing Step 3</h1>
+
+<pre><code>[2012-07-31,2012-08-14)
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/37">
+<p class="notes">This is looking simpler.  We pass the string to the member parser, which parses date ranges.  This parses the range portion just leaving the beginning and ending of the range as strings.</p>
+
+<h1>Parsing Step 4</h1>
+
+<pre><code>2012-07-31
+2012-08-14
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/38">
+<p class="notes">The last step is to just parse those date strings into ruby date values, using ruby's date parser.</p>
+
+<h1>Parsing Step 5</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/39">
+<p class="notes">The result of all this is something like the ruby data structure below.  In ruby, this is an array containing a hash whose value is an array of a range of dates.</p>
+
+<h1>Result</h1>
+
+<pre><code>[{:a=&gt;[(Date.new(2012-07-31)...
+        Date.new(2012-08-14))]}]
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/40">
+<p class="notes">This sounds complicated, right?  It probably is, if you don't use the right tool.</p>
+
+<h1>Sounds Complicated?</h1></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/41">
+<p class="notes">Sequel makes all of this pretty easy.  Sequel ships with extensions that parse all of the PostgreSQL types I've mentioned tonight.  For the most recent example, you would just create the database object, load three extensions, register your custom composite type, and then when you retrieve the value of the array of composite types, it does all the parsing I've just described, and leaves you with a result very similar to the one below.</p>
+
+<h1>Sequel</h1>
+
+<pre><code>DB = Sequel.postgres(...)
+DB.extension(:pg_array, :pg_range, :pg_row)
+DB.register_row_type(:a)
+DB[:table].get(:a)
+# =&gt; [{:a=&gt;[(Date.new(2012-07-31)...
+             Date.new(2012-08-14))]}]
+</code></pre></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="slides/slides/42">
+<p class="notes">Anyway, that's some of what I've been working on over the past few months.  Any questions?</p>
+
+<h1>Questions?</h1>
+
+<h2>Twitter: @jeremyevans0</h2>
+
+<h2>GitHub: jeremyevans</h2></div>
+</div></div>
+
+</body>
+</html>

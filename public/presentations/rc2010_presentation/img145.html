@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+     "http://www.w3.org/TR/html4/transitional.dtd">
+<html>
+<head>
+  <meta HTTP-EQUIV=CONTENT-TYPE CONTENT="text/html; charset=utf-8">
+  <title>Slide 146</title>
+</head>
+<body>
+<center>
+<a href="img0.html">First page</a> <a href="img144.html">Back</a> <a href="img146.html">Continue</a> <a href="img165.html">Last page</a> <a href="index.html">Overview</a> <a href="text145.html">Text</a></center><br>
+<center><img src="img145.jpg" alt=""></center>
+<h3>Notes:</h3><br>
+
+<p><p style="direction:ltr;">Leaking memory in C extensions is very easy.  Here's a simple example, where you want to take a C string and create a ruby string from the first three characters.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">This leaks because strndup calls malloc, which allocates new memory, but the returned value is passed to rb_str_new2 and never freed.</p>
+
+</p>
+</body>
+</html>

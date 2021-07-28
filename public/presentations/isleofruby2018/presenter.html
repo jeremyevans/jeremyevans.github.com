@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Running a Government Department on Ruby for over 12 Years</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1280px;
+          height: 720px;
+        }
+        #footer { width: 1261px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+  <link rel="stylesheet" href="./css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src="./js/presenter.js"></script>
+
+    <style type="text/css">
+      #preview div.zoomed { zoom: 72%;}
+    </style>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/1">
+
+<div class="notes">
+<p>Good morning everyone. I am excited and honored to be opening the final day at the inaugural Isle of Ruby.|Today I will be speaking about my experiences running the programming unit for a small government department for the last 15 years, using Ruby as the main programming language for the last 12.</p>
+</div>
+<h1 class="blue" style="font-size: 70px; position: absolute; top: 200px; left: 60px;">Running a Government Department</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 255px; left: 70px;">on Ruby</h1><h1 class="blue" style="font-size: 70px; position: absolute; top: 340px; left: 370px;">for over 12 Years</h1><h1 class="red" style="font-size: 70px; position: absolute; bottom: 10px; right: 40px; text-align: right;">Isle of Ruby 2018</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/2">
+
+<div class="notes">
+<p>My name is Jeremy Evans, and I have been using Ruby since 2004. I am the maintainer of numerous ruby libraries,</p>
+</div>
+
+<p><img class="profile-pic" src="./file/jeremy.jpg" style="position: absolute; top: 160px; left: 80px;"/>
+<h1 class="red" style="font-size: 60px; position: absolute; top: 360px; left: 500px;">GitHub: <span class="blue mono">jeremyevans</span>
+</h1><h1 class="red" style="font-size: 60px; position: absolute; top: 410px; left: 500px;">Twitter: <span class="blue mono">@jeremyevans0</span>
+</h1></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/3">
+
+<div class="notes">
+<p>the most popular of which is Sequel, the database toolkit for Ruby. I also maintain a web toolkit for Ruby named Roda, as well as an authentication framework named Rodauth that builds on top of Sequel and Roda.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 170px; left: 360px;">Sequel</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 310px; left: 380px;">Roda</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 445px; left: 380px;">Rodauth</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/4">
+
+<div class="notes">
+<p>Now, I did not start out wanting to maintain these and a bunch of other Ruby libraries. The reason I maintain these libraries is because they form the core of many personal projects as well as the core of the applications I am responsible for at work.</p>
+</div>
+<h1 class="red" style="font-size: 130px; position: absolute; top: 310px; left: 410px;">Why</h1><h1 class="blue" style="font-size: 130px; position: absolute; top: 410px; left: 460px;">Maintain?</h1></div>
+</div><div id="slides/slides" class="slide bg-usamap" data-transition="none"><div class="content bg-usamap" ref="slides/slides/5">
+
+<div class="notes">
+<p>I work for the California State Auditor. We are located in the United States, in the capital of California, Sacramento.</p>
+</div>
+
+<p><img src="./file/star.svg" style="position: absolute; top: 300px; left: 80px; width: 30px; height: 30px;"/>
+<h1 class="blue" style="font-size: 50px; position: absolute; top: 290px; left: 110px;">Sacramento</h1></p>
+</div>
+</div><div id="slides/slides" class="slide bg-blue" data-transition="none"><div class="content bg-blue" ref="slides/slides/6">
+
+<div class="notes">
+<p>The mission of our department is to promote efficient and effective government by performing independent evaluations of other government departments. We publish reports of our audit findings, and make recommendations to other government departments and the Legislature.</p>
+</div>
+
+<p><img src="./file/csa.svg" style="position: absolute; top: 50px; left: 290px; width: 700px; height: 700px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/7">
+
+<div class="notes">
+<p>Our equivalent at the national level here in the United Kingdom would be the National Audit Office.</p>
+</div>
+
+<p><img src="./file/nao.png" style="position: absolute; top: 80px; left: 50px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/8">
+
+<div class="notes">
+<p>Before I go any further, please be advised that all opinions in this presentation, and especially the following section, are my personal opinions and not the opinions of my department.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 340px; left: 205px;">Personal</h1><h1 class="blue" style="font-size: 80px; position: absolute; top: 475px; left: 255px;">Opinions</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/9">
+
+<div class="notes">
+<p>I would now like to talk about software development as it is typically done at other departments in my state, though I will simplify it substantially in the interests of time, and exaggerate slightly for comedic effect. I am not sure how similar it is in other states or countries, but I am guessing there is some overlap.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 140px; left: 205px;">Typical</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 285px; left: 225px;">Government</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 385px; left: 225px;">Software</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 485px; left: 225px;">Development</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/10">
+
+<div class="notes">
+<p>Government software development resolves around large projects. In most cases, there is an existing system in place, but it has various warts, such as running on a mainframe. So executives propose building a modern system, and throwing away the previous system.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 150px; left: 235px;">Large</h1><h1 class="blue" style="font-size: 100px; position: absolute; top: 285px; left: 125px;">Projects</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/11">
+
+<div class="notes">
+<p>The government will start by developing a long request for proposal detailing what they think the requirements are for the system. The request for proposal will be prepared by program managers and analysts without the involvement of the internal developers who maintain the current system.|Then the government will solicit proposals from companies to build the system. After removing proposals that are not considered acceptable, the government will follow standard government purchasing regulations and award the contract to build the system to the company with the lowest bid.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 150px; left: 335px;">
+<span class="red">R</span>equest</h1><h1 class="blue" style="font-size: 100px; position: absolute; top: 285px; left: 345px;">
+<span class="red">F</span>or</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 355px; left: 335px;">
+<span class="red">P</span>roposal</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/12">
+
+<div class="notes">
+<p>Payment on the contracts will be based on feature checklists or deliverables. There will be little consideration for how easy the software is to use, and no consideration for how easy the software will be to maintain.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 50px; left: 135px;">Payment</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 190px; left: 208px;">based on</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 265px; left: 135px;">Deliverables</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/13">
+
+<div class="notes">
+<p>The contractor will build the system using their own developers who are incentivized to complete development as quickly as possible. The contractors will use C# if using a Microsoft stack or Java otherwise. Near the end of the contract, the contractor will attempt to train government staff on how to maintain the system.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 50px; left: 235px;">Development</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 168px; left: 345px;">by</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 215px; left: 235px;">Contractors</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/14">
+
+<div class="notes">
+<p>There will be minimal if any unit or model testing done during development. There will be decent integration or acceptance testing, but the testing will be performed manually by government employees or contractors using checklists.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 450px; left: 435px;">Manually</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 588px; left: 740px;">Tested</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/15">
+
+<div class="notes">
+<p>In some cases, the contractor will base their solution on an existing expensive enterprise resource planning system such as a SAP or Peoplesoft, and then the contractor will heavily customize the installation to meet the system requirements.|This will allow the contractor to claim that they are just using common off the shelf software in their proposal, when in reality so much custom work will be done that most of the benefits of using common of the shelf software would not apply.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 250px; left: 235px;">
+<span class="blue">E</span>nterprise</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 390px; left: 245px;">
+<span class="blue">R</span>esource</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 465px; left: 235px;">
+<span class="blue">P</span>lanning</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/16">
+
+<div class="notes">
+<p>There will be a large amount of oversight of the project. The project managers will write quarterly progress reports, and send them to executive management, the Department of Technology, and an external independent project oversight company.|When the project runs into problems during development, the stakeholders overseeing the project will be aware, but as they are not experts in software development, other than approving the expenditure of more money or lengthening the project schedule, there will not be much they can do to fix the problems.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top:  50px; left: 150px;">Multiple</h1><h1 class="blue" style="font-size: 100px; position: absolute; top: 190px; left: 275px;">Levels of</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 248px; left: 118px;">Oversight</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/17">
+
+<div class="notes">
+<p>As you might be able to guess, I am not a fan of this approach for building software. I will now share the alternative approach to software development that we use in our department.|Now, this is not a fair comparison, as our department is small and not similar to other departments.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top:  250px; left: 95px;">Alternative</h1><h1 class="blue" style="font-size: 100px; position: absolute; top: 370px; left: 350px;">Approach</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/18">
+
+<div class="notes">
+<p>First, we try as much as possible to avoid building large systems. If stakeholders request a large system, we discuss the situation with them and try to convince them to build a smaller system initially that only does what is most important. In some cases, we are successful, in some cases we are not, but we always try to reduce the initial scope if a large system is requested. We can always add more features later, after the system is working, that is what we tell people.|The idea that you should start with a working simple system before expanding the complexity, instead of trying to build a complex system from the start, has been around for decades.</p>
+</div>
+<h1 class="blue" style="font-size: 90px; position: absolute; top:  370px; left: 585px;">Start</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 400px; left: 430px;">Simple</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/19">
+
+<div class="notes">
+<p>John Gall wrote a book called Systemantics back in 1975, which discusses how systems work and how they fail.</p>
+</div>
+
+<p><img src="./file/systemantics-cover.png" style="position: absolute; top: 10px; left: 130px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/20">
+
+<div class="notes">
+<p>A couple sentences in that book eventually became referred to as Gall&#x2019;s Law.</p>
+</div>
+
+<p><img src="./file/systemantics-cover.png" style="position: absolute; top: 10px; left: 130px;"/>
+<h1 class="blue" style="font-size: 160px; position: absolute; top:  60px; left: 605px;">Gall's</h1><h1 class="red" style="font-size: 120px; position: absolute; top:  160px; left: 900px;">Law</h1></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/21">
+
+<div class="notes">
+<p>Gall&#x2019;s Law states that a complex system that works is invariably found to have evolved from a simple system that worked. A complex system designed from scratch never works and cannot be patched up to make it work. You have to start over with a working simple system.| Note that Gall was not referring to software development, he was discussing systems in general, be they computer based, mechanical, or manual.</p>
+</div>
+
+<p><img src="./file/systemantics-cover.png" style="position: absolute; top: 10px; left: 130px;"/>
+<h1 class="blue" style="font-size: 160px; position: absolute; top:  60px; left: 605px;">Gall's</h1><h1 class="red" style="font-size: 120px; position: absolute; top:  160px; left: 900px;">Law</h1><h1 class="black" style="font-size: 40px; position: absolute; top:  330px; left: 600px; margin-right: 50px;">"A complex system that works is invariably found to have evolved from a simple system that worked. ... A complex system designed from scratch never works and cannot be patched up to make it work. You have to start over with a working simple system."</h1></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/22">
+
+<div class="notes">
+<p>We have Gall&#x2019;s Law in mind when we build systems in our department. In general, we try to add them as subsystems or new features to our existing working systems. We aim to complete the development of almost all projects in under a month, with the majority being completed in under a week.|When I say completed, I mean having all features implemented with complete automated tests. Systems may take longer to go into production due to delays in getting approval from the stakeholders that requested the system.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 270px; left: 285px;">Build</h1><h1 class="red" style="font-size: 90px; position: absolute; top: 390px; left: 374px;">Incrementally</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/23">
+
+<div class="notes">
+<p>A typical project for us would be to take a paper form based process with one or two levels of review and integrate it into our intranet site. There would be an online form for employees to complete, forms for the reviewers to approve or deny the request, emails for notifying the next reviewer at each step, and reports for the employee, reviewers, and management to see the status of requests.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 170px; left: 485px;">Typical</h1><h1 class="red" style="font-size: 90px; position: absolute; top: 310px; left: 734px;">Projects</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/24">
+
+<div class="notes">
+<p>We build all of these systems internally using government staff, with no use of contractors. The developer responsible for building the system will meet directly with all interested stakeholders to determine requirements.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 50px; left: 235px;">Development</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 168px; left: 345px;">by</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 215px; left: 235px;">Employees</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/25">
+
+<div class="notes">
+<p>Often, stakeholders will request we add features to the system that are not strictly needed, or will request a specific feature that they think will meet their needs, instead of just letting us know what their needs actually are.|It is the developer&#x2019;s job to discuss the system requirements with the stakeholders, figure out what features are important, what the underlying needs actually are, and then build the simplest system that will meet the needs of the stakeholders.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 360px; left: 185px;">Scope</h1><h1 class="blue" style="font-size: 90px; position: absolute; top: 510px; left: 134px;">Reduction</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/26">
+
+<div class="notes">
+<p>The developer responsible for building the system knows that they will be responsible for maintaining the system when it is in production, which encourages them to design the system in a way that will make maintenance easiest.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 340px; left: 105px;">Developer</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 475px; left: 650px;">Maintains</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/27">
+
+<div class="notes">
+<p>The developer also knows that if users have trouble using the system, they will be the one to listen and respond to the users&#x2019; complaints, and it will be their job to modify the system to make it easier to use. This encourages the developer to design the system to be easy to use, so they do not have to make such modifications in the future.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 340px; left: 105px;">Developer</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 470px; left: 650px;">Improves</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/28">
+
+<div class="notes">
+<p>As the title of this presentation suggests, all of our internal development is done in Ruby. Ruby has been our primary development language for new projects since mid-2005, and all of our existing internal systems were converted to Ruby by 2009. I will talk a little bit later about the stack we use and how it has evolved over time.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 50px; left: 235px;">Development</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 168px; left: 345px;">in</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 215px; left: 235px;">Ruby</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/29">
+
+<div class="notes">
+<p>We do not have a large amount of oversight during our development process.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 225px; left: 245px;">Minimal</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 248px; left: 122px;">Oversight</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/30">
+
+<div class="notes">
+<p>The only external oversight is from external security assessments and penetration tests, which are each performed every 3 years.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 225px; left: 245px;">External</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 248px; left: 122px;">Oversight</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/31">
+
+<div class="notes">
+<p>In terms of internal oversight, the developer will work on the system until they think it is ready. If they run into problems during development and need help, then they will talk to me and we will pair program to fix the problem. After the developer thinks the system is complete, then they will request a code review from me. I will review all of the code, provide a list of requested changes, and that process will repeat until all issues have been addressed.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 225px; left: 245px;">Internal</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 248px; left: 122px;">Oversight</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/32">
+
+<div class="notes">
+<p>After a clean code review, the developer will notify the stakeholders, who will use a development version of the system and see if it meets their needs. The stakeholders may request changes at that point, in which case we will discuss the changes with them and agree on how to handle the situation, similar to the initial discussion with them regarding requirements.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 420px; left: 148px;">Stakeholder</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 548px; left: 322px;">Reviews</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/33">
+
+<div class="notes">
+<p>Before any of our systems go into production, we require automated testing at the model level and web level for all parts of the system. We perform coverage testing on a regular basis for all of our applications, and our line coverage is between 93 and 100 percent depending on the system.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 450px; left: 435px;">Automated</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 588px; left: 740px;">Tests</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/34">
+
+<div class="notes">
+<p>Since we prefer to build small systems instead of large systems, we generally have multiple outstanding requests to build systems at any point in time. So one of the issues we deal with is how to prioritize the requests.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 140px; left: 165px;">Prioritizing</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 268px; left: 440px;">Requests</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/35">
+
+<div class="notes">
+<p>One of the things we consider is the size of the request. We try to build smaller systems before larger ones. Hopefully this encourages stakeholders to be more willing to accept a smaller system.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 250px; left: 135px;">Simple</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 390px; left: 375px;">before</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 430px; left: 270px;">Complex</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/36">
+
+<div class="notes">
+<p>Another thing we consider is how often the system will be used. If this system automates a manual paper form-based process, we will ask: how many forms are submitted per month? Depending on the volume, we may give the system high priority, or even tell the requester that due to the low volume, it does not make sense to automate the process.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 200px; left: 235px;">Consider</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 260px; left: 140px;">Frequency</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/37">
+
+<div class="notes">
+<p>We also try to consider how important the system is to the organization. If the current process is paper form-based, we will ask: what the consequences are of losing a form? If there are legal issues, we may want to automate a system with low volume just to ensure we can closely track progress to make sure we are following the law.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 200px; left: 235px;">Consider</h1><h1 class="red" style="font-size: 200px; position: absolute; top: 240px; left: 160px;">Importance</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/38">
+
+<div class="notes">
+<p>Finally, we consider who is requesting the system. As much as we like to be egalitarian, if the requester is an executive and they want us to give the system priority, then the system will get priority.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 200px; left: 235px;">Consider</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 250px; left: 130px;">Requestor</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/39">
+
+<div class="notes">
+<p>So, what do we use Ruby for? I mentioned that Ruby is the sole language we use for software development, so this is basically the same question as: what software development do we do?</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 440px; left: 165px;">Custom</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 450px; left: 50px;">Development</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/40">
+
+<div class="notes">
+<p>As you may expect, the primary software development we do is web applications.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 100px; left: 135px;">Web</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 150px; left: 50px;">Applications</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/41">
+
+<div class="notes">
+<p>Our largest application is our intranet site, called The Hub. The majority of our development is adding new features to The Hub.|The Hub has some pretty standard intranet features. It contains a lot of information on internal processes, our comprehensive manual, and our employee directory.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 200px; left: 635px;">The</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 280px; left: 600px;">Hub</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/42">
+
+<div class="notes">
+<p>Each employee has a profile page showing information about the employee, such as their division and position, audits they have worked on, audits they are currently working on, and awards they have received.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 300px; left: 235px;">Profile</h1><h1 class="blue" style="font-size: 80px; position: absolute; top: 440px; left: 300px;">Pages</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/43">
+
+<div class="notes">
+<p>The employee&#x2019;s profile page also has a link to a map of the floor that they work on, with their desk location highlighted. This makes it easy for new staff to navigate the office, and for existing staff to easily find new staff.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 100px; left: 138px;">Floor</h1><h1 class="blue" style="font-size: 140px; position: absolute; top: 215px; left: 200px;">Layouts</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/44">
+
+<div class="notes">
+<p>Most of the new development centers around automating existing processes. When I started, almost all processes were manual, paper-based processes. Now, most of the common processes are automated via online forms.|For example, submitting requests to take time off, attend training, get reimbursed for overtime, modify facilities, purchase supplies and equipment, and many others are automated. Records are kept so employees can see the status of all previous requests.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 200px; left: 335px;">Focus</h1><h1 class="blue" style="font-size: 100px; position: absolute; top: 315px; left: 415px;">on</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 350px; left: 335px;">Automation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/45">
+
+<div class="notes">
+<p>Most of the processes have custom review/approval workflows based on different requirements. Some processes will only require supervisory review. In other cases, there will be between two and five levels of review, with the number of levels dependent on the specifics of the request and the employee&#x2019;s position in the department.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 100px; left: 135px;">Process</h1><h1 class="blue" style="font-size: 100px; position: absolute; top: 245px; left: 135px;">Dependent</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 320px; left: 135px;">Review</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/46">
+
+<div class="notes">
+<p>Another web application that we develop is our recruiting system. Most of the employees that we hire are entry level auditors directly out of college or graduate school, and most of recruiting system is designed to handle the recruiting process for these applicants.</p>
+</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 300px; left: 335px;">Recruiting</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 450px; left: 735px;">System</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/47">
+
+<div class="notes">
+<p>The recruiting system allows prospective employees to apply to take our online exam. After applying, our human resources staff review the application, and if they approve it, the applicant is notified and can take our online exam.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 300px; left: 150px;">Online</h1><h1 class="red" style="font-size: 200px; position: absolute; top: 310px; left: 35px;">Application</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/48">
+
+<div class="notes">
+<p>The online exam is timed and has 75 muliple choice questions. You have to get about 80% of the questions correct to rank highly enough to advance. The exam is difficult and only about 30% of applicants rank highly enough to advance.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 300px; left: 150px;">Online</h1><h1 class="red" style="font-size: 200px; position: absolute; top: 310px; left: 35px;">Exam</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/49">
+
+<div class="notes">
+<p>Assuming the applicant scores highly enough, they are notified they can advance further and can take our online writing assessment. When the applicant begins the writing assessment, they are given a prompt and an upload form, and they have two hours to upload a writing sample similar in style to our audit reports. This writing assessment is graded by our in house editor, and only about one third of applicants score highly enough to advance.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 300px; left: 150px;">Online</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 200px; left: 385px;">Writing</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 340px; left: 385px;">Assessment</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/50">
+
+<div class="notes">
+<p>After that, there is a phone interview and then an in-house interview, and the system handles the information related to those. The system also handles all internal workflows related to processing these applications, and has extensive reporting capabilities. There are also smaller subsystems of the recruiting system related to recruiting for other, more advanced auditing positions.</p>
+</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 100px; left: 200px;">Final</h1><h1 class="blue" style="font-size: 200px; position: absolute; top: 110px; left: 35px;">Stages</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/51">
+
+<div class="notes">
+<p>The last major web application we develop is our recommendations system. In addition to reporting our audit findings, one of our primary functions is to make recommendations to improve government. The other departments we audit are required to respond to our recommendations on a regular basis on their progress implementing our recommendations, until the recommendations have been fully implemented.</p>
+</div>
+<h1 class="blue" style="font-size: 140px; position: absolute; top: 340px; left: 35px;">Recommendations</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 450px; left: 735px;">System</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/52">
+
+<div class="notes">
+<p>The recommendations system allows our staff to add recommendations, and allows other government departments to respond to the recommendations online through our website. Each response goes through four levels of review, and after being fully reviewed, the department&#x2019;s response and our assessment of their response is posted on our website. This holds other departments accountable, and their implementations of our recommendations are often considered when the Legislature reviews the department&#x2019;s budget.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 140px; left: 215px;">Increase</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 200px; left: 135px;">Accountability</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/53">
+
+<div class="notes">
+<p>As I mentioned, we use Ruby for all development, so I would like to talk a bit about some other systems we develop.</p>
+</div>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 20px; left: 90px;">Not Just</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 100px; left: 135px;">Web</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 150px; left: 50px;">Applications</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/54">
+
+<div class="notes">
+<p>For employees to login to any of our web applications, we want them to use the same Windows username and password that they use to login to their computer, so they do not have to remember a separate password.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 250px; left: 100px;">Authentication</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/55">
+
+<div class="notes">
+<p>However, from a security perspective, we do not want our web servers talking directly to our domain controllers. So all of our web applications authenticate using SSL to connect to a custom authentication proxy written in Ruby. The web applications submit the username and password provided by the user. This proxy first checks that the user is in the list of allowed usernames, then connects to Windows using LDAP over SSL to authenticate the password.</p>
+</div>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 175px; left: 90px;">Custom</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 250px; left: 100px;">Authentication</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 370px; left: 250px;">Proxy</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/56">
+
+<div class="notes">
+<p>We also use Ruby to implement 2-factor authentication for our VPN. We use OpenVPN, which does not have native support for 2-factor authentication. In order to allow 2-factor authentication with the VPN certificate as the first factor and the Windows password as a second factor, after OpenVPN authenticates the certificate, we have OpenVPN run a statically compiled C program which uses a Unix socket to connect to a server written in Ruby. That Ruby server connects to Windows using LDAP over SSL to authenticate the password for the username specified in the VPN certificate.</p>
+</div>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 175px; left: 90px;">Custom 2nd Factor VPN</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 250px; left: 100px;">Authentication</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/57">
+
+<div class="notes">
+<p>We use Ruby to download financial information from the state&#x2019;s mainframe on a daily basis for usage by our financial audit team. This used to require a gem that supported FTP over SSL, but thankfully after ruby 2.4 was released, we were able to switch to using net/ftp from the standard library.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 390px; left: 185px;">Mainframe</h1><h1 class="red" style="font-size: 200px; position: absolute; top: 400px; left: 50px;">Downloads</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/58">
+
+<div class="notes">
+<p>We develop custom programs to assist auditors with their audit work. Most recently, we used ruby with capybara, selenium, and headless chrome to download almost 3000 PDFs from a separate government website written in ASP.NET which required Javascript. We then used ruby, pdftk, and mupdf to extract a specific page from each PDF and combine those extracted pages into a single PDF so that the auditors could easily go through the results and include the data in their audit work papers.</p>
+</div>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 225px; left: 450px;">Headless</h1><h1 class="blue" style="font-size: 210px; position: absolute; top: 250px; left: 230px;">Chrome</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 410px; left: 550px;">Automation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/59">
+
+<div class="notes">
+<p>We have many reporting programs that use Sequel to extract data from internal Microsoft SQL Server databases and create reports from them.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 190px; left: 285px;">Report</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 260px; left: 150px;">Generation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/60">
+
+<div class="notes">
+<p>Basically, Ruby is our programming toolbox, and pretty much everything we need to build we can easily build using Ruby.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 140px; left: 385px;">Ruby</h1><h1 class="blue" style="font-size: 60px; position: absolute; top: 255px; left: 570px;">is our</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 260px; left: 450px;">Toolbox</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/61">
+
+<div class="notes">
+<p>So how did we start using Ruby? When I was first given the task of maintaining our websites back in 2003, they were developed as static pages using Net Objects Fusion.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 390px; left: 210px;">In the</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 470px; left: 50px;">Beginning...</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/62">
+
+<div class="notes">
+<p>While I had no previous professional programming experience, I did have some exposure to PHP, and I decided to use that.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 390px; left: 210px;">In the</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 470px; left: 50px;">Beginning...<span class="blue">PHP</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/63">
+
+<div class="notes">
+<p>In late 2004, I heard about Rails, and tried it out. I saw that it was a great improvement over the spaghetti PHP I was using. After a few months of using it in personal projects and a few more testing it at work, I switched our intranet site to Rails in mid-2005.</p>
+</div>
+
+<p><img src="./file/rails-logo.svg" style="width: 800px; height: 600px; position: absolute; top: 100px; left: 200px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/64">
+
+<div class="notes">
+<p>In 2008, I learned about Sinatra, and was drawn to Sinatra&#x2019;s much simpler approach to web development. We started using Sinatra for all new development, and the initial versions of our recruiting and recommendations systems were written in Sinatra.</p>
+</div>
+
+<p><img src="./file/sinatra.gif" style="width: 597px; height: 700px; position: absolute; top: 50px; left: 350px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide bg-roda" data-transition="none"><div class="content bg-roda" ref="slides/slides/65">
+
+<div class="notes">
+<p>In 2014, I was exposed to the routing tree approach used by Cuba, and saw how it addressed the complexity issues we were having in our Sinatra applications while still being much simpler than Rails. I ended up creating a fork called Roda, and converting all of our web applications to Roda before the release of Roda 1.0.</p>
+</div>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/66">
+
+<div class="notes">
+<p>On the ORM side, when I first starting using Rails, I used ActiveRecord, which was a huge time saver compared to manually writing all SQL queries as I was doing in PHP.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 270px; left: 100px;">Active<span class="blue">Record</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/67">
+
+<div class="notes">
+<p>After being exposed to Sequel in 2008, I saw the benefits of Sequel&#x2019;s method chaining approach to building queries. I converted all ActiveRecord usage to Sequel that year, and we have been using Sequel exclusively since.</p>
+</div>
+
+<p><img src="./file/ruby-sequel.png" style="width: 800px; height: 300px; position: absolute; top: 200px; left: 200px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/68">
+
+<div class="notes">
+<p>In the lower levels in the stack, we&#x2019;ve always used PostgreSQL as the database, starting with version 7.1.</p>
+</div>
+
+<p><img src="./file/postgresql.svg" style="width: 540px; height: 557px; position: absolute; top: 100px; left: 370px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/69">
+
+<div class="notes">
+<p>The operating system has always been OpenBSD, since we were already successfully using OpenBSD for our firewall and had experience with it, and security and simplicity are more important than performance in our environment.</p>
+</div>
+
+<p><img src="./file/openbsd.gif" style="width: 1000px; height: 650px; position: absolute; top: 75px; left: 140px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none">
+  <div class="content " ref="slides/slides/70">
+
+<div class="notes">
+<p>For the web server, we originally used Apache and Webrick, then Lighttpd and SCGI, then Nginx and Mongrel, and finally Nginx and Unicorn, which we have been using successfully for many years.</p>
+</div>
+
+<p><img src="./file/nginx.png" style="width: 626px; height: 144px; position: absolute; top: 50px; left: 340px;"/>
+
+<p><img src="./file/unicorn.png" style="width: 400px; height: 410px; position: absolute; top: 250px; left: 440px;"/>
+</p>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none">
+  <div class="content " ref="slides/slides/71">
+
+<div class="notes">
+<p>On the testing side, we use minitest, minitest-hooks, rack-test, and capybara for testing.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 125px; left: 250px;">minitest<br><span class="blue">minitest-hooks</span><br>rack-test<br><span class="blue">capybara</span>
+</br></br>
+</br>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/72">
+
+<div class="notes">
+<p>All of our web applications are explicitly designed around a simple web 1.0 experience, though we do use HTML5 features such as date inputs and required inputs.</p>
+</div>
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 390px; left: 185px;">Web</h1><h1 class="red" style="font-size: 500px; position: absolute; top: 160px; left: 550px;">1.0</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/73">
+
+<div class="notes">
+<p>We avoid using javascript as much as possible, only using it when there is no other way and we absolutely must have dynamic behavior on the web page. Most commonly, this is for input forms that can accept an arbitrary number of line items.</p>
+</div>
+
+<p><img src="./file/javascript.jpg" style="width: 600px; height: 600px; position: absolute; top: 60px; left: 340px;"/>
+<h1 style="font-size: 900px; position: absolute; top: -130px; left: 500px; color: red">/</h1><div style="width: 1000px; height: 600px; position: absolute; top: 10px; left: 100px; border-width: 50px; border-style: solid; border-color: red; border-radius: 400px; text-align: center"> </div></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/74">
+
+<div class="notes">
+<p>We use so little javascript that we manually test the javascript that we do use when we modify the related code.</p>
+</div>
+
+<p><img src="./file/javascript.jpg" style="width: 600px; height: 600px; position: absolute; top: 60px; left: 340px;"/>
+<h1 class="blue" style="font-size: 50px; position: absolute; top: 540px; left: 1010px;">Tested</h1><h1 class="red" style="font-size: 70px; position: absolute; top: 560px; left: 950px;">Manually</h1></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/75">
+
+<div class="notes">
+<p>All of our applications run on the same stack described here, and use the same library versions. This makes it much easier to switch between applications during development.</p>
+</div>
+<h1 class="red" style="font-size: 90px; position: absolute; top: 245px; left: 410px;">Same</h1><h1 class="blue" style="font-size: 210px; position: absolute; top: 250px; left: 230px;">Stack</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 430px; left: 350px;">for All Apps</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/76">
+
+<div class="notes">
+<p>Whenever we upgrade a library, we run one command, which runs the tests for all of our applications using the new library version, and we can see if anything breaks.</p>
+</div>
+<h1 class="blue" style="font-size: 210px; position: absolute; top: 250px; left: 80px;">Run Tests</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 430px; left: 350px;">for All Apps</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/77">
+
+<div class="notes">
+<p>This command can also be used to test on multiple versions of Ruby, and all of our applications pass their test suite using Ruby 2.1 to 2.4.</p>
+</div>
+<h1 class="blue" style="font-size: 210px; position: absolute; top: 250px; left: 80px;">Run Tests</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 430px; left: 350px;">for All Apps</h1><h1 class="blue" style="font-size: 60px; position: absolute; top: 550px; left: 400px;">across Multiple Ruby Versions</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/78">
+
+<div class="notes">
+<p>After upgrading libraries, we may decide to use new features added to the libraries. This is generally done starting with our simplest application, and then applied to our remaining applications.</p>
+</div>
+<h1 class="blue" style="font-size: 90px; position: absolute; top:  370px; left: 585px;">Start</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 400px; left: 430px;">Simple</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/79">
+
+<div class="notes">
+<p>A couple of examples of this are when we switched to using frozen Sequel datasets, databases, and models, and when we starting using refrigerator to freeze all core classes during runtime.</p>
+</div>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 210px; left: 300px;">Introduce</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 230px; left: 230px;">Immutability</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/80">
+
+<div class="notes">
+<p>We used the same strategy when we rolled out automatic escaping in templates and when we switched our parameter access to use Roda&#x2019;s typecast params plugin.</p>
+</div>
+<h1 class="blue" style="font-size: 60px; position: absolute; top: 430px; left: 420px;">Improve</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 430px; left: 330px;">Security</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/81">
+
+<div class="notes">
+<p>Obviously when you choose Ruby without Rails, you are going to limit the number of developers you can hire that already have experience with your stack. The good news is that in our experience, a Roda and Sequel based web stack is easy for new programmers to learn.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 220px;">Recruiting</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 210px; left: 170px;">Issues</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/82">
+
+<div class="notes">
+<p>You should not extrapolate from a sample size of one, but our current developer had no professional programming experience and had never programmed in Ruby before we hired her. She was able to quickly become productive and implement new features using Sequel and Roda. If we were using Rails, I think it would have taken her significantly longer to become productive.|For some companies, it may be easy to find developers that already know Rails. However, we attempted to recruit developers at many different experience levels and specifically highlighted that we use Ruby. We did not even have a single person apply with any Ruby or Rails experience, so Rails&#x2019; popularity advantage would not really matter to us.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 20px;">No</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 150px; left: 220px;">Recruiting</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 210px; left: 170px;">Issues</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/83">
+
+<div class="notes">
+<p>As I am the department&#x2019;s Information Security Officer, one specific focus area for me is security. As you would expect, we try to protect against the common vulnerabilities in web applications.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 225px; left: 450px;">Focus</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 340px; left: 550px;">on</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 380px; left: 450px;">Security</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/84">
+
+<div class="notes">
+<p>We attempt to mitigate cross site scripting using Roda&#x2019;s support for automatically escaping output in templates.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 125px; left: 250px;">Cross</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 260px; left: 250px;">Site</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 390px; left: 250px;">Scripting</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/85">
+
+<div class="notes">
+<p>We protect against cross site request forgery using rack csrf.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 125px; left: 250px;">Cross</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 260px; left: 250px;">Site</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 390px; left: 250px;">Request</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 520px; left: 250px;">Forgery</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/86">
+
+<div class="notes">
+<p>We protect against SQL Injection by using Sequel to construct all queries. We actually do not have any raw SQL usage in any of our web applications.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 125px; left: 250px;">SQL</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 260px; left: 320px;">Injection</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/87">
+
+<div class="notes">
+<p>We use a restrictive Content-Security-Policy in all of our applications, to mitigate possible damage in case an attacker is able to exploit a cross site scripting vulnerability.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 125px; left: 250px;">Content</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 260px; left: 250px;">Security</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 390px; left: 250px;">Policy</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/88">
+
+<div class="notes">
+<p>However, we go a lot further than that in terms of defense in depth security planning. A lot of our security planning starts by assuming there is a SQL injection or remote code execution vulnerability, and implementing features that would make the vulnerability more difficult to exploit and limit the damage it could do.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 225px; left: 450px;">Defense</h1><h1 class="red" style="font-size: 100px; position: absolute; top: 340px; left: 560px;">in</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 380px; left: 450px;">Depth</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/89">
+
+<div class="notes">
+<p>We run all of our applications on our own hardware, in isolated subnets, with strict ingress, egress, and loopback firewall rules that limit the types of connections that can be made to and from the servers.</p>
+</div>
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 125px; left: 250px;">DMZ</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 400px; left: 300px;">Ingress/Egress</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 500px; left: 500px;">Filtering</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/90">
+
+<div class="notes">
+<p>All applications run with separate operating system users with reduced privileges, and with separate database users per application.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 45px; left: 650px;">Separate</h1><h1 class="red" style="font-size: 200px; position: absolute; top: 120px; left: 650px;">Users</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 400px; left: 100px;">Reduced</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 500px; left: 100px;">Privileges</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/91">
+
+<div class="notes">
+<p>For applications with public facing components, such as the public parts of our recommendations and recruiting systems, those run as separate operating system users with even fewer privileges, and separate database users that are only granted the minimum access needed to perform the public facing functions.|So if there was a vulnerability in our public recruiting system, a user may be able to exploit it, but they would not be able to change their exam or writing assessment scores, since the database user does not have the privileges to do that. Likewise, a vulnerability in the public recommendations system could only be used to add responses, not to update existing responses.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 45px; left: 650px;">Separate</h1><h1 class="red" style="font-size: 200px; position: absolute; top: 120px; left: 650px;">Users</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 400px; left: 100px;">Reduced Database</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 500px; left: 100px;">Privileges</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/92">
+
+<div class="notes">
+<p>To mitigate arbitrary file access and remote code execution vulnerabilities, we run all of our applications chrooted. Our applications are started as root, and after they are loaded, but before accepting connections, they chroot to the working directory of the application, then drop privileges to the application&#x2019;s operating system user.</p>
+</div>
+<h1 class="blue" style="font-size: 300px; position: absolute; top: 75px; left: 100px;">chroot</h1><h1 class="red" style="font-size: 200px; position: absolute; top: 425px; left: 300px;">priv-drop</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/93">
+
+<div class="notes">
+<p>To make it more difficult to execute blind return oriented programming attacks that are based on exploiting consistent memory layouts, we have each Unicorn worker process exec after forking, so that all Unicorn worker processes have unique memory layouts.</p>
+</div>
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 325px; left: 350px;">fork<span class="red">+</span>exec</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/94">
+
+<div class="notes">
+<p>Finally, to make exploitation more difficult and to reduce the kernel attack surface for privilege escalation, we limit the set of allowed kernel system calls for the application to the minimum the application needs to function.</p>
+</div>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 235px; left: 230px;">System Call</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 330px; left: 350px;">Filtering</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/95">
+
+<div class="notes">
+<p>Combined, these security controls make it more difficult to successfully exploit our applications and make it more difficult to use a successful exploit in order to attack other applications and systems.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 45px; left: 150px;">Increase</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 195px; left: 150px;">Exploit Difficultly</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 400px; left: 350px;">Limit</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 550px; left: 350px;">Exploit Damage</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/96">
+
+<div class="notes">
+<p>If you are interested in more detail regarding these security controls as well as many of the lessons we have learned from implementing them, I will be giving a presentation at RubyHACK in Salt Lake City next month that discusses them in more detail.</p>
+</div>
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 225px; left: 150px;">Ruby<span class="red">HACK</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/97">
+
+<div class="notes">
+<p>I would like to finish this presentation with a couple opinions. First, my opinion on what a successful government IT project needs.</p>
+</div>
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 165px; left: 320px;">My</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 330px; left: 350px;">Thoughts</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/98">
+
+<div class="notes">
+<p>It needs executive management that is willing to try new approaches.</p>
+</div>
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 365px; left: 320px;">New</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 500px; left: 340px;">Approaches</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/99">
+
+<div class="notes">
+<p>Grace Hopper, one of the creators of COBOL, stated that the most dangerous phrase in the language is &#x201C;we&#x2019;ve always done it this way&#x201D;. Considering the track record for government IT projects of being delivered late, over budget, and full of bugs if they work at all, a new development approach seems worth trying.</p>
+</div>
+
+<p><img src="./file/hopper.png" style="position: absolute; top: 150px; left: 150px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/100">
+
+<div class="notes">
+<p>Next, the project managers need a deep understanding of the technology used, so they will know what problems the system actually has, and how the problems should be fixed, as soon as possible.</p>
+</div>
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 135px; left: 40px;">Deep</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 300px; left: 100px;">Technical</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 440px; left: 140px;">Understanding</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/101">
+
+<div class="notes">
+<p>The developers building the system should be discussing the requirements directly with system&#x2019;s stakeholders, with an eye to reducing the scope of the system to the minimum.</p>
+</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 45px; left: 190px;">Direct</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 160px; left: 40px;">Communication</h1><h1 class="blue" style="font-size: 180px; position: absolute; top: 385px; left: 190px;">Scope</h1><h1 class="red" style="font-size: 160px; position: absolute; top: 540px; left: 300px;">Reduction</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/102">
+
+<div class="notes">
+<p>The developers building the system should be responsible for maintaining it, so they have an incentive to make maintenance easy and design the system to be easy to use from the beginning, so that they do not have to make such modifications later.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 340px; left: 105px;">Developers</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 475px; left: 650px;">Maintain</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/103">
+
+<div class="notes">
+<p>Finally, all systems should start by developing the simplest possible system that handles the most important requirements, making it work well, and gradually building on top of the working system, to not run afoul of Gall&#x2019;s Law.</p>
+</div>
+<h1 class="red" style="font-size: 120px; position: absolute; top:  260px; left: 550px;">Respect</h1><h1 class="blue" style="font-size: 160px; position: absolute; top: 360px; left: 605px;">Gall's</h1><h1 class="red" style="font-size: 120px; position: absolute; top:  460px; left: 900px;">Law</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/104">
+
+<div class="notes">
+<p>My second opinion comes from a lot of personal experience, and that is that Ruby is a great fit to build the types of systems of the government needs, at least for those systems where runtime performance is not critical.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top:  170px; left: 285px;">Ruby</h1><h1 class="blue" style="font-size: 120px; position: absolute; top: 310px; left: 430px;">Fits</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/105">
+
+<div class="notes">
+<p>Ruby makes it very fast to develop systems quickly and get to a working state.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 400px; left: 105px;">Quick</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 540px; left: 250px;">Development</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/106">
+
+<div class="notes">
+<p>Assuming you have good tests that cover most of the system&#x2019;s functionality, it is fairly easy to maintain Ruby applications and modify them as requirements change, though a lot of that depends on your choice of Ruby libraries.| My experience is that requirement changes cause much more code changes than refactoring changes, so the limited ability to use automated refactoring in Ruby is not a major issue.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 40px; left: 200px;">Easy</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 180px; left: 250px;">Maintenance</h1><h1 class="blue" style="font-size: 60px; position: absolute; top: 285px; left: 360px;">and</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 300px; left: 250px;">Modification</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/107">
+
+<div class="notes">
+<p>Ruby is easy to learn, and easy to teach to new programmers. This is especially important for government work, since in my experience, applicants for government programming positions will probably not have experience with Ruby.</p>
+</div>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 40px; left: 200px;">Easy</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 180px; left: 240px;">To Learn</h1><h1 class="blue" style="font-size: 50px; position: absolute; top: 290px; left: 325px;">and</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 300px; left: 240px;">To Teach</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/108">
+
+<div class="notes">
+<p>Importantly, Ruby keeps programming fun. I think the importance of this is underrated. Government work does not pay very well, so having a fun language to program in can help retain talented staff.</p>
+</div>
+<h1 class="blue" style="font-size: 500px; position: absolute; top: 200px; left: 105px;">Fun</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/109">
+
+<div class="notes">
+<p>After handling all programming for a government department for the past 15 years, first as the sole developer and now as a manager, I can confidently say that Ruby is a great choice for application development, and I highly recommend it.</p>
+</div>
+<h1 class="red" style="font-size: 200px; position: absolute; top:  290px; left: 25px;">Ruby</h1><h1 class="blue" style="font-size: 80px; position: absolute; top: 325px; left: 520px;">For Great</h1><h1 class="blue" style="font-size: 80px; position: absolute; top: 395px; left: 520px;">
+<span style="text-decoration: line-through; text-decoration-color: #5E0000;">Justice</span> Government</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/110">
+
+<div class="notes">
+<p>That concludes my presentation. I would like to thank all of you for listening to me.</p>
+</div>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 380px; left: 420px;">Thank</h1><h1 style="font-size: 200px; position: absolute; top: 400px; left: 300px;">You</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/111">
+
+<div class="notes">
+<p>If any of you have questions, I will be happy to answer them now.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 280px; left: 220px;">Questions<span class="blue">?</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/112">
+
+<div class="notes">
+<p>Photo credits</p>
+</div>
+<h1 style="text-align: center">Photo Credits</h1>
+<p>Wikimedia: USA Map</p>
+
+<p>Systemantics: John Gall</p>
+
+<p>Hub: California State Auditor</p>
+
+<p>Software/Organization Logos: Respective Organizations</p>
+
+<p>Javascript: PNGTree</p>
+
+<p>Hopper: AudienceView</p>
+</div>
+</div>
+</div>
+
+</body>
+</html>

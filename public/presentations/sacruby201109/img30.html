@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+     "http://www.w3.org/TR/html4/transitional.dtd">
+<html>
+<head>
+  <meta HTTP-EQUIV=CONTENT-TYPE CONTENT="text/html; charset=utf-8">
+  <title>Slide 31</title>
+</head>
+<body>
+<center>
+<a href="img0.html">First page</a> <a href="img29.html">Back</a> <a href="img31.html">Continue</a> <a href="img47.html">Last page</a> <a href="index.html">Overview</a> <a href="text30.html">Text</a></center><br>
+<center><img src="img30.jpg" alt=""></center>
+<h3>Notes:</h3><br>
+
+<p><p style="direction:ltr;">I haven't mentioned modules yet, but modules are actually not used directly in the super chain.  Instead, when you include a module in a class or extend an object with a module, ruby creates an iclass object.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">I believe iclass stands for internal class, and it is also stored in an Rclass struct.  It's klass pointer points to the module, and it's super pointer points to the ancestor in the method chain.</p>
+<p style="direction:ltr;"></p>
+<p style="direction:ltr;">This is how ruby allows a module to be included in multiple separate classes while only needing a single super pointer in the class object.</p>
+
+</p>
+</body>
+</html>
