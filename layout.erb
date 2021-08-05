@@ -25,7 +25,7 @@
 </div>
 
 <div class="container">
-<%= content %>
+<%= (defined?(content) ? content : eval('yield')) %>
 </div>
 
 </body>

@@ -9,6 +9,6 @@ task :default => :clean do
 end
 
 desc "Serve local version of website via rackup"
-task :serve => :default do
+task :serve do
   sh %{#{FileUtils::RUBY} -S rackup -p 8080}
 end
