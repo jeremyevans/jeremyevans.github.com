@@ -4,12 +4,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>code.jeremyevans.net - Running My Own Email Server (2021-07-29)</title>
-  <link href="style.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-  <style>
-    .navbar-nav {flex-direction: row; flex-wrap: wrap;}
-    .nav-item {margin-left: 20px;}
-  </style>
+  <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -285,6 +281,90 @@ action relay_mail relay host smtp+tls://sendgrid@smtp.sendgrid.net:587 auth <sec
 <h2>Conclusion</h2>
 
 <p>I think this bifurcated setup with a cloud VM receiving email and using Sendgrid's free plan for sending email is the cheapest and simplest option that meets my uncommon needs. It is still more expensive than what I was paying Tuffmail ($42/year instead of $24/year), but I suppose I'll manage.  I am not currently doing any spam filtering on received email, which results in more spam getting through.  That doesn't bother me much, since I can almost always tell what is spam before I open it in <code>mutt</code>, and I just delete spam before opening it.  On the plus side, I no longer have to be worried about email being sent to me not arriving because it was marked as spam.  Sendgrid is also a larger email provider than Tuffmail, so I'm guessing my email delivery is better, though that doesn't matter much as I don't send much email.</p>
+
+<h2 id="epilogue">Epilogue (2021-08-05)</h2>
+
+<p>I'm very glad I posted this, as I got multiple good ideas for how to improve this setup from others.</p>
+
+<h3>SPF, DKIM, DMARC</h3>
+
+<p><a href="https://twitter.com/mmonerau">@mmonerau on Twitter</a> asked about SPF, DKIM, and DMARC. At least two of the DNS CNAME records that Sendgrid has you setup are related to DKIM.  I added an SPF record to my domain, which is a DNS TXT record:</p>
+
+<pre><code>v=spf1 include:u22788749.wl250.sendgrid.net -all
+</code></pre>
+
+<p>The <code>u22788749.wl250.sendgrid.net</code> value for the include comes from the other DNS record that Sendgrid has you add.</p>
+
+<p>I looked into DMARC, but it doesn't seem like I'd get a lot of value from it, so I didn't bother setting it up.</p>
+
+<h3>Avoiding cron job</h3>
+
+<p>This post spawned some <a href="https://lobste.rs/s/s10jr0/running_my_own_email_server">interesting discussion on Lobsters</a>.  <a href="https://lobste.rs/s/s10jr0/running_my_own_email_server#c_rfm0cm">Fellow OpenBSD committer bentley@ described how he uses a similar setup</a>.  However, he uses a Wireguard VPN between his Cloud VM at Vultr and his home email system.  Then he has the Cloud VM <code>smtpd</code> configuration relay mail to his home email system over the VPN.  Using this approach, you don't need to run a cron job every 5 minutes as I was doing to download new email. It would arrive in mutt on my local machine shortly after it is received by the VM. So I decided to try that approach.</p>
+
+<p>The first step is to setup Wireguard on the VM and on the local machine. I hadn't used Wireguard before, but looking at the OpenBSD documentation for <a href="https://man.openbsd.org/wg">wg</a>, it was quite easy to setup. On the VM, I added an <code>/etc/hostname.wg0</code> file:</p>
+
+<pre><code>wgport 7112 wgkey $VM_PRIVATE_KEY wgpeer $LOCAL_PUBLIC_KEY wgendpoint $LOCAL_IP 7111 wgaip 10.71.11.2/32 10.71.11.1/24
+</code></pre>
+
+<p>I added a similar <code>/etc/hostname.wg0</code> file on my local machine that runs <code>mutt</code>:</p>
+
+<pre><code>wgport 7111 wgkey $LOCAL_PRIVATE_KEY wgpeer $VM_PUBLIC_KEY wgendpoint $VM_IP 7112 wgaip 10.71.11.1/32 10.71.11.2/24
+</code></pre>
+
+<p>Then I ran <code>sh /etc/netstart wg0</code> on both to start the Wireguard interface.  It didn't work at first, due to the firewall rules on both the local machine and the VM.  On the VM, I added the following firewall rules to the end of <code>/etc/pf.conf</code>:</p>
+
+<pre><code>pass in on $if inet proto udp from $LOCAL_IP port 7111 to port 7112
+
+pass on wg0 inet proto icmp
+pass out on wg0 inet proto tcp to 10.71.11.2 port 25
+</code></pre>
+
+<p>The first rule allows the encrypted Wireguard traffic over the network interface.  Wireguard runs over UDP, and the 7111 and 7112 come from the wireguard configuration above. The second rule allows ICMP in both directions over the Wireguard interface.  The third rule allows the VM to send email over the Wireguard interface.  The <code>block return</code> is still above the other firewall rules, so all other traffic over the Wireguard interface is blocked.</p>
+
+<p>I then added similar firewall rules on the local machine:</p>
+
+<pre><code>pass in on $if inet proto udp from $VM_IP port 7112 to ($if) port 7111
+
+pass on wg0 inet proto icmp
+pass in on wg0 inet proto tcp from 10.71.11.1 to 10.71.11.2 port 25
+</code></pre>
+
+<p>Again, these rules are quite restrictive.  The encrypted Wireguard traffic is allowed over the network interface. On the Wireguard interface, ICMP is allowed in both directions, and the VM can send email to the local machine.  All other traffic is blocked.  That mitigates the possible damage the VM can do to the local machine if the VM is compromised.</p>
+
+<p>Next, I had to change the mail server configuration on both the local machine and the VM.  On the local machine, I added the following rules to <code>/etc/mail/smtpd.conf</code>:</p>
+
+<pre><code>listen on 10.71.11.2 tls-require pki mail.jeremyevans.local
+table emails file:/etc/mail/emails
+action from_remote_delivery maildir "/home/jeremy/Maildir/Inbox" user jeremy virtual <emails>
+match from src 10.71.11.1 for domain "jeremyevans.net" action from_remote_delivery
+match from src 10.71.11.1 for domain "vm.jeremyevans.net" action local_delivery
+</code></pre>
+
+<p>The first line sets up a listening socket on the Wireguard interface to receive email. The second line sets up a table for the emails.  This is the same as the <code>~/emails</code> file on the VM, with a mapping of the allowed email addresses to the jeremy account. The third line sets an action to deliver to a maildir, using the same that the VM uses.  The fourth line allows for receiving mail for my domain on the wireguard interface, using that action.  The fifth line is for handling local emails on the VM itself.  This uses a <code>local_delivery</code> action that is similar to the <code>from_local_delivery</code> action I showed earlier in the VM's <code>smtpd</code> configuration.</p>
+
+<p>I then needed to modify the VM's <code>smtpd</code> configuration.  I commented out the existing action and match lines, and added the following lines:</p>
+
+<pre><code>action relay_to_local relay host smtp+tls://10.71.11.2 tls no-verify
+match from any for rcpt-to &lt;allowed_addresses&gt; action relay_to_local
+match from local action relay_to_local
+</code></pre>
+
+<p>With the first line, we are setting up a relying action to the smtp server on the Wireguard interface of the local machine.  We are requiring TLS, but not verification, since my local machine's <code>smtpd</code> configuration uses a self signed certificate, similar to how the VM is setup.  Because this goes over Wireguard, it's already encrypted, and doesn't need TLS for security.  However, I think it's a good practice to use TLS anyway.</p>
+
+<p>I need to keep the ability to only accept email for valid email addresses.  Since you cannot do that in a <code>relay</code> action, the <code>match</code> rule in the second line changes from accepting for the entire domain to only accepting from a table of addresses.  This is similar to the <code>virtual</code> table used in the previous configuration, except it only needs the addresses.  On my local machine, I copied up the <code>emails-file</code> directly to the VM, instead of the <code>aliases-file</code> I created using sed.</p>
+
+<pre><code>scp emails-file vm:emails
+</code></pre>
+
+<p>With the third line, we are relaying all local mail on the VM to the local machine.</p>
+
+<p>After setting that up, I restarted <code>smtpd</code> on both the local machine and the VM using <code>rcctl restart smtpd</code>.  Then I tested a local email on the VM, which worked fine.  Then I tested an emailing from Gmail to my domain, which also worked.  This took significantly more setup, but is less clunky, and results in faster mail delivery.</p>
+
+<p>After successful testing, I commented out the cron job on the local machine that downloaded the emails, since it was not needed any longer.  I didn't delete it completely, because it may be useful in the future to temporarily switch back to the configuration that does not relay email, such as if there is an extended outage of the local machine and I need to store the email on the VM until the outage is resolved. I also added <code>etc/hostname.wg0</code> to the <code>etc/backup_list</code> file on both the local machine and the VM, to make sure the Wireguard configuration is backed up.</p>
+
+<h3>MTA-STS</h3>
+
+<p>bentley@ also mentioned setting up MTA-STS, to force the use of TLS when transferring mail.  I looked into this, but it doesn't work with self signed certificates on the MX, and I don't want to be bothered to setup <a href="https://man.openbsd.org/acme-client">acme-client</a> and run <a href="https://man.openbsd.org/httpd">httpd</a> on the VM. I consider the risk added by those, while very small, to be still higher than the risk of someone attempting a MITM attack on my email server.</p>
 
 </div>
 
