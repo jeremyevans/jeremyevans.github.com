@@ -1,0 +1,3834 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Optimizing Partial Backtraces in Ruby 3</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1920px;
+          height: 1080px;
+        }
+        #footer { width: 1901px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+    <tr><td class="key">n</td><td>toggle notes</td></tr>
+  </table>
+</div>
+
+<div class="buttonNav">
+  <input type="submit" onClick="prevStep();" value="prev"/>
+  <input type="submit" onClick="nextStep();" value="next"/>
+</div>
+
+<div id="preso"><center>loading presentation...</center></div>
+<div id="footer">
+  <span id="notesInfo"></span>
+  <img id="disconnected" src="/css/disconnected.png" />
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/1">
+
+<div class="notes">
+<p>Hello everyone. In this presentation, I will be discussing backtraces. I will discuss why backtraces are important, the implementation of backtraces in Ruby, why production of partial backtraces was slow in older versions of Ruby, and how it was fixed in Ruby 3. I will also discuss bugs that occurred as a result of the optimization, and how the bugs were fixed.</p>
+</div>
+<h1 class="blue" style="font-size: 221px; position: absolute; top: 60px; left: 24px;">Optimizing</h1><h1 class="blue" style="font-size: 221px; position: absolute; top: 251px; left: 24px;">Partial</h1><h1 class="blue" style="font-size: 221px; position: absolute; top: 440px; left: 24px;">Backtraces</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 650px; left: 60px;">in Ruby 3</h1><h1 class="blue" style="font-size: 108px; position: absolute; top: 762px; right: 90px; text-align: right;">
+<span class="red">Ruby</span>Conf 2021</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/2">
+
+<div class="notes">
+<p>My name is Jeremy Evans. I am a Ruby committer who mostly works on fixing bugs in Ruby.</p>
+</div>
+
+<p><img class="profile-pic" src="./file/jeremy.jpg" style="position: absolute; top: 303px; left: 296px;"/>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 432px; left: 750px;">GitHub: &#xA0;<span class="blue mono"> jeremyevans</span>
+</h1><h1 class="red" style="font-size: 72px; position: absolute; top: 507px; left: 750px;">Twitter: &#xA0;<span class="blue mono">@jeremyevans0</span>
+</h1></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/3">
+
+<div class="notes">
+<p>I am also the author of Polished Ruby Programming, which was published a few months ago. This book is aimed at intermediate Ruby programmers and focuses on teaching principles of Ruby programming, as well as trade-offs to consider when making implementation decisions.</p>
+</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 581px; height: 1031px; width: 822px;"/>
+</p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/4">
+
+<div class="notes">
+<p>So, backtraces. Why do we care about backtraces? Well, consider programming without backtraces.</p>
+</div>
+<h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Backtraces</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/5">
+
+<div class="notes">
+<p>Let&#x2019;s say you are working on a refactoring in your library, and after working on it, you run the tests, and it turns out one test fails with an ArgumentError, with output similar to this. This output tells you have an error, and what type of error it is, but without a backtrace, you have no idea where the error is occurring, which makes debugging much more difficult.</p>
+</div>
+<pre style="font-size: 44px; margin-top: 48px;"><code>
+Run options: --seed 64029
+
+# Running:
+
+...E..............
+
+Finished in 0.003209s, 5608.6308 runs/s, 6543.4026 assertions/s.
+
+  1) Error:
+MyClass#test_0001_#foo should not raise error:
+ArgumentError: wrong number of arguments (given 2, expected 0..1)
+
+
+18 runs, 21 assertions, 0 failures, 1 errors, 0 skips
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/6">
+
+<div class="notes">
+<p>OK, so backtraces themselves are important. However, how important is backtrace performance, specifically partial backtrace performance? I do not actually know the answer to that question.</p>
+</div>
+<h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Backtraces</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/7">
+
+<div class="notes">
+<p>As I mentioned, I focus most of my time on Ruby going through the bug tracker and fixing bugs, not implementing performance improvements. However, it happened that another Ruby committer filed issue 17031 on the issue tracker, regarding partial backtraces not being optimized. The other committer mentioned they found the issue when checking memory usage of RuboCop. In any case, this performance issue was filed as a bug, and since I try to fix a lot of Ruby bugs, I did some research into it.</p>
+</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 432px; left: 251px;">https://bugs.ruby-lang.org/issues/17031</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/8">
+
+<div class="notes">
+<p>This was the first time I looked into how backtraces are created in Ruby, so it was a learning experience for me. I think how Ruby generates a backtrace is interesting, and I am guessing most of you are unfamiliar with the process, as I was before working on this bug, so I will go over the process now.</p>
+</div>
+<h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Backtrace</h1><h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 350px;">Generation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/9">
+
+<div class="notes">
+<p>Before understanding the backtrace generation process, it helps to understand better what backtraces are.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 20px; left: 350px;">What Are</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Backtraces<span class="red">?</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/10">
+
+<div class="notes">
+<p>As in most programming languages, backtraces in Ruby are a representation of the call stack.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 50px;">Call Stack</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 641px; left: 50px;">Representation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/11">
+
+<div class="notes">
+<p>Let&#x2019;s start off with an example of a call stack. We start with a method foo that calls bar with a block that calls caller.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/12">
+
+<div class="notes">
+<p>We explicitly pass 0 as the argument to caller. This makes the backtrace include the call to this method. The default value for caller&#x2019;s first argument is 1, which excludes the call to caller.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(<b>0</b>)}
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/13">
+
+<div class="notes">
+<p>Then we have the bar method just yield.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+<b class="block">def bar
+  yield
+end</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/14">
+
+<div class="notes">
+<p>To see the results of the backtrace, we will use puts foo.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  yield
+end
+
+<b>puts foo</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/15">
+
+<div class="notes">
+<p>And these are the results.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  yield
+end
+
+puts foo
+
+<b class="block"># -:2:in `block in foo'
+# -:6:in `bar'
+# -:2:in `foo'
+# -:9:in `&lt;main&gt;'</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/16">
+
+<div class="notes">
+<p>Note that the dashes here represent the filename. In this case, I was providing the Ruby code to execute on the standard input, in which case Ruby uses the dash to represent the filename.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  yield
+end
+
+puts foo
+
+# <b>-</b>:2:in `block in foo'
+# <b>-</b>:6:in `bar'
+# <b>-</b>:2:in `foo'
+# <b>-</b>:9:in `&lt;main&gt;'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/17">
+
+<div class="notes">
+<p>The first entry in the backtrace is the call to caller inside the block you passed to bar. Each call to a block has a separate entry in the backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{<b>caller(0)</b>}
+end
+
+def bar
+  yield
+end
+
+puts foo
+
+# -:<b>2:in `block in foo'</b>
+# -:6:in `bar'
+# -:2:in `foo'
+# -:9:in `&lt;main&gt;'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/18">
+
+<div class="notes">
+<p>The second entry in the backtrace is the yield inside bar, which is the same as calling the block that was passed to bar.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  <b>yield</b>
+end
+
+puts foo
+
+# -:2:in `block in foo'
+# -:<b>6:in `bar'</b>
+# -:2:in `foo'
+# -:9:in `&lt;main&gt;'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/19">
+
+<div class="notes">
+<p>The next entry in the backtrace is the call to bar inside foo.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  <b>bar</b>{caller(0)}
+end
+
+def bar
+  yield
+end
+
+puts foo
+
+# -:2:in `block in foo'
+# -:6:in `bar'
+# -:<b>2:in `foo'</b>
+# -:9:in `&lt;main&gt;'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/20">
+
+<div class="notes">
+<p>The last entry in the backtrace is the call to foo in the main script.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  yield
+end
+
+puts <b>foo</b>
+
+# -:2:in `block in foo'
+# -:6:in `bar'
+# -:2:in `foo'
+# -:<b>9:in `&lt;main&gt;'</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/21">
+
+<div class="notes">
+<p>I mentioned earlier that a backtrace is a representation of the call stack. If you read the backtrace from bottom to top, you can see how each call was added to the stack. In the main script,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  yield
+end
+
+puts foo
+
+# -:2:in `block in foo'
+# -:6:in `bar'
+# -:2:in `foo'
+# -:9:in `<b>&lt;main&gt;</b>'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/22">
+
+<div class="notes">
+<p>you called foo</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  yield
+end
+
+puts foo
+
+# -:2:in `block in foo'
+# -:6:in `bar'
+# -:2:in `<b>foo</b>'
+# -:9:in `&lt;main&gt;'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/23">
+
+<div class="notes">
+<p>which called bar</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  yield
+end
+
+puts foo
+
+# -:2:in `block in foo'
+# -:6:in `<b>bar</b>'
+# -:2:in `foo'
+# -:9:in `&lt;main&gt;'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/24">
+
+<div class="notes">
+<p>which called the block in foo.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px;"><code>
+def foo
+  bar{caller(0)}
+end
+
+def bar
+  yield
+end
+
+puts foo
+
+# -:2:in `<b>block in foo</b>'
+# -:6:in `bar'
+# -:2:in `foo'
+# -:9:in `&lt;main&gt;'
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/25">
+
+<div class="notes">
+<p>So let&#x2019;s dive in to how backtraces are generated.</p>
+</div>
+<h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Backtrace</h1><h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 350px;">Generation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/26">
+
+<div class="notes">
+<p>I mentioned that backtraces represent the call stack, but Ruby does not have a call stack as a separate data structure.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 50px;">Call Stack</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 641px; left: 50px;">Representation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/27">
+
+<div class="notes">
+<p>Ruby uses a virtual machine to execute code. In order to execute your Ruby code, Ruby compiles your Ruby source code into bytecode that can be executed on the virtual machine. The virtual machine then processes the bytecode to do the execution.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 50px;">Virtual</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 641px; left: 50px;">Machine</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/28">
+
+<div class="notes">
+<p>The virtual machine keeps keeps track of execution of the current method or block using a virtual machine control frame, often abbreviated to VM frame, control frame, or just frame. The virtual machine tracks these control frames using a stack. Each time a method or block is called, the virtual machine pushes a frame onto the stack. When the method or block returns, the virtual machine pops the frame from the stack.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 50px;">Virtual</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 641px; left: 50px;">Machine</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 851px; left: 50px;">Control Frames</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/29">
+
+<div class="notes">
+<p>I just described something that sounds a lot like a call stack, but earlier I said that Ruby does not have a call stack as a separate data structure, which appears to be a contradiction.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 50px;">Call Stack</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 641px; left: 50px;">Representation</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/30">
+
+<div class="notes">
+<p>The reason for the difference is the virtual machine control frame stack is not exactly a call stack. There are control frames that are not considered part of the call stack and are ignored during backtrace generation. We will see later that these control frames that are not part of the call stack ended up causing bugs in the optimization of partial backtraces.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 50px;">Virtual</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 641px; left: 50px;">Machine</h1><h1 class="red" style="font-size: 180px; position: absolute; top: 851px; left: 50px;">Control Frame Stack</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/31">
+
+<div class="notes">
+<p>Like most parts of Ruby, the implementation of backtraces is written in C. Backtrace handling is implemented in Ruby&#x2019;s vm_backtrace.c file. To make the backtrace generation process more understandable to Ruby programmers, this presentation is going to translate the algorithm used into Ruby pseudocode. I will also simplify it slightly to avoid parts that are not important to this discussion. | We will start with a description of backtrace generation used in Ruby 2.7, which is mostly the same for older versions of Ruby, to describe the process before the optimization.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 432px; left: 150px;">vm_backtrace.c</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/32">
+
+<div class="notes">
+<p>The backtrace generation process starts with the virtual machine&#x2019;s end control frame. While it says end control frame, this is the starting control frame for backtrace generation, since the Ruby 2.7 backtrace generation process runs from the earliest control frame to the current control frame in the order that each control frame was added to the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/33">
+
+<div class="notes">
+<p>The first two control frames after the end control frame should be skipped, as they are considered dummy frames from the perspective of backtrace generation. Let&#x2019;s assume the control frame&#x2019;s next method returns the control frame pushed after the receiver.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame<b>.next.next</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/34">
+
+<div class="notes">
+<p>Since the backtrace is returned as an array, we will initialize an empty array for it.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+<b>bt = []</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/35">
+
+<div class="notes">
+<p>The backtrace process will iterate over the remaining control frames. It needs to know the total number of backtrace frames, and have a counter that is incremented for each control frame to ensure it does not process off the end of the control frame stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+<b class="block">size = VM.num_control_frames - 2
+i = 0</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/36">
+
+<div class="notes">
+<p>The majority of backtrace generation process happens while iterating over the control frames, which we will do here using a while loop. At the end of each loop iteration, we will move to the next frame and increment the counter.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<b class="block">while i <span class="lt"/> size
+  
+  cf = cf.next
+  i += 1
+end</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/37">
+
+<div class="notes">
+<p>Here is the main part of the backtrace generation algorithm. Let&#x2019;s go over each step.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+<b class="block">  if cf.iseq?
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end</b>
+  
+  cf = cf.next
+  i += 1
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/38">
+
+<div class="notes">
+<p>As I mentioned earlier, there are different types of virtual machine control frames, and not all of them are considered in backtrace generation. There are only two control frame types considered during backtrace generation. These are iseq frames and cfunc frames. Iseq stands for instruction sequence, and iseq frames are usually, but not always, frames for normal methods defined in Ruby. Cfunc stands for C function, and cfunc frames are frames for calling methods defined in C. | Iseq and cfunc frames must be treated differently during backtrace generation, because methods defined in C do not have file or line numbers associated with them, so the location of cfunc frames is the same as the preceding iseq frame. This is the reason that the backtrace is processed starting with the virtual machine&#x2019;s end control frame.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.<b>iseq?</b>
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.<b>cfunc?</b>
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/39">
+
+<div class="notes">
+<p>Backtrace generation does not use all iseq frames, it only uses iseq frames that have an instruction pointer. Iseq frames without an instruction pointer can occur for internal functions that call blocks, such as Enumerable&#x2019;s group_by method. | These frames should be ignored, as otherwise a single method call would result in multiple backtrace entries, one of which wouldn&#x2019;t have location information, since the location information is determined using the instruction pointer.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.<b>instruction_pointer?</b>
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/40">
+
+<div class="notes">
+<p>For the iseq frames that have an instruction pointer, these represent methods defined in Ruby. In that case, we need to use the location info of the current iseq frame for any future cfunc frames until the next iseq frame. So we record the location of the call in the current control frame, so that we can use it if needed when creating the backtrace entry for a future cfunc frame.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.instruction_pointer? 
+      <b>last_iseq_loc = cf.loc</b>
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/41">
+
+<div class="notes">
+<p>After recording the location, we add the backtrace entry to the array storing the backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      <b>bt <span class="ltlt"/> cf.iseq_backtrace_entry</b>
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/42">
+
+<div class="notes">
+<p>For cfunc frames, we also add the backtrace entry to the array storing the backtrace. However, creating the backtrace entry for cfunc frames requires knowledge of the last iseq location, so we pass that in when creating the entry.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    <b>bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)</b>
+  end
+  
+  cf = cf.next
+  i += 1
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/43">
+
+<div class="notes">
+<p>After this whole process completes, we reverse the backtrace array, since we want to return the backtrace ordered from the most recent call to the oldest call.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+<b>bt.reverse!</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/44">
+
+<div class="notes">
+<p>Finally, at the very end of this process, we use the arguments provided to caller to extract the entries in the backtrace we are interested in. caller&#x2019;s default start value is 1 and default length value is nil, meaning all backtrace entries after the first entry.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+<b>bt[start, length||size]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/45">
+
+<div class="notes">
+<p>Hopefully this shows why partial backtraces were slow. They basically required a bunch of unnecessary work.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+bt[start, length||size]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/46">
+
+<div class="notes">
+<p>For example, if you want only the most recent caller entry before the current method, you would call caller with 1 as the start entry and 1 as the length. This will return an array of at most one backtrace entry.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+<b>bt[1, 1]</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/47">
+
+<div class="notes">
+<p>However, to get that array of at most one entry, Ruby would still create backtrace entries for most or all of the control frames, before filtering it to only the frames requested. | So the problem was fairly clear, Ruby is doing unnecessary work that will be thrown away. The solution was also fairly clear, in that we needed to avoid that unnecessary work, and only add backtrace frames that we cared about.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<b class="block">while i <span class="lt"/> size
+  if cf.iseq?
+    if cf.instruction_pointer? 
+      last_iseq_loc = cf.loc
+      bt <span class="ltlt"/> cf.iseq_backtrace_entry
+    end
+  elsif cf.cfunc?
+    bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+  end
+  
+  cf = cf.next
+  i += 1
+end</b>
+
+bt.reverse!
+bt[1, 1]
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/48">
+
+<div class="notes">
+<p>So, as a first start of implementing the solution, we need consider the start and length arguments passed to caller. In this initial example, we&#x2019;ll assume that the start and length were both provided and that the start added to the length is still less than the number of control frames. Let&#x2019;s walk through the changes in this example.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+last = size - start
+start = last - length 
+
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/49">
+
+<div class="notes">
+<p>Instead of iterating over the total number of control frames, we use the start argument passed to caller to reduce the number of iterations, which we store in the variable named last.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<b>last = size - start</b>
+start = last - length 
+
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/50">
+
+<div class="notes">
+<p>We subtract the desired length of the backtrace from the number of iterations to determine the starting point where we actually want to add backtrace entries.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+last = size - start
+<b>start = last - length</b>
+
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/51">
+
+<div class="notes">
+<p>We still iterate starting from the same control frame as we did in the previous implementation.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+last = size - start
+start = last - length 
+
+<b>while i <span class="lt"/> last</b>
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/52">
+
+<div class="notes">
+<p>However, until we reach the starting point, we only record the last iseq location for every iseq control frame with an instruction pointer, we do not actually add backtrace entries.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+last = size - start
+start = last - length 
+
+while i <span class="lt"/> last
+<b class="block">  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end</b>
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/53">
+
+<div class="notes">
+<p>We need to do this so that if the last frame in the returned backtrace is a cfunc frame, it will have the correct location, even though it gets that location from an iseq frame that is not in the returned backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+last = size - start
+start = last - length 
+
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(<b>last_iseq_loc</b>)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/54">
+
+<div class="notes">
+<p>I mentioned that in this initial example, we will assume that the start and length were both provided and that the start added to the length is still less than the number of control frames. However, the caller can provide arguments where the length is nil or where the start frame plus the length is greater than the number of control frames. In which case this logic is not sufficient. You would need to replace it.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+last = size - start
+<b>start = last - length</b>
+
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/55">
+
+<div class="notes">
+<p>To handle cases where the start plus the length is more than the number of frames, you would have to replace it with the following code.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby b" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code>if start &gt; size
+  return nil
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/56">
+
+<div class="notes">
+<p>If the start argument passed to caller is greater than the number of frames, caller needs to return nil instead of an array.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code><b class="block">if start &gt; size
+  return nil</b>
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/57">
+
+<div class="notes">
+<p>If the start plus the length is greater than the number of frames, or no length argument is provided, the starting point for backtrace generation needs to be set to zero, so that backtrace generation starts at the outermost frame, the main script.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code>if start &gt; size
+  return nil
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  <b>start = 0</b>
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/58">
+
+<div class="notes">
+<p>This is basically the algorithm that Ruby 3.0.0 shipped with. It passed all tests and specs and resulted in much faster partial backtraces in situations where there were many control frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer? 
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code>if start &gt; size
+  return nil
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/59">
+
+<div class="notes">
+<p>I was quite pleased with myself, declaring victory over this longstanding performance issue.</p>
+</div>
+<h1 class="blue" style="font-size: 450px; position: absolute; top: 32px; left: 150px;">Victory<span class="red">!</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/60">
+
+<div class="notes">
+<p>Unfortunately, the optimized algorithm is subtly wrong. It took a whole month after the release of Ruby 3.0.0 before someone reported problems with it.</p>
+</div>
+<h1 class="red" style="font-size: 450px; position: absolute; top: 482px; left: 150px;">Defeat<span class="blue">!!</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/61">
+
+<div class="notes">
+<p>However, as reported in issue 17581, the optimized algorithm could result in missing backtrace entries.</p>
+</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 432px; left: 251px;">https://bugs.ruby-lang.org/issues/17581</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/62">
+
+<div class="notes">
+<p>The way the algorithm is implemented, it is implicitly expected that each loop iteration will result in a backtrace entry in order to arrive at the expected number of backtrace entries.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code>if start &gt; size
+  return nil
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/63">
+
+<div class="notes">
+<p>The problem occurs when there is a iseq control frame without an instruction pointer. In this case, an iteration occurs without adding a backtrace entry, so if you are past the start iteration, any iterations where there is an iseq control frame without an instruction pointer result in that many missing backtrace entries.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      <b>if cf.instruction_pointer?</b>
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code>if start &gt; size
+  return nil
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/64">
+
+<div class="notes">
+<p>The solution here is to decrement the counter if this happens. This ensures you generate the desired number of backtrace frames. However, then in certain circumstances, you can process off the end of the control frame stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+<b class="block">      else
+        i -= 1</b>
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code>if start &gt; size
+  return nil
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/65">
+
+<div class="notes">
+<p>To make sure you do not process off the end of the control frame stack, you need a separate counter that is compared against the number of control frames. This ensures that even if you are skipping control frames, you do not go beyond the bounds of the control frame stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+<b>j</b> = i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last &amp;&amp; <b>j <span class="lt"/> size</b>
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      else
+        i -= 1
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+  <b>j += 1</b>
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code>if start &gt; size
+  return nil
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/66">
+
+<div class="notes">
+<p>Again, I was quite pleased with myself, I was able to fix this regression quickly and easily.</p>
+</div>
+<h1 class="blue" style="font-size: 450px; position: absolute; top: 32px; left: 150px;">Victory<span class="red">!</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/67">
+
+<div class="notes">
+<p>Unfortunately, while that change fixed the case where backtrace was missing frames, after the fix was committed, it was found to have broken a test case in Rails, which was not broken with the original optimization. Originally, neither the Rails developers nor I were able to construct a self contained example with the failure, which complicated debugging. However, Rails developers were able to provide a way to reproduce the issue using the Rails test framework, which enabled me to debug the issue.</p>
+</div>
+<h1 class="red" style="font-size: 450px; position: absolute; top: 482px; left: 150px;">Defeat<span class="blue">!!</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/68">
+
+<div class="notes">
+<p>Later, after the fix for this issue was developed but before it was committed, another Ruby committer was able to construct a self contained example showing the problem, which they posted as a note on the bug tracker. This example was included as a test case when the fix was committed. | It turns out the cause of this issue was similar to the cause of the previous issue, as it occured when dealing with iseq control frames without an instruction pointer. Instead of missing a backtrace entry as in the previous issue, it would result in an incorrect backtrace entry. For example, it could result in caller without an argument being treated as caller with a start argument of 0.</p>
+</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 432px; left: 101px;">https://bugs.ruby-lang.org/issues/17581#note-5</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/69">
+
+<div class="notes">
+<p>There were two changes that were needed to fix this bug, one simple and one complex.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2
+j = i = 0
+
+<div style="border-bottom: 2px solid black;">last = size - start</div>
+while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      else
+        i -= 1
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+  j += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black;"><code>if start &gt; size
+  return nil
+elsif length &amp;&amp; start + length <span class="lte"/> size
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/70">
+
+<div class="notes">
+<p>The simple fix is that we need to ensure that we do not process frames after the requested start frame. This is the issue that could make caller without an argument act like caller with a 0 start argument. We make this change by subtracting the caller&#x2019;s start argument from the initial size of the backtrace, to ensure we do not process frames that the caller has asked us to ignore. We then adjust the related code that uses caller&#x2019;s start argument to assume the caller&#x2019;s start argument is 0, since it has already been used to adjust the size.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2 <b>- start</b>
+j = i = 0
+
+<div style="border-bottom: 2px solid black;">last = <b>size</b>
+</div>
+while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      else
+        i -= 1
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+  j += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 32px; margin-top: 101px; float: left; padding: 20px; border-left: 2px solid black"><code>if <b>size <span class="lt"/> 0</b>
+  return nil
+elsif length &amp;&amp; <b>length <span class="lt"/> size</b>
+  start = last - length 
+else
+  start = 0
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/71">
+
+<div class="notes">
+<p>Here is the whole complex fix. The purpose of this fix is to adjust the starting frame for backtrace collection so that we are sure the optimized process will result in the correct number of frames. As the text is quite small, I will zoom in for the explanation.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2 - start
+j = i = 0
+
+<div style="border-bottom: 2px solid black;">last = size</div>
+while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      else
+        i -= 1
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+  j += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 21px; margin-top: 11px; float: left; padding: 11px; border-left: 2px solid black"><code>if size <span class="lt"/> 0
+  return nil
+elsif length &amp;&amp; length <span class="lt"/> size
+  start = last - length 
+else
+  start = 0
+end
+
+<b class="block">if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  start_cf = cf
+  while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+    if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+      if j <span class="lt"/> start
+        ignored_frames_before_start = true
+      else
+        i -= 1
+      end
+    end
+    i += 1; j += 1; cf = cf.next
+  end
+  ignored_frames = j - i
+  if ignored_frames &gt; 0
+    if ignored_frames_before_start
+      j = i = 0; cf = start_cf
+      while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size &amp;&amp; j <span class="lt"/> start
+        i += 1; j += 1; cf = cf.next
+      end
+      while start &gt; 0 &amp;&amp; ignored_frames &gt; 0 &amp;&amp; j &gt; 0
+        if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+          ignored_frames += 1
+        end
+        j -= 1; ignored_frames -= 1; start -= 1; cf = cf.prev
+      end
+    else
+      start -= ignored_frames
+    end
+  end
+  j = i = 0; cf = start_cf
+end</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/72">
+
+<div class="notes">
+<p>We only need to use this fix if we have a backtrace limited in both directions, where start argument to caller is not 0 and it is given a length shorter than the actual number of frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>
+<b>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size</b>
+  start_cf = cf
+  while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+    if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+      if j <span class="lt"/> start
+        ignored_frames_before_start = true
+      else
+        i -= 1
+      end
+    end
+    i += 1; j += 1; cf = cf.next
+  end
+  ignored_frames = j - i
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/73">
+
+<div class="notes">
+<p>We scan the entire backtrace from the most outward control frame to the most recent control frame, looking for ignored frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  start_cf = cf
+  <b>while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size</b>
+    if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+      if j <span class="lt"/> start
+        ignored_frames_before_start = true
+      else
+        i -= 1
+      end
+    end
+    <b>i += 1; j += 1; cf = cf.next</b>
+  end
+  ignored_frames = j - i
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/74">
+
+<div class="notes">
+<p>The check for ignored frames is the same as before, iseq frames without an instruction pointer.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  start_cf = cf
+  while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+    if <b>cf.iseq? &amp;&amp; !cf.instruction_pointer?</b>
+      if j <span class="lt"/> start
+        ignored_frames_before_start = true
+      else
+        i -= 1
+      end
+    end
+    i += 1; j += 1; cf = cf.next
+  end
+  ignored_frames = j - i
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/75">
+
+<div class="notes">
+<p>If the ignored frame is before the starting frame in the backtrace, we flag that, as that case requires additional work.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  start_cf = cf
+  while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+    if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+<b class="block">      if j <span class="lt"/> start
+        ignored_frames_before_start = true</b>
+      else
+        i -= 1
+      end
+    end
+    i += 1; j += 1; cf = cf.next
+  end
+  ignored_frames = j - i
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/76">
+
+<div class="notes">
+<p>Otherwise, we decrement the i counter.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  start_cf = cf
+  while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+    if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+      if j <span class="lt"/> start
+        ignored_frames_before_start = true
+      else
+        <b>i -= 1</b>
+      end
+    end
+    i += 1; j += 1; cf = cf.next
+  end
+  ignored_frames = j - i
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/77">
+
+<div class="notes">
+<p>The difference between the i and j counters is now the number of ignored frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  start_cf = cf
+  while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+    if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+      if j <span class="lt"/> start
+        ignored_frames_before_start = true
+      else
+        i -= 1
+      end
+    end
+    i += 1; j += 1; cf = cf.next
+  end
+  <b>ignored_frames = j - i</b>
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/78">
+
+<div class="notes">
+<p>If there are no ignored frames, then we do not have to do anything. Otherwise, additional work is required.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+  <b>if ignored_frames &gt; 0</b>
+    if ignored_frames_before_start
+      j = i = 0; cf = start_cf
+      while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size &amp;&amp; j <span class="lt"/> start
+        i += 1; j += 1; cf = cf.next
+      end
+      while start &gt; 0 &amp;&amp; ignored_frames &gt; 0 &amp;&amp; j &gt; 0
+        if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+          ignored_frames += 1
+        end
+        j -= 1; ignored_frames -= 1; start -= 1; cf = cf.prev
+      end
+    else
+      start -= ignored_frames
+    end
+  end
+  j = i = 0; cf = start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/79">
+
+<div class="notes">
+<p>If there are not any ignored frames before when we expect to start backtrace generation, then we can just subtract the number of ignored frames from the start. Otherwise, the process is significantly more involved.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+  if ignored_frames &gt; 0
+    <b>if ignored_frames_before_start</b>
+      j = i = 0; cf = start_cf
+      while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size &amp;&amp; j <span class="lt"/> start
+        i += 1; j += 1; cf = cf.next
+      end
+      while start &gt; 0 &amp;&amp; ignored_frames &gt; 0 &amp;&amp; j &gt; 0
+        if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+          ignored_frames += 1
+        end
+        j -= 1; ignored_frames -= 1; start -= 1; cf = cf.prev
+      end
+    else
+      <b>start -= ignored_frames</b>
+    end
+  end
+  j = i = 0; cf = start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/80">
+
+<div class="notes">
+<p>We first need to scan to the expected start control frame.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+  if ignored_frames &gt; 0
+    if ignored_frames_before_start
+      j = i = 0; cf = start_cf
+<b class="block">      while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size &amp;&amp; j <span class="lt"/> start
+        i += 1; j += 1; cf = cf.next
+      end</b>
+      while start &gt; 0 &amp;&amp; ignored_frames &gt; 0 &amp;&amp; j &gt; 0
+        if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+          ignored_frames += 1
+        end
+        j -= 1; ignored_frames -= 1; start -= 1; cf = cf.prev
+      end
+    else
+      start -= ignored_frames
+    end
+  end
+  j = i = 0; cf = start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/81">
+
+<div class="notes">
+<p>Then we need to scan backwards from that control frame, decrementing the start and the number of ignored frames until there are no ignored frames left.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+  if ignored_frames &gt; 0
+    if ignored_frames_before_start
+      j = i = 0; cf = start_cf
+      while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size &amp;&amp; j <span class="lt"/> start
+        i += 1; j += 1; cf = cf.next
+      end
+      <b>while start &gt; 0 &amp;&amp; ignored_frames &gt; 0 &amp;&amp; j &gt; 0</b>
+        if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+          ignored_frames += 1
+        end
+        <b>j -= 1; ignored_frames -= 1; start -= 1; cf = cf.prev</b>
+      end
+    else
+      start -= ignored_frames
+    end
+  end
+  j = i = 0; cf = start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/82">
+
+<div class="notes">
+<p>If during the backwards scan we come across an ignored frame, we have to increment the number of ignored frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 40px; margin-top: 11px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+  if ignored_frames &gt; 0
+    if ignored_frames_before_start
+      j = i = 0; cf = start_cf
+      while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size &amp;&amp; j <span class="lt"/> start
+        i += 1; j += 1; cf = cf.next
+      end
+      while start &gt; 0 &amp;&amp; ignored_frames &gt; 0 &amp;&amp; j &gt; 0
+<b class="block">        if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+          ignored_frames += 1
+        end</b>
+        j -= 1; ignored_frames -= 1; start -= 1; cf = cf.prev
+      end
+    else
+      start -= ignored_frames
+    end
+  end
+  j = i = 0; cf = start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/83">
+
+<div class="notes">
+<p>This did fix this issue, and both fixes shipped in Ruby 3.0.1. Once again I could claim victory over this issue. However, the feeling of victory is quite hollow in this case.</p>
+</div>
+<h1 class="blue" style="font-size: 101px; position: absolute; top: 432px; left: 851px;">Victory<span class="red">?</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/84">
+
+<div class="notes">
+<p>When you look at the code required for the optimization, it is complex, and does not bring joy. The workarounds necessary to make the existing backtrace algorithm work with the optimization is far more code than the algorithm itself.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2 - start
+j = i = 0
+
+<div style="border-bottom: 2px solid black;">last = size</div>
+while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      else
+        i -= 1
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+  j += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 21px; margin-top: 11px; float: left; padding: 11px; border-left: 2px solid black"><code>if size <span class="lt"/> 0
+  return nil
+elsif length &amp;&amp; length <span class="lt"/> size
+  start = last - length 
+else
+  start = 0
+end
+
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  start_cf = cf
+  while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+    if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+      if j <span class="lt"/> start
+        ignored_frames_before_start = true
+      else
+        i -= 1
+      end
+    end
+    i += 1; j += 1; cf = cf.next
+  end
+  ignored_frames = j - i
+  if ignored_frames &gt; 0
+    if ignored_frames_before_start
+      j = i = 0; cf = start_cf
+      while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size &amp;&amp; j <span class="lt"/> start
+        i += 1; j += 1; cf = cf.next
+      end
+      while start &gt; 0 &amp;&amp; ignored_frames &gt; 0 &amp;&amp; j &gt; 0
+        if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+          ignored_frames += 1
+        end
+        j -= 1; ignored_frames -= 1; start -= 1; cf = cf.prev
+      end
+    else
+      start -= ignored_frames
+    end
+  end
+  j = i = 0; cf = start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/85">
+
+<div class="notes">
+<p>This optimized approach gives us performance,</p>
+</div>
+<h1 class="blue" style="font-size: 251px; position: absolute; top: 324px; left: 200px;">Performance</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/86">
+
+<div class="notes">
+<p>but at what cost?</p>
+</div>
+<h1 class="blue" style="font-size: 251px; position: absolute; top: 324px; left: 200px;">Performance</h1><h1 class="red" style="font-size: 251px; position: absolute; top: 533px; left: 200px;">at what cost<span class="blue">?</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/87">
+
+<div class="notes">
+<p>As I was developing this presentation, I came to the conclusion that what we need is not an optimization to the previous algorithm, but an entirely new algorithm. Instead of working inward from the end control frame, we need to work outward from the current control frame. Theoretically, this should result in a significant improvement in partial backtrace performance, by only scanning the control frames that we need to scan.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 24px; left: 350px;">New</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Backtrace</h1><h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 350px;">Algorithm</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/88">
+
+<div class="notes">
+<p>Here is the new algorithm, again translated into Ruby code. I will go over each part.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/89">
+
+<div class="notes">
+<p>We will start with the top section.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code><b class="block">end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end</b>
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/90">
+
+<div class="notes">
+<p>Instead of having the starting VM frame for backtrace generation be the virtual machine&#x2019;s end control frame, we will use the virtual machine&#x2019;s start control frame. We will still need the end control frame so that we do not process off the end of the control frame stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code><b class="block">end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end</b>
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code><b class="block">end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame</b>
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/91">
+
+<div class="notes">
+<p>Remember that the reason that the old algorithm originally processed from the outermost frame and worked inward is to set the location information for cfunc backtrace locations when they were created. This new algorithm cannot do that, since at the time the cfunc backtrace locations are created, we do not know the location of the calling iseq backtrace location. So we need to keep a counter of how many cfunc backtrace locations have been added.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code><b class="block">end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end</b>
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+<b>cfunc_counter = 0</b>
+
+if length.nil? || length &gt; size
+  length = size
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/92">
+
+<div class="notes">
+<p>If the length of the requested backtrace is not set or is greater than the number of frames, we set the maximum backtrace length to be the number of frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code><b class="block">end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end</b>
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+<b class="block">if length.nil? || length &gt; size
+  length = size
+end</b>
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/93">
+
+<div class="notes">
+<p>Here is the main part of the algorithm, the loop over the control frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+<b class="block">while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end</b>
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 35px; margin-top: 20px;; float: left; max-width: 1400px;"><code>while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/94">
+
+<div class="notes">
+<p>Unlike the previous algorithm, this new algorithm loops from the innermost frame, going to the previous frame in each iteration. It terminates when we have reached the end control frame, or when the size of the backtrace has reached the requested length.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+<b class="block">while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end</b>
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 35px; margin-top: 20px;; float: left; max-width: 1400px;"><code><b>while cf != end_cf &amp;&amp; bt.size != length</b>
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  <b>cf = cf.prev</b>
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/95">
+
+<div class="notes">
+<p>Just like the previous algorithm, we only care about iseq control frames with an instruction pointer and cfunc control frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+<b class="block">while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end</b>
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 35px; margin-top: 20px;; float: left; max-width: 1400px;"><code>while cf != end_cf &amp;&amp; bt.size != length
+<b class="block">  if cf.iseq?
+    if cf.instruction_pointer?</b>
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  <b>elsif cf.cfunc?</b>
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/96">
+
+<div class="notes">
+<p>Assuming the control frame for the current iteration has one of those two frame types, if we are skipping initial backtrace frames, we decrement the number of initial backtrace frames to skip. caller defaults to skipping a single frame, but remember that you can change this by passing an argument to caller.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+<b class="block">while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end</b>
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 35px; margin-top: 20px;; float: left; max-width: 1400px;"><code>while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+<b class="block">      if start &gt; 0
+        start -= 1</b>
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+<b class="block">    if start &gt; 0
+      start -= 1</b>
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/97">
+
+<div class="notes">
+<p>For cfunc frames, if we are not skipping the frame, we add the backtrace location to the array, and increment the cfunc counter. This cfunc backtrace location will not currently have location information.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+<b class="block">while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end</b>
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 35px; margin-top: 20px;; float: left; max-width: 1400px;"><code>while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+<b class="block">      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1</b>
+    end
+  end
+  
+  cf = cf.prev
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/98">
+
+<div class="notes">
+<p>For iseq frames with instruction pointers, if we are not skipping the frame, we first add the iseq backtrace location. Then, if the cfunc counter is positive, we set the same location to the directly preceding cfunc backtrace locations. After that, we reset the cfunc counter to 0.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+<b class="block">while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end</b>
+
+if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre><pre class="sh_ruby" style="font-size: 35px; margin-top: 20px;; float: left; max-width: 1400px;"><code>while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+<b class="block">        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0</b>
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/99">
+
+<div class="notes">
+<p>Then we can move on to the final section. This section is only needed if the last entry in the backtrace is a cfunc backtrace location, because in that case we need to continue scanning the control frames to find the location to use.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+<b class="block">if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end</b>
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code>if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/100">
+
+<div class="notes">
+<p>We first check if the cfunc counter is positive. If it is not positive, the last entry in the backtrace is an iseq backtrace location, and the location will already be set for it.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+<b class="block">if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end</b>
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code><b>if cfunc_counter &gt; 0</b>
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/101">
+
+<div class="notes">
+<p>This scan uses pretty much the same critera as the main loop, except that we do not need to check against the backtrace size, as we will not be adding to the backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+<b class="block">if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end</b>
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code>if cfunc_counter &gt; 0
+  <b>while cf != end_cf</b>
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    <b>cf = cf.prev</b>
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/102">
+
+<div class="notes">
+<p>To find the location to use for the final cfunc backtrace locations, we need to find the next iseq frame with an instruction pointer.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+<b class="block">if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end</b>
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code>if cfunc_counter &gt; 0
+  while cf != end_cf
+    <b>if (cf.iseq? &amp;&amp; cf.instruction_pointer?)</b>
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/103">
+
+<div class="notes">
+<p>If we find such an iseq frame, we update the location of previous cfunc frames, then we stop the scan.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 18px; margin-top: 20px;; float: left; max-width: 500px;"><code>end_cf = VM.end_control_frame.next
+cf = VM.start_control_frame
+size = VM.num_control_frames - 2
+bt = []
+cfunc_counter = 0
+
+if length.nil? || length &gt; size
+  length = size
+end
+
+while cf != end_cf &amp;&amp; bt.size != length
+  if cf.iseq?
+    if cf.instruction_pointer?
+      if start &gt; 0
+        start -= 1
+      else
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+        cfunc_counter.times do |i|
+          bt[-1 - i].loc = cf.loc
+        end
+        cfunc_counter = 0
+      end
+    end
+  elsif cf.cfunc?
+    if start &gt; 0
+      start -= 1
+    else
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry
+      cfunc_counter += 1
+    end
+  end
+  
+  cf = cf.prev
+end
+
+<b class="block">if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break
+    end
+    cf = cf.prev
+  end
+end</b>
+</code></pre><pre class="sh_ruby" style="font-size: 44px; margin-top: 20px;; float: left; max-width: 1400px;"><code>if cfunc_counter &gt; 0
+  while cf != end_cf
+    if (cf.iseq? &amp;&amp; cf.instruction_pointer?)
+<b class="block">      cfunc_counter.times do |i|
+        bt[-i].loc = cf.loc
+      end
+      break</b>
+    end
+    cf = cf.prev
+  end
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/104">
+
+<div class="notes">
+<p>Switching from the old algorithm to this new algorithm took only a few hours. This new algorithm is much simpler than the previous one. It is about twice as fast as the previous optimized algorithm if you only need the most recent backtrace location, and slightly faster if you need the entire backtrace. Additionally, during testing of the new algorithm, I found an as-yet unreported bug in the previous optimization, which occured when you requested a backtrace with the starting frame after an iseq frame without an instruction pointer. Shortly thereafter, two additional bugs were reported in the previous optimization, one which resulted in a segfault, and one which resulted in an infinite loop.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 24px; left: 350px;">New</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Backtrace</h1><h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 350px;">Algorithm</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/105">
+
+<div class="notes">
+<p>So while I thought the attempt to optimize the previous algorithm was a least a small victory after the two previous bug fixes,</p>
+</div>
+<h1 class="blue" style="font-size: 75px; position: absolute; top: 282px; left: 750px;">Victory<span class="red">!</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/106">
+
+<div class="notes">
+<p>It turns out it was still a defeat.</p>
+</div>
+<h1 class="red" style="font-size: 450px; position: absolute; top: 482px; left: 150px;">Defeat<span class="blue">!!</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/107">
+
+<div class="notes">
+<p>I submitted a pull request for the new algorithm, which was merged and will be part of Ruby 3.1.</p>
+</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 432px; left: 251px;">https://github.com/ruby/ruby/pull/4671</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/108">
+
+<div class="notes">
+<p>Then I can once again claim victory over this performance issue, at least until the next bug report comes in.</p>
+</div>
+<h1 class="blue" style="font-size: 450px; position: absolute; top: 32px; left: 150px;">Victory<span class="red">!</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/109">
+
+<div class="notes">
+<p>However, I still needed to fix Ruby 3.0, and there were a few approaches I could use for that. One was reverting to the Ruby 2.7 behavior. However, reverting the optimization proved problematic because of unrelated changes to backtrace generation that were made after the optimization was committed. Another approach was backporting the entire new algorithm from the master branch to Ruby 3.0. While the new algorithm is simple, the actual change committed was large and invasive due to changing related data structures. I chose the third approach, which was trying to fix the bugs in the previous optimization while still keeping the same basic algorithm.</p>
+</div>
+<h1 class="red" style="font-size: 300px; position: absolute; top: 233px; left: 251px;">Ruby <span class="blue">3.0</span>
+</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/110">
+
+<div class="notes">
+<p>It took me much longer to fix the previous optimization than to implement the new algorithm, but I was eventually able to do so. I ended up using a similar approach that the new algorithm uses.</p>
+</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 432px; left: 251px;">https://github.com/ruby/ruby/pull/4714</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/111">
+
+<div class="notes">
+<p>This was the Ruby 3.0 code after the previous fix, which had the infinite loop, segfault, and invalid result bugs.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2 - start
+j = i = 0
+
+<div style="border-bottom: 2px solid black;">last = size</div>
+while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      else
+        i -= 1
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+  j += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 21px; margin-top: 11px; float: left; padding: 11px; border-left: 2px solid black"><code>if size <span class="lt"/> 0
+  return nil
+elsif length &amp;&amp; length <span class="lt"/> size
+  start = last - length 
+else
+  start = 0
+end
+
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  start_cf = cf
+  while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+    if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+      if j <span class="lt"/> start
+        ignored_frames_before_start = true
+      else
+        i -= 1
+      end
+    end
+    i += 1; j += 1; cf = cf.next
+  end
+  ignored_frames = j - i
+  if ignored_frames &gt; 0
+    if ignored_frames_before_start
+      j = i = 0; cf = start_cf
+      while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size &amp;&amp; j <span class="lt"/> start
+        i += 1; j += 1; cf = cf.next
+      end
+      while start &gt; 0 &amp;&amp; ignored_frames &gt; 0 &amp;&amp; j &gt; 0
+        if cf.iseq? &amp;&amp; !cf.instruction_pointer?
+          ignored_frames += 1
+        end
+        j -= 1; ignored_frames -= 1; start -= 1; cf = cf.prev
+      end
+    else
+      start -= ignored_frames
+    end
+  end
+  j = i = 0; cf = start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/112">
+
+<div class="notes">
+<p>And here are the Ruby 3.0 changes to fix those three bugs. As you can see, we had to make changes in two separate places.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2 - start
+j = i = 0
+
+<div style="border-bottom: 2px solid black;">last = size</div>
+while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      else
+        i -= 1
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+  j += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 18px; margin-top: 11px; float: left; padding: 11px; border-left: 2px solid black"><code>if size <span class="lt"/> 0
+  return nil
+elsif length &amp;&amp; length <span class="lt"/> size
+<b class="block">  scf = VM.start_control_frame
+  while start &gt; 0 &amp;&amp; cf &gt;= scf
+    unless scf.iseq? &amp;&amp; !scf.instruction_pointer?
+      start -= 1
+    end
+    scf = scf.prev
+  end</b>
+else
+  start = 0
+end
+
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+<b class="block">  found_frames = total_frames = 0
+  last_frame_cfunc = false
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      last_frame_cfunc = scf.cfunc?
+      found_frames += 1
+    end
+
+    total_frames += 1
+    scf = scf.prev
+  end
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  cf = new_start_cf</b>
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/113">
+
+<div class="notes">
+<p>Here&#x2019;s the first new block. Previously, we were just subtracting the requested frames to skip from the number of control frames. However, that doesn&#x2019;t work if there is an iseq frame without an instruction pointer before the requested start frame. Iseq frames without instruction pointers frames should be ignored when determining the starting frame, since they should be invisible from the perspecitive of backtrace generation. So we need to modify the code to account for that.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 15px; float: left; max-width: 900px;"><code>  scf = VM.start_control_frame
+  while start &gt; 0 &amp;&amp; cf &gt;= scf
+    unless scf.iseq? &amp;&amp; !scf.instruction_pointer?
+      start -= 1
+    end
+    scf = scf.prev
+  end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/114">
+
+<div class="notes">
+<p>We start with the current control frame, similar to how the Ruby 3.1 algorithm starts with the current control frame.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 15px; float: left; max-width: 900px;"><code>  <b>scf = VM.start_control_frame</b>
+  while start &gt; 0 &amp;&amp; cf &gt;= scf
+    unless scf.iseq? &amp;&amp; !scf.instruction_pointer?
+      start -= 1
+    end
+    scf = scf.prev
+  end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/115">
+
+<div class="notes">
+<p>We run a loop over the control frames, going to the previous frame in each iteration.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 15px; float: left; max-width: 900px;"><code>  scf = VM.start_control_frame
+  while start &gt; 0 &amp;&amp; cf &gt;= scf
+    unless scf.iseq? &amp;&amp; !scf.instruction_pointer?
+      start -= 1
+    end
+    <b>scf = scf.prev</b>
+  end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/116">
+
+<div class="notes">
+<p>We stop the loop when we&#x2019;ve no more start frames left to ignore, or when we reach the end control frame.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 15px; float: left; max-width: 900px;"><code>  scf = VM.start_control_frame
+  while <b>start &gt; 0 &amp;&amp; cf &gt;= scf</b>
+    unless scf.iseq? &amp;&amp; !scf.instruction_pointer?
+      start -= 1
+    end
+    scf = scf.prev
+  end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/117">
+
+<div class="notes">
+<p>In each iteration, we decrement the number of start frames,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 15px; float: left; max-width: 900px;"><code>  scf = VM.start_control_frame
+  while start &gt; 0 &amp;&amp; cf &gt;= scf
+    unless scf.iseq? &amp;&amp; !scf.instruction_pointer?
+      <b>start -= 1</b>
+    end
+    scf = scf.prev
+  end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/118">
+
+<div class="notes">
+<p>Unless the current frame is an iseq frame without an instruction pointer.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 56px; margin-top: 15px; float: left; max-width: 900px;"><code>  scf = VM.start_control_frame
+  while start &gt; 0 &amp;&amp; cf &gt;= scf
+    unless <b>scf.iseq? &amp;&amp; !scf.instruction_pointer?</b>
+      start -= 1
+    end
+    scf = scf.prev
+  end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/119">
+
+<div class="notes">
+<p>Here is the second section we had to change. This is kind of long, so we&#x2019;ll break it into two subsections.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 27px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  found_frames = total_frames = 0
+  last_frame_cfunc = false
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      last_frame_cfunc = scf.cfunc?
+      found_frames += 1
+    end
+
+    total_frames += 1
+    scf = scf.prev
+  end
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/120">
+
+<div class="notes">
+<p>Let&#x2019;s start with the first subsection.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 48px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  found_frames = total_frames = 0
+  last_frame_cfunc = false
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      last_frame_cfunc = scf.cfunc?
+      found_frames += 1
+    end
+
+    total_frames += 1
+    scf = scf.prev
+  end
+
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/121">
+
+<div class="notes">
+<p>We need to keep track of the total number of frames we have seen, as well as the number that will be included in the resulting backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 48px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  <b>found_frames = total_frames = 0</b>
+  last_frame_cfunc = false
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      last_frame_cfunc = scf.cfunc?
+      found_frames += 1
+    end
+
+    total_frames += 1
+    scf = scf.prev
+  end
+
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/122">
+
+<div class="notes">
+<p>We also need to keep track of whether the last frame in the returned backtrace is a cfunc frame.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 48px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  found_frames = total_frames = 0
+  <b>last_frame_cfunc = false</b>
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      last_frame_cfunc = scf.cfunc?
+      found_frames += 1
+    end
+
+    total_frames += 1
+    scf = scf.prev
+  end
+
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/123">
+
+<div class="notes">
+<p>Like the Ruby 3.1 algorithm, we iterate over the control frames, until we have found the requested number of frames, or until we reach the earliest control frame, going to the previous control frame in each iteration. The starting point for the loop will be the backtrace frame that we scanned to earlier when we were skipping the number of frames requested.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 48px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  found_frames = total_frames = 0
+  last_frame_cfunc = false
+
+  while <b>found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf</b>
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      last_frame_cfunc = scf.cfunc?
+      found_frames += 1
+    end
+
+    total_frames += 1
+    <b>scf = scf.prev</b>
+  end
+
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/124">
+
+<div class="notes">
+<p>If the current frame is an iseq frame with an instruction pointer, or is a cfunc frame, it will be included in the backtrace, and we increment found_frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 48px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  found_frames = total_frames = 0
+  last_frame_cfunc = false
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if <b>(scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?</b>
+      last_frame_cfunc = scf.cfunc?
+      <b>found_frames += 1</b>
+    end
+
+    total_frames += 1
+    scf = scf.prev
+  end
+
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/125">
+
+<div class="notes">
+<p>We also record whether the current frame is a cfunc frame, since if it is the last frame in the backtrace, we&#x2019;ll need that information later.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 48px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  found_frames = total_frames = 0
+  last_frame_cfunc = false
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      <b>last_frame_cfunc = scf.cfunc?</b>
+      found_frames += 1
+    end
+
+    total_frames += 1
+    scf = scf.prev
+  end
+
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/126">
+
+<div class="notes">
+<p>Regardless of the type of frame, we&#x2019;ll increment the number of total frames. This is needed to set the size of the control frame stack in later processing.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 48px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  found_frames = total_frames = 0
+  last_frame_cfunc = false
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      last_frame_cfunc = scf.cfunc?
+      found_frames += 1
+    end
+
+    <b>total_frames += 1</b>
+    scf = scf.prev
+  end
+
+  # ...
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/127">
+
+<div class="notes">
+<p>Here&#x2019;s the second subsection.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/128">
+
+<div class="notes">
+<p>First, we need to record the new starting point for backtrace generation. This will be the frame we scanned to in the previous loop, before the loop terminated.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  <b>new_start_cf = scf.next</b>
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/129">
+
+<div class="notes">
+<p>If the last entry in the returned backtrace is a cfunc frame, we need to keep scanning to find the location to use for the final entry in the backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  new_start_cf = scf.next
+  if <b>last_frame_cfunc</b>
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/130">
+
+<div class="notes">
+<p>So we keep scanning earlier frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while <b>cf &gt;= scf</b>
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      <b>scf = scf.prev</b>
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/131">
+
+<div class="notes">
+<p>If during the scan, we come across an iseq frame with an instruction pointer, we have found the location information for the last entry in the backtrace, so we record the last iseq location, and can stop scanning.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+<b class="block">      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end</b>
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/132">
+
+<div class="notes">
+<p>We then set the desired backtrace size to the number of found frames.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  <b>last = found_frames</b>
+  size = total_frames
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/133">
+
+<div class="notes">
+<p>We set the total number of backtrace frames to the number of frames between the frame for the first entry in the returned backtrace and the frame for the last entry in the returned backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  <b>size = total_frames</b>
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/134">
+
+<div class="notes">
+<p>We then set the initial frame for backtrace generation to be the frame that starts the last entry in the backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  <b>cf = new_start_cf</b>
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/135">
+
+<div class="notes">
+<p>Then we set backtrace generation to not skip any frames, since the backtrace generation process will start at the frame for the last entry in the backtrace.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 15px; float: left; max-width: 900px;"><code>if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  # ...
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  <b>start = 0</b>
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/136">
+
+<div class="notes">
+<p>So that&#x2019;s what the Ruby 3.0 backtrace generation code looks like after the fix. This is the code that will start shipping in Ruby 3.0.3. As you can see, it&#x2019;s even longer and more complex than all previous Ruby 3.0 fixes. However, it fixes all of the reported bugs in the optimization. Hopefully, there aren&#x2019;t additional unreported bugs.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 26px; margin-top: 15px; float: left; max-width: 900px;"><code>cf = VM.end_control_frame.next.next
+bt = []
+size = VM.num_control_frames - 2 - start
+j = i = 0
+
+<div style="border-bottom: 2px solid black;">last = size</div>
+while i <span class="lt"/> last &amp;&amp; j <span class="lt"/> size
+  if i <span class="lt"/> start
+    if cf.iseq? &amp;&amp; cf.instruction_pointer?
+      last_iseq_loc = cf.loc
+    end
+  else
+    if cf.iseq?
+      if cf.instruction_pointer?
+        last_iseq_loc = cf.loc
+        bt <span class="ltlt"/> cf.iseq_backtrace_entry
+      else
+        i -= 1
+      end
+    elsif cf.cfunc?
+      bt <span class="ltlt"/> cf.cfunc_backtrace_entry(last_iseq_loc)
+    end
+  end
+  
+  cf = cf.next
+  i += 1
+  j += 1
+end
+
+bt.reverse!
+</code></pre><pre class="sh_ruby" style="font-size: 18px; margin-top: 11px; float: left; padding: 11px; border-left: 2px solid black"><code>if size <span class="lt"/> 0
+  return nil
+elsif length &amp;&amp; length <span class="lt"/> size
+  scf = VM.start_control_frame
+  while start &gt; 0 &amp;&amp; cf &gt;= scf
+    unless scf.iseq? &amp;&amp; !scf.instruction_pointer?
+      start -= 1
+    end
+    scf = scf.prev
+  end
+else
+  start = 0
+end
+
+if start &gt; 0 &amp;&amp; length &gt; 0 &amp;&amp; length <span class="lt"/> size
+  found_frames = total_frames = 0
+  last_frame_cfunc = false
+
+  while found_frames <span class="lt"/> size &amp;&amp; cf &gt;= scf
+    if (scf.iseq? &amp;&amp; scf.instruction_pointer?) || scf.cfunc?
+      last_frame_cfunc = scf.cfunc?
+      found_frames += 1
+    end
+
+    total_frames += 1
+    scf = scf.prev
+  end
+
+  new_start_cf = scf.next
+  if last_frame_cfunc
+    while cf &gt;= scf
+      if scf.iseq? &amp;&amp; scf.instruction_pointer?
+        last_iseq_loc = scf.loc
+        break
+      end
+      scf = scf.prev
+    end
+  end
+
+  last = found_frames
+  size = total_frames
+  start = 0
+  cf = new_start_cf
+end
+</code></pre></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/137">
+
+<div class="notes">
+<p>Here are the lessons I learned related to this optimization.</p>
+</div>
+<h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Lessons</h1><h1 class="red" style="font-size: 251px; position: absolute; top: 440px; left: 350px;">Learned</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/138">
+
+<div class="notes">
+<p>First, do not be afraid of expanding your comfort zone by working on unfamiliar code. I had never looked at the vm_backtrace.c file before working on this issue. Often, we as programmers have the idea that low level code such as programming languages, databases, and operating systems must be impenetrable to newcomers. However, in general it is just code, and if you take the time to read it, you are likely to be able to understand it.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 24px; left: 150px;">Expand Your</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 233px; left: 150px;">Comfort Zone</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/139">
+
+<div class="notes">
+<p>Second, do not get discouraged when your first attempt at making improvements results in problems. In complex systems, it is impossible to test for all possible use cases, and you should expect that any significant change could cause regressions in an untested case. It is important to understand that regressions in untested cases are the cost of improvements.</p>
+</div>
+<h1 class="red" style="font-size: 251px; position: absolute; top: 432px; left: 50px;">Accept &amp; Fix</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 641px; left: 50px;">Regressions</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/140">
+
+<div class="notes">
+<p>Finally, while you often do not need a new algorithm, sometimes you do. Try to recognize cases where what you are doing is difficult because of how you are doing it, and see if taking a completely different approach will make what you are doing easier.</p>
+</div>
+<h1 class="blue" style="font-size: 251px; position: absolute; top: 24px; left: 350px;">Consider</h1><h1 class="red" style="font-size: 251px; position: absolute; top: 233px; left: 350px;">Switching</h1><h1 class="blue" style="font-size: 251px; position: absolute; top: 440px; left: 350px;">Algorithms</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/141">
+
+<div class="notes">
+<p>I hope you had fun learning about backtraces and how we optimized partial backtraces in Ruby 3.</p>
+</div>
+<h1 class="blue" style="font-size: 221px; position: absolute; top: 60px; left: 24px;">Optimizing</h1><h1 class="blue" style="font-size: 221px; position: absolute; top: 251px; left: 24px;">Partial</h1><h1 class="blue" style="font-size: 221px; position: absolute; top: 440px; left: 24px;">Backtraces</h1><h1 class="red" style="font-size: 120px; position: absolute; top: 650px; left: 60px;">in Ruby 3</h1></div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/142">
+
+<div class="notes">
+<p>If you enjoyed this presentation, and want to read more of my thoughts on Ruby programming, consider picking up a copy of Polished Ruby Programming. The book&#x2019;s publisher is currently running a giveaway for the book to conference attendees. The link at the bottom is a link to the giveaway.</p>
+</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 536px; height: 917px; width: 741px;"/>
+
+<p>https://forms.gle/hBXupiz1ZqbhAf4a6</p>
+<h1 class="red" style="font-size: 48px; position: absolute; top: 990px; left: 500px;">https://forms.gle/hBXupiz1ZqbhAf4a6</h1></p>
+</div>
+</div><div id="slides/slides" class="slide " data-transition="none"><div class="content " ref="slides/slides/143">
+
+<div class="notes">
+<p>That concludes my presentation. I would like to thank all of you for listening to me. If you have any questions, I think I have some time for questions now.</p>
+</div>
+<h1 class="blue" style="font-size: 300px; position: absolute; top: 432px; left: 150px;">Thank You<span class="red">!</span>
+</h1><h1 class="red" style="font-size: 48px; position: absolute; top: 990px; left: 500px;">https://forms.gle/hBXupiz1ZqbhAf4a6</h1></div>
+</div>
+</div>
+
+</body>
+</html>
