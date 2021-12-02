@@ -82,7 +82,7 @@ PasswordAuthentication no
 <pre><code>code@jeremyevans.net
 </code></pre>
 
-<p>It was easy to convert this to file that <code>smtpd</code> could use, then upload that to the VM:</p>
+<p>It was easy to convert this to a file that <code>smtpd</code> could use, then upload that to the VM:</p>
 
 <pre><code>$ sed 's/$/  jeremy/' < emails-file > aliases-file
 $ scp aliases-file vm:emails
