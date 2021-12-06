@@ -4,16 +4,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>code.jeremyevans.net - Running My Own Email Server (2021-07-29)</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
   <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
 <div class="navbar">
   <div class="container">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-nav" id="toggle-nav">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
     <a href="index.html" class="navbar-brand">code.jeremyevans.net</a>
 
-    <ul class="navbar-nav">
+    <ul class="navbar-nav navbar-collapse" id="navbar-nav">
       <li class="nav-item"><a class="nav-link" href="openbsd.html">OpenBSD</a></li>
       <li class="nav-item"><a class="nav-link" href="ruby.html">Ruby</a></li>
       <li class="nav-item"><a class="nav-link" href="http://github.com/jeremyevans?tab=repositories">GitHub</a></li>
@@ -368,5 +373,6 @@ match from local action relay_to_local
 
 </div>
 
+<script src="/nav.js"></script>
 </body>
 </html>
