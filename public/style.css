@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .navbar-nav {flex-direction: row; flex-wrap: wrap;}
 .nav-item {margin-left: 20px;}
 
@@ -12,4 +16,128 @@ img {
 
 div.prp {
   align-items: center;
+}
+
+.container {
+  max-width: 1170px;
+  margin: auto;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: flex-start;
+}
+
+.col-md-6 {
+  flex: 0 0 auto;
+  width: 50%;
+  padding: 20px;
+}
+
+.navbar {
+  color: #0d6efd;
+  margin-bottom: 10px;
+}
+
+li, p {
+  line-height: 1.5;
+}
+
+.navbar-brand,
+.navbar-nav > li > a,
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:visited
+{
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.navbar-nav > li > a:hover {
+  text-decoration: underline;
+}
+
+.navbar-brand {
+  font-size: 24px;
+}
+
+.navbar-header, ul.navbar-nav {
+  display: inline-block;
+  font-size: 20px;
+}
+
+ul.navbar-nav {
+  margin: 0;
+  padding: 10px;
+  list-style-type: none;
+}
+
+ul.navbar-nav li {
+  padding-left: 30px;
+  display: inline-block;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.navbar-toggle {
+  display: none;
+}
+
+@media only screen and (max-width: 1000px) {
+  .navbar-header {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+  }
+
+  .navbar-toggle {
+    display: inline-block;
+    position: relative;
+    float: right;
+    padding: 6px;
+    margin-bottom: 6px;
+    background-color: transparent;
+    border-radius: 3px;
+    background-image: none;
+    border: 1px solid #ddd;
+  }
+
+  .navbar-toggle .icon-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: #888;
+  }
+  .navbar-toggle .icon-bar + .icon-bar {
+    margin-top: 3px;
+  }
+
+  ul.navbar-collapse.display,
+  ul.navbar-collapse.display li,
+  ul.navbar-collapse.display li a {
+    clear: both;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  ul.navbar-collapse { display: none; }
+
+  .col-md-6 {
+    width: 100%;
+  }
 }
