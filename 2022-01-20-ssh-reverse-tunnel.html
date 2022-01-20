@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>code.jeremyevans.net - Using An SSH Reverse Tunnel for Remote System Maintenance (2022-01-20)</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="navbar">
+  <div class="container">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-nav" id="toggle-nav">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a href="index.html" class="navbar-brand">code.jeremyevans.net</a>
+
+    <ul class="navbar-nav navbar-collapse" id="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="openbsd.html">OpenBSD</a></li>
+      <li class="nav-item"><a class="nav-link" href="ruby.html">Ruby</a></li>
+      <li class="nav-item"><a class="nav-link" href="http://github.com/jeremyevans?tab=repositories">GitHub</a></li>
+      <li class="nav-item"><a class="nav-link" href="contrib.html">Contributions</a></li>
+      <li class="nav-item"><a class="nav-link" href="presentations.html">Presentations</a></li>
+      <li class="nav-item"><a class="nav-link" href="interviews.html">Press</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+<h1>Using An SSH Reverse Tunnel for Remote System Maintenance (2022-01-20)</h1>
+
+<p>SSH is widely known as the tool to use to remotely connect to other computers and run commands on them.  However, what if you need to run commands on a computer that you don't have the ability to currently connect to?  Well, that becomes substantially more difficult, and it helps to plan in advance for how you will restore your access to remotely connect.  I happened to find myself in such a situation, years ago, and setup such a plan.  I mostly forgot about it until recently, when it was needed, and I had to remember what I had setup, and how to use it, in order to restore the access I needed. Read on for the background behind the need, how I setup SSH to handle access restoration, the problems I ran into when I finally had to use it, and how I worked around them.</p>
+
+<h2>Background</h2>
+
+<p>Like many technically-oriented people, I have other not-so-technically-oriented people in my extended family that I provide technical support for.  In this particular case, I have a VPN between my home network and the home network of the other family member.  This VPN allows for both remote troubleshooting and for backing up each network to the other for disaster recovery.</p>
+
+<p>I originally set up the VPN between our home networks in late 2005, after the introduction of <a href="https://man.openbsd.org/ipsec.conf.5">ipsec.conf</a> in <a href="https://www.openbsd.org/38.html">OpenBSD 3.8</a>, which allowed for very easily setting up an IPSEC VPN between two networks.  In 2021, I converted the VPN from using IPSEC to using Wireguard, using the instructions in <a href="https://man.openbsd.org/wg.4">wg(4)</a>, but that's not really important to the story at hand.</p>
+
+<p>What is important to the story at hand is that this other home network is behind an DSL modem, and the DSL modem would occasionally have its configuration reset.  The default DSL modem configuration did not allow for the VPN to work, because it used network address translation on all devices behind it.  The only way to get the VPN to work would be to put the DSL modem in passthrough mode, where a particular device behind the modem (an OpenBSD firewall in this case) would be assigned the public IP address.  Once the OpenBSD firewall was assigned the public IP address, things were fine, as I could remotely access the firewall.  However, if the DSL modem configuration did get reset, I needed to be able to get access to configure the DSL modem remotely, otherwise the VPN wouldn't work.</p>
+
+<p>For about the first 10 years of this arrangement, if there were problems with the DSL modem configuration, I would just wait until I was on-site and could take care of it.  However, when it happened in 2015, I decided to try to setup a way to remotely fix things without having to come on-site, using SSH.  It turns out that things were mostly smooth after that, with the DSL modem configuration not resetting for quite a few years.  However, earlier this month, the DSL modem configuration was reset, and I wasn't going to be on-site in the near future, so I had to remember the remote access I setup in 2015 and how to use it.</p>
+
+<h2>Regaining Access</h2>
+
+<p>It took me a while to remember how to use the remote access I had setup, since it had been over 6 years by this point.  At first, I only remembered that I had setup remote access to handle this very case, but had completely forgot how to use it.  However, remember that one reason I setup this VPN was for backups.  I decided to look at the backups and see if there was something there that could help remind me.  Thankfully, I found what I was looking for, in a file named <code>setup_tunnel.bat</code> (it was designed to run on a Windows system), which had the following contents:</p>
+
+<pre><code>plink -R 22022:10.1.2.1:22 -N -i reverse_ssh.ppk -P 18989 reverse_ssh@dyndns.mynetwork</code></pre>
+
+<p>First, this is using <code>plink</code>, which is <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a>'s command line equivalent of <a href="https://man.openbsd.org/ssh.1">ssh(1)</a>.  Let's break down what each of these flags do:</p>
+
+<ul>
+  <li><code>-R 22022:10.1.2.1:22</code>: When connecting, setup a remote port forward from port 22022 on the remote host to port 22 on 10.1.2.1 on the local network.</li>
+  <li><code>-N</code>: Don't start a shell or command, since this will only be used for the remote port forward.</li>
+  <li><code>-i reverse_ssh.ppk</code>: Use the given private key when connecting.</li>
+  <li><code>-P 18989</code>: Connect to port 18989.</li>
+  <li><code>reverse_ssh@dyndns.mynetwork</code>: Connect to host <code>dyndns.mynetwork</code> using username <code>reverse_ssh</code>.</li>
+</ul>
+
+<p>So the main point of this command is that the user in the other network can run a command that will connect to a computer in my network, setting up a port forward so that I can connect through that computer to the firewall on the other network.  Once I have that access, I can get access to the DSL modem and modify the configuration.</p>
+
+<p>This command almost worked great.  There was only one, minor issue, which was that I had forgotten the password for <code>reverse_ssh.ppk</code>.  I had a copy of the <code>reverse_ssh.ppk</code> file, as well as the OpenSSH private key on which it was based, but while I tried many passwords, I was unable to remember the correct one.</p>
+
+<p>However, luckily I had installed also installed PuTTYgen on the other machine, which can be used to generate a new keypair.  It had been quite a few years since I had used PuTTYgen, but I was able to Google to find screenshots of the PuTTYgen user interface, and was able to walk the user through generating a new keypair, saving the private key over <code>reverse_ssh.ppk</code>, and sending me the public key via email.  I took the public key that they sent me, and modified <code>~reverse_ssh/.ssh/authorized_keys</code> on the computer they were connecting to to use the new public key.</p>
+
+<p>After that change, I had them try running <code>setup_tunnel.bat</code> again. Unfortunately, the results were still unsuccessful.  I had an idea of what the problem might be, so I checked <code>/var/log/authlog</code> on the computer they were connecting to, and found the following lines:</p>
+
+<pre><code>userauth_pubkey: key type ssh-rsa not in PubkeyAcceptedAlgorithms
+Connection closed by authenticating user reverse_ssh 123.55.110.49 port 52935 [preauth]</code></pre>
+
+<p>This issue comes from a change in OpenSSH 8.8 to tighten security and drop the older, less secure <code>ssh-rsa</code> public key algorithm.  The PuTTYgen that generated the public key was from 2015, and was still using this older algorithm.  So I opened up <a href="https://man.openbsd.org/sshd_config.5">sshd_config</a> on the computer they were connecting to, and added:</p>
+
+<pre><code>PubkeyAcceptedAlgorithms +ssh-rsa</code></pre>
+
+<p>As an aside, there was already code to limit what the <code>reverse_ssh</code> user could do in <code>sshd_config</code>:</p>
+
+<pre><code>Match User reverse_ssh
+        PubkeyAuthentication yes
+        ForceCommand /bin/false</code></pre>
+
+<p>Anyway, after modifying <code>sshd_config</code> and restarting <code>sshd</code>, the <code>setup_tunnel.bat</code> file worked, and the user could successfully remotely connect. Then I had to use the reverse tunnel to setup access to the DSL modem webpage, so I could modify the configuration.  The first step was setting up ssh access to the firewall at the remote site.  I was able to accomplish that by modifying <code>~/.ssh/config</code> and adding a entry to connect through the reverse tunnel:</p>
+
+<pre><code>Host via_reverse_tunnel
+Hostname localhost
+Port 22022
+TCPKeepAlive yes</code></pre>
+
+<p>This connects to <code>22022</code> on localhost, which the reverse tunnel has forwarded to port 22 on the firewall of the remote network. This worked, successfully restoring my remote access to the firewall at the remote site.</p>
+
+<h2>Fixing the Underlying Problem</h2>
+
+<p>From there I had to poke around to figure out where the DSL modem configuration website was hosted.  Thankfully, one of my first guesses, <code>192.168.1.254</code>, worked.  I quickly added the following to the <code>via_reverse_tunnel</code> entry in <code>~/.ssh/config</code>:</p>
+
+<pre><code>LocalForward *:8080 192.168.1.254:80</code></pre>
+
+<p>After that change, I disconnected and reconnected the SSH connection. Then I could navigate to http://localhost:8080 on that machine, and get access to the DSL modem configuration.  From there it was a simple matter of enabling passthrough mode on the modem, choosing the correct passthrough machine (the OpenBSD firewall), then restarting <a href="https://man.openbsd.org/dhcpleased.8">dhcpleased</a> via <code>doas rcctl restart dhcpleased</code> to pick up the public IP address from the DSL modem.  Immediately after that, the Wireguard VPN started working again, fully restoring remote access.</p>
+
+<h2>Final Thoughts</h2>
+
+<p>My main lesson learned from this experience is to better document my system configurations, and test them more frequently, so that they will work when needed.  I've handled the better documentation by writing this post.  Time will tell if I follow through on the more frequent testing.  Hopefully this post will help some other people see how SSH can be used to solve problems of this nature.</p>
+
+</div>
+
+<script src="/nav.js"></script>
+</body>
+</html>
