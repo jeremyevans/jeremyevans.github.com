@@ -10,5 +10,5 @@ end
 
 desc "Serve local version of website via rackup"
 task :serve do
-  sh %{#{FileUtils::RUBY} -S rackup -p 8080}
+  sh %{#{FileUtils::RUBY} -S rackup -p 8080 -o 0.0.0.0}
 end
