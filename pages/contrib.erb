@@ -137,7 +137,11 @@
     <li>Add test for clearing of sessions (be322a22b274eb9cdb572332c0d1602d6f84cf68)</li>
   </ul></li>
   <li><a href="https://github.com/darkhelmet/rack-mongrel2">rack-mongrel2</a>: Fix obvious ArgumentError bug (49ce253f9ac6f8cd8c2e)</li>
-  <li><a href="https://github.com/baldowl/rack_csrf">rack_csrf</a>: Use lowercase headers on Rack 3 (c8f3eef715e1290534796492853731d3b6d76914)</li>
+  <li><a href="https://github.com/rack/rack-session">rack-session</a>: Various fixes (7071f6570e6ca7aaa9b1aa78e7167f5c782f88b0)</li>
+  <li><a href="https://github.com/baldowl/rack_csrf">rack_csrf</a>:<ul>
+    <li>Use lowercase headers on Rack 3 (c8f3eef715e1290534796492853731d3b6d76914)</li>
+    <li>When using Rack 3, only load rack/request and rack/utils (358363d36501715aa4192124fc4601354d7fc448)</li>
+  </ul></li>
   <li><a href="http://raindrops.bogomips.org/">raindrops</a>:<ul>
     <li>Fix bad rescue statements in a couple tests (a5830080b3cf6011d737342462700f7c5819942a)</li>
     <li>Mark some tests as linux-only (499e63e2666f88134f7d47f3bcfdfedd72396e70)</li>
@@ -187,6 +191,10 @@
     <li>Handle PGRES_SINGLE_TUPLE for 9.2 single row mode (000a7ffc95c9f0658ee6f3a582988ba1a3d4e398)</li>
     <li>Add a text decoder for inet/cidr written in C (c65cc645505cb5bfeec039faee6a6d18308dee85)</li>
     <li>Add numeric decoder written in C (d4ae41bb8fd447c92ef9c8810ec932acd03e0293)</li>
+    <li>Allow pgresult_stream_any to be used by sequel_pg (14bc0d753471a0a48b2fc97e0e229007595a7eab)</li>
+    <li>Handle PGRES_COMMAND_OK in pgresult_stream_any (df4e69998f0b49cf8cf666555703c62cc1f0ed69)</li>
+    <li>Avoid spurious keyword argument warning on Ruby 2.7 (0242f3194c15d10ad5037d4581e78cb70b13b648)</li>
+    <li>Avoid another Ruby 2.7 keyword warning (6eac3d4164f4e3a70c810c8c7f48e551486763a2)</li>
   </ul></li>
   <li><a href="http://rubygems.org/">Rubygems</a>:<ul>
     <li>Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
