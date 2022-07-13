@@ -2,14 +2,78 @@
 
 <p>I'm a <a href="http://www.ruby-lang.org">Ruby</a> committer, mostly focusing on general bug fixing.</p>
 
-<p>I maintain many Ruby libraries, some of the more popular ones are:</p>
+<p>I'm an owner and currently maintain the following gems, all of which have 100% line/branch coverage, and active CI testing using GitHub Actions (except OpenBSD-specific gems):</p>
+
+<table class="coverage">
+<thead>
+  <tr>
+    <th>Gem
+    <th>Repository
+    <th>CI Status
+    <th>Lines Covered
+    <th>Branches Covered
+    <th>Coverage Tested On
+  </tr>
+</thead>
+<tbody>
+<%
+require 'csv'
+CSV.foreach('projects.csv') do |gem, github, _, lines, covered_lines, branches, covered_branches, date|
+%>
+  <tr>
+    <td><a href="https://rubygems.org/gems/<%= gem %>"><%= gem %></a>
+    <td><a href="https://github.com/<%= github %>"><%= github %></a>
+    <td>
+      <% if gem == 'pledge' || gem == 'unicorn-lockdown' %>
+        OpenBSD-specific
+      <% else %>
+        <a href="https://github.com/<%= github %>/actions/workflows/ci.yml"><img src="https://github.com/<%= github %>/actions/workflows/ci.yml/badge.svg" /></a>
+      <% end %>
+    <td><%= covered_lines %>/<%= lines %>
+    <td><%= covered_branches %>/<%= branches %>
+    <td><%= date %>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+<p>I'm an owner of the following ruby organization gems:
 
 <ul>
-<li><a href="http://sequel.jeremyevans.net">Sequel</a>: The Database Toolkit for Ruby</li>
-<li><a href="http://roda.jeremyevans.net">Roda</a>: Routing Tree Web Toolkit</li>
-<li><a href="http://rodauth.jeremyevans.net">Rodauth</a>: Ruby's Most Advanced Authentication Framework</li>
-<li><a href="https://github.com/jeremyevans/erubi">Erubi</a>: ERB Template Engine (used by most Ruby web frameworks)</li>
-<li><a href="https://github.com/jeremyevans/american_date">american_date</a>: American style month/day/year date parsing for Ruby</li>
-<li><a href="https://github.com/jeremyevans/minitest-hooks">minitest-hooks</a>: before(:all)/after(:all)/around/around(:all) hooks for minitest</li>
-<li><a href="https://github.com/jeremyevans/ruby-warning">ruby-warning</a>: Custom processing for Ruby warnings</li>
+<li>webrick
+<li>fileutils
+<li>date
+<li>zlib
+<li>tk
+</ul>
+
+<p>I'm the owner of the following gems, but these gems are no longer maintained and are now archived:
+
+<ul>
+<li>home_run
+<li>scaffolding_extensions
+<li>minitest-shared_description
+<li>ruby-style
+<li>jeremyevans-exception_notification
+<li>rack-indifferent
+<li>third_base
+<li>scgi
+<li>tilt-rails_erb
+<li>evilr
+<li>tilt-indirect
+<li>sequel_validation_helpers_block
+<li>rack-deadline
+<li>faster_html_escape
+<li>zozo
+<li>roda-rails
+<li>string-crypt
+</ul>
+
+<p>I'm the owner of the following gems, but the have been merged into other gems or renamed:
+
+<ul>
+<li>sequel_core: merged into sequel
+<li>sequel_model: merged into sequel
+<li>tame: renamed to pledge after change in OpenBSD function name
+<li>jeremyevans-postgres-pr: renamed to sequel-postgres-pr
 </ul>

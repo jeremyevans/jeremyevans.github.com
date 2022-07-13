@@ -18,6 +18,15 @@ div.prp {
   align-items: center;
 }
 
+.coverage td, .coverage th {
+  border: 1px solid black;
+  text-align: center;
+  padding: 5px;
+}
+.coverage {
+  border-collapse: collapse;
+}
+
 .container {
   max-width: 1170px;
   margin: auto;
@@ -139,5 +148,12 @@ ul.navbar-nav li {
 
   .col-md-6 {
     width: 100%;
+  }
+
+  .coverage, .coverage tr, .coverage th, .coverage td {
+    display: block
+  }
+  .coverage tr {
+    border-bottom: 4px solid black;
   }
 }
