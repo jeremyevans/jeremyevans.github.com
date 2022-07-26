@@ -2,7 +2,7 @@
 
 <p>I'm a <a href="http://www.ruby-lang.org">Ruby</a> committer, mostly focusing on general bug fixing.</p>
 
-<p>I'm an owner and currently maintain the following gems, all of which have 100% line/branch coverage, and active CI testing using GitHub Actions (except OpenBSD-specific gems):</p>
+<p>I'm an owner and currently maintain the following gems, all of which have 100% line/branch coverage, and active CI testing using GitHub Actions:</p>
 
 <table class="coverage">
 <thead>
@@ -23,12 +23,7 @@ CSV.foreach('projects.csv') do |gem, github, _, lines, covered_lines, branches, 
   <tr>
     <td><a href="https://rubygems.org/gems/<%= gem %>"><%= gem %></a>
     <td><a href="https://github.com/<%= github %>"><%= github %></a>
-    <td>
-      <% if gem == 'pledge' || gem == 'unicorn-lockdown' %>
-        OpenBSD-specific
-      <% else %>
-        <a href="https://github.com/<%= github %>/actions/workflows/ci.yml"><img src="https://github.com/<%= github %>/actions/workflows/ci.yml/badge.svg" /></a>
-      <% end %>
+    <td><a href="https://github.com/<%= github %>/actions/workflows/ci.yml"><img src="https://github.com/<%= github %>/actions/workflows/ci.yml/badge.svg" /></a>
     <td><%= covered_lines %>/<%= lines %>
     <td><%= covered_branches %>/<%= branches %>
     <td><%= date %>
@@ -69,7 +64,7 @@ CSV.foreach('projects.csv') do |gem, github, _, lines, covered_lines, branches, 
 <li>string-crypt
 </ul>
 
-<p>I'm the owner of the following gems, but the have been merged into other gems or renamed:
+<p>I'm the owner of the following gems, but these have been merged into other gems or renamed:
 
 <ul>
 <li>sequel_core: merged into sequel
