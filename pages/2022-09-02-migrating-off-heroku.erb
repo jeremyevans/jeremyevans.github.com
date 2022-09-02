@@ -1,0 +1,415 @@
+<h1><%= @title = 'Migrating Off Heroku (2022-09-02)' %></h1>
+
+<p>Starting in 2009, I used <a href="https://www.heroku.com">Heroku</a> to give public access to demo sites for some libraries and applications I've created. Heroku worked well for me, not just because of the ease of use, but also because it was completely free.  In over 12 years of use, I never paid Heroku a dime.  As the saying goes, "all good things must come to an end", and on August 25, 2022, Heroku announced that they would stop offering their free tier in about three months, so I knew I had to migrate to another platform.  I decided to run the demo applications on my own virtual machine (<a href="2021-07-29-running-my-own-email-server.html">the same one that handles my inbound email</a>).  This describes the reasons behind that choice, and how I completed that migration.</p>
+
+<h2>Background</h2>
+
+<p>I started using Heroku in late 2009, and at one point, I had around 8 separate demo applications running on Heroku, all running on the free tier.  Heroku made updating the applications simple.  For the related repositories, I had a <code>heroku</code> <a href="https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes">git remote</a>, and running <code>git push heroku master</code> would update the related demo application on Heroku.  All applications had a related database, and at the time, there was a 5MB limit on database size, but no restrictions on the number of rows.  This worked well for my demo applications.  This was the easiest time I had using Heroku.</p>
+
+<p>In 2012, Heroku changed the policies for their free <a href="https://www.postgresql.org/">PostgreSQL</a> database tier, moving from a limit of 5MB to a limit of 10,000 rows.  This affected one of my applications, which had significantly less than 5MB of data, but more than 10,000 rows.  <a href="/presentations/railsclub2013/index.html?trans=no#56">I had to switch one of my applications from storing some data as normal rows, to using an array of composite types, just to work around this limit</a>. I ended up having to use a <a href="https://github.com/jeremyevans/quinto/commit/32f69714bf9455ecfa63dd0ebfbc2f91c204cfee">similar approach in other applications</a> over the years.  This was kind of annoying, but it did work fine.</p>
+
+<p>In 2016, Heroku changed the policies for accounts to only allow a specific number of free hours per account per month.  If you wanted to have the ability for one application to run on a free <a href="https://www.heroku.com/dynos">dyno</a> for the entire month, you had to give them a credit card. Previously, I hadn't needed to provide a credit card, so I was never worried about being charged.  Begrudgingly, I did give them a credit card, and to Heroku's credit, I was never billed on it.</p>
+
+<p>As I mentioned, I previously had around 8 separate demo applications running on Heroku, and starting in 2016, I could only run a single application going forward.  Thankfully, by that time, my demo applications all used <a href="https://roda.jeremyevans.net/">Roda</a> as the web framework.  Unlike <a href="https://rubyonrails.org/">Ruby on Rails</a>, you can easily run multiple Roda applications in the same process.  So I decided to run all demo applications in the same <a href="https://www.ruby-lang.org/en/">Ruby</a> process, using a simple <a href="https://github.com/rack/rack">Rack</a>-based router to dispatch to the correct application based on the request host name.  This required me to make sure each demo application was properly namespaced, which did take a little work, but not too much.</p>
+
+<p>Since 2016, I added a couple more demo applications, so for the last few years I have had 10 Roda applications running in the same Ruby process, with a total <a href="https://devcenter.heroku.com/articles/slug-compiler">slug size</a> of 50MB, of which about 14MB was pictures for one of my applications.</p>
+
+<p>Here are what the important parts of the <code>config.ru</code> file looked like for running all of those applications in the same process. First, I had to map the appropriate Heroku database URL environment variables to the application specific environment variables:</p>
+
+<code><pre>{
+  'autoforme'=&gt;'red',
+  'falcomcds'=&gt;'ivory',
+  'forme'=&gt;'aqua',
+  'giftsmas'=&gt;'olive',
+  'kaeruera'=&gt;'gray',
+  'quinto'=&gt;'violet',
+  'rodauth'=&gt;'pink',
+  'spam'=&gt;'teal',
+  'lila_shell'=&gt;'jade',
+}.each do |k, v|
+  ENV["#{k.upcase}_DATABASE_URL"] = ENV["HEROKU_POSTGRESQL_#{v.upcase}_URL"]
+end
+ENV["CSPVR_DATABASE_URL"] = ENV.delete("DATABASE_URL")
+</pre></code>
+
+<p>Then I had to require all of the applications. These applications used git submodules in the repository pushed to Heroku.</p>
+
+<code><pre>require_relative 'autoforme/demo-site/autoforme_demo'
+require_relative 'falcomcdcatalog/falcomcdcatalog'
+require_relative 'forme/demo-site/forme_demo'
+require_relative 'giftsmas/giftsmas'
+require_relative 'kaeruera/kaeruera_app'
+require_relative 'quinto/lib/quinto/app'
+require_relative 'rodauth/demo-site/rodauth_demo'
+require_relative 'spam/spam'
+require_relative 'lila_shell/lila_shell'
+require_relative 'cspvr/app'
+</pre></code>
+
+<p>Then I had a simple Rack app that would dispatch incoming requests to the appropriate Roda app, based on the request host name:</p>
+
+<code><pre>apps = Hash.new(proc{|_| [404, {'Content-Length'=&gt;'12'}, ["Invalid Host"]]}).update(
+  'autoforme-demo.jeremyevans.net'=&gt;AutoFormeDemo::App.freeze.app,
+  'falcomcdcatalog.jeremyevans.net'=&gt;Falcom::App.freeze.app,
+  'forme-demo.jeremyevans.net'=&gt;FormeDemo::App.freeze.app,
+  'giftsmas-demo.jeremyevans.net'=&gt;Giftsmas::App.freeze.app,
+  'kaeruera-demo.jeremyevans.net'=&gt;KaeruEra::App.freeze.app,
+  'quinto-demo.jeremyevans.net'=&gt;Quinto::App.freeze.app,
+  'rodauth-demo.jeremyevans.net'=&gt;RodauthDemo::App.freeze.app,
+  'spam-demo.jeremyevans.net'=&gt;Spam::App.freeze.app,
+  'lilashell-demo.jeremyevans.net'=&gt;LilaShell::App.freeze.app,
+  'cspvr-demo.jeremyevans.net'=&gt;Cspvr::App.freeze.app,
+)
+
+run(proc{|env| apps[env['HTTP_HOST']].call(env)})
+</pre></code>
+
+<h2>Considering Options</h2>
+
+<p>When Heroku announced they were shutting down their free tier, I read about a bunch of other similar smaller companies with various free options. Some of those companies even had the ability to easily port applications from Heroku to their platform. However, I think that ultimately most of those companies will either go out of business, or go the same route as Heroku.  The one option that I looked into was using <a href="https://cloud.google.com/">Google Cloud</a>, but while it could possibly host the compute for free, they don't offer a free PostgreSQL database.</p>
+
+<p>I probably would have switched to one of the other companies offering a free service, if I didn't already have <a href="2021-07-29-running-my-own-email-server.html">a barely-used virtual machine for receiving inbound email</a>.  Since I did have that virtual machine, I decided to move the applications to that virtual machine, which would not result in any additional cost.</p>
+
+<h2>Migrating the Applications</h2>
+
+<p>These applications aren't high priority, don't change often, and all are fairly similar in terms of architecture.  I don't need Heroku's fancy features of automatically building containers during each repository push. I don't need to autoscale the number of webservers or the amount of processing power available to the database. I'm comfortable manually updating the applications in the virtual machine. That's probably not the situation most people are in, so I consider myself lucky.</p>
+
+<p>The virtual machine runs <a href="https://www.openbsd.org/">OpenBSD</a>, so I started off installing <a href="https://git-scm.com/">Git</a>, PostgreSQL, and some gems that will be used.  These OpenBSD <code>ruby31-*</code> packages include all of the gems that the applications use that include C extensions.  This will also install Ruby 3.1, since that is one of the dependencies.</p>
+
+<code><pre># pkg_add git postgresql-{server,contrib} ruby31-{bcrypt,pledge,puma,sassc,sequel_pg,sqlite3,subset_sum}
+</pre></code>
+
+<p>The Ruby 3.1 installation printed information about setting up symbolic links. Since Ruby 3.1 will be the default Ruby version for this virtual machine, I ran those commands:</p>
+
+<code><pre># ln -sf /usr/local/bin/ruby31 /usr/local/bin/ruby
+# ln -sf /usr/local/bin/bundle31 /usr/local/bin/bundle
+# ln -sf /usr/local/bin/bundler31 /usr/local/bin/bundler
+# ln -sf /usr/local/bin/erb31 /usr/local/bin/erb
+# ln -sf /usr/local/bin/gem31 /usr/local/bin/gem
+# ln -sf /usr/local/bin/irb31 /usr/local/bin/irb
+# ln -sf /usr/local/bin/rdoc31 /usr/local/bin/racc
+# ln -sf /usr/local/bin/rake31 /usr/local/bin/rake
+# ln -sf /usr/local/bin/rdoc31 /usr/local/bin/rbs
+# ln -sf /usr/local/bin/rdoc31 /usr/local/bin/rdbg
+# ln -sf /usr/local/bin/rdoc31 /usr/local/bin/rdoc
+# ln -sf /usr/local/bin/ri31 /usr/local/bin/ri
+# ln -sf /usr/local/bin/typeprof31 /usr/local/bin/typeprof
+</pre></code>
+
+<p>Then I installed all of the pure Ruby gems (those without C extensions) that are used by the applications:</p>
+
+<code><pre># gem install -N enum_csv erubi jwt mail rack-unreloader refrigerator roda roda-message_bus rotp rqrcode sequel thamble tilt
+</pre></code>
+
+<p>The <code>-N</code> flag is actually important here, because the virtual machine only has 512MB of RAM, and generating documentation for the <a href="https://github.com/mikel/mail">mail gem</a> can actually exceed that.</p>
+
+<p>I used <a href="https://man.openbsd.org/pkg_add.1">pkg_add</a> to install OpenBSD packages for gems requiring C extensions, and installed other Ruby gems using <code>gem install</code>.  This is mainly to make upgrading to newer versions of OpenBSD easier.  I'll be upgrading this virtual machine to the newest version of OpenBSD every 6 months.</p>
+
+<p>Then I needed to create a directory for the application.  This directory will be owned by my own account (<code>jeremy</code>), but I'm going to run the application as a different user:</p>
+
+<code><pre># mkdir /var/www/app
+# chown jeremy /var/www/app
+</pre></code>
+
+<p>Then I changed to the directory I created, and checked out each application into a subdirectory of that directory.  This is basically the same as the what I was doing on Heroku, except without using <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">git submodules</a>.  I also limited access to each git directory to my own user using <a href="http://man.openbsd.org/chmod.1">chmod</a>, so it would not be accessible by the user running the application.</p>
+
+<code><pre>$ cd /var/www/app
+$ for x in autoforme cspvr falcomcdcatalog forme giftsmas kaeruera lila_shell quinto rodauth spam; do
+    git clone https://github.com/jeremyevans/$x
+    chmod 700 $x/.git
+  done
+</pre></code>
+
+<p>Then I setup a PostgreSQL database cluster, using the instructions at <code>/usr/local/share/doc/pkg-readmes/postgresql-server</code>:</p>
+
+<code><pre># su - _postgresql
+# mkdir /var/postgresql/data
+# initdb -D /var/postgresql/data -U postgres -A scram-sha-256 -E UTF8 -W
+</pre></code>
+
+<p>The <a href="https://www.postgresql.org/docs/current/app-initdb.html">initdb</a> command is going to ask for a password, so I generated that with <code>openssl rand -base64 12</code>, and pasted it in when asked.  I also created a <a href="https://www.postgresql.org/docs/current/libpq-pgpass.html">~/.pgpass</a> file with appropriate <code>0600</code> access permissions, so I don't need to past the password in every time.</p>
+
+<p>After that completed, I started the database server using <a href="https://man.openbsd.org/rcctl.8">rcctl</a>:</p>
+
+<code><pre># rcctl start postgresql
+</pre></code>
+
+<p>I then created PostgreSQL users and databases for each of the applications, with each application having a database user that owns the related database, but is not a superuser. Because the PostgreSQL version in use is 14, I also locked down each database (this should not be necessary in PostgreSQL 15+):</p>
+
+<code><pre>$ for x in autoforme cspvr falcomcdcatalog forme giftsmas kaeruera lila_shell quinto rodauth spam; do
+    createuser -U postgres $x
+    createdb -U postgres -O $x $x
+    psql -U postgres -c "GRANT ALL ON DATABASE $x TO $x;"
+    psql -U postgres -c "REVOKE ALL ON DATABASE $x FROM public;"
+    psql -U postgres -c "GRANT ALL ON SCHEMA public TO $x;" $x
+    psql -U postgres -c "REVOKE ALL ON SCHEMA public FROM public" $x
+  done
+</pre></code>
+
+<p>The <a href="https://rodauth.jeremyevans.net/">Rodauth</a> demo application needs the <a href="https://www.postgresql.org/docs/current/citext.html">PostgreSQL citext extension</a> installed, so I added that to the database that the Rodauth demo application uses.</p>
+
+<code><pre>$ psql -U postgres -c "CREATE EXTENSION citext" rodauth
+</pre></code>
+
+<p>The recommended way to run Rodauth is to have a multiple database users, so the database user the application uses does not have access to table containing the password hashes.  However, as Heroku didn't support that approach, and I am going to import the database from Heroku, I won't be using that approach here.</p>
+
+<p>I didn't create a password for each PostgreSQL account when creating the accounts, but since that's a good practice, I wrote a Ruby program for that named <code>create-env.rb</code>.  This program sets a password for each account, and records the password created so I can set the appropriate environment variable in the app.  It also generates session secrets for the applications using sessions. In addition, it adds a few additional environment variables needed by the applications (taken from the Heroku configuration). This program creates an <code>.env.rb</code> file with all of that information:</p>
+
+<code><pre>Dir.chdir '/var/www/app'
+
+require 'securerandom'
+
+raise "already ran" if File.file?('.env.rb')
+File.binwrite('.env.rb', '')
+File.open(".env.rb", "w") do |f|
+  %w'autoforme cspvr falcomcdcatalog forme giftsmas kaeruera lila_shell quinto rodauth spam'.each do |user|
+    password = SecureRandom.base64(48).gsub(/\W/, '')
+    DB.run "ALTER USER #{user} PASSWORD #{DB.literal(password)}"
+    f.puts "ENV['#{user.upcase}_DATABASE_URL'] ||= 'postgres://127.0.0.1/?user=#{user}&amp;password=#{password}'"
+  end
+
+  f.puts ""
+
+  %w'cspvr giftsmas kaeruera lila_shell quinto rodauth spam'.each do |user|
+    session_secret = [SecureRandom.random_bytes(64).gsub("\x00"){((rand*255).to_i+1).chr}].pack('m')
+    f.puts "ENV['#{user.upcase}_SESSION_SECRET'] ||= #{session_secret.inspect}.unpack1('m')"
+  end
+
+  f.puts ""
+
+  f.puts "ENV['KAERUERA_DEMO_MODE'] ||= '1'"
+  f.puts "ENV['KAERUERA_INTERNAL_ERROR_USER'] ||= 'demo'"
+  f.puts "ENV['SPAM_DEMO'] ||= 'demo'"
+  f.puts "ENV['RACK_ENV'] ||= 'production'"
+end
+</pre></code>
+
+<p>I ran that Ruby file with the <code>sequel</code> command line tool (using a <code>31</code> suffix, since I installed the version for Ruby 3.1), which will set the <code>DB</code> variable when running the script:</p>
+
+<code><pre>sequel31 'postgres:///?user=postgres' create-env.rb
+</pre></code>
+
+<p>After running the <code>create-env.rb</code>, I was ready to import the data from Heroku.  I used another script for that, named <code>import-from-heroku.rb</code>.  It will take the application to import into, as well as the connection URL for the Heroku database (which I got from the Heroku config vars).</p>
+
+<code><pre>Dir.chdir '/var/www/app'
+require './.env.rb'
+
+app, heroku_url = ARGV
+
+local_url = ENV.fetch("#{app.upcase}_DATABASE_URL")
+
+system "pg_dump #{heroku_url.inspect} | psql #{local_url.inspect}"
+</pre></code>
+
+<p>I then ran the script for each application to import the data from the related Heroku database:</p>
+
+<code><pre>$ ruby import-from-heroku.rb autoforme postgres:///...
+$ ruby import-from-heroku.rb cspvr postgres:///...
+...
+</pre></code>
+
+<p>I then modified the Heroku <code>config.ru</code> file that I was using slightly.  Here's what the <code>config.ru</code> file for the virtual machine looked like:</p>
+
+<code><pre>Dir.chdir('/var/www/app')
+require './.env.rb'
+
+$:.unshift('./forme/lib')
+$:.unshift('./autoforme/lib')
+$:.unshift('./rodauth/lib')
+
+require_relative 'autoforme/demo-site/autoforme_demo'
+require_relative 'falcomcdcatalog/falcomcdcatalog'
+require_relative 'forme/demo-site/forme_demo'
+require_relative 'giftsmas/giftsmas'
+require_relative 'kaeruera/kaeruera_app'
+require_relative 'quinto/lib/quinto/app'
+require_relative 'rodauth/demo-site/rodauth_demo'
+require_relative 'spam/spam'
+require_relative 'lila_shell/lila_shell'
+require_relative 'cspvr/app'
+
+raise "::DB is defined and should not be" if defined?(::DB)
+
+apps = Hash.new(proc{|_| [404, {'Content-Length'=&gt;'12'}, ["Invalid Host"]]}).update(
+  'autoforme-demo.jeremyevans.net'=&gt;AutoFormeDemo::App.freeze.app,
+  'falcomcdcatalog.jeremyevans.net'=&gt;Falcom::App.freeze.app,
+  'forme-demo.jeremyevans.net'=&gt;FormeDemo::App.freeze.app,
+  'giftsmas-demo.jeremyevans.net'=&gt;Giftsmas::App.freeze.app,
+  'kaeruera-demo.jeremyevans.net'=&gt;KaeruEra::App.freeze.app,
+  'quinto-demo.jeremyevans.net'=&gt;Quinto::App.freeze.app,
+  'rodauth-demo.jeremyevans.net'=&gt;RodauthDemo::App.freeze.app,
+  'spam-demo.jeremyevans.net'=&gt;Spam::App.freeze.app,
+  'lilashell-demo.jeremyevans.net'=&gt;LilaShell::App.freeze.app,
+  'cspvr-demo.jeremyevans.net'=&gt;Cspvr::App.freeze.app,
+)
+
+run(proc{|env| apps[env['HTTP_HOST']].call(env)})
+
+require 'nio'
+require 'refrigerator'
+Refrigerator.freeze_core
+</pre></code>
+
+<p>I then tested running the site with <a href="https://puma.io/">puma</a>, and tested that specific sites work using <a href="https://curl.se/">curl</a>:</p>
+
+<code><pre>$ puma31 &amp;
+$ curl -LH 'host: autoforme-demo.jeremyevans.net' http://localhost:9292
+$ curl -LH 'host: falcomcdcatalog.jeremyevans.net' http://localhost:9292
+</pre></code>
+
+<p>That was good as a basic proof of concept, but this was not yet production ready.  I added a <a href="https://puma.io/puma/Puma/DSL.html">puma.conf</a> file for the puma configuration.  This makes it use a fixed number of 5 threads, instead of starting with 0 threads and going up to 5. I had it use the <code>production</code> environment, instead of the default <code>development</code> environment.  Additionally, I chose to run a single worker process, mostly so that if the worker process dies, it will be automatically restarted. This likely makes the application vulnerable to <a href="https://www.scs.stanford.edu/brop/">BROP attacks</a>, since puma does not <a href="https://man.openbsd.org/execve.2">exec</a> after <a href="https://man.openbsd.org/fork.2">forking</a>, but the convenience of automatic restarting I considered worth the risk in this case.  Puma warns if using a single worker process, so I'll explicitly silence that warning.</p>
+
+<code><pre>threads 5, 5
+environment 'production'
+workers 1
+silence_single_worker_warning
+</pre></code>
+
+<p>When these apps were running in a container on someone else's cloud, security wasn't as much of a priority.  However, since I'm now running this on my own virtual machine, security is more important.</p>
+
+<p>I run my production applications with <a href="https://www.nginx.com/">nginx</a> and <a href="https://yhbt.net/unicorn/README.html">unicorn</a> using <a href="https://github.com/jeremyevans/unicorn-lockdown">unicorn-lockdown</a>, which uses OpenBSD's <a href="https://man.openbsd.org/pledge.2">pledge</a> and <a href="https://man.openbsd.org/unveil.2">unveil</a> system calls (via <a href="https://github.com/jeremyevans/ruby-pledge">ruby-pledge</a>) to restrict allowed system calls and limit file system access.  That approach works for my production systems, since they have about 500 times the amount of RAM as this small virtual machine.  I would like to get similar security advantages here, while limiting how much memory is used, so I modified the bottom part of the <code>config.ru</code> file to also use <code>pledge</code> and <code>unveil</code>:</p>
+
+<code><pre>require 'nio'
+require 'pledge'
+require 'unveil'
+require 'refrigerator'
+require 'bcrypt'
+Refrigerator.freeze_core
+
+Pledge.unveil('.' =&gt; 'r', '.env.rb'=&gt; '', 'mail' =&gt; :gem, 'rack' =&gt; :gem, 'message_bus' =&gt; :gem)
+Pledge.pledge('rpath inet')
+</pre></code>
+
+<p>This only allows the process to read files and handle IP sockets (e.g. accept HTTP connections).  It limits the places files can be read from to the current directory (except for the file containing the database connection information and secrets), as well as some gems that unfortunately use <code>autoload</code> to require files at runtime.  If the puma process is attacked and the attacker tries to run arbitrary programs, or almost anything other than reading files and making IP socket connections, OpenBSD will terminate the process.</p>
+
+<p>This is actually less locked down than it probably should be from a file system perspective.  For my production applications, I lock down the application to only the directories and files the application actually needs (usually only the <code>views</code> directory).  However, it's much better than having no file system access limiting.</p>
+
+<p>Now that the web server is somewhat secured, I added an <code>/etc/rc.d/puma</code> file so that the <code>rcctl</code> program can be used to easily start and stop the server.  This runs the application as the <code>www</code> user.  It would probably be better to create a separate user, but since this is the only process running on the system as that user, it should be OK.</p>
+
+<code><pre>#!/bin/ksh
+
+daemon_user=www
+daemon="/usr/local/bin/puma31"
+daemon_flags="-C /var/www/app/puma.conf /var/www/app/config.ru"
+rc_bg=YES
+rc_reload_signal=USR2
+
+. /etc/rc.d/rc.subr
+
+pexp="ruby[0-9][0-9]: puma .*"
+
+rc_cmd $1
+</pre></code>
+
+<p>I then checked that <code>rcctl</code> can start and stop puma:</p>
+
+<code><pre># rcctl start puma
+# rcctl stop puma
+</pre></code>
+
+<p>That worked, but results in log information being printed to standard output.  Let's setup log files for puma's <code>stdout</code> and <code>stderr</code>:</p>
+
+<code><pre># mkdir /var/log/puma
+# touch /var/log/puma/{stdout,stderr}.log
+# chown www /var/log/puma/{stdout,stderr}.log
+</pre></code>
+
+<p>Puma has a <code>stdout_redirect</code> configuration parameter, but it does things like checking that the directory containing the log file exists before writing to it, which doesn't work well with <code>unveil</code>'s file system access limiting. The easiest way to work around this is to change <code>daemon_flags</code> in puma's <a href="https://man.openbsd.org/rc.d.8">rc.d</a> file to handle logging to a file:</p>
+
+<code><pre>daemon_flags="-C /var/www/app/puma.conf /var/www/app/config.ru &gt;&gt; /var/log/puma/stdout.log 2&gt;&gt; /var/log/puma/stderr.log"
+</pre></code>
+
+<p>I started puma again and made sure the logging worked correctly:</p>
+
+<code><pre># rcctl start puma
+# cat /var/log/puma/stdout.log
+# cat /var/log/puma/stderr.log
+</pre></code>
+
+<p>Previously, I'd been testing access to puma on localhost.  I needed to do that because the firewall rules on the virtual machine do not allow external requests to the port that puma is running on.  So I needed to allow TCP connections to port 80, and redirect them to the localhost port 9292 (puma's default port).  I also wanted to be sure that the user running the application (<code>www</code>) only has the ability to connect to PostgreSQL, and not make any other network connections. I edited the <a href="https://man.openbsd.org/pf.conf.5">/etc/pf.conf</a> file add the following firewall rules:</p>
+ 
+<code><pre># remove set skip on lo
+# After block return, add
+pass on lo0
+block out on {$if lo0} proto {tcp, udp} user www
+pass out on lo0 proto tcp to 127.0.0.1 port 5432 user www
+
+pass in on $if inet proto tcp to port 80 rdr-to 127.0.0.1 port 9292
+</pre></code>
+
+<p>I reloaded the firewall ruleset with <a href="https://man.openbsd.org/pfctl.8">pfctl</a> to make puma available to the outside world:</p>
+
+<code><pre># pfctl -f /etc/pf.conf
+</pre></code>
+
+<p>After that, I checked that connections from another machine to the default HTTP port on the virtual machine worked as expected:</p>
+
+<code><pre>curl -LH 'host: cspvr-demo.jeremyevans.net' http://vm.jeremyevans.net
+</pre></code>
+
+<p>From testing this using a real browser from the outside, I saw that a missed one step, not precompiling the assets for the applications.  So I added a <a href="https://ruby.github.io/rake/doc/rakefile_rdoc.html">Rakefile</a> that can precompile the assets for all applications. This is mostly taken from the Rakefile I was using on Heroku.</p>
+
+<code><pre> require './.env.rb'
+
+$:.unshift('./forme/lib')
+$:.unshift('./autoforme/lib')
+$:.unshift('./rodauth/lib')
+
+namespace :assets do
+  desc "Precompile the assets"
+  task :precompile do
+    ENV["ASSETS_PRECOMPILE"] = '1'
+    require File.expand_path('../falcomcdcatalog/falcomcdcatalog', __FILE__)
+    Falcom::App.compile_assets
+
+    require File.expand_path('../giftsmas/giftsmas', __FILE__)
+    Giftsmas::App.compile_assets
+
+    require File.expand_path('../kaeruera/kaeruera_app', __FILE__)
+    KaeruEra::App.compile_assets
+
+    require File.expand_path('../spam/spam', __FILE__)
+    Spam::App.compile_assets
+
+    require File.expand_path('../quinto/lib/quinto/app', __FILE__)
+    Quinto::App.compile_assets
+
+    require File.expand_path('../cspvr/app', __FILE__)
+    Cspvr::App.compile_assets
+  end
+end
+</pre></code>
+
+<p>I then ran <a href="https://github.com/ruby/rake">rake</a> to precompile the assets for all applications:</p>
+
+<code><pre>$ rake assets:precompile
+</pre></code>
+
+<p>After reloading puma and retesting from the outside, and seeing everything working, I set both PostgreSQL and puma to automatically start when the system boots:</p>
+
+<code><pre># rcctl enable postgresql puma
+</pre></code>
+
+<p>Since I will be running the demo sites on my own virtual machine, I needed to have an appropriate backup strategy.  I already a implemented a backup strategy when <a href="2021-07-29-running-my-own-email-server.html">I originally setup this virtual machine</a>. The backup strategy creates a <code>.tar.gz</code> file for the important files on the virtual machine.  I needed to expand this strategy to handle the new PostgreSQL database, as well as the additional files.</p>
+
+<p>First, I needed to make sure the PostgreSQL database cluster is backed up.  That's easiest using <a href="https://www.postgresql.org/docs/current/app-pg-dumpall.html">pg_dumpall</a>.  So I added this to my <code>make_backup_tarball</code> script:</p>
+
+<code><pre>PGPASSFILE=/home/jeremy/.pgpass doas -u jeremy /usr/local/bin/pg_dumpall -U postgres &gt; /home/jeremy/vm.pgdumpall
+</pre></code>
+
+<p>I also needed to add files to the list of files to backup (stored in <code>/etc/backup_list</code>):</p>
+
+<code><pre>etc/rc.d/puma
+home/jeremy/.pgpass
+home/jeremy/vm.pgdumpall
+var/www/app/.env.rb
+var/www/app/Rakefile
+var/www/app/config.ru
+var/www/app/puma.conf
+</pre></code>
+
+<p>Now that everything was setup, I switched the DNS records from pointing at Heroku to pointing at the virtual machine. After making the changes to DNS, I fairly soon started receiving traffic on the virtual machine.</p>
+
+<p>The puma master process takes around 70MB of memory, and the worker process running all applications currently takes about 150MB of memory.  The virtual machine only has 512MB total, and currently about 150MB are free.  It is not as much breathing room as I would like, but hopefully it will be fine.</p>
+
+<p>The final step of the migration was to turn on maintenance mode on the Heroku application.  Sometime before the end of November I'll delete the Heroku application, but just in case I need to switch back, I'll leave it in maintenance mode.</p>
