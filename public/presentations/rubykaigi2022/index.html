@@ -1,0 +1,5302 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Fixing Assignment Evaluation Order</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1920px;
+          height: 1080px;
+        }
+        #footer { width: 1901px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+      <script type="text/javascript" src="./js/sh_lang/sh_c.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+    <tr><td class="key">n</td><td>toggle notes</td></tr>
+  </table>
+</div>
+
+<div class="buttonNav">
+  <input type="submit" onClick="prevStep();" value="prev"/>
+  <input type="submit" onClick="nextStep();" value="next"/>
+</div>
+
+<div id="preso"><center>loading presentation...</center></div>
+<div id="footer">
+  <span id="notesInfo"></span>
+  <img id="disconnected" src="/css/disconnected.png" />
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/1">
+
+<div class="notes">
+<p>Hello everyone. In this presentation, I will be discussing assignment evaluation order. I will discuss why assignment evaluation order was inconsistent in older versions of Ruby, and how it was fixed in Ruby 3.1 and 3.2.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 60px; left: 24px;">Fixing</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 240px; left: 24px;">Assignment</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 24px;">Evaluation</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 610px; left: 24px;">Order</h1>
+<h1 class="blue" style="font-size: 108px; position: absolute; top: 762px; right: 90px; text-align: right;">
+<span class="red">Ruby</span>Kaigi 2022</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/2">
+
+<div class="notes">
+<p>My name is Jeremy Evans. I am a Ruby committer who focuses on fixing bugs in Ruby.</p>
+</div>
+
+<p><img class="profile-pic" src="./file/jeremy.jpg" style="position: absolute; top: 292px; left: 246px;"></p>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 432px; left: 750px;">GitHub:  <span class="blue mono"> jeremyevans</span>
+</h1>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 507px; left: 750px;">Twitter:  <span class="blue mono">@jeremyevans0</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/3">
+
+<div class="notes">
+<p>I am also the author of Polished Ruby Programming, which was published last year. This book is aimed at intermediate Ruby programmers and focuses on teaching principles of Ruby programming, as well as trade-offs to consider when making implementation decisions.</p>
+</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 100px; height: 1031px; width: 822px;"></p>
+
+<p><img src="./file/polished-ruby-programming-cover-jp.webp" style="position: absolute; top: 20px; right: 100px; height: 1031px; width: 726px;"></p>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/4">
+
+<div class="notes">
+<p>First, what is assignment evaluation order? It is not something that most Ruby programmers have to think about, but all assignment expressions have an order in which the expression is evaluated.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 60px; left: 24px;">What is</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 240px; left: 24px;">Assignment</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 24px;">Evaluation</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 610px; left: 24px;">Order<span class="red">?</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/5">
+
+<div class="notes">
+<p>Here is a simple assignment example.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0] = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/6">
+
+<div class="notes">
+<p>We start off defining a method named a that returns an array.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code><b>def a = []</b>
+def b = 1
+a[0] = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/7">
+
+<div class="notes">
+<p>Then we define a method named b that returns 1.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+<b>def b = 1</b>
+a[0] = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/8">
+
+<div class="notes">
+<p>Then we get to the assignment expression, where we can consider the assignment evaluation order. So how is this assignment expression evaluated?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>a[0] = b</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/9">
+
+<div class="notes">
+<p>Note that there are three separate method calls in this assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0] = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/10">
+
+<div class="notes">
+<p>There is a method call to a, which will return an array.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>a</b>[0] = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/11">
+
+<div class="notes">
+<p>There is a method call to b, which will return 1.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0] = <b>b</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/12">
+
+<div class="notes">
+<p>Finally, there is a call to the element assignment method. It is clear this method must be called last, because it is called on the result of a, with arguments of 0 and the result of b.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a<b>[0] =</b> b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/13">
+
+<div class="notes">
+<p>However, it is probably not obvious which of these methods is called first, a or b. In this case, Ruby calls a first, then b. So the assignment evaluation order is a, then b, then the element assignment method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>a</b>[0] = <b>b</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/14">
+
+<div class="notes">
+<p>The reason that a is evaluated before b is that Ruby follows the left-to-right evaluation principle, in that a typical expression will evaluate the left part before the right part.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 240px; left: 24px;">Left<span class="blue">-</span>to<span class="blue">-</span>Right</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 24px;">Evaluation</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 610px; left: 24px;">Principle</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/15">
+
+<div class="notes">
+<p>You can see the left-to-right evaluation principle in other cases in Ruby. Consider this code, with the same definitions of a and b.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+p(a, b)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/16">
+
+<div class="notes">
+<p>How does Ruby evaluate this expression?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>p(a, b)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/17">
+
+<div class="notes">
+<p>With the left-to-right evaluation principal, p comes first. However, Ruby cannot evaluate the p method call yet, since the results of a and b are arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>p</b>(a, b)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/18">
+
+<div class="notes">
+<p>So it continues. Ruby comes to a next, so it evaluates a first.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+p(<b>a</b>, b)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/19">
+
+<div class="notes">
+<p>Ruby comes to b next, so it then evaluates b.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+p(a, <b>b</b>)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/20">
+
+<div class="notes">
+<p>Now that it has the results of the method calls to a and b, it can then evaluate the method call to p.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>p</b>(a, b)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/21">
+
+<div class="notes">
+<p>So more precisely, the left-to-right evaluation principle in Ruby is that Ruby will evaluate expressions in a left-to-right order, delaying the evaluation of the current expression if it depends on expressions to the right, until all expressions it depends on have been evaluated.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 240px; left: 24px;">Left<span class="blue">-</span>to<span class="blue">-</span>Right</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 24px;">Evaluation</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 610px; left: 24px;">Principle</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/22">
+
+<div class="notes">
+<p>Unfortunately, this principle of left-to-right evaluation was not implemented consistently for all forms of assignment in older versions of Ruby.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 240px; left: 24px;">Left<span class="blue">-</span>to<span class="blue">-</span>Right</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 24px;">Evaluation</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 610px; left: 24px;">Principle</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 810px; left: 110px;">Inconsistently Implemented</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/23">
+
+<div class="notes">
+<p>Here is a case where older versions of Ruby did not follow the left-to-right evaluation principle. We have the same method definitions of a and b as before.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], a[1] = [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/24">
+
+<div class="notes">
+<p>In this case, the assignment expression uses multiple assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>a[0], a[1] = [b, b]</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/25">
+
+<div class="notes">
+<p>Following the principle of left-to-right evaluation, you would assume that Ruby would first evaluate this call to a</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>a</b>[0], a[1] = [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/26">
+
+<div class="notes">
+<p>Then this call to a,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], <b>a</b>[1] = [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/27">
+
+<div class="notes">
+<p>Then this call to b,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], a[1] = [<b>b</b>, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/28">
+
+<div class="notes">
+<p>Then this call to b,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], a[1] = [b, <b>b</b>]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/29">
+
+<div class="notes">
+<p>Then the first element assignment</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a<b>[0]</b>, a[1] <b>=</b> [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/30">
+
+<div class="notes">
+<p>Then the second element assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], a<b>[1] =</b> [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/31">
+
+<div class="notes">
+<p>However, that is not what happens. Ruby before 3.1 violated the left-to-right evaluation principle.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], a[1] = [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/32">
+
+<div class="notes">
+<p>First it evaluated the left call to b,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], a[1] = [<b>b</b>, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/33">
+
+<div class="notes">
+<p>then it evaluated the right call to b.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], a[1] = [b, <b>b</b>]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/34">
+
+<div class="notes">
+<p>Then it evaluated the left call to a,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+<b>a</b>[0], a[1] = [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/35">
+
+<div class="notes">
+<p>then the left element assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a<b>[0]</b>, a[1] <b>=</b> [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/36">
+
+<div class="notes">
+<p>Then it evaluated the right call to a,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], <b>a</b>[1] = [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/37">
+
+<div class="notes">
+<p>and finally the right element assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = []
+def b = 1
+a[0], a<b>[1] =</b> [b, b]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/38">
+
+<div class="notes">
+<p>This evaluation order issue for multiple assignment was known for a long time. It was reported and confirmed as a bug before the release of Ruby 1.9.3. Before it was fixed, this issue was one of the oldest still open bugs in Ruby’s bug tracker, with over 10 years between when it was reported and when it was fixed.|The bug was reported in Japanese, so I had to rely on a Google translation of the bug report and initial discussion, but apparently this bug was considered difficult to fix by matz. matz was not wrong. Of all of the bugs I have fixed in Ruby, this was the most challenging bug to fix, and took far more time to fix than any other bug I have worked on.</p>
+</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 432px; left: 250px;">https://bugs.ruby-lang.org/issues/4443</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/39">
+
+<div class="notes">
+<p>While not directly related to the multiple assignment evaluation order issue, there was a similar evaluation order issue for constant assignment. Here is an example of that.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = Module.new
+def b = 1
+a::C = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/40">
+
+<div class="notes">
+<p>The code is similar to before, except that the a method returns a module.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code><b>def a = Module.new</b>
+def b = 1
+a::C = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/41">
+
+<div class="notes">
+<p>Here we have the assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = Module.new
+def b = 1
+<b>a::C = b</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/42">
+
+<div class="notes">
+<p>The left-to-right evaluation principle indicates that we should first evaluate the a method,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = Module.new
+def b = 1
+<b>a</b>::C = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/43">
+
+<div class="notes">
+<p>then evaluate the b method,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = Module.new
+def b = 1
+a::C = <b>b</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/44">
+
+<div class="notes">
+<p>Then set the constant on the result of the a method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = Module.new
+def b = 1
+a<b>::C =</b> b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/45">
+
+<div class="notes">
+<p>However, what older versions of Ruby do is evaluate b,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = Module.new
+def b = 1
+a::C = <b>b</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/46">
+
+<div class="notes">
+<p>then evaluate a,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = Module.new
+def b = 1
+<b>a</b>::C = b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/47">
+
+<div class="notes">
+<p>then assign the constant on the result of the a method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a = Module.new
+def b = 1
+a<b>::C =</b> b
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/48">
+
+<div class="notes">
+<p>This constant assignment evaluation order issue was reported in 2019. I ended up fixing this issue shortly after fixing multiple assignment, and thanks to the work I did on fixing multiple assignment, it was much easier to fix constant assignment.|The fix for constant assignment evaluation order was not merged into Ruby until after Ruby 3.1 was released, so Ruby’s assignment evaluation order will not be fully consistent until the release of Ruby 3.2.</p>
+</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 432px; left: 250px;">https://bugs.ruby-lang.org/issues/15928</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/49">
+
+<div class="notes">
+<p>I am first going to discuss the issues related to multiple assignment evaluation order, since that is the more complex and challenging case.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 60px; left: 24px;">Multiple</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 240px; left: 24px;">Assignment</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 24px;">Evaluation</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 610px; left: 24px;">Order</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/50">
+
+<div class="notes">
+<p>It is probably not obvious at first glance why fixing multiple assignment evaluation order would be so challenging. After all, it appears you are just changing the order in which you are doing the evaluation. Surely this is as simple as moving code from one spot to another, right? What could possibly be so hard about that? Unfortunately, it is not so simple as it would first appear.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 360px; left: 24px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 540px; left: 24px;">Challenge</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/51">
+
+<div class="notes">
+<p>One of the reasons for this is that Ruby uses a stack-based virtual machine. Ruby compiles your source code into instructions that are executed on the virtual machine. Most of the implementation complexity for left-to-right evaluation comes from having to correctly manage the virtual machine stack.</p>
+</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 440px; left: 524px;">Stack<span class="red">-</span>Based</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 620px; left: 524px;">Virtual</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 810px; left: 524px;">Machine</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/52">
+
+<div class="notes">
+<p>What do these virtual machine instructions look like? Thankfully, Ruby comes with tools allowing you to easily see the generated instructions. You use the dump option when running your Ruby program, with a value of i, which is short for dumping instructions. This allows us to see how multiple assignment instructions changed between Ruby 3.0 and 3.1.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 96px; margin-top: 424px; text-align: center;"><code>ruby --dump=i</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/53">
+
+<div class="notes">
+<p>We will start with a slightly different example. Here we have a multiple assignment expression, which will set the b attribute on a and the first element of c with the values of d and e. When you run Ruby 3.0 with the option to dump instructions,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/54">
+
+<div class="notes">
+<p>You get these instructions output.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code> 
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/55">
+
+<div class="notes">
+<p>As Ruby uses a stack-based virtual machine, in order to understand how the virtual machine instructions work, you also need to consider the virtual machine stack, so here is where we will show the stack. Currently, the stack is empty.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code><b>Stack:</b>
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/56">
+
+<div class="notes">
+<p>As mentioned earlier, Ruby 3.0 evaluates the right hand side of the assignment first. The first expression in the right hand side is the method call to d, which is implemented using these two instructions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = <b>d</b>, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+<b class="block">0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;</b>
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/57">
+
+<div class="notes">
+<p>The first instruction, putself, adds self to the stack. self will be the receiver of the method. We will use a right arrow to show objects added to the stack by the current instruction.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ self</b>
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+<b>0000 putself                                          (   1)[Li]</b>
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/58">
+
+<div class="notes">
+<p>The next instruction is opt_send_without_block, which is an optimized instruction used for certain method calls.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+self
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+<b>0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;</b>
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/59">
+
+<div class="notes">
+<p>From looking at the data associated with the instruction, you can see that this is calling the d method with zero arguments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+self
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:<b>d</b>, argc:<b>0</b>, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/60">
+
+<div class="notes">
+<p>Since the method call passes zero arguments, the virtual machine pops the top entry from the stack, which is the receiver of the method, and then pushes the result of the method, which we will call d. We will use a left arrow to show objects removed by the current instruction. So you can see that this instruction removes self from the stack, and replaces it with d.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← self
+→ d</b>
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+<b>0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;</b>
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/61">
+
+<div class="notes">
+<p>Next, Ruby 3.0 has to evaluate the method call to e. This is the same putself and opt_send_without_block instruction combination. This will push self onto the stack, then pop it off the stack when calling the e method, then push the result of the e method onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, <b>e</b></code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ e</b>
+d
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b class="block">0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;</b>
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/62">
+
+<div class="notes">
+<p>It is probably not obvious why we have the next three instructions. The reason for these instructions is because this multiple assignment expression is the last expression being evaluated, so the return value of the assignment expression is needed. The return value is the right hand side of the assignment, which is an array containing the results of d and e.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+e
+d
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b class="block">0006 newarray               2
+0008 dup
+0009 expandarray            2, 0</b>
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/63">
+
+<div class="notes">
+<p>The first instruction, newarray, has a value of two, which tells the virtual machine to pop the top two entries of the stack, and push an array containing the two entries.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← e
+← d
+→ [d, e]</b>
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b>0006 newarray               2</b>
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/64">
+
+<div class="notes">
+<p>The next instruction, dup, pushes the top entry on the stack onto the stack, so the top two entries on the stack will always be the same after a dup instruction.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ [d, e]</b>
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+<b>0008 dup</b>
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/65">
+
+<div class="notes">
+<p>The next instruction, expandarray, pops the top entry on the stack, which should be an array. In this case, it is given two arguments, two and zero. The first argument of two means it should push the first two elements onto the stack, in reverse order, so the first element in the array is at the top of the stack. So now the stack contains d, e, and the array of d and e, in that order.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← [d, e]
+→ d
+→ e</b>
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+<b>0009 expandarray            2, 0</b>
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/66">
+
+<div class="notes">
+<p>Now Ruby is going to evaluate the method call to a. This is similar to d and e, with the result of a getting pushed onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>a</b>.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ a</b>
+d
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+<b class="block">0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;</b>
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/67">
+
+<div class="notes">
+<p>The next four instructions implement the b= method call.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.<b>b</b>, c[0] <b>=</b> d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+a
+d
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b class="block">0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop</b>
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/68">
+
+<div class="notes">
+<p>The topn instruction is used to push an existing stack entry to the top of the stack. The argument it is given is the offset from the top of the stack, so the argument value of one in this case means to push the second entry on the stack to the top of the stack, which is d in this case.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ d</b>
+a
+d
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b>0015 topn                   1</b>
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/69">
+
+<div class="notes">
+<p>The next instruction is another send instruction. The difference compared to the previous send instructions is that this instruction takes one argument instead of zero arguments. That means instead of popping one entry from the stack for the receiver, it pops two entries from the stack. The top of the stack is the argument to the method, and the second from the top is the receiver of the method. So this calls the b= method on a with the value returned by d. It pushes the result of the b= method onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← d
+← a
+→ b=
+</b>
+d
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+<b>0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;</b>
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/70">
+
+<div class="notes">
+<p>The next two instructions are both pop instructions, each of which removes the top entry of the stack. We do not need the result of the b= method, and we no longer need the result of d on the stack, so those are popped from the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← b=
+← d
+</b>
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+<b class="block">0019 pop
+0020 pop</b>
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/71">
+
+<div class="notes">
+<p>Next Ruby needs to evaluate the method call to c. This is just like the method calls to d, e, and a, and the return value of c is pushed onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>c</b>[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ c</b>
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+<b class="block">0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;</b>
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/72">
+
+<div class="notes">
+<p>Finally, we get to the element assignment method call, setting the first element in c.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c<b>[0] =</b> d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+c
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b class="block">0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop</b>
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/73">
+
+<div class="notes">
+<p>The first instruction here is putobject_INT2FIX_0_, which is an instruction for pushing the number 0 onto the stack. This is the first argument to the element assignment method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ 0</b>
+c
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b>0024 putobject_INT2FIX_0_</b>
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/74">
+
+<div class="notes">
+<p>The next instruction is topn, with an argument of 2, which means push the third entry on the stack to the top of the stack. This is going to be the second argument to the element assignment method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ e</b>
+0
+c
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+<b>0025 topn                   2</b>
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/75">
+
+<div class="notes">
+<p>The next instruction is opt_aset, which is an optimized instruction for the element assignment method. This method call takes two arguments, so the method call will pop 3 entries from the stack. The top two entries on the stack are the arguments to the method, and the third entry on the stack is the receiver, which is c. The result of calling this method is pushed onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← e
+← 0
+← c
+→ []=</b>
+e
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+<b>0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;</b>
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/76">
+
+<div class="notes">
+<p>The next two instructions are both pop instructions. We no longer need the return value of the element assignment method, or the return value of the e method.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← []=
+← e</b>
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+<b class="block">0029 pop
+0030 pop</b>
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/77">
+
+<div class="notes">
+<p>The final instruction is leave. This is used for return values. Since this is the last expression, the top entry on the stack is popped as the return value. In this case, the return value is the array containing d and e, since the return value for assignment expressions in Ruby is the right hand side of the expression.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← [d, e]</b>
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+<b>0031 leave</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/78">
+
+<div class="notes">
+<p>So that is how multiple assignment was implemented in Ruby 3.0. I think you really get an appreciation for how much Ruby does for you when you go through each virtual machine instruction.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+</code></pre>
+<pre class="sh_ruby" style="font-size: 30px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.0 Instructions:
+
+0000 putself                                          (   1)[Li]
+0001 opt_send_without_block &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 newarray               2
+0008 dup
+0009 expandarray            2, 0
+0012 putself
+0013 opt_send_without_block &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0015 topn                   1
+0017 opt_send_without_block &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0019 pop
+0020 pop
+0021 putself
+0022 opt_send_without_block &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0024 putobject_INT2FIX_0_
+0025 topn                   2
+0027 opt_aset               &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;
+0029 pop
+0030 pop
+0031 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/79">
+
+<div class="notes">
+<p>Here are the instructions when using Ruby 3.1. First, we can see right away that there are more instructions. Many of the instructions are the same, but instructions have been reordered, and there are more instructions that deal with stack manipulation.|On Ruby 3.0, this code resulted in 6 stack management instructions such as dup, pop, and topn. On Ruby 3.1, there are 13 stack management instructions. As you may expect, multiple assignment with attribute and element assignment is slightly slower in Ruby 3.1 than in 3.0 due to this. Such is the cost of correctness.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/80">
+
+<div class="notes">
+<p>Since you now have experience interpreting these instructions, we can pick up the pace a bit. As I discussed, Ruby 3.1 uses the left-to-right evaluation principle for multiple assignment, so it first evaluates the call to a and pushes the return value onto the stack, then evaluates the call to c and pushes the return value onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>a</b>.b, <b>c</b>[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ c
+→ a</b>
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+<b class="block">0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;</b>
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/81">
+
+<div class="notes">
+<p>Then, before evaluating the right side of the assignment, it evaluates the first argument to the element assignment method, and pushes it onto the stack. If the argument to the element assignment method was a method call, that method call would be evaluated before evaluating the right hand side of the assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[<b>0</b>] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ 0</b>
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b>0006 putobject_INT2FIX_0_</b>
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/82">
+
+<div class="notes">
+<p>Next Ruby evaluates the d and e method calls, pushing the results of each onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = <b>d</b>, <b>e</b></code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ e
+→ d</b>
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+<b class="block">0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;</b>
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/83">
+
+<div class="notes">
+<p>Ruby still uses the same newarray, dup, and expandarray instructions when the result of the multiple assignment needs to be returned. Just as before, this pushes the array for the right hand side of the assignment expression onto the stack, and d and e switching places on the stack, since d will be used first.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← e
+← d
+→ d
+→ e
+→ [d, e]
+</b>
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+<b class="block">0013 newarray                2
+0015 dup
+0016 expandarray             2, 0</b>
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/84">
+
+<div class="notes">
+<p>Here are the instructions that Ruby will use to implement the b= method call. We will take this section instruction by instruction.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.<b>b</b>, c[0] <b>=</b> d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+d
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+<b class="block">0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop</b>
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/85">
+
+<div class="notes">
+<p>The b= method call is called on the the result of a, so we need to push the result of a to the top of the stack, which is done via a topn instruction with argument 5, since a is sixth on the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ a</b>
+d
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+<b>0019 topn                    5</b>
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/86">
+
+<div class="notes">
+<p>Next we have a swap instruction, which swaps the two top stack entries. This is because the next instruction is a method call taking one argument, and we need to have the argument to the method on the top of the stack, and the receiver of the method second from the top.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← a
+← d
+→ d
+→ a</b>
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+<b>0021 swap</b>
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/87">
+
+<div class="notes">
+<p>Then we have the method call to the b= method, which pops the top two entries of the stack, and pushes the return value of the b= method onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← d
+← a
+→ b=</b>
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+<b>0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;</b>
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/88">
+
+<div class="notes">
+<p>We do not need the return value of the b= method, so we pop the value.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← b=</b>
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+<b>0024 pop</b>
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/89">
+
+<div class="notes">
+<p>Next, Ruby needs to evaluate the element assignment, which it does using these instructions. Again, we will go through this section an instruction at a time.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c<b>[0] =</b> d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+<b class="block">0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop</b>
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/90">
+
+<div class="notes">
+<p>First it uses the topn instruction with an argument of 3 to push the receiver of the element assignment method onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ c</b>
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+<b>0025 topn                    3</b>
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/91">
+
+<div class="notes">
+<p>Next, it uses the same topn instruction with an argument of 3 to push the first argument of the element assignment method onto the stack. Even though topn has the same argument, it pushes a different stack entry, because the argument to topn is the offset from the top of the stack, and the previous topn instruction pushed a value onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ 0</b>
+c
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+<b>0027 topn                    3</b>
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/92">
+
+<div class="notes">
+<p>Next we have another topn instruction, but this one uses an argument of 2. This pushes the second argument to the element assignment method onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">→ e</b>
+0
+c
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+<b>0029 topn                    2</b>
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/93">
+
+<div class="notes">
+<p>The next instruction calls the element assignment method with two arguments. It pops the two arguments and the receiver from the stack, and pushes the return value onto the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← e
+← 0
+← c
+→ []=</b>
+e
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+<b>0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]</b>
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/94">
+
+<div class="notes">
+<p>The return value is not needed, so that is popped from the stack. The return value of e is no longer needed, so that is also popped from the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← []=
+← e</b>
+[d, e]
+0
+c
+a
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+<b class="block">0033 pop
+0034 pop</b>
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/95">
+
+<div class="notes">
+<p>The next instruction we have not seen before. The setn instruction replaces the stack position at the given offset from the top of the stack with the value currently at the top of the stack. In this case, with offset 3, we are replacing the bottom stack entry with the top stack entry. We are doing this so that this assignment expression will have the correct return value, the right hand side of the assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+[d, e]
+0
+c
+<b class="block">a → [d, e]</b>
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+<b>0035 setn                    3</b>
+0037 pop
+0038 pop
+0039 pop
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/96">
+
+<div class="notes">
+<p>We no longer need the top 3 stack entries, so we pop each of them.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← [d, e]
+← 0
+← c</b>
+[d, e]
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+<b class="block">0037 pop
+0038 pop
+0039 pop</b>
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/97">
+
+<div class="notes">
+<p>Then we return the value of the multiple assignment expression, the array containing d and e.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+<b class="block">← [d, e]</b>
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+0019 topn                    5
+0021 swap
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+0025 topn                    3
+0027 topn                    3
+0029 topn                    2
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop
+<b>0040 leave</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/98">
+
+<div class="notes">
+<p>While more complex than the Ruby 3.0 instructions, the Ruby 3.1 instructions correctly implement the left-to-right evaluation principle. The challenging part is using the correct stack management instructions, mostly in keeping track of which offsets to use for the topn instructions. As you can see here, at least in the simple case, it is not actually that complex, so why was it so challenging to implement?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 32px; margin-left: 24px; margin-top: 0; float: left; width: 400px; height: 1000px;"><code>Stack:
+
+</code></pre>
+<pre class="sh_ruby" style="font-size: 26px; margin-left: 24px; margin-top: 0;"><code>Ruby 3.1 Instructions:
+
+0000 putself                                           (   1)[Li]
+0001 opt_send_without_block  &lt;calldata!mid:a, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0003 putself
+0004 opt_send_without_block  &lt;calldata!mid:c, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0006 putobject_INT2FIX_0_
+0007 putself
+0008 opt_send_without_block  &lt;calldata!mid:d, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0010 putself
+0011 opt_send_without_block  &lt;calldata!mid:e, argc:0, FCALL|VCALL|ARGS_SIMPLE&gt;
+0013 newarray                2
+0015 dup
+0016 expandarray             2, 0
+<b class="block">0019 topn                    5
+0021 swap</b>
+0022 opt_send_without_block  &lt;calldata!mid:b=, argc:1, ARGS_SIMPLE&gt;
+0024 pop
+<b class="block">0025 topn                    3
+0027 topn                    3
+0029 topn                    2</b>
+0031 opt_aset                &lt;calldata!mid:[]=, argc:2, ARGS_SIMPLE&gt;[CcCr]
+0033 pop
+<b class="block">0034 pop
+0035 setn                    3
+0037 pop
+0038 pop
+0039 pop</b>
+0040 leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/99">
+
+<div class="notes">
+<p>In order to show you why it was challenging to implement, we will look at the differences in instructions when we modify the code slightly. We will start with the same example code we were using.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/100">
+
+<div class="notes">
+<p>This shows the Ruby 3.0 and 3.1 instructions side-by-side. To make sure everything fits on the screen and to more easily show the differences, this condenses the instruction display slightly.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/101">
+
+<div class="notes">
+<p>What happens to the instructions when adding an argument to the element assignment method call?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0<b>,1</b>] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/102">
+
+<div class="notes">
+<p>Here are the new instructions. Since it may not be obvious what changed, let us look at a diff between these instructions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0<b>,1</b>] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putobject_INT2FIX_1_
+topn 3
+opt_send_without_block []=, 3
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putobject_INT2FIX_1_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn 6
+swap
+opt_send_without_block b=, 1
+pop
+topn 4
+topn 4
+topn 4
+topn 3
+opt_send_without_block []=, 3
+pop
+pop
+setn 4
+pop
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/103">
+
+<div class="notes">
+<p>We can first look at the instruction differences in Ruby 3.0. One instruction was added, putobject_INT2FIX_1_, pushing the integer 1 onto the stack. The following topn instruction argument changes from 2 to 3. And the opt_aset instruction changes to opt_send_without_block, with an argument value switching from 2 to 3. All changes are localized, and all other instructions remain the same. We can compare the Ruby 3.0 changes to the Ruby 3.1 changes.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0<b>,1</b>] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+<b class="block">→ putobject_INT2FIX_1_
+topn 2 → 3
+← opt_aset []=, 2
+→ opt_send_without_block []=, 3</b>
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putobject_INT2FIX_1_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn 6
+swap
+opt_send_without_block b=, 1
+pop
+topn 4
+topn 4
+topn 4
+topn 3
+opt_send_without_block []=, 3
+pop
+pop
+setn 4
+pop
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/104">
+
+<div class="notes">
+<p>It is a different situation in Ruby 3.1. The addition of a single argument affects many instructions, with all offset arguments getting modified, and with additional topn and pop instructions. We can tell from this that the offsets to each instruction are based on the number of arguments for each element assignment method on the left hand side.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0<b>,1</b>] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+<b class="block">→ putobject_INT2FIX_1_
+topn 2 → 3
+← opt_aset []=, 2
+→ opt_send_without_block []=, 3</b>
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+<b>putobject_INT2FIX_1_</b>
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn <b>5 → 6</b>
+swap
+opt_send_without_block b=, 1
+pop
+<b class="block">topn 3 → 4
+topn 3 → 4
+→ topn 4
+topn 2 → 3
+← opt_aset []=, 2
+→ opt_send_without_block []=, 3</b>
+pop
+pop
+setn <b>3 → 4</b>
+pop
+pop
+pop
+<b>→ pop</b>
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/105">
+
+<div class="notes">
+<p>Instead of adding an argument to the element assignement method, we can see what happens if you make the multiple assignment set an additional local variable at the end.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0]<b>, f</b> = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 3, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+setlocal_WC_0 f@0
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 3, 0
+topn 6
+swap
+opt_send_without_block b=, 1
+pop
+topn 4
+topn 4
+topn 2
+opt_aset []=, 2
+pop
+pop
+setlocal_WC_0 f@0
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/106">
+
+<div class="notes">
+<p>On the Ruby 3.0 side, the argument to the expand_array instruction goes from 2 to 3, and there is an additional instruction to set a local variable. All other instructions remain the same.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0]<b>, f</b> = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b>expandarray 2 → 3, 0</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+<b>→ setlocal_WC_0 f@0</b>
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 3, 0
+topn 6
+swap
+opt_send_without_block b=, 1
+pop
+topn 4
+topn 4
+topn 2
+opt_aset []=, 2
+pop
+pop
+setlocal_WC_0 f@0
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/107">
+
+<div class="notes">
+<p>On the Ruby 3.1 side, you get the same change to expandarray and the instruction to set the local variable. However, three of the topn instructions also have shifted offsets. Some of the offsets shift, but not all of the offsets. So we can tell from this that the offsets are not just based on the number of element assignment method arguments, but also on the total number of attributes or local variables being set by the multiple assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0]<b>, f</b> = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b>expandarray 2 → 3, 0</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+<b>→ setlocal_WC_0 f@0</b>
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b class="block">expandarray 2 → 3, 0
+topn 5 → 6</b>
+swap
+opt_send_without_block b=, 1
+pop
+<b class="block">topn 3 → 4
+topn 3 → 4</b>
+topn 2
+opt_aset []=, 2
+pop
+pop
+<b>→ setlocal_WC_0 f@0</b>
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/108">
+
+<div class="notes">
+<p>What happens if the local variable is added to the beginning instead of the end?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>f, </b>a.b, c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 3, 0
+setlocal_WC_0 f@0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 3, 0
+setlocal_WC_0 f@0
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/109">
+
+<div class="notes">
+<p>The interesting thing here is the difference in the instructions is the same in both cases. So the offset changes depend on the position of the attribute assignments relative to the local variable assignments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>f, </b>a.b, c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b class="block">expandarray 2 → 3, 0
+→ setlocal_WC_0 f@0</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b class="block">expandarray 2 → 3, 0
+→ setlocal_WC_0 f@0</b>
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/110">
+
+<div class="notes">
+<p>You can confirm this by adding the local variable to the middle.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>f, </b>c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 3, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+setlocal_WC_0 f@0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 3, 0
+topn 6
+swap
+opt_send_without_block b=, 1
+pop
+setlocal_WC_0 f@0
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/111">
+
+<div class="notes">
+<p>Here, only the first topn offset is changed, and not the other offsets. Otherwise, the instruction differences are the same between versions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>f, </b>c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b>expandarray 2 → 3, 0</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+<b>→ setlocal_WC_0 f@0</b>
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b class="block">expandarray 2 → 3, 0
+topn 5 → 6</b>
+swap
+opt_send_without_block b=, 1
+pop
+<b>→ setlocal_WC_0 f@0</b>
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/112">
+
+<div class="notes">
+<p>What if instead of adding a local variable, we replace the element assignment with a local variable? We can see that this significantly reduces the number of instructions, but what changes?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>f</b> = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+setlocal_WC_0 f@0
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn 3
+swap
+opt_send_without_block b=, 1
+pop
+setlocal_WC_0 f@0
+setn 1
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/113">
+
+<div class="notes">
+<p>In Ruby 3.0, this results in a bunch of instructions being removed, and a single instruction being added to set the local variable.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>f</b> = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+<b class="block">← putself
+← opt_send_without_block c, 0
+← putobject_INT2FIX_0_
+← topn 2
+← opt_aset []=, 2
+← pop
+← pop
+→ setlocal_WC_0 f@0</b>
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn 3
+swap
+opt_send_without_block b=, 1
+pop
+setlocal_WC_0 f@0
+setn 1
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/114">
+
+<div class="notes">
+<p>In Ruby 3.1, it also results in the instructions changing, but it also requires changing the initial topn offset and the setn offset. This shows the offsets depend on not just the number of assignments, number of arguments, and position of assignments, but also the type of assignments.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>f</b> = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+<b class="block">← putself
+← opt_send_without_block c, 0
+← putobject_INT2FIX_0_
+← topn 2
+← opt_aset []=, 2
+← pop
+← pop
+→ setlocal_WC_0 f@0</b>
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+<b class="block">← putself
+← opt_send_without_block c, 0
+← putobject_INT2FIX_0_</b>
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+<b>topn 5 → 3</b>
+swap
+opt_send_without_block b=, 1
+pop
+<b class="block">← topn 3
+← topn 3
+← topn 2
+← opt_aset []=, 2
+← pop
+← pop
+→ setlocal_WC_0 f@0
+setn 3 → 1</b>
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/115">
+
+<div class="notes">
+<p>Unfortunately, multiple assignment in Ruby is more complicated than just assigning to attributes, elements, and local variables. You also need to deal with splats. We can see what the differences are if we splat the second expression being assigned.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>*</b>c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 1, 1
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 1, 1
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/116">
+
+<div class="notes">
+<p>It turns out that using a splat does not change the offsets. The instruction change is the same in both cases, modifying the arguments to the expandarray instruction.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>*</b>c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b>expandarray 2 → 1, 0 → 1</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b>expandarray 2 → 1, 0 → 1</b>
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/117">
+
+<div class="notes">
+<p>If the splat is the first assignment instead of the last, and you are setting post-splat attributes, there are also few differences. In addition to changing the arguments to the expandarray instruction, a second expandarray instruction is added. That is the only instruction change, and it is the same in both Ruby versions.|This gives the impression that splats do not add complexity, and that is deceiving, because the implementation must consider whether there are splats, due to how the compiler interacts with the abstract syntax tree produced by the parser. However, it looks like the net result does not change the instructions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>*</b>a.b, c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b>expandarray 2 → 0, 0 → 1
+→ expandarray 1, 3</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+<b>expandarray 2 → 0, 0 → 1
+→ expandarray 1, 3</b>
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/118">
+
+<div class="notes">
+<p>In addition to splats, Ruby also supports nested multiple assignment, to any level of nesting. What differences do we see when the first assignment is changed to a nested assignment, with the addition of a local variable?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>(</b>a.b<b>, f)</b>, c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+setlocal_WC_0 f@0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+expandarray 2, 0
+topn 6
+swap
+opt_send_without_block b=, 1
+pop
+setlocal_WC_0 f@0
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/119">
+
+<div class="notes">
+<p>This adds two instructions in both Ruby 3.0 and 3.1. The only other change in Ruby 3.1 is the first topn needs an adjusted offset.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>(</b>a.b<b>, f)</b>, c[0] = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+<b>→ expandarray 2, 0</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+<b>→ setlocal_WC_0 f@0</b>
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+<b class="block">expandarray 2, 0
+topn 5 → 6</b>
+swap
+opt_send_without_block b=, 1
+pop
+<b>→ setlocal_WC_0 f@0</b>
+topn 3
+topn 3
+topn 2
+opt_aset []=, 2
+pop
+pop
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/120">
+
+<div class="notes">
+<p>What about the case where the nested assignment comes in the second assignment, instead of the first assignment?</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>(</b>c[0]<b>, f)</b> = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+expandarray 2, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+setlocal_WC_0 f@0
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+expandarray 2, 0
+topn 4
+topn 4
+topn 2
+opt_aset []=, 2
+pop
+pop
+setlocal_WC_0 f@0
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/121">
+
+<div class="notes">
+<p>In that case, instead of the first topn instruction needing a new offset, the next two topn instructions need a new offset.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, <b>(</b>c[0]<b>, f)</b> = d, e</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+<b>→ expandarray 2, 0</b>
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+<b>→ setlocal_WC_0 f@0</b>
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+dup
+expandarray 2, 0
+topn 5
+swap
+opt_send_without_block b=, 1
+pop
+<b class="block">→ expandarray 2, 0
+topn 3 → 4
+topn 3 → 4</b>
+topn 2
+opt_aset []=, 2
+pop
+pop
+<b>→ setlocal_WC_0 f@0</b>
+setn 3
+pop
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/122">
+
+<div class="notes">
+<p>We can consider one final case, where the results of the multiple assignment are not needed. The Ruby compiler has many optimizations that take into account whether the result of an expression will be used or not. In this case, since the result of the multiple assignment is not used, Ruby should not create an array for the right hand side of the expression.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e<b>; nil</b></code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+swap
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+putnil
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+expandarray 2, 0
+topn 4
+swap
+opt_send_without_block b=, 1
+pop
+topn 2
+topn 2
+topn 2
+opt_aset []=, 2
+pop
+pop
+pop
+pop
+pop
+putnil
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/123">
+
+<div class="notes">
+<p>On Ruby 3.0 side, the newarray, dup, and expandarray instructions are replaced with a simple swap instruction, so that d is at the top of the stack, instead of e being at the top of the stack. At the very end, a putnil instruction is used so the leave instruction will return nil instead of an array.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e<b>; nil</b></code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+<b class="block">← newarray 2
+← dup
+← expandarray 2, 0
+→ swap</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+<b>→ putnil</b>
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+expandarray 2, 0
+topn 4
+swap
+opt_send_without_block b=, 1
+pop
+topn 2
+topn 2
+topn 2
+opt_aset []=, 2
+pop
+pop
+pop
+pop
+pop
+putnil
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/124">
+
+<div class="notes">
+<p>As you would expect, on Ruby 3.1 this also causes the offsets to change. It removes the need for the setn instruction, since that was only used to set the return value of the multiple assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e<b>; nil</b></code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+<b class="block">← newarray 2
+← dup
+← expandarray 2, 0
+→ swap</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+<b>→ putnil</b>
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+newarray 2
+<b>← dup</b>
+expandarray 2, 0
+<b>topn 5 → 4</b>
+swap
+opt_send_without_block b=, 1
+pop
+<b class="block">topn 3 → 2
+topn 3 → 2</b>
+topn 2
+opt_aset []=, 2
+pop
+pop
+<b>← setn 3</b>
+pop
+pop
+pop
+<b>→ putnil</b>
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/125">
+
+<div class="notes">
+<p>One thing to notice about the Ruby 3.1 instructions compared to the Ruby 3.0 instructions is that even when the result of the multiple assignment is not used, Ruby 3.1 will still create an unnecessary array, while Ruby 3.0 will not.|I did not realize this issue when fixing multiple assignment. However, after I discovered it while developing this presentation, I implemented the same optimization used in Ruby 3.0, along with some additional optimizations that apply not just to multiple assignment, but to other cases where this and similar combinations of instructions are used. Those optimizations have been committed and will be in Ruby 3.2.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e<b>; nil</b></code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 22px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.0 Instructions:
+
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+<b>swap</b>
+putself
+opt_send_without_block a, 0
+topn 1
+opt_send_without_block b=, 1
+pop
+pop
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+topn 2
+opt_aset []=, 2
+pop
+pop
+putnil
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 22px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+putobject_INT2FIX_0_
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block e, 0
+<b class="block">newarray 2
+expandarray 2, 0</b>
+topn 4
+swap
+opt_send_without_block b=, 1
+pop
+topn 2
+topn 2
+topn 2
+opt_aset []=, 2
+pop
+pop
+pop
+pop
+pop
+putnil
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/126">
+
+<div class="notes">
+<p>From trying each of these small changes to multiple assignment, and seeing how the instructions are affected, we can sort of piece together what affects the offsets.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 432px; left: 250px;">Offsets</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/127">
+
+<div class="notes">
+<p>We saw that the total number of assignments affects the offsets.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 182px; left: 250px;">Total</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 332px; left: 250px;">Assignments</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/128">
+
+<div class="notes">
+<p>We saw that the type of assignments, such as how many are local variables and how many are attributes, affects the offsets.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 182px; left: 250px;">Type of</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 332px; left: 250px;">Assignments</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/129">
+
+<div class="notes">
+<p>We saw that the order of assignments affects the offsets.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 182px; left: 250px;">Order of</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 332px; left: 250px;">Assignments</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/130">
+
+<div class="notes">
+<p>We saw that the number of element assignment method arguments affects the offsets.</p>
+</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 432px; left: 250px;">Number of</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 562px; left: 250px;">Arguments</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/131">
+
+<div class="notes">
+<p>We saw that the use of nesting affects the offsets.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 632px; left: 250px;">Use of</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 782px; left: 250px;">Nesting</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/132">
+
+<div class="notes">
+<p>We saw that whether or not the assignment expression return value is needed affects the offsets.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 32px; left: 250px;">Result</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 182px; left: 250px;">Needed<span class="red">?</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/133">
+
+<div class="notes">
+<p>All of these must be considered when determining the offsets to use for the topn and setn instructions.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 432px; left: 250px;">Offsets</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/134">
+
+<div class="notes">
+<p>Even if you have all of that information, Ruby’s compilation process actually makes using the information challenging.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 232px; left: 250px;">Ruby</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 372px; left: 250px;">Compilation</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/135">
+
+<div class="notes">
+<p>You start the compilation process using source code. This is the Ruby code that you write.</p>
+</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 332px; left: 250px;">Source</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 482px; left: 250px;">Code</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/136">
+
+<div class="notes">
+<p>Ruby uses a parser, which turns your source code</p>
+</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 432px; left: 150px;">Parser</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/137">
+
+<div class="notes">
+<p>into an abstract syntax tree, also called a parse tree. The abstract syntax tree contains nodes.</p>
+</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 432px; left: 150px;">Parser</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 432px; left: 725px;">→</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 292px; left: 900px;">Abstract</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 432px; left: 920px;">Syntax</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 572px; left: 900px;">Tree</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/138">
+
+<div class="notes">
+<p>You can use the dump option with the value p for parsetree when running ruby, and Ruby will show you the parse tree for the code.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 96px; margin-top: 424px; text-align: center;"><code>ruby --dump=p</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/139">
+
+<div class="notes">
+<p>We can take the Ruby code example we have been using,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/140">
+
+<div class="notes">
+<p>and see the parse tree for it. This is the output, though I have simplified it quite a bit. In general, Ruby’s compiler takes the parse tree as input, and it outputs virtual machine instructions. Generating instructions in this case is quite challenging. In general, the compiler recursively processes the parse tree to generate the appropriate instructions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre style="font-size: 48px; margin-top: 24px; "><code># @ NODE_SCOPE
+#     @ NODE_MASGN
+#     |   @ NODE_LIST
+#     |   |   @ NODE_VCALL d
+#     |   |   @ NODE_VCALL e
+#     |   @ NODE_LIST
+#     |   |   @ NODE_ATTRASGN
+#     |   |   |   @ NODE_VCALL a
+#     |   |   +- b=
+#     |   |   @ NODE_ATTRASGN
+#     |   |   |   @ NODE_VCALL c
+#     |   |   +- :[]=
+#     |   |   +- @ NODE_LIST
+#     |   |       |   @ NODE_LIT 0
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/141">
+
+<div class="notes">
+<p>For example, this is the part of the parse tree related to the first attribute assignment. However, at the point the compiler is processing this part of the parse tree, it does not have the information necessary to produce the correct instructions, since the offsets to use for the topn instructions are not known until the entire multiple assignment node been processed.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>a.b</b>, c[0] = d, e</code></pre>
+<pre style="font-size: 48px; margin-top: 24px; "><code># @ NODE_SCOPE
+#     @ NODE_MASGN
+#     |   @ NODE_LIST
+#     |   |   @ NODE_VCALL d
+#     |   |   @ NODE_VCALL e
+<b class="block">#     |   @ NODE_LIST
+#     |   |   @ NODE_ATTRASGN
+#     |   |   |   @ NODE_VCALL a
+#     |   |   +- b=</b>
+#     |   |   @ NODE_ATTRASGN
+#     |   |   |   @ NODE_VCALL c
+#     |   |   +- :[]=
+#     |   |   +- @ NODE_LIST
+#     |   |       |   @ NODE_LIT 0
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/142">
+
+<div class="notes">
+<p>To work around this issue, the multiple assignment instruction compiler keeps four separate instruction sequences.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>INIT_ANCHOR(pre);
+INIT_ANCHOR(rhs);
+INIT_ANCHOR(lhs);
+INIT_ANCHOR(post);
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/143">
+
+<div class="notes">
+<p>One for the evaluating method calls in the left hand side,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code><b>INIT_ANCHOR(pre);</b>
+INIT_ANCHOR(rhs);
+INIT_ANCHOR(lhs);
+INIT_ANCHOR(post);
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/144">
+
+<div class="notes">
+<p>one for evaluating the right hand side,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>INIT_ANCHOR(pre);
+<b>INIT_ANCHOR(rhs);</b>
+INIT_ANCHOR(lhs);
+INIT_ANCHOR(post);
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/145">
+
+<div class="notes">
+<p>one for calling assignment methods,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>INIT_ANCHOR(pre);
+INIT_ANCHOR(rhs);
+<b>INIT_ANCHOR(lhs);</b>
+INIT_ANCHOR(post);
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/146">
+
+<div class="notes">
+<p>and one for cleaning up the stack.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>INIT_ANCHOR(pre);
+INIT_ANCHOR(rhs);
+INIT_ANCHOR(lhs);
+<b>INIT_ANCHOR(post);</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/147">
+
+<div class="notes">
+<p>While processing the left hand side of the assignment, the compiler creates a linked list of structs containing the information for each of topn instructions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>struct masgn_lhs_node {
+  INSN *before_insn;
+  struct masgn_lhs_node *next;
+  const NODE *line_node;
+  int argn;
+  int num_args;
+  int lhs_pos;
+};
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/148">
+
+<div class="notes">
+<p>Each struct includes a pointer for where to add the topn instruction once the correct offset has been calculated,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>struct masgn_lhs_node {
+  <b>INSN *before_insn</b>;
+  struct masgn_lhs_node *next;
+  const NODE *line_node;
+  int argn;
+  int num_args;
+  int lhs_pos;
+};
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/149">
+
+<div class="notes">
+<p>as well as information needed to calculate the topn offset argument.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>struct masgn_lhs_node {
+  INSN *before_insn;
+  struct masgn_lhs_node *next;
+  const NODE *line_node;
+<b class="block">  int argn;
+  int num_args;
+  int lhs_pos;</b>
+};
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/150">
+
+<div class="notes">
+<p>After processing all nodes for the multiple assignment,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 36px; margin-top: 24px; "><code>while (memo) {
+    VALUE topn_arg = INT2FIX((state.num_args - memo-&gt;argn) + memo-&gt;lhs_pos);
+    for (int i = 0; i &lt; memo-&gt;num_args; i++) {
+        INSERT_BEFORE_INSN1(memo-&gt;before_insn, memo-&gt;line_node, topn, topn_arg);
+    }
+    tmp_memo = memo-&gt;next;
+    free(memo);
+    memo = tmp_memo;
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/151">
+
+<div class="notes">
+<p>the compiler will iterate over the linked list,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 36px; margin-top: 24px; "><code><b>while (memo)</b> {
+    VALUE topn_arg = INT2FIX((state.num_args - memo-&gt;argn) + memo-&gt;lhs_pos);
+    for (int i = 0; i &lt; memo-&gt;num_args; i++) {
+        INSERT_BEFORE_INSN1(memo-&gt;before_insn, memo-&gt;line_node, topn, topn_arg);
+    }
+    tmp_memo = memo-&gt;next;
+    free(memo);
+    memo = tmp_memo;
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/152">
+
+<div class="notes">
+<p>calculate the correct offset argument to use for each topn instruction.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 36px; margin-top: 24px; "><code>while (memo) {
+    <b>VALUE topn_arg = INT2FIX((state.num_args - memo-&gt;argn) + memo-&gt;lhs_pos);</b>
+    for (int i = 0; i &lt; memo-&gt;num_args; i++) {
+        INSERT_BEFORE_INSN1(memo-&gt;before_insn, memo-&gt;line_node, topn, topn_arg);
+    }
+    tmp_memo = memo-&gt;next;
+    free(memo);
+    memo = tmp_memo;
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/153">
+
+<div class="notes">
+<p>and then insert the topn instructions at the appropriate places.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 36px; margin-top: 24px; "><code>while (memo) {
+    VALUE topn_arg = INT2FIX((state.num_args - memo-&gt;argn) + memo-&gt;lhs_pos);
+<b class="block">    for (int i = 0; i &lt; memo-&gt;num_args; i++) {
+        INSERT_BEFORE_INSN1(memo-&gt;before_insn, memo-&gt;line_node, topn, topn_arg);
+    }</b>
+    tmp_memo = memo-&gt;next;
+    free(memo);
+    memo = tmp_memo;
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/154">
+
+<div class="notes">
+<p>After inserting the topn instructions,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>ADD_SEQ(ret, pre);
+ADD_SEQ(ret, rhs);
+ADD_SEQ(ret, lhs);
+if (!popped &amp;&amp; state.num_args &gt;= 1) {
+    /* make sure rhs array is returned before popping */
+    ADD_INSN1(ret, node, setn, INT2FIX(state.num_args));
+}
+ADD_SEQ(ret, post);
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/155">
+
+<div class="notes">
+<p>the compiler will merge the four instruction sequences into a single instruction sequence.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code><b class="block">ADD_SEQ(ret, pre);
+ADD_SEQ(ret, rhs);
+ADD_SEQ(ret, lhs);</b>
+if (!popped &amp;&amp; state.num_args &gt;= 1) {
+    /* make sure rhs array is returned before popping */
+    ADD_INSN1(ret, node, setn, INT2FIX(state.num_args));
+}
+<b>ADD_SEQ(ret, post);</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/156">
+
+<div class="notes">
+<p>If the return value of the multiple assignment is needed, it will add the setn instruction to make sure the assignment expression returns the right hand side.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a.b, c[0] = d, e</code></pre>
+<pre class="sh_c" style="font-size: 48px; margin-top: 24px; "><code>ADD_SEQ(ret, pre);
+ADD_SEQ(ret, rhs);
+ADD_SEQ(ret, lhs);
+<b class="block">if (!popped &amp;&amp; state.num_args &gt;= 1) {
+    /* make sure rhs array is returned before popping */
+    ADD_INSN1(ret, node, setn, INT2FIX(state.num_args));
+}</b>
+ADD_SEQ(ret, post);
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/157">
+
+<div class="notes">
+<p>So far, we have mostly considered multiple assignment, but as I mentioned earlier, constant assignment did not follow the left-to-right evaluation principle in older versions of Ruby.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 60px; left: 24px;">Constant</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 240px; left: 24px;">Assignment</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 24px;">Evaluation</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 610px; left: 24px;">Order</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/158">
+
+<div class="notes">
+<p>We can consider the following simple constant assignment example,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::B = c</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/159">
+
+<div class="notes">
+<p>with the related instructions.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::B = c</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 32px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block c, 0
+dup
+putself
+opt_send_without_block a, 0
+setconstant :B
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 32px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.2 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+swap
+topn 1
+swap
+setconstant :B
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/160">
+
+<div class="notes">
+<p>We can see that in Ruby 3.1, c is evaluated before a, violating the left-to-right evaluation principle.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::B = c</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 32px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+<b>opt_send_without_block c, 0</b>
+dup
+putself
+<b>opt_send_without_block a, 0</b>
+setconstant :B
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 32px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.2 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+swap
+topn 1
+swap
+setconstant :B
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/161">
+
+<div class="notes">
+<p>While in Ruby 3.2, a is evaluated before c, following the left-to-right evaluation principle.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::B = c</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 32px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block c, 0
+dup
+putself
+opt_send_without_block a, 0
+setconstant :B
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 32px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.2 Instructions:
+
+putself
+<b>opt_send_without_block a, 0</b>
+putself
+<b>opt_send_without_block c, 0</b>
+swap
+topn 1
+swap
+setconstant :B
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/162">
+
+<div class="notes">
+<p>Just as in the multiple assignment change, Ruby 3.2 requires more stack management instructions. However, for single constant assignment, you do not need to keep track of offsets.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::B = c</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 32px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block c, 0
+<b>dup</b>
+putself
+opt_send_without_block a, 0
+setconstant :B
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 32px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.2 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block c, 0
+<b class="block">swap
+topn 1
+swap</b>
+setconstant :B
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/163">
+
+<div class="notes">
+<p>Ruby supports setting constants during multiple assignment, though you hopefully will never see code that uses it.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::B, d::E = c</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/164">
+
+<div class="notes">
+<p>You can even set constants to splat values or in nested multiple assignment. I would only do that if I really disliked the future maintainer, though.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::B, (f, *d::E) = c</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/165">
+
+<div class="notes">
+<p>Changing the evaluation order for single constant assignment actually broke compilation of constant assignment inside multiple assignment, so compilation of multiple assignment had to be updated to support left-to-right evaluation for constant assignment.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::B, d::E = c</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 32px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block c, 0
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+setconstant :B
+putself
+opt_send_without_block d, 0
+setconstant :E
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 32px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.2 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block c, 0
+dup
+expandarray 2, 0
+topn 4
+setconstant :B
+topn 2
+setconstant :E
+setn 2
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/166">
+
+<div class="notes">
+<p>As you would expect, in Ruby 3.2, multiple assignment to constants follows the left-to-right evaluation principle, evaluting a, then d, then c,</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code><b>a</b>::B, <b>d</b>::E = <b>c</b></code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 32px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block c, 0
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+setconstant :B
+putself
+opt_send_without_block d, 0
+setconstant :E
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 32px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.2 Instructions:
+
+putself
+<b>opt_send_without_block a, 0</b>
+putself
+<b>opt_send_without_block d, 0</b>
+putself
+<b>opt_send_without_block c, 0</b>
+dup
+expandarray 2, 0
+topn 4
+setconstant :B
+topn 2
+setconstant :E
+setn 2
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/167">
+
+<div class="notes">
+<p>then setting the B constant on a and the E constant on d.</p>
+</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 24px; text-align: center;"><code>a::<b>B</b>, d::<b>E =</b> c</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; right: 1000px; font-size: 32px; margin-left: 24px; margin-top: 0; width: 450px;"><code>Ruby 3.1 Instructions:
+
+putself
+opt_send_without_block c, 0
+dup
+expandarray 2, 0
+putself
+opt_send_without_block a, 0
+setconstant :B
+putself
+opt_send_without_block d, 0
+setconstant :E
+leave
+</code></pre>
+<pre class="sh_ruby" style="position: absolute; top: 100px; left: 1000px; font-size: 32px; margin-top: 0; margin-left: 24px; width: 450px;"><code>Ruby 3.2 Instructions:
+
+putself
+opt_send_without_block a, 0
+putself
+opt_send_without_block d, 0
+putself
+opt_send_without_block c, 0
+dup
+expandarray 2, 0
+topn 4
+<b>setconstant :B</b>
+topn 2
+<b>setconstant :E</b>
+setn 2
+pop
+pop
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/168">
+
+<div class="notes">
+<p>Here are the lessons I learned related to these bug fixes.</p>
+</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 232px; left: 350px;">Lessons</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 440px; left: 350px;">Learned</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/169">
+
+<div class="notes">
+<p>Just because a bug is old, does not mean it cannot be fixed. These assignment evaluation order bugs have both existed since multiple assignment and constant assignment were added to Ruby, and both were known for multiple years before I started work on fixing them.</p>
+</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 24px; left: 150px;">Old Bugs</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 212px; left: 220px;">Can Be Fixed</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/170">
+
+<div class="notes">
+<p>Be aware that bugs usually only reach old age for a reason. Bugs that are easy to fix are often fixed quickly. The older a bug is, the more likely it is to be difficult to fix.</p>
+</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 24px; left: 150px;">Old Bugs</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 222px; left: 670px;">Are Old</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 410px; left: 400px;">For A Reason</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/171">
+
+<div class="notes">
+<p>Even if you expect a bug to be hard to fix, do not let that discourage you. In many cases, the bugs that are the most difficult to fix are the bugs that you will learn the most from fixing. See an old bug as an opportunity to rise to the occasion, and expand your knowledge of Ruby.</p>
+</div>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 472px; left: 650px;">Do Not Get</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 540px; left: 350px;">Discouraged</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/172">
+
+<div class="notes">
+<p>Ruby currently has over 75 open bugs in the bug tracker that are over 5 years old, just waiting to you to fix. We look forward to your contibutions!</p>
+</div>
+<h1 class="red" style="font-size: 650px; position: absolute; top: 222px; left: 50px;">75+</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 350px; left: 950px;">Old</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 550px; left: 950px;">Bugs</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/173">
+
+<div class="notes">
+<p>I hope you had fun learning about how we fixed assignment evaluation order in Ruby 3.1 and 3.2.</p>
+</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 60px; left: 24px;">Fixing</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 240px; left: 24px;">Assignment</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 24px;">Evaluation</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 610px; left: 24px;">Order</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/174">
+
+<div class="notes">
+<p>If you enjoyed this presentation, and want to read more of my thoughts on Ruby programming, please consider picking up a copy of Polished Ruby Programming.</p>
+</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 100px; height: 1031px; width: 822px;"></p>
+
+<p><img src="./file/polished-ruby-programming-cover-jp.webp" style="position: absolute; top: 20px; right: 100px; height: 1031px; width: 726px;"></p>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/175">
+
+<div class="notes">
+<p>That concludes my presentation. I would like to thank all of you for listening to me.</p>
+</div>
+<h1 class="blue" style="font-family: NotoSansJP; font-size: 150px; position: absolute; top: 432px; left: 150px;">ありがとうございました</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/176">
+
+<div class="notes">
+<p>A special thank you to Cookpad for sponsoring my travel to RubyKaigi. I think I am out of time, so if you have any questions, please ask me during the break.</p>
+</div>
+<h1 class="blue" style="font-family: NotoSansJP; font-size: 150px; position: absolute; top: 432px; left: 150px;">ありがとうございました</h1>
+<p><img src="./file/cookpad.svg" style="position: absolute; top: 620px; left: 150px; height: 280px; width: 1024px;"></p>
+</div>
+</div>
+</body></html>
+</div>
+
+</body>
+</html>
