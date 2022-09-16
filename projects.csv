@@ -5,7 +5,7 @@ warning,jeremyevans/ruby-warning,test_cov,70,70,19,19,2022-07-14
 american_date,jeremyevans/ruby-american_date,spec_cov,26,26,9,9,2022-07-12
 minitest-hooks,jeremyevans/minitest-hooks,spec_cov,73,73,17,17,2022-07-12
 sequel_pg,jeremyevans/sequel_pg,spec_cov,118,118,35,35,2022-08-16
-roda,jeremyevans/roda,spec_cov,4968,4968,1672,1672,2022-08-12
+roda,jeremyevans/roda,spec_cov,5050,5050,1716,1716,2022-09-13
 sequel_postgresql_triggers,jeremyevans/sequel_postgresql_triggers,spec_cov,126,126,4,4,2022-07-12
 rodauth,jeremyevans/rodauth,spec_cov,4598,4598,1169,1169,2022-07-12
 sequel-annotate,jeremyevans/sequel-annotate,spec_cov,141,141,90,90,2022-07-12
@@ -30,7 +30,6 @@ unicorn-lockdown,jeremyevans/unicorn-lockdown,test_cov,273,273,65,65,2022-07-18
 kaeruera,jeremyevans/kaeruera,reporter_spec_cov,64,64,24,24,2022-07-12
 pledge,jeremyevans/ruby-pledge,spec_cov,20,20,9,9,2022-07-12
 capybara-restore_state,jeremyevans/capybara-restore_state,spec_cov,11,11,0,0,2022-07-12
-tilt-pipeline,jeremyevans/tilt-pipeline,test_cov,19,19,0,0,2022-07-12
 deprecate_public,jeremyevans/ruby-deprecate_public,test_cov,30,30,5,5,2022-07-12
 roda-message_bus,jeremyevans/roda-message_bus,spec_cov,23,23,6,6,2022-07-12
 visibility_checker,jeremyevans/visibility_checker,test_cov,18,18,6,6,2022-07-12
