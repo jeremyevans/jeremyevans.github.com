@@ -1,0 +1,234 @@
+<h1><%= @title = 'Forcing Sequential Scans on PostgreSQL Using Large Integers (2022-11-01)' %></h1>
+
+<h2>Overview</h2>
+
+<p>Recently, when adding support to <a href="https://sequel.jeremyevans.net">Sequel</a> for <a href="http://sequel.jeremyevans.net/rdoc-plugins/classes/Sequel/Plugins/AutoValidations.html">automatically validating values of integer columns based on the underlying column type</a>, I came across some unfortunate behavior in <a href="https://www.postgresql.org/">PostgreSQL</a>. The unfortunate behavior comes from a combination of two features:</p>
+
+<ul>
+<li>When using an integer value in an SQL query that is outside the range for a 64-bit signed integer type, PostgreSQL will treat the column type as <code>numeric</code> (since it is too large for <code>bigint</code>).  </li>
+<li>When doing a comparison between an <code>integer</code> or <code>bigint</code> value and a <code>numeric</code> value, PostgreSQL will implicitly cast the <code>integer</code> or <code>bigint</code> value to <code>numeric</code>, then do the comparison.</li>
+</ul>
+
+<p>So if you have an <code>integer</code> or <code>bigint</code> column in your table named <code>id</code>, with a regular index, and you issue an SQL query such as <code>SELECT * FROM table_name WHERE id = 9223372036854775808</code>, PostgreSQL will not use any index on the table, because the index is on the value of the column, not the value of the column after it has been casted to <code>numeric</code>.</p>
+
+<h2>Example of Issue</h2>
+
+<p>Here's an example of the behavior.  We first create a table with 1,000,000 rows, then create an index on it:</p>
+
+<pre><code>CREATE TABLE a AS SELECT * FROM generate_series(1,1000000) AS a(id);
+CREATE INDEX ON a(id);
+</code></pre>
+
+<p>We can then check the query plan when using an integer inside the <code>bigint</code> range:</p>
+
+<pre><code>EXPLAIN ANALYZE SELECT id FROM a WHERE id = 9223372036854775807;
+                                                   QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------
+ Index Only Scan using a_id_idx on a  (cost=0.42..4.44 rows=1 width=4) (actual time=0.088..0.089 rows=0 loops=1)
+   Index Cond: (id = '9223372036854775807'::bigint)
+   Heap Fetches: 0
+ Planning Time: 0.327 ms
+ Execution Time: 0.117 ms
+</code></pre>
+
+<p>This is as expected, uses the index, and executes in well under a millisecond.</p>
+
+<p>Next we can check the query plan when using an integer outside the <code>bigint</code> range:</p>
+
+<pre><code>EXPLAIN ANALYZE SELECT id FROM a WHERE id = 9223372036854775808;
+                                                     QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..12175.00 rows=5000 width=4) (actual time=169.630..177.069 rows=0 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  -&gt;  Parallel Seq Scan on a  (cost=0.00..10675.00 rows=2083 width=4) (actual time=158.821..158.821 rows=0 loops=3)
+        Filter: ((id)::numeric = '9223372036854775808'::numeric)
+        Rows Removed by Filter: 333333
+ Planning Time: 0.095 ms
+ Execution Time: 177.091 ms
+</code></pre>
+
+<p>This is the unforunate behavior, showing a sequential scan with performance over 1000 times worse.</p>
+
+<p>For large tables, forcing a sequential scan is very negative in terms of performance.  If you have an application that will accept a user-supplied integer outside the <code>bigint</code> range, and will use the value directly in an SQL query on a large table, this is a potential denial of service vector.</p>
+
+<h2>Mitigations</h2>
+
+<p>There are a few ways to avoid this issue.  One way is using bound variables. Another is raising an exception instead of running the query if the integer is outside the <code>bigint</code> range.</p>
+
+<p>A third way is explicitly casting the value from <code>numeric</code> to <code>integer</code> or <code>bigint</code> depending on the integer value or expected type.  You cannot always cast to <code>bigint</code>, as that will break code:</p>
+
+<pre><code>
+SELECT '[1]'::jsonb - 1;
+ ?column?
+----------
+ [1]
+(1 row)
+
+SELECT '[1]'::jsonb - 1::integer;
+ ?column?
+----------
+ [1]
+(1 row)
+
+SELECT '[1]'::jsonb - 1::bigint;
+ERROR:  operator does not exist: jsonb - bigint
+LINE 1: SELECT '[1]'::jsonb - 1::bigint;
+                            ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+</code></pre>
+
+<p>Explicit casting based on the integer value is a fairly pointless mitigation, though, because you have to check the size of the value, and if the value is outside the <code>bigint</code> range, you might as well raise an exception first, instead of sending a query that you know the database return an error for.  Explicit casting based on the expected type should be fine.</p>
+
+<p>A fourth way is quoting the value, as if it were a string (e.g. <code>SELECT * FROM t WHERE id = '9223372036854775808'</code>). PostgreSQL treats the single quoted values as the unknown type, which get implicitly casted to the type of whatever it is compared against.  If the value provided is outside of the range of that type, PostgreSQL will return an error. However, quoting integers can break code that depends on the implicit type:</p>
+
+<pre><code>SELECT 1 + 1;
+ ?column?
+----------
+        2
+(1 row)
+
+SELECT '1' + '1';
+ERROR:  operator is not unique: unknown + unknown
+LINE 1: SELECT '1' + '1';
+                   ^
+HINT:  Could not choose a best candidate operator. You might need to add explicit type casts.
+</code></pre>
+
+<p>Worse, it can silently change the behavior of SQL queries:</p>
+
+<pre><code>SELECT json_build_array(1);
+ json_build_array
+------------------
+ [1]
+(1 row)
+
+SELECT json_build_array('1');
+ json_build_array
+------------------
+ ["1"]
+(1 row)
+</code></pre>
+
+<p>For these reasons, I don't think it makes sense to explicitly cast based on the value or quote the values.  Unless you are using bound variables, you should either explicitly check the values of integers before using the integers in SQL queries, or explicit cast to the expected type.</p>
+
+<p>A fifth way would be creating an index on the integer column casted to <code>numeric</code>:</p>
+
+<pre><code>CREATE INDEX ON a((id::numeric));
+</code></pre>
+
+<p>That's more of a workaround than a fix, and should only be used if you access to the database but no ability to fix the underlying code or SQL queries.</p>
+
+<h2>Not a PostgreSQL Bug</h2>
+
+<p>I reached out to the PostgreSQL developers regarding this issue and they informed me this is not a bug.  They said this should be handled on the client side, best done using bound variables.</p>
+
+<h2>Are You Affected?</h2>
+
+<p>If you want to know whether you are affected by this issue, ask yourself the following four questions:</p>
+
+<ul>
+<li>Am I using PostgreSQL?</li>
+<li>Am I using a programming language that supports integers outside the <code>bigint</code> range (most dynamically typed programming languages will)?</li>
+<li>Am I accepting integer values derived from user input, without validating whether they are in the <code>bigint</code> range?</li>
+<li>Am I using the integer values literally in my queries, without quoting, explicit casting, or using bound variables?</li>
+</ul>
+
+<p>If you answered yes to all four questions, you are probably vulnerable.  If your programming language uses fixed sized integer types, you are probably not vulnerable, unless you are using an unsigned 64-bit type for an integer value that you'll be literalizing into an SQL query.  If your application or database library is validating the integer values before using them, to make sure they are within the range of a signed 64-bit integer type, then you are probably not vulnerable.  If you are quoting the integers, explicitly casting, or using bound variables, you are probably not vulnerable.</p>
+
+<h2>Behavior of Other Numeric Type Comparisons on PostgreSQL</h2>
+
+<p>Because PostgreSQL treats literal numbers with decimal points as <code>numeric</code> values, you can also force a sequential scan by using a number with a decimal point:</p>
+
+<pre><code>EXPLAIN ANALYZE SELECT id FROM a WHERE id = 1.0;
+                                                     QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..12175.00 rows=5000 width=4) (actual time=0.239..169.829 rows=1 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   -&gt;  Parallel Seq Scan on a  (cost=0.00..10675.00 rows=2083 width=4) (actual time=98.581..152.694 rows=0 loops=3)
+         Filter: ((id)::numeric = 1.0)
+         Rows Removed by Filter: 333333
+ Planning Time: 0.105 ms
+ Execution Time: 169.858 ms
+</code></pre>
+
+<p>When performing a <code>integer = double precision</code> comparison, PostgreSQL will cast the <code>integer</code> to <code>double precision</code>. So this issue also affects queries that use <code>double precision</code> or <code>real</code> values.</p>
+
+<p>When performing a <code>double precision = integer</code> or <code>double precision = numeric</code> comparison, PostgreSQL will cast the <code>integer</code> or <code>numeric</code> to <code>double precision</code> instead of the other way around. So you cannot force a sequential scan for <code>real</code> or <code>double precision</code> columns.</p>
+
+<p>However, you can force a sequential scan for <code>numeric</code> columns, if the value is <code>double precision</code> or <code>real</code>:</p>
+
+<pre><code>CREATE TABLE ns (id numeric);
+INSERT INTO ns SELECT id FROM a;
+CREATE INDEX ON ns(id);
+EXPLAIN ANALYZE SELECT id FROM ns WHERE id = 1.0::double precision;
+                                                      QUERY PLAN
+----------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..12175.00 rows=5000 width=6) (actual time=225.169..233.160 rows=0 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   -&gt;  Parallel Seq Scan on ns  (cost=0.00..10675.00 rows=2083 width=6) (actual time=215.148..215.149 rows=0 loops=3)
+         Filter: ((id)::double precision = '1'::double precision)
+         Rows Removed by Filter: 333333
+ Planning Time: 0.125 ms
+ Execution Time: 233.183 ms
+</code></pre>
+
+<p>This isn't likely to be an issue in real code, since it can only be hit when you are manually casting the input to <code>double precision</code>.  For safety, if you have to cast a floating point number, cast to <code>numeric</code> unless you are sure the underlying type uses <code>double precision</code>.  Casting to <code>numeric</code> is safer because it will not cause a sequential scan for either <code>numeric</code> or <code>double precision</code> columns.</p>
+
+<p>Queries similar to those in this section can also be a denial of service vector.  If you have an <code>integer</code> column, you should not compare it to a user-provided floating point value. You can run into this issue even when using bound variables, if you are casting the values based on a user-provided type.  You should always try to typecast any user-provided input to the appropriate type, you shouldn't trust the type of user input.</p>
+
+<p>The difference between the queries in this section and the <code>integer = numeric</code> query given earlier is that the queries in this section will always result in a sequential scan for the same types in the programming language, regardless of the size of the value.  With the <code>integer = numeric</code> query given earlier, a sequential scan can occur for different values of the same type in your programming language, because PostgreSQL implicitly treats the integer values outside the <code>bigint</code> range as <code>numeric</code>.  Because the switch from an index scan to a sequential scan occurs for a different value of the same type (from a programming language perspective), I consider that a more serious issue.</p>
+
+<h2>Behavior of Other Databases</h2>
+
+<p>To determine whether PostgreSQL's behavior is reasonable, we can consider how other databases handle the same issue.  I tested all 11 SQL databases that Sequel supports. To perform this testing, I used the following Sequel code, which inserts 2**20 (~1,000,000) records, then times queries for values at the boundaries of signed and unsigned 32-bit and 64-bit types:</p>
+
+<pre><code>DB.create_table(:large_table_test){Integer :id}
+at_exit{DB.drop_table(:large_table_test)}
+ds = DB[:large_table_test]
+ds.insert(1)
+i = 1
+20.times do 
+  ds.insert([:id], ds.select{id+i})
+  i *= 2
+end
+DB.add_index(:large_table_test, :id)
+puts "#{ds.count} records:"
+
+require 'benchmark'
+[0, 2**31-1, 2**31, 2**32-1, 2**32, 2**63-1, 2**63, 2**64-1, 2**64].each do |i|
+  puts "WHERE (id = #{i}): #{Benchmark.measure{ds.first(id: Sequel.lit((i).to_s))}}"
+end
+</code></pre>
+
+<p>Here are the results:</p>
+
+<ul>
+<li>PostgreSQL: <strong>Vulnerable</strong></li>
+<li>MySQL: Not Vulnerable</li>
+<li>SQLite: Not Vulnerable</li>
+<li>Microsoft SQL Server: Not Vulnerable</li>
+<li>H2: Not Vulnerable</li>
+<li>HSQLDB: Not Vulnerable</li>
+<li>Apache Derby: Not Vulnerable</li>
+<li>Oracle: Not Vulnerable</li>
+<li>DB2: Not Vulnerable</li>
+<li>SQLAnywhere: Not Vulnerable</li>
+<li>Microsoft Access: Not Vulnerable</li>
+</ul>
+
+<p>Only PostgreSQL had a significant difference in performance, showing much worse performance for <code>2**63</code>, <code>2**64-1</code>, and <code>2**64</code> than for the lower values.</p>
+
+<h2>Potential Changes to PostgreSQL</h2>
+
+<p>The behavior of treating integers outside <code>bigint</code> range as <code>numeric</code> has <a href="https://www.postgresql.org/docs/8.2/sql-syntax-lexical.html#AEN1279">always been documented by PostgreSQL</a>, so that definitely cannot be considered a bug.  I think that behavior is reasonable, because the <code>bigint</code> type cannot support such integers.  The only alternative would be raising an error, and that change is impossible due to backwards compatibility.</p>
+
+<p>The actual problematic behavior is when PostgreSQL does an <code>integer = numeric</code> or <code>integer = double precision</code> comparison, it casts the <code>integer</code> to <code>numeric</code> or <code>double precision</code> as the first step.  This the behavior that results the sequential scan, since it prevents the use of an index on the column.  I think it would be better to first check if the <code>numeric</code> or <code>double precision</code> value can be represented as a value of the integer type it is compared against.  If the <code>numeric</code> or <code>double precision</code> value is outside the range of that integer type or has a fractional value, then you could treat the equality comparison as false (modulo NULL handling).  However, I have no knowledge of PostgreSQL internals, and therefore no idea whether such an approach is feasible.</p>
+
+<h2>Changes to Sequel</h2>
+
+<p>Applications using Sequel could be vulnerable to this issue, if they were not checking the sizes of the integer values, since it used large integer values directly in queries.  The first change I made was to have Sequel's PostgreSQL adapter raise an exception if attempting to literalize an integer outside the <code>bigint</code> range.  For users that really want the previous behavior, I added an <a href="https://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/pg_extended_integer_support_rb.html">extension that allowed them to select the old behavior, or to quote the large integer values</a>.</p>
+
+<p>This issue taught me a valuable lesson.  For many years, I've thought using values directly in SQL queries is fine, as long as you correctly escape them.  Turns out that user provided integers are not safe on PostgreSQL.  If I was using bound variables, I wouldn't have needed to worry about this issue.  So to prevent this type of issue in the future, I ressurected <a href="http://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/pg_auto_parameterize_rb.html">Sequel's <code>pg_auto_parameterize</code> extension</a>, which uses bound variables automatically.  This extension was originally added in Sequel 3.34.0, and then removed in Sequel 4.0.0 because it had many corner cases.  I was able to fix almost all of the corner cases, and for the last two weeks have been running all of my applications using the <code>pg_auto_parameterize</code> extension. I recommend that all Sequel users using the PostgreSQL adapter try out the <code>pg_auto_parameterize</code> extension and see if it works for them.  As mentioned above, automatically using bound variables does not prevent the issue if you are supporting arbitrary types submitted by users (e.g. users submitting float values for <code>integer</code> columns), so you should make sure you are validating that submitted types are expected (and/or converting submitted types to expected types).</p>
