@@ -5,7 +5,7 @@ warning,jeremyevans/ruby-warning,test_cov,70,70,19,19,2022-07-14
 american_date,jeremyevans/ruby-american_date,spec_cov,26,26,9,9,2022-07-12
 minitest-hooks,jeremyevans/minitest-hooks,spec_cov,73,73,17,17,2022-07-12
 sequel_pg,jeremyevans/sequel_pg,spec_cov,118,118,35,35,2022-10-05
-roda,jeremyevans/roda,spec_cov,5069,5069,1720,1720,2022-10-12
+roda,jeremyevans/roda,spec_cov,5131,5131,1744,1744,2022-11-10
 sequel_postgresql_triggers,jeremyevans/sequel_postgresql_triggers,spec_cov,126,126,4,4,2022-07-12
 rodauth,jeremyevans/rodauth,spec_cov,4626,4626,1179,1179,2022-10-21
 sequel-annotate,jeremyevans/sequel-annotate,spec_cov,141,141,90,90,2022-07-12
