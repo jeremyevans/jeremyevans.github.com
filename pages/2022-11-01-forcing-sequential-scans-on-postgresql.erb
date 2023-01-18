@@ -244,3 +244,15 @@ end
 </ul>
 
 <p>This post was featured in <a href="https://pganalyze.com/blog/5mins-postgres-large-integers-causing-sequential-scan-instead-of-using-index">Episode 42 of the 5mins of Postgres video series</a>.</p>
+
+<h2>Other Software Affected (last updated: 2023-01-17)</h2>
+
+<p>I found that this issue affected other libraries besides Sequel.  Here is a list of other libraries that were or are affected:</p>
+
+<ul>
+  <li><a href="https://github.com/rails/rails">ActiveRecord</a> is a database library for Ruby, part of Ruby on Rails. I reported this issue privately to the Rails security list.  <a href="https://discuss.rubyonrails.org/t/cve-2022-44566-possible-denial-of-service-vulnerability-in-activerecords-postgresql-adapter/82119/1">Rails fixed this issue in Rails 7.0.4.1 and 6.1.7.1.</a></li>
+  <li><a href="https://github.com/sequelize/sequelize">Sequelize</a> is a database library for JavaScript/TypeScript. I reported this issue privately to the maintainers, and <a href="https://github.com/sequelize/sequelize/commit/68b64f89ccea19ac2091eb965243b93c8065f383">it appears they fixed it during a very large refactoring commit</a>.</li>
+  <li><a href="https://github.com/sqlobject/sqlobject">SQLObject</a> is a database library for Python. I submitted <a href="https://github.com/sqlobject/sqlobject/issues/181">a GitHub Issue discussing this topic</a>, but the maintainers do not think it is a security issue in SQLObject.  They are unsure if it should be fixed in SQLObject itself, or in applications using SQLObject.</li>
+</ul>
+
+<p>I think it is highly likely that other database libraries are affected, but these are the libraries I found vulnerable in the brief time I spent testing other libraries.</p>
