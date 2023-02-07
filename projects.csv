@@ -35,3 +35,4 @@ roda-message_bus,jeremyevans/roda-message_bus,spec_cov,23,23,6,6,2022-07-12
 visibility_checker,jeremyevans/visibility_checker,test_cov,18,18,6,6,2022-07-12
 capybara-validate_html5,jeremyevans/capybara-validate_html5,spec_cov,38,38,7,7,2022-07-12
 sequel-postgres-pr,jeremyevans/sequel-postgres-pr,test_cov,335,335,70,70,2022-07-12
+by,jeremyevans/by,test_cov,215,215,44,44,2023-02-06
