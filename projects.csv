@@ -5,7 +5,7 @@ warning,jeremyevans/ruby-warning,test_cov,70,70,19,19,2022-07-14
 american_date,jeremyevans/ruby-american_date,spec_cov,26,26,9,9,2022-07-12
 minitest-hooks,jeremyevans/minitest-hooks,spec_cov,73,73,17,17,2022-07-12
 sequel_pg,jeremyevans/sequel_pg,spec_cov,118,118,35,35,2022-10-05
-roda,jeremyevans/roda,spec_cov,5167,5167,1750,1750,2023-01-11
+roda,jeremyevans/roda,spec_cov,5196,5196,1760,1760,2023-02-10
 sequel_postgresql_triggers,jeremyevans/sequel_postgresql_triggers,spec_cov,126,126,4,4,2022-07-12
 rodauth,jeremyevans/rodauth,spec_cov,4643,4643,1189,1189,2023-01-23
 sequel-annotate,jeremyevans/sequel-annotate,spec_cov,141,141,90,90,2022-07-12
@@ -35,4 +35,4 @@ roda-message_bus,jeremyevans/roda-message_bus,spec_cov,23,23,6,6,2022-07-12
 visibility_checker,jeremyevans/visibility_checker,test_cov,18,18,6,6,2022-07-12
 capybara-validate_html5,jeremyevans/capybara-validate_html5,spec_cov,38,38,7,7,2022-07-12
 sequel-postgres-pr,jeremyevans/sequel-postgres-pr,test_cov,335,335,70,70,2022-07-12
-by,jeremyevans/by,test_cov,215,215,44,44,2023-02-06
+by,jeremyevans/by,test_cov,226,226,51,51,2023-02-09
