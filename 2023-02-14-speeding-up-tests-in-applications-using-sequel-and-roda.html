@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>code.jeremyevans.net - Speeding Up Tests in Applications Using Sequel, Roda, and rack-unreloader (2023-02-14)</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="navbar">
+  <div class="container">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-nav" id="toggle-nav">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a href="index.html" class="navbar-brand">code.jeremyevans.net</a>
+
+    <ul class="navbar-nav navbar-collapse" id="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="openbsd.html">OpenBSD</a></li>
+      <li class="nav-item"><a class="nav-link" href="ruby.html">Ruby</a></li>
+      <li class="nav-item"><a class="nav-link" href="http://github.com/jeremyevans?tab=repositories">GitHub</a></li>
+      <li class="nav-item"><a class="nav-link" href="contrib.html">Contributions</a></li>
+      <li class="nav-item"><a class="nav-link" href="presentations.html">Presentations</a></li>
+      <li class="nav-item"><a class="nav-link" href="interviews.html">Press</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+<h1>Speeding Up Tests in Applications Using Sequel, Roda, and rack-unreloader (2023-02-14)</h1>
+
+<p>This post gives a overview of the changes I've made to reduce the overhead of running individual tests in my largest production application.</p>
+
+<p>My largest production application isn't a huge application.  It's currently around 150 models in separate files and 650 routes in 50 route files (one file per top-level routing branch).  It's been in continuous development since 2003, originally written in spaghetti <a href="https://www.php.net">PHP</a> before being converted to <a href="https://rubyonrails.org/">Rails</a> and <a href="https://github.com/rails/rails/tree/main/activerecord">ActiveRecord</a> in 2005. In 2008, it switched from ActiveRecord to <a href="https://sequel.jeremyevans.net/">Sequel</a>, and in 2014 it switched from Rails to <a href="https://roda.jeremyevans.net/">Roda</a>.</p>
+
+<p>As a baseline, without any of the changes described in this blog post, the application can load all models in about 9.5 seconds, run a single model test in about 10.6 seconds, and run a single integration test in about 13.2 seconds. These times and all times in this article are using a computer with a Xeon E5-2670 CPU, originally released in 2012.</p>
+
+<h2>Using Sequel Caching Plugins</h2>
+
+<p>About half of the time loading the models is spent by <a href="https://sequel.jeremyevans.net/rdoc-plugins/classes/Sequel/Plugins/PgAutoConstraintValidations.html">Sequel's pg_auto_constraint_validations plugin</a>, which does multiple queries for each model class in order to automatically turn many <a href="https://www.postgresql.org/">PostgreSQL</a> constraint violations into validation failures.  The pg_auto_constraint_validations plugin supports a <code>:cache_file</code> option so that the query results can be cached.  Using the <code>:cache_file</code> plugin option drops model loading time to about 4.8 seconds.</p>
+
+<p><a href="https://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/index_caching_rb.html">Sequel's index_caching extension</a> allows caching indexes for a given <a href="https://sequel.jeremyevans.net/rdoc/classes/Sequel/Database.html">Sequel::Database</a>. This is especially useful when using <a href="https://sequel.jeremyevans.net/rdoc-plugins/classes/Sequel/Plugins/AutoValidations.html">Sequel's auto_validations plugin</a>, which does a query per model for indexes in order to automatically setup uniqueness validations.  Use of this extension drops model loading time to about 3.7 seconds.</p>
+
+<p><a href="https://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/schema_caching_rb.html">Sequel's schema_caching extension</a> allows caching table schema entries for a given <code>Sequel::Database</code>. This can skip a query per model class to get the schema for the model's table.  Use of this extension drops model loading time to about 2.5 seconds.</p>
+
+<p>Finally, Sequel has a <a href="https://sequel.jeremyevans.net/rdoc-plugins/classes/Sequel/Plugins/StaticCacheCache.html">static_cache_cache plugin</a>, for caching values of all rows for models using the <a href="https://sequel.jeremyevans.net/rdoc-plugins/classes/Sequel/Plugins/StaticCache.html">static_cache plugin</a>.  This application has about 50 models using the static_cache plugin.  Use of this plugin drops loading time to about 2.0 seconds.</p>
+
+<p>With these caching plugins, the application can run a single model test in about 3.1 seconds and a single integration test in about 5.6 seconds. That's slow enough that you can really feel it when running a single test, which may execute in under a tenth of a second.  It's slow enough to pull you out of flow state. So you need more than query result caching to make running individual tests fast.</p>
+
+<h2>Enabling Autoloading of Sequel Model Files and Routes</h2>
+
+<p>One way to reduce the amount of time for test setup is simply to load less code.  Part of the 3.1 seconds when running a single model test is loading every model file in the application, even if you only may need a single model loaded to run the individual test.  In general with <a href="https://www.ruby-lang.org/">Ruby</a>, you use <a href="https://docs.ruby-lang.org/en/master/Kernel.html#method-i-require">require</a> to load code, which immediately loads the related file.  However, Ruby also supports <a href="https://docs.ruby-lang.org/en/master/Module.html#method-i-autoload">autoload</a>, which will not load the file until the related constant is referenced.  Historically, I've not been a fan of <code>autoload</code>, mostly because my production applications run with limited file system access, originally using <a href="https://man.openbsd.org/chroot.2">chroot</a> and now using OpenBSD's <a href="https://man.openbsd.org/unveil.2">unveil</a> support. Ruby's <code>autoload</code> does not work well with limited file system access, especially when using <code>chroot</code>.  However, for faster tests, sometimes sacrifices have to be made.</p>
+
+<h3>rack-unreloader</h3>
+
+<p>Unfortunately, switching to an <code>autoload</code>-based approach took some work, as all of my production applications use <a href="https://github.com/jeremyevans/rack-unreloader">rack-unreloader</a> to handle loading and reloading code.  While <a href="https://github.com/fxn/zeitwerk">zeitwerk</a> is a much more popular choice these days, rack-unreloader was developed about 5 years earlier and still has a few advantages for web applications using Roda and Sequel:</p>
+
+<ul>
+<li>rack-unreloader only unloads and reloads files that change, so modifying one file does not require all files be unloaded. Zeitwerk unloads all files on any change, and files are then reloaded as needed using autoload.</li>
+<li>rack-unreloader handles classes split into multiple files, such as Roda classes with separate route files using the <a href="https://roda.jeremyevans.net/rdoc/classes/Roda/RodaPlugins/HashBranches.html">hash_branches</a> plugin. Combined with the previous advantage, this makes it so modifying a Roda route file only reloads the related route file and not the entire Roda application.</li>
+<li>rack-unreloader does no monkey-patching of Ruby core classes, does not use <a href="https://docs.ruby-lang.org/en/master/TracePoint.html">TracePoint</a>s, and in general is more explicit and less magical.</li>
+</ul>
+
+<p>The main disadvantage of rack-unreloader is you have to use APIs specific to rack-unreloader to load files, since it does no monkey patching.  This is unlike zeitwerk, which monkey patches <code>require</code>, sets up a <code>TracePoint</code>, and doesn't require zeitwerk-specific APIs to load files (though it may require zeitwerk-specific APIs for configuration). Another disadvantage for rack-unreloader is you have to write more code for loading files, since rack-unreloader doesn't assume file structure layouts map to class names. However, please take my ideas regarding these advantages and disadvantages with a grain of salt, as I don't have experience using zeitwerk in production.</p>
+
+<p>Anyway, rack-unreloader historically only supported requiring files and reloading them for changes; it did not support autoloading. I had to make <a href="https://github.com/jeremyevans/rack-unreloader/commit/a7d0d9efd46aa85b247031819dfbc957b99e97b9">some changes to rack-unreloader to support autoloading</a>.  After the changes, rack-unreloader can be used in 4 possible modes:</p>
+
+<ul>
+<li><code>require</code> without reloading (production/full test mode)</li>
+<li><code>require</code> with reloading (development mode)</li>
+<li><code>autoload</code> without reloading (individual test mode)</li>
+<li><code>autoload</code> with reloading (development mode with faster startup)</li>
+</ul>
+
+<h3>Roda Autoloading</h3>
+
+<p>In most cases, using rack-unreloader's autoloading support worked fine, since most files being autoloaded defined a single constant that Ruby could use a standard <code>autoload</code> for.  However, Roda's support for splitting up the routing tree using separate route files per branch using the hash_branches plugin cannot use autoload, because there isn't a separate constant referenced per routing branch.  To work around this issue, I added an <a href="https://roda.jeremyevans.net/rdoc/classes/Roda/RodaPlugins/AutoloadHashBranches.html">autoload_hash_branches plugin</a> to Roda that builds on top of the hash_branches plugin and delays loading the route file until there is a request for that routing branch.  I also added an <a href="https://roda.jeremyevans.net/rdoc/classes/Roda/RodaPlugins/AutoloadNamedRoutes.html">autoload_named_routes plugin</a> to Roda that builds on top of the <a href="https://roda.jeremyevans.net/rdoc/classes/Roda/RodaPlugins/NamedRoutes.html">named_routes plugin</a> and operates similarly.  Additionally, I updated <a href="https://github.com/jeremyevans/roda-sequel-stack">roda-sequel-stack</a> to use autoloading, to allow users to easily use the same approach I'm using in my production applications.</p>
+
+<h3>Speedup from Autoloading</h3>
+
+<p>Switching the rack-unreloader configuration to use autoload and using the Roda autoload_hash_branches plugin reduced test overhead when running individual model tests from 3.1 seconds to 1.6 seconds and reduced test overhead when running individual web tests from 5.6 seconds to 3.2 seconds.  So it definitely helped, but the end result is that the overhead still remained high enough to pull you out of flow state.</p>
+
+<p>From some basic profiling of test startup, the vast majority of the remaining time was taken up by requiring the libraries used.  The model test overhead was substantially smaller than the web test overhead because the model tests generally only relied on Sequel and <a href="https://github.com/minitest/minitest">minitest</a>. The web tests also relied on Roda, <a href="https://github.com/teamcapybara/capybara">Capybara</a>, and dependencies of Capybara such as <a href="https://nokogiri.org/">Nokogiri</a> and <a href="https://github.com/rack/rack-test">rack-test</a>.  The only way to get further speedups would be to have the libraries the tests use already loaded, so you don't have to pay the startup cost for them.</p>
+
+<h2>Preloading Ruby Libraries with a Client/Server Approach</h2>
+
+<p>It turns out, it's actually not too hard to preload Ruby libraries using a client/server approach with file descriptor passing, about 25 lines for the client and a little over 100 for the server.</p>
+
+<h3>Client (originally named <code>fr</code> for &quot;fast ruby&quot;):</h3>
+
+<div class="side-by-side">
+<div class="wide"><pre><code>#!/usr/local/bin/ruby --disable-gems
+
+require 'socket'
+frs_path = ENV['FRS_PATH'] || File.join(ENV["HOME"], '.frs_socket')
+s = UNIXSocket.new(frs_path)
+pid = s.readline("\0", chomp: true).to_i
+raise "Invalid frs worker pid" unless pid &gt; 1
+s.send_io($stdin)
+s.send_io($stdout)
+s.send_io($stderr)
+
+s.write(Dir.pwd)
+s.write("\0")
+
+ENV.each do |k, v|
+  s.write(k)
+  s.write("=")
+  s.write(v)
+  s.write("\0")
+end
+s.write("\0")
+
+ARGV.each do |arg|
+  s.write(arg)
+  s.write("\0")
+end
+
+s.shutdown(Socket::SHUT_WR)
+s.read
+s.close
+</code></pre></div>
+
+<div>
+<p>At a basic level, the client:</p>
+
+<ul>
+<li>Opens the Unix socket</li>
+<li>Makes sure the server is listening</li>
+<li>Passes stdin, stdout, stderr file descriptors</li>
+<li>Passes current directory path (<a href="https://bugs.ruby-lang.org/issues/19347">As of this writing, Ruby does not yet support changing the current directory using a directory file descriptor</a>)</li>
+<li>Passes environment variables</li>
+<li>Passes arguments</li>
+<li>Waits until socket is closed</li>
+</ul>
+</div>
+</div>
+
+<h3>Server (originally named <code>frs</code> for &quot;fast ruby server&quot;):</h3>
+
+<div class="side-by-side">
+<div class="wide"><pre><code>#!/usr/local/bin/ruby
+
+frs_path = ENV['FRS_PATH'] || File.join(ENV["HOME"], '.frs_socket')
+require 'socket'
+debug = ENV.delete('DEBUG')
+
+if File.socket?(frs_path)
+  begin
+    s = UNIXSocket.new(frs_path)
+    print "Shutting down existing frs server at #{frs_path}..." if debug
+    pid = s.readline("\0", chomp: true).to_i
+    raise "Invalid frs worker pid" unless pid &gt; 1
+    s.send_io($stdin)
+    s.send_io($stdout)
+    s.send_io($stderr)
+    s.write("close")
+    s.shutdown(Socket::SHUT_WR)
+    s.read
+    s.close
+  rescue =&gt; e
+    puts "#{e.class} #{e.message}" if s &amp;&amp; debug
+  else
+    puts "Success!" if debug
+  end
+  s = nil
+  File.delete(frs_path)
+end
+
+exit if ARGV == ["close"]
+
+ARGV.map{|f| require f}
+puts $LOADED_FEATURES if debug == 'log'
+
+# Prevent TOCTOU on server socket creation
+umask = File.umask(077)
+server = UNIXServer.new(frs_path)
+File.umask(umask)
+system('chmod', '600', frs_path)
+
+Process.daemon unless ENV['FRS_NO_DAEMON']
+
+queue = Queue.new
+
+Thread.new do
+  Process.wait while queue.pop
+end
+
+while s = server.accept
+  queue.push(fork do
+    s.write($$.to_s)
+    s.write("\0")
+
+    $stdin.reopen(s.recv_io(IO))
+    $stdout.reopen(s.recv_io(IO))
+    $stderr.reopen(s.recv_io(IO))
+
+    cleanup = proc do
+      s.shutdown(Socket::SHUT_WR)
+      s.close
+      puts $LOADED_FEATURES if ENV['DEBUG'] == 'log'
+    end
+
+    dir = s.readline("\0", chomp: true)
+    if dir == 'close'
+      Process.kill(:KILL, Process.ppid)
+      cleanup.call
+      Process.exit
+    end
+
+    Dir.chdir(dir)
+
+    env = {}
+    while line = s.readline("\0", chomp: true)
+      break if line.empty?
+      k, v = line.split("=")
+      env[k] = v
+    end
+    ENV.replace(env)
+
+    files = []
+    args = []
+    while !s.eof?
+      arg = s.readline("\0", chomp: true)
+      (File.file?(arg) ? files : args) &lt;&lt; arg 
+    end
+    ARGV.replace(args)
+    files.each{|f| require File.expand_path(f)}
+
+    if (m = ARGV.first == 'm') || args.first&amp;.match?(/\.rb:\d+\z/)
+      ARGV.shift if m
+      require 'm'
+      M.define_singleton_method(:exit!) do |res|
+        cleanup.call
+        super(res)
+      end
+      M.run(ARGV)
+    elsif ARGV.first == 'irb'
+      ARGV.shift
+      at_exit(&amp;cleanup)
+      require 'irb'
+      IRB.start(__FILE__)
+    elsif !files.empty?
+      if defined?(Minitest) &amp;&amp; Minitest.class_variable_get(:@@installed_at_exit)
+        Minitest.after_run(&amp;cleanup)
+      else
+        at_exit(&amp;cleanup)
+      end
+    else
+      $stderr.puts "No files given!"
+      $stderr.puts "ARGV: #{ARGV.inspect}"
+      cleanup.call
+      exit(1)
+    end
+  end)
+end
+</code></pre></div>
+
+<div>
+<p>At at basic level, the server:</p>
+
+<ul>
+<li>Shuts down existing server if it is running</li>
+<li>Creates the Unix socket</li>
+<li>Requires all arguments</li>
+<li>Daemonizes</li>
+<li>Accepts clients from the Unix socket, forking per connection</li>
+<li>Passes client the worker pid as an indication it is ready</li>
+<li>Receives the stdin, stdout, stderr file descriptors from the client and uses those</li>
+<li>Changes to the directory passed by the client</li>
+<li>Replaces the server's environment variables with the client's environment variables</li>
+<li>Handles arguments provided by the client</li>
+<li>Closes the socket connection</li>
+</ul>
+
+<p>The argument handling was tailored to my needs:</p>
+
+<ul>
+<li>Treats arguments that are valid files as files to <code>require</code></li>
+<li>If first remaining argument is <code>m</code> or something like <code>path/to/file.rb:1234</code>, use the <a href="https://github.com/qrush/m">m gem</a> to run a single minitest test</li>
+<li>If first remaining argument is <code>irb</code>, open an <a href="https://github.com/ruby/irb">IRB</a> shell</li>
+<li>If any files were required, and <code>Minitest</code> is defined and set to autorun, assume it will run tests</li>
+<li>If no files were required, print an error message</li>
+</ul>
+</div>
+</div>
+
+<p>If you are familiar with how a <a href="https://github.com/rails/spring">Rails library named Spring</a> works, this client/server approach may sound familiar.  After getting the client/server approach working, while developing this blog post, I looked at Spring's implementation and it uses a similar approach.  It doesn't change the directory, but it does use Unix socket file descriptor passing to pass stdin, stdout, and stderr from the client to the server.  It passes the arguments and environment from the client and server as well, though it uses JSON instead of the NULL-termination approach.  Spring is also Rails specific and tries to keep only a single worker process in memory, closing other clients when a new client connects.</p>
+
+<p>Using the client/server approach dramatically speeds up running individual tests, as long as the necessary libraries are already loaded.  For my largest production application, the overhead from running individual model tests is reduced from 1.6 seconds to 0.5 seconds, and the overhead from running individual web tests is reduced from 3.2 seconds to 0.6 seconds.  From the programmer's perspective, you get test output almost immediately, so you are not pulled out of flow state.</p>
+
+<p>Another great part of this design is that the client and server are generic and not application-specific.  All of my production application are developed using a small group of libraries, primarily Sequel, Roda, <a href="https://rodauth.jeremyevans.net/">Rodauth</a>, and <a href="https://forme.jeremyevans.net/">Forme</a>, and all of their tests are based on minitest, rack-test, and Capybara. I can use the same server process to speed up running individual tests for all of my production applications.</p>
+
+<p>There are definitely issues with the original, proof-of-concept implementation. The server worker processes needed better error handling, and the client did not use the same exit status as the worker process. But it worked well enough for speeding up individual tests. Since I think this client/server approach for library preloading may be useful for other Ruby programmers, I fixed the issues, added tests, coverage, and CI tests and released it as <a href="https://github.com/jeremyevans/by">by</a>.</p>
+
+<p>In the test environment:</p>
+
+<ul>
+<li><code>ruby -e ''</code> takes about 0.3 seconds</li>
+<li><code>ruby --disable-gems -e ''</code> takes about 0.08 seconds.</li>
+<li><code>by -e ''</code> takes about 0.15 seconds (if <code>by</code> is setup to disable gems), so it's twice as fast as plain <code>ruby</code>, because the client avoids loading rubygems (the server already has rubygems loaded).</li>
+<li>The <code>by-server</code> loading all libraries needed for the production applications starts in about 3 seconds.</li>
+</ul>
+
+<p>To make starting the server simple, I'm running it using <code>by-server /path/to/by-require.rb</code>.  The <code>by-require.rb</code> then has all of the necessary requires:</p>
+
+<pre><code>(&lt;&lt;END).split.each{|f| require f}
+sequel
+roda
+rodauth
+...
+END
+
+(&lt;&lt;END).split.each{|f| require "sequel/extensions/#{f}"}
+pg_json
+pg_json_ops
+...
+END
+
+(&lt;&lt;END).split.each{|f| require "sequel/plugins/#{f}"}
+auto_validations
+pg_auto_constraint_validations
+...
+END
+
+(&lt;&lt;END).split.each{|f| require "roda/plugins/#{f}"}
+render
+route_csrf
+...
+END
+
+(&lt;&lt;END).split.each{|f| require "rodauth/features/#{f}"}
+base
+login
+...
+END
+</code></pre>
+
+<p>Not all applications use all of the files required by the server process, but that is OK.  Worst case scenario, let's say <code>by</code> is loading a library that the application is using without requiring.  This is a bug in the application that <code>by</code> would hide.  However, <code>by</code> is only used for speeding up individual tests.  It's not used when running the full test suite (which is done with the default <a href="https://github.com/ruby/rake">rake</a> task), and running the full test suite is always done before committing. The full test suite is parallelized for all of my large production applications and takes less than 100 seconds even for the largest application.</p>
+
+</div>
+
+<script src="/nav.js"></script>
+</body>
+</html>

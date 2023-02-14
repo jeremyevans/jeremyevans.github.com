@@ -7,6 +7,7 @@
 pre {
   background-color: #f5f5f5;
   padding: 5px 10px;
+  white-space: pre-wrap;
 }
 
 img {
@@ -104,6 +105,14 @@ ul.navbar-nav {
   display: none;
 }
 
+.side-by-side {
+  display: flex;
+  column-gap: 20px;
+}
+.side-by-side .wide {
+  width: 70%;
+}
+
 @media only screen and (max-width: 1000px) {
   .navbar-header {
     width: 100%;
@@ -145,6 +154,13 @@ ul.navbar-nav {
     text-align: center;
   }
   ul.navbar-collapse { display: none; }
+
+  .side-by-side {
+    flex-wrap: wrap;
+  }
+  .side-by-side .wide {
+    width: auto;
+  }
 
   .col-md-6 {
     width: 100%;
