@@ -1,0 +1,179 @@
+/* custom css and js files included at the top level of your presentation will
+ * will be included in your presentation */
+ 
+ /*
+http://www.colorhunter.com/
+ #5E0000 #2290FF #FCFFF4 #6DA6FF #CA2401
+ */
+
+.white {color: white;}
+.red {color: #5E0000;}
+.blue {color: #00005E;}
+.black {color: #03000b;}
+
+.slide {
+ font-family: 'Playfair Display', serif;
+ font-weight: bold;
+ color: #00005E;
+ background-color: #FCFFF4;
+ text-align: left;
+}
+
+sup {
+ vertical-align: super;
+ font-size: smaller;
+}
+h1, pre, td, tr {
+ font-family: inherit;
+ font-weight: inherit;
+ color: inherit;
+ text-align: inherit;
+ background-color: transparent;
+ margin: 0;
+ padding: 0;
+}
+pre {
+ line-height: 125%; 
+}
+td, th {
+ font-size: inherit;
+ text-align: center;
+ padding: 8px 15px;
+}
+th {
+ border-bottom: 5px solid white;
+}
+td.trans {
+  text-align: left;
+}
+
+.right {
+ text-align: right;
+}
+
+.content {
+ margin-left: 20px;
+ margin-right: 20px;
+}
+
+.bigger {
+ font-size: 180%;
+}
+.smaller {
+ font-size: 50%;
+}
+.mono, pre, table.code {
+ font-family: 'PT Mono'; 
+}
+table.code caption {
+ font-size: 64px;
+ margin-bottom: 30px;
+}
+
+#notesInfo {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  padding: 10px;
+}
+
+table {
+  margin: auto;
+  font-size: 45px;
+  margin-top: 20px;
+}
+
+.slide .content pre {
+  text-align: left;
+  font-size: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 100px;
+}
+.slide.vc .content pre {
+  margin-top: 0;
+}
+.slide .content pre div {
+  margin: 0;
+}
+
+div pre.sh_sourceCode {
+  background-color: transparent;
+}
+div pre.sh_sourceCode b, div pre b, div pre.b {
+  background-color: #FCFFF4;
+  outline: 3px dotted #00005e;
+}
+
+div pre.sh_sourceCode span.sh_keyword {
+  color: #AA0055;
+}
+div pre.sh_sourceCode span.sh_string {
+  color: #5E0000;
+}
+div pre.sh_sourceCode span.sh_type {
+  color: #5500AA;
+}
+
+span.strike {
+  text-decoration: line-through;
+  text-decoration-color: #5E0000;
+}
+
+.red span.strike {
+  text-decoration-color: #00005E;
+}
+.profile-pic {
+  width: 400px;
+  height: 400px;
+  border-radius: 200px;
+}
+
+.review {
+position: absolute;
+font-size: 70px;
+text-align: right;
+top: 75px;
+right: 15px;
+padding: 10px;
+padding-bottom: 20px;
+border: 5px #FCFFF4 dotted;
+background-color: #5E0000;
+color: #6DA6FF;
+display: inline-block;
+-webkit-transform: rotate(30deg);
+-moz-transform: rotate(30deg);
+transform: rotate(30deg);
+}
+
+div pre.sh_sourceCode b, div pre b.block {
+  display:inline-block;
+}
+
+span.lte {
+  color: darkred;
+}
+span.lte:before {
+  content: '<=';
+  color: darkred;
+}
+span.lt {
+  color: darkred;
+}
+span.lt:before {
+  content: '<';
+  color: darkred;
+}
+span.ltlt {
+  color: darkred;
+}
+span.ltlt:before {
+  content: '<';
+  color: darkred;
+}
+span.ltlt:after {
+  content: '<';
+  color: darkred;
+}
+
+.content > blockquote { margin: 15px;}
+.slide.credits p {font-size: 90%;}
