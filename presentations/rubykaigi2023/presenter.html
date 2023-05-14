@@ -1,0 +1,4437 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>The Second Oldest Bug</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1920px;
+          height: 1080px;
+        }
+        #footer { width: 1901px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+      <script type="text/javascript" src="./js/sh_lang/sh_c.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+  <link rel="stylesheet" href="./css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src="./js/presenter.js"></script>
+
+    <style type="text/css">
+      #preview div.zoomed { zoom: 48%;}
+    </style>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/1">
+
+<div class="notes">Hello everyone. In this presentation, I will be discussing what was Ruby’s second oldest open bug, and how we fixed the bug in Ruby 3.3.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Second</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 393px; left: 82px;">Oldest</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 154px;">Bug</h1>
+<h1 class="blue" style="font-size: 108px; position: absolute; top: 762px; right: 90px; text-align: right;">
+<span class="red">Ruby</span>Kaigi 2023</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/2">
+
+<div class="notes">My name is Jeremy Evans. I am a Ruby committer who focuses on fixing bugs in Ruby.</div>
+
+<p><img class="profile-pic" src="./file/jeremy.jpg" style="position: absolute; top: 292px; left: 246px;"></p>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 432px; left: 750px;">GitHub:  <span class="blue mono"> jeremyevans</span>
+</h1>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 507px; left: 750px;">Twitter:  <span class="blue mono">@jeremyevans0</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/3">
+
+<div class="notes">I am also the author of Polished Ruby Programming, which was published in English a couple years ago, and was published in Japanese last month. This book is aimed at intermediate Ruby programmers and focuses on teaching principles of Ruby programming, as well as trade-offs to consider when making implementation decisions.</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 100px; height: 1031px; width: 822px;"></p>
+
+<p><img src="./file/polished-ruby-programming-cover-jp.png" style="position: absolute; top: 20px; right: 100px; height: 1031px; width: 726px;"></p>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/4">
+
+<div class="notes">So, what is the second oldest bug that I am discussing?</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Second</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 393px; left: 82px;">Oldest</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 154px;">Bug</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/5">
+
+<div class="notes">I am referring to bug 4040, which has the subject "SystemStackError with Hash[*a] for Large _a_"</div>
+<h1 class="red" style="font-size: 80px; position: absolute; top: 232px; left: 250px;">https://bugs.ruby-lang.org/issues/4040</h1>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 432px; left: 125px;">SystemStackError with Hash[*a] for Large _a_</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/6">
+
+<div class="notes">The reproduction code given in the bug report was this simple Ruby code. This calls the array reference method on Hash with a splat of a very large array with over a million entries.|It turns out that this bug is not specific to that Hash method. At the time the bug was reported, this issue applied to any method, when called with a splatted array, if the number of arguments passed to the method is large enough.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>Hash[*1380888.times.map{ 1 }]
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/7">
+
+<div class="notes">You could reproduce the bug when calling the Kernel puts method.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>puts(*1380888.times)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/8">
+
+<div class="notes">You could reproduce the bug when calling a method defined in Ruby.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>def a(*ary)
+end
+
+a(*1380888.times)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/9">
+
+<div class="notes">You could even reproduce the bug with a method that does not accept any arguments, such as the Kernel object_id method. This is because the error occurs while setting up the arguments for the method call, before actually calling the method.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>object_id(*1380888.times)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/10">
+
+<div class="notes">Ruby’s behavior when passing a very large array splat to a method has changed over time.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 250px; left: 635px;">Historical</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 430px; left: 624px;">Behavior</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/11">
+
+<div class="notes">Back in Ruby 1.8, passing too many arguments to a method would result in the Ruby interpreter crashing and dumping core, both for methods defined in C and for methods defined in Ruby.</div>
+<pre class="red" style="font-size: 56px; margin-top: 248px; margin-left: 20px;"><code>$ ruby18 -ve 'object_id(*1380888.times)'
+ruby 1.8.7 (2013-06-27 patchlevel 374) [x86_64-openbsd]
+Illegal instruction (core dumped)
+
+$ ruby18 -e 'def a(*a) end; a(*1380888.times); p 1'
+Illegal instruction (core dumped)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/12">
+
+<div class="notes">In Ruby 1.9, this condition was recognized, and a SystemStackError was raised instead for both cases. Ruby 2.0 and 2.1 kept the same behavior as Ruby 1.9.</div>
+<pre class="red" style="font-size: 48px; margin-top: 248px; margin-left: 20px;"><code>$ ruby19 -ve 'object_id(*1380888.times)'
+ruby 1.9.3p551 (2014-11-13 revision 48407) [x86_64-openbsd]
+-e:1: stack level too deep (SystemStackError)
+
+$ ruby19 -e 'def a(*a) end; a(*1380888.times); p 1'
+-e:1: stack level too deep (SystemStackError)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/13">
+
+<div class="notes">In Ruby 2.2, Sasada-san fixed the issue for methods defined in Ruby.</div>
+<pre style="font-size: 48px; margin-top: 248px; margin-left: 20px;"><code><span class="red">$ ruby22 -ve 'object_id(*1380888.times)'
+ruby 2.2.10p489 (2018-03-28 revision 63023) [x86_64-openbsd]
+-e:1: stack level too deep (SystemStackError)</span>
+
+$ ruby22 -e 'def a(*a) end; a(*1380888.times); p 1'
+1
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/14">
+
+<div class="notes">This same behavior remains in Ruby 3.2.</div>
+<pre style="font-size: 48px; margin-top: 248px; margin-left: 20px;"><code><span class="red">$ ruby32 -ve 'object_id(*1380888.times)'
+ruby 3.2.1 (2023-02-08 revision 31819e82c8) [x86_64-openbsd]
+-e:1: stack level too deep (SystemStackError)</span>
+
+$ ruby32 -e 'def a(*a) end; a(*1380888.times); p 1'
+1
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/15">
+
+<div class="notes">As you probably can guess, we fixed this issue in Ruby 3.3. So now calling the object_id method with a large array splat correctly results in an ArgumentError.</div>
+<pre style="font-size: 32px; margin-top: 248px; margin-left: 20px;"><code>$ ruby33 -ve 'object_id(*1380888.times)'
+ruby 3.3.0dev (2023-02-09T20:02:26Z master d620855101) [x86_64-openbsd]
+-e:1:in `object_id': wrong number of arguments (given 1380888, expected 0) (ArgumentError)
+
+object_id(*1380888.times)
+          ^^^^^^^^^^^^^^
+        from -e:1:in `&lt;main&gt;'
+
+$ ruby33 -e 'def a(*a) end; a(*1380888.times); p 1'
+1
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/16">
+
+<div class="notes">If you switch to the example code given in the initial bug report, you can see that it works correctly, and returns a hash with a single entry.</div>
+<pre style="font-size: 56px; margin-top: 248px; margin-left: 20px;"><code>$ ruby33 -e 'p Hash[*1380888.times.map{ 1 }]'
+{1=&gt;1}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/17">
+
+<div class="notes">To start work on fixing this bug, I needed to find where the bug is occurring.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 260px; left: 624px;">Finding</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 420px; left: 1114px;">Bugs</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/18">
+
+<div class="notes">When debugging in Ruby, I usually use gdb,</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 460px; left: 624px;">gdb</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/19">
+
+<div class="notes">To get a general idea of how method calling works, I run ruby through gdb, and tell Ruby to execute the itself method,</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>$ gdb --args ruby -e itself
+(gdb) 
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/20">
+
+<div class="notes">then set a breakpoint on the underlying C function that will be called.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>$ gdb --args ruby -e itself
+(gdb) break rb_obj_itself
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/21">
+
+<div class="notes">After the breakpoint is hit, I can have gdb print the backtrace. Here is the simplified backtrace output. We can split this backtrace into 4 basic sections.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  rb_obj_itself at object.c:564
+#1  ractor_safe_call_cfunc_0 at ./vm_insnhelper.c:3085
+#2  vm_call_cfunc_with_frame at ./vm_insnhelper.c:3268
+#3  vm_call_cfunc at ./vm_insnhelper.c:3289
+#4  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#5  vm_call_method at ./vm_insnhelper.c:4044
+#6  vm_call_general at ./vm_insnhelper.c:4088
+#7  vm_sendish at ./vm_insnhelper.c:5080
+#8  vm_exec_core at insns.def:820
+#9  rb_vm_exec at vm.c:2374
+#10 rb_iseq_eval_main at vm.c:2633
+#11 rb_ec_exec_node at eval.c:289
+#12 ruby_run_node at eval.c:330
+#13 rb_main at ./main.c:38
+#14 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/22">
+
+<div class="notes">The bottom section is basically everything Ruby runs before calling the itself method.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  rb_obj_itself at object.c:564
+#1  ractor_safe_call_cfunc_0 at ./vm_insnhelper.c:3085
+#2  vm_call_cfunc_with_frame at ./vm_insnhelper.c:3268
+#3  vm_call_cfunc at ./vm_insnhelper.c:3289
+#4  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#5  vm_call_method at ./vm_insnhelper.c:4044
+#6  vm_call_general at ./vm_insnhelper.c:4088
+#7  vm_sendish at ./vm_insnhelper.c:5080
+<b class="block">#8  vm_exec_core at insns.def:820
+#9  rb_vm_exec at vm.c:2374
+#10 rb_iseq_eval_main at vm.c:2633
+#11 rb_ec_exec_node at eval.c:289
+#12 ruby_run_node at eval.c:330
+#13 rb_main at ./main.c:38
+#14 main at ./main.c:57</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/23">
+
+<div class="notes">This section is generic method calling code, regardless of how the method was defined.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  rb_obj_itself at object.c:564
+#1  ractor_safe_call_cfunc_0 at ./vm_insnhelper.c:3085
+#2  vm_call_cfunc_with_frame at ./vm_insnhelper.c:3268
+#3  vm_call_cfunc at ./vm_insnhelper.c:3289
+<b class="block">#4  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#5  vm_call_method at ./vm_insnhelper.c:4044
+#6  vm_call_general at ./vm_insnhelper.c:4088
+#7  vm_sendish at ./vm_insnhelper.c:5080</b>
+#8  vm_exec_core at insns.def:820
+#9  rb_vm_exec at vm.c:2374
+#10 rb_iseq_eval_main at vm.c:2633
+#11 rb_ec_exec_node at eval.c:289
+#12 ruby_run_node at eval.c:330
+#13 rb_main at ./main.c:38
+#14 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/24">
+
+<div class="notes">This section is code specific to calling methods defined in C.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  rb_obj_itself at object.c:564
+<b class="block">#1  ractor_safe_call_cfunc_0 at ./vm_insnhelper.c:3085
+#2  vm_call_cfunc_with_frame at ./vm_insnhelper.c:3268
+#3  vm_call_cfunc at ./vm_insnhelper.c:3289</b>
+#4  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#5  vm_call_method at ./vm_insnhelper.c:4044
+#6  vm_call_general at ./vm_insnhelper.c:4088
+#7  vm_sendish at ./vm_insnhelper.c:5080
+#8  vm_exec_core at insns.def:820
+#9  rb_vm_exec at vm.c:2374
+#10 rb_iseq_eval_main at vm.c:2633
+#11 rb_ec_exec_node at eval.c:289
+#12 ruby_run_node at eval.c:330
+#13 rb_main at ./main.c:38
+#14 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/25">
+
+<div class="notes">At the very top, we have code specific to the itself method.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+<b>#0  rb_obj_itself at object.c:564</b>
+#1  ractor_safe_call_cfunc_0 at ./vm_insnhelper.c:3085
+#2  vm_call_cfunc_with_frame at ./vm_insnhelper.c:3268
+#3  vm_call_cfunc at ./vm_insnhelper.c:3289
+#4  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#5  vm_call_method at ./vm_insnhelper.c:4044
+#6  vm_call_general at ./vm_insnhelper.c:4088
+#7  vm_sendish at ./vm_insnhelper.c:5080
+#8  vm_exec_core at insns.def:820
+#9  rb_vm_exec at vm.c:2374
+#10 rb_iseq_eval_main at vm.c:2633
+#11 rb_ec_exec_node at eval.c:289
+#12 ruby_run_node at eval.c:330
+#13 rb_main at ./main.c:38
+#14 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/26">
+
+<div class="notes">Since this bug occurs when calling methods defined in C, it seems likely that the problem is in one of these three functions, or one of the functions they call.|While this is helpful, it would be best if we could see exactly where the SystemStackError is being raised.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  rb_obj_itself at object.c:564
+<b class="block">#1  ractor_safe_call_cfunc_0 at ./vm_insnhelper.c:3085
+#2  vm_call_cfunc_with_frame at ./vm_insnhelper.c:3268
+#3  vm_call_cfunc at ./vm_insnhelper.c:3289</b>
+#4  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#5  vm_call_method at ./vm_insnhelper.c:4044
+#6  vm_call_general at ./vm_insnhelper.c:4088
+#7  vm_sendish at ./vm_insnhelper.c:5080
+#8  vm_exec_core at insns.def:820
+#9  rb_vm_exec at vm.c:2374
+#10 rb_iseq_eval_main at vm.c:2633
+#11 rb_ec_exec_node at eval.c:289
+#12 ruby_run_node at eval.c:330
+#13 rb_main at ./main.c:38
+#14 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/27">
+
+<div class="notes">We can start by grepping to see where SystemStackError is defined.</div>
+<pre style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>$ git grep \"SystemStackError\"
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/28">
+
+<div class="notes">It is always nice when we get only a single result back.</div>
+<pre style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>$ git grep \"SystemStackError\"
+proc.c:    rb_eSysStackError = rb_define_class("SystemStackError", rb_eException);
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/29">
+
+<div class="notes">After a few more greps to gather information, we end up inside the virtual machine code, looking at the line highlighted. There is one large indication that this is what we are looking for.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>NORETURN(static void ec_stack_overflow(rb_execution_context_t *ec, int));
+static void
+ec_stack_overflow(rb_execution_context_t *ec, int setup)
+{
+    <b>VALUE mesg = rb_ec_vm_ptr(ec)-&gt;special_exceptions[ruby_error_sysstack];</b>
+    ec-&gt;raised_flag = RAISED_STACKOVERFLOW;
+    if (setup) {
+        VALUE at = rb_ec_backtrace_object(ec);
+        mesg = ruby_vm_special_exception_copy(mesg);
+        rb_ivar_set(mesg, idBt, at);
+        rb_ivar_set(mesg, idBt_locations, at);
+    }
+    ec-&gt;errinfo = mesg;
+    EC_JUMP_TAG(ec, TAG_RAISE);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/30">
+
+<div class="notes">And that is the function name, which contains the words stack overflow. It looks like this is the function called if the stack would overflow, to raise an exception instead of crashing.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>NORETURN(static void ec_stack_overflow(rb_execution_context_t *ec, int));
+static void
+<b>ec_stack_overflow</b>(rb_execution_context_t *ec, int setup)
+{
+    VALUE mesg = rb_ec_vm_ptr(ec)-&gt;special_exceptions[ruby_error_sysstack];
+    ec-&gt;raised_flag = RAISED_STACKOVERFLOW;
+    if (setup) {
+        VALUE at = rb_ec_backtrace_object(ec);
+        mesg = ruby_vm_special_exception_copy(mesg);
+        rb_ivar_set(mesg, idBt, at);
+        rb_ivar_set(mesg, idBt_locations, at);
+    }
+    ec-&gt;errinfo = mesg;
+    EC_JUMP_TAG(ec, TAG_RAISE);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/31">
+
+<div class="notes">We can use gdb to see if that is correct. In this case, we will pass code that should trigger the stack overflow, then set a breakpoint on the ec_stack_overflow function.</div>
+<pre style="font-size: 40px; margin-top: 48px; margin-left: 20px;"><code>$ gdb --args ruby -e 'itself(*1380888.times)'
+(gdb) break ec_stack_overflow
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/32">
+
+<div class="notes">Thankfully, we guessed correctly. We can use the backtrace command to see how we got there.</div>
+<pre style="font-size: 40px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  ec_stack_overflow at ./vm_insnhelper.c:61
+#1  vm_stackoverflow at ./vm_insnhelper.c:81
+#2  vm_caller_setup_arg_splat at ./vm_args.c:795
+#3  CALLER_SETUP_ARG at ./vm_insnhelper.c:2545
+#4  vm_call_cfunc at ./vm_insnhelper.c:3286
+#5  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#6  vm_call_method at ./vm_insnhelper.c:4044
+#7  vm_call_general at ./vm_insnhelper.c:4088
+#8  vm_sendish at ./vm_insnhelper.c:5080
+#9  vm_exec_core at insns.def:820
+#10 rb_vm_exec at vm.c:2374
+#11 rb_iseq_eval_main at vm.c:2633
+#12 rb_ec_exec_node at eval.c:289
+#13 ruby_run_node at eval.c:330
+#14 rb_main at ./main.c:38
+#15 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/33">
+
+<div class="notes">Most of the backtrace is the same as the previous one. I have highlighted the new lines.</div>
+<pre style="font-size: 40px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+<b class="block">#0  ec_stack_overflow at ./vm_insnhelper.c:61
+#1  vm_stackoverflow at ./vm_insnhelper.c:81
+#2  vm_caller_setup_arg_splat at ./vm_args.c:795
+#3  CALLER_SETUP_ARG at ./vm_insnhelper.c:2545
+#4  vm_call_cfunc at ./vm_insnhelper.c:3286</b>
+#5  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#6  vm_call_method at ./vm_insnhelper.c:4044
+#7  vm_call_general at ./vm_insnhelper.c:4088
+#8  vm_sendish at ./vm_insnhelper.c:5080
+#9  vm_exec_core at insns.def:820
+#10 rb_vm_exec at vm.c:2374
+#11 rb_iseq_eval_main at vm.c:2633
+#12 rb_ec_exec_node at eval.c:289
+#13 ruby_run_node at eval.c:330
+#14 rb_main at ./main.c:38
+#15 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/34">
+
+<div class="notes">The top two lines are both for functions with stack overflow in the name, so these are likely called when a potential stack overflow has been detected, and not the cause of the stack overflow.</div>
+<pre style="font-size: 40px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+<b class="block">#0  ec_stack_overflow at ./vm_insnhelper.c:61
+#1  vm_stackoverflow at ./vm_insnhelper.c:81</b>
+#2  vm_caller_setup_arg_splat at ./vm_args.c:795
+#3  CALLER_SETUP_ARG at ./vm_insnhelper.c:2545
+#4  vm_call_cfunc at ./vm_insnhelper.c:3286
+#5  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#6  vm_call_method at ./vm_insnhelper.c:4044
+#7  vm_call_general at ./vm_insnhelper.c:4088
+#8  vm_sendish at ./vm_insnhelper.c:5080
+#9  vm_exec_core at insns.def:820
+#10 rb_vm_exec at vm.c:2374
+#11 rb_iseq_eval_main at vm.c:2633
+#12 rb_ec_exec_node at eval.c:289
+#13 ruby_run_node at eval.c:330
+#14 rb_main at ./main.c:38
+#15 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/35">
+
+<div class="notes">The function directly before those lines, named vm_caller_setup_arg_splat, is the probable cause.</div>
+<pre style="font-size: 40px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  ec_stack_overflow at ./vm_insnhelper.c:61
+#1  vm_stackoverflow at ./vm_insnhelper.c:81
+<b>#2  vm_caller_setup_arg_splat at ./vm_args.c:795</b>
+#3  CALLER_SETUP_ARG at ./vm_insnhelper.c:2545
+#4  vm_call_cfunc at ./vm_insnhelper.c:3286
+#5  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#6  vm_call_method at ./vm_insnhelper.c:4044
+#7  vm_call_general at ./vm_insnhelper.c:4088
+#8  vm_sendish at ./vm_insnhelper.c:5080
+#9  vm_exec_core at insns.def:820
+#10 rb_vm_exec at vm.c:2374
+#11 rb_iseq_eval_main at vm.c:2633
+#12 rb_ec_exec_node at eval.c:289
+#13 ruby_run_node at eval.c:330
+#14 rb_main at ./main.c:38
+#15 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/36">
+
+<div class="notes">Here is the definition of that function.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!NIL_P(ary)) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }
+        calling-&gt;argc += i - 1;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/37">
+
+<div class="notes">It determines which object is being splatted.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    <b>VALUE ary = argv[argc-1];</b>
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!NIL_P(ary)) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }
+        calling-&gt;argc += i - 1;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/38">
+
+<div class="notes">If the object being splatted is not nil, we assume it is an array.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!<b>NIL_P(ary)</b>) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }
+        calling-&gt;argc += i - 1;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/39">
+
+<div class="notes">We then determine of the length of the array to splat.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!NIL_P(ary)) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        <b>long len = RARRAY_LEN(ary)</b>, i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }
+        calling-&gt;argc += i - 1;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/40">
+
+<div class="notes">In the normal case, we copy all objects from the array to the VM stack.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!NIL_P(ary)) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+<b class="block">        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }</b>
+        calling-&gt;argc += i - 1;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/41">
+
+<div class="notes">Then we increase the number of arguments the method is called with with the length of the splatted array, subtracting one for the array itself.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!NIL_P(ary)) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }
+        <b>calling-&gt;argc += i - 1</b>;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/42">
+
+<div class="notes">However, before doing any copying, we check whether copying all objects to the VM stack would overflow the stack, so that a SystemStackError can be raised instead of the program crashing. This is the check that is being hit when splatting a large array.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!NIL_P(ary)) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        <b>CHECK_VM_STACK_OVERFLOW(cfp, len);</b>
+
+        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }
+        calling-&gt;argc += i - 1;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/43">
+
+<div class="notes">Unfortunately, there is not a way to avoid this issue as long as you take the approach of copying all arguments from the splatted array to the stack. The only way to avoid the approach would be to not pass the arguments on the stack.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!NIL_P(ary)) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+<b class="block">        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }</b>
+        calling-&gt;argc += i - 1;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/44">
+
+<div class="notes">If we go back to the initial backtrace, when calling itself without any arguments.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  rb_obj_itself at object.c:564
+#1  ractor_safe_call_cfunc_0 at ./vm_insnhelper.c:3085
+#2  vm_call_cfunc_with_frame at ./vm_insnhelper.c:3268
+#3  vm_call_cfunc at ./vm_insnhelper.c:3289
+#4  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#5  vm_call_method at ./vm_insnhelper.c:4044
+#6  vm_call_general at ./vm_insnhelper.c:4088
+#7  vm_sendish at ./vm_insnhelper.c:5080
+#8  vm_exec_core at insns.def:820
+#9  rb_vm_exec at vm.c:2374
+#10 rb_iseq_eval_main at vm.c:2633
+#11 rb_ec_exec_node at eval.c:289
+#12 ruby_run_node at eval.c:330
+#13 rb_main at ./main.c:38
+#14 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/45">
+
+<div class="notes">We see that the function calling rb_obj_itself is named ractor_safe_call_cfunc_0.</div>
+<pre style="font-size: 42px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  rb_obj_itself at object.c:564
+#1  <b>ractor_safe_call_cfunc_0</b> at ./vm_insnhelper.c:3085
+#2  vm_call_cfunc_with_frame at ./vm_insnhelper.c:3268
+#3  vm_call_cfunc at ./vm_insnhelper.c:3289
+#4  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#5  vm_call_method at ./vm_insnhelper.c:4044
+#6  vm_call_general at ./vm_insnhelper.c:4088
+#7  vm_sendish at ./vm_insnhelper.c:5080
+#8  vm_exec_core at insns.def:820
+#9  rb_vm_exec at vm.c:2374
+#10 rb_iseq_eval_main at vm.c:2633
+#11 rb_ec_exec_node at eval.c:289
+#12 ruby_run_node at eval.c:330
+#13 rb_main at ./main.c:38
+#14 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/46">
+
+<div class="notes">The prototype for that function looks like this.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>
+ractor_safe_call_cfunc_0(VALUE recv, int argc, const VALUE *argv,
+                         VALUE (*func)(ANYARGS))
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/47">
+
+<div class="notes">It takes the receiver of the Ruby method,</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>
+ractor_safe_call_cfunc_0(<b>VALUE recv</b>, int argc, const VALUE *argv,
+                         VALUE (*func)(ANYARGS))
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/48">
+
+<div class="notes">the number of arguments the Ruby method was called with,</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>
+ractor_safe_call_cfunc_0(VALUE recv, <b>int argc</b>, const VALUE *argv,
+                         VALUE (*func)(ANYARGS))
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/49">
+
+<div class="notes">a pointer to the first argument for the method.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>
+ractor_safe_call_cfunc_0(VALUE recv, int argc, <b>const VALUE *argv</b>,
+                         VALUE (*func)(ANYARGS))
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/50">
+
+<div class="notes">and a function pointer for the C function to call that implements the Ruby method.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>
+ractor_safe_call_cfunc_0(VALUE recv, int argc, const VALUE *argv,
+                         <b>VALUE (*func)(ANYARGS)</b>)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/51">
+
+<div class="notes">The function calling ractor_safe_call_cfunc_0 is named vm_call_cfunc_with_frame. This function is large, so I will focus on the line calling ractor_safe_call_cfunc_0.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/52">
+
+<div class="notes">The important part here is the value it is passing as the pointer to the first argument. In this case, it is always passing a pointer to the stack. Maybe if we could change this call to pass a pointer to somewhere else in memory, such as the heap, calling a method defined in C with a large array splat would work.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    val = (*cfunc-&gt;invoker)(recv, argc, <b>reg_cfp-&gt;sp + 1</b>, cfunc-&gt;func);
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/53">
+
+<div class="notes">We can start that process back in the vm_caller_setup_arg_splat function.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static inline void
+vm_caller_setup_arg_splat(rb_control_frame_t *cfp, struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+
+    vm_check_canary(GET_EC(), cfp-&gt;sp);
+    cfp-&gt;sp--;
+
+    if (!NIL_P(ary)) {
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }
+        calling-&gt;argc += i - 1;
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/54">
+
+<div class="notes">We can reduce the code to focus on the case where there is an array to splat.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+        for (i = 0; i &lt; len; i++) {
+            *cfp-&gt;sp++ = ptr[i];
+        }
+        calling-&gt;argc += i - 1;
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/55">
+
+<div class="notes">If some condition is true, we should use an approach that does not copy arguments to the stack.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+<b class="block">        if (some_condition) {
+            // do not use stack
+        }
+        else {</b>
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        <b>}</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/56">
+
+<div class="notes">One simple condition is if the number of arguments being passed to the method plus the length of the splatted array is over some high number, say 1000, then do not use the stack for argument passing.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (<b>argc + len &gt; 1000</b>) {
+            // do not use stack
+        }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/57">
+
+<div class="notes">How should we pass the arguments if we are not going to pass them on the stack? One of the easiest ways to do so is to create a temporary Ruby array for the arguments, and then instead of passing a pointer to the stack, we can pass a pointer to the first element of that array.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            // <b>do not use stack</b>
+        }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/58">
+
+<div class="notes">Here is code that implements that approach.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+<b class="block">            VALUE argv_array = rb_ary_new_capa(len + argc - 1);
+            rb_obj_hide(argv_array);
+            rb_ary_cat(argv_array, argv, argc-1);
+            rb_ary_cat(argv_array, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = 1;</b>
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/59">
+
+<div class="notes">We start off by creating a Ruby array with the expected capacity.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            <b>VALUE argv_array = rb_ary_new_capa(len + argc - 1);</b>
+            rb_obj_hide(argv_array);
+            rb_ary_cat(argv_array, argv, argc-1);
+            rb_ary_cat(argv_array, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = 1;
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/60">
+
+<div class="notes">We then hide the array. This makes sure the array cannot be accessed via ObjectSpace.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE argv_array = rb_ary_new_capa(len + argc - 1);
+            <b>rb_obj_hide(argv_array);</b>
+            rb_ary_cat(argv_array, argv, argc-1);
+            rb_ary_cat(argv_array, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = 1;
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/61">
+
+<div class="notes">We copy the method arguments before the splatted array to the temporary array.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE argv_array = rb_ary_new_capa(len + argc - 1);
+            rb_obj_hide(argv_array);
+            <b>rb_ary_cat(argv_array, argv, argc-1);</b>
+            rb_ary_cat(argv_array, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = 1;
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/62">
+
+<div class="notes">Then we copy the elements of the splatted array to the temporary array.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE argv_array = rb_ary_new_capa(len + argc - 1);
+            rb_obj_hide(argv_array);
+            rb_ary_cat(argv_array, argv, argc-1);
+            <b>rb_ary_cat(argv_array, ptr, len);</b>
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = 1;
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/63">
+
+<div class="notes">We still pass the pointer to the temporary array of arguments on the VM stack, so we need to adjust sp, the stack pointer, to reflect that.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE argv_array = rb_ary_new_capa(len + argc - 1);
+            rb_obj_hide(argv_array);
+            rb_ary_cat(argv_array, argv, argc-1);
+            rb_ary_cat(argv_array, ptr, len);
+<b class="block">            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;</b>
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = 1;
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/64">
+
+<div class="notes">Since there is only one argument on the stack, we adjust the calling information to show only one argument. This is correct from a stack perspective, but incorrect from a method calling perspective.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE argv_array = rb_ary_new_capa(len + argc - 1);
+            rb_obj_hide(argv_array);
+            rb_ary_cat(argv_array, argv, argc-1);
+            rb_ary_cat(argv_array, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;
+            <b>calling-&gt;argc = 1;</b>
+            calling-&gt;heap_argv = 1;
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/65">
+
+<div class="notes">Finally, we set a new flag in the calling information named heap_argv to flag that the arguments are being passed on the heap in a temporary array, instead of on the stack.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE argv_array = rb_ary_new_capa(len + argc - 1);
+            rb_obj_hide(argv_array);
+            rb_ary_cat(argv_array, argv, argc-1);
+            rb_ary_cat(argv_array, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;
+            calling-&gt;argc = 1;
+            <b>calling-&gt;heap_argv = 1;</b>
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/66">
+
+<div class="notes">Back to the function for calling methods defined in C, now that we have setup the temporary array for arguments on the heap, we need to make changes to use the pointer to the first element of the array, instead of using a pointer to the stack.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/67">
+
+<div class="notes">We need to recognize when to use the temporary array for arguments, which we can do by checking for the heap_argv flag.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+<b class="block">    if (calling-&gt;heap_argv) {
+        // Use arguments from Ruby array
+    }
+    else {</b>
+        val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    <b>}</b>
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/68">
+
+<div class="notes">Here is the code for using the temporary array for arguments.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    if (calling-&gt;heap_argv) {
+<b class="block">        VALUE argv_array = reg_cfp-&gt;sp[-1];
+        VALUE argv = RARRAY_PTR(argv_array);
+        argc = (int)RARRAY_LEN(argv_array);
+        val = (*cfunc-&gt;invoker)(recv, argc, argv, cfunc-&gt;func);</b>
+    }
+    else {
+        val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    }
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/69">
+
+<div class="notes">We get the pointer to the temporary array containing the arguments, which is located on the stack.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    if (calling-&gt;heap_argv) {
+        <b>VALUE argv_array = reg_cfp-&gt;sp[-1];</b>
+        VALUE argv = RARRAY_PTR(argv_array);
+        argc = (int)RARRAY_LEN(argv_array);
+        val = (*cfunc-&gt;invoker)(recv, argc, argv, cfunc-&gt;func);
+    }
+    else {
+        val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    }
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/70">
+
+<div class="notes">We get the pointer to the first element of the temporary array, which is located on the heap.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    if (calling-&gt;heap_argv) {
+        VALUE argv_array = reg_cfp-&gt;sp[-1];
+        <b>VALUE argv = RARRAY_PTR(argv_array);</b>
+        argc = (int)RARRAY_LEN(argv_array);
+        val = (*cfunc-&gt;invoker)(recv, argc, argv, cfunc-&gt;func);
+    }
+    else {
+        val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    }
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/71">
+
+<div class="notes">We use the length of the temporary array as the number of method arguments.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    if (calling-&gt;heap_argv) {
+        VALUE argv_array = reg_cfp-&gt;sp[-1];
+        VALUE argv = RARRAY_PTR(argv_array);
+        <b>argc = (int)RARRAY_LEN(argv_array);</b>
+        val = (*cfunc-&gt;invoker)(recv, argc, argv, cfunc-&gt;func);
+    }
+    else {
+        val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    }
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/72">
+
+<div class="notes">Finally, we call the C function using the correct number of arguments and pointer to the first element of the temporary array.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    if (calling-&gt;heap_argv) {
+        VALUE argv_array = reg_cfp-&gt;sp[-1];
+        VALUE argv = RARRAY_PTR(argv_array);
+        argc = (int)RARRAY_LEN(argv_array);
+        <b>val = (*cfunc-&gt;invoker)(recv, argc, argv, cfunc-&gt;func);</b>
+    }
+    else {
+        val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    }
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/73">
+
+<div class="notes">While the changes that I went over are the most important changes, there were a few changes needed in other functions,</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    if (calling-&gt;heap_argv) {
+        VALUE argv_array = reg_cfp-&gt;sp[-1];
+        VALUE argv = RARRAY_PTR(argv_array);
+        argc = (int)RARRAY_LEN(argv_array);
+        val = (*cfunc-&gt;invoker)(recv, argc, argv, cfunc-&gt;func);
+    }
+    else {
+        val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    }
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/74">
+
+<div class="notes">mostly to check if the heap argv flag was set, and adjusting argument handling in that case. I do not have time to discuss the other places that needed to be changed, but it required adding about 5 different checks for the heap argv flag.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc_with_frame(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+                         struct rb_calling_info *calling)
+{
+    // ...
+    if (<b>calling-&gt;heap_argv</b>) {
+        VALUE argv_array = reg_cfp-&gt;sp[-1];
+        VALUE argv = RARRAY_PTR(argv_array);
+        argc = (int)RARRAY_LEN(argv_array);
+        val = (*cfunc-&gt;invoker)(recv, argc, argv, cfunc-&gt;func);
+    }
+    else {
+        val = (*cfunc-&gt;invoker)(recv, argc, reg_cfp-&gt;sp + 1, cfunc-&gt;func);
+    }
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/75">
+
+<div class="notes">After making those changes, it did not take much more work to get Ruby’s test suite passing with this change.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 160px; left: 627px;">Passes</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 330px; left: 624px;">Tests<span class="red">!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/76">
+
+<div class="notes">Unfortunately, while the tests passed, this change resulted in a minor slowdown. The additional checks slowed down method calling microbenchmarks by up to seven percent. Considering that few users are affected by this bug, slowing down method calling to such a degree was not acceptable.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 360px; left: 624px;">Minor</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 540px; left: 624px;">Slowdown<span class="red">!!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/77">
+
+<div class="notes">I tried a couple different approaches to speed up the implementation. Ultimately, I was able to get the performance difference to be small enough that even the microbenchmark did not show it as slower.</div>
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 580px; left: 600px;">Speedup</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 720px; left: 624px;">Attempt</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/78">
+
+<div class="notes">However, my approach was a little invasive, making multiple changes to a couple methods that were used in the generic method dispatch code. Since the issue had already been fixed for many years for methods defined in Ruby, and we were trying to fix it for methods defined in C, it would be nice if the changes could be made only to the dispatch code for methods defined in C.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 460px; right: 424px;">Invasive</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/79">
+
+<div class="notes">In discussions with Sasada-san, I mentioned that we could switch to that approach, but it would result in more duplication. Sasada-san took it upon himself to implement that noninvasive approach.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 460px; right: 424px;">
+<span class="blue">Non</span>invasive</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/80">
+
+<div class="notes">It turns out I was right about the duplication. Here is the vm_call_cfunc function before the changes.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 28px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+              struct rb_calling_info *calling)
+{
+    const struct rb_callinfo *ci = calling-&gt;ci;
+    RB_DEBUG_COUNTER_INC(ccf_cfunc);
+
+    CALLER_SETUP_ARG(reg_cfp, calling, ci);
+    CALLER_REMOVE_EMPTY_KW_SPLAT(reg_cfp, calling, ci);
+    CC_SET_FASTPATH(calling-&gt;cc, vm_call_cfunc_with_frame,
+                    !rb_splat_or_kwargs_p(ci) &amp;&amp; !calling-&gt;kw_splat);
+    return vm_call_cfunc_with_frame(ec, reg_cfp, calling);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/81">
+
+<div class="notes">To give the correct scope for the amount of changes, I will shrink the font size. Now we can review the function after the changes.</div>
+<pre class="sh_c" style="font-size: 16px; margin-top: 28px; margin-left: 20px;"><code>static VALUE
+vm_call_cfunc(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+              struct rb_calling_info *calling)
+{
+    const struct rb_callinfo *ci = calling-&gt;ci;
+    RB_DEBUG_COUNTER_INC(ccf_cfunc);
+
+    CALLER_SETUP_ARG(reg_cfp, calling, ci);
+    CALLER_REMOVE_EMPTY_KW_SPLAT(reg_cfp, calling, ci);
+    CC_SET_FASTPATH(calling-&gt;cc, vm_call_cfunc_with_frame,
+                    !rb_splat_or_kwargs_p(ci) &amp;&amp; !calling-&gt;kw_splat);
+    return vm_call_cfunc_with_frame(ec, reg_cfp, calling);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/82">
+
+<div class="notes">As you can see, this is quite a large increase in lines.</div>
+<pre class="sh_c" style="font-size: 16px; margin-top: 28px; margin-left: 20px; columns: 2;"><code>static VALUE
+vm_call_cfunc_setup_argv_ary(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+              struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+    long len = RARRAY_LEN(ary);
+
+    if (UNLIKELY(len + argc &gt; VM_ARGC_STACK_MAX)) {
+        vm_check_canary(ec, cfp-&gt;sp);
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        VALUE argv_ary = rb_ary_new_capa(len + argc - 1);
+        rb_obj_hide(argv_ary);
+        rb_ary_cat(argv_ary, argv, argc-1);
+        rb_ary_cat(argv_ary, ptr, len);
+        cfp-&gt;sp -= argc - 1;
+        cfp-&gt;sp[-1] = argv_ary;
+        calling-&gt;argc = 1;
+
+        return argv_ary;
+    }
+    else {
+        return Qfalse;
+    }
+}
+
+static VALUE
+vm_call_cfunc(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+              struct rb_calling_info *calling)
+{
+    const struct rb_callinfo *ci = calling-&gt;ci;
+    RB_DEBUG_COUNTER_INC(ccf_cfunc);
+
+    VALUE argv_ary;
+
+    if (UNLIKELY(IS_ARGS_SPLAT(ci)) &amp;&amp; (argv_ary = vm_call_cfunc_setup_argv_ary(ec, reg_cfp, calling))) {
+        // special case of CALLER_SETUP_ARG
+        if (!IS_ARGS_KW_OR_KW_SPLAT(ci)) {
+            long hash_idx = RARRAY_LEN(argv_ary) - 1;
+            VALUE final_hash = RARRAY_AREF(argv_ary, hash_idx);
+
+            if (RB_TYPE_P(final_hash, T_HASH) &amp;&amp;
+                (((struct RHash *)final_hash)-&gt;basic.flags &amp; RHASH_PASS_AS_KEYWORDS)) {
+                if (RHASH_EMPTY_P(final_hash)) {
+                    rb_ary_pop(argv_ary);
+                }
+                else {
+                    final_hash = rb_hash_dup(final_hash);
+                    RARRAY_ASET(argv_ary, hash_idx, final_hash);
+                    calling-&gt;kw_splat = 1;
+                }
+            }
+        }
+
+        if (UNLIKELY(IS_ARGS_KW_OR_KW_SPLAT(ci))) {
+            VM_ASSERT(!IS_ARGS_KEYWORD(ci)); // should be KW_SPLAT
+
+            long hash_idx = RARRAY_LEN(argv_ary) - 1;
+            VALUE keyword_hash = RARRAY_AREF(argv_ary, hash_idx);
+
+            if (!RB_TYPE_P(keyword_hash, T_HASH)) {
+                /* Convert a non-hash keyword splat to a new hash */
+                RARRAY_ASET(argv_ary, hash_idx, rb_hash_dup(rb_to_hash_type(keyword_hash)));
+            }
+            else if (!IS_ARGS_KW_SPLAT_MUT(ci)) {
+                /* Convert a hash keyword splat to a new hash unless
+                 * a mutable keyword splat was passed.
+                 */
+                RARRAY_ASET(argv_ary, hash_idx, rb_hash_dup(keyword_hash));
+            }
+        }
+
+        // special case of CALLER_REMOVE_EMPTY_KW_SPLAT()
+        if (UNLIKELY(calling-&gt;kw_splat)) {
+            VALUE kw_hash = RARRAY_AREF(argv_ary, RARRAY_LEN(argv_ary)-1);
+            if (RHASH_EMPTY_P(kw_hash)) {
+                rb_ary_pop(argv_ary);
+                calling-&gt;kw_splat = false;
+            }
+        }
+
+        int argc = RARRAY_LENINT(argv_ary);
+        VALUE *argv = (void *)RARRAY_CONST_PTR_TRANSIENT(argv_ary);
+        VALUE *stack_bottom = reg_cfp-&gt;sp - 2;
+
+        VM_ASSERT(calling-&gt;argc == 1);
+        VM_ASSERT(RB_TYPE_P(argv_ary, T_ARRAY));
+        VM_ASSERT(RBASIC_CLASS(argv_ary) == 0); // hidden ary
+
+        return vm_call_cfunc_with_frame_(ec, reg_cfp, calling, argc, argv, stack_bottom);
+    }
+    else {
+        CALLER_SETUP_ARG(reg_cfp, calling, ci);
+        CALLER_REMOVE_EMPTY_KW_SPLAT(reg_cfp, calling, ci);
+        CC_SET_FASTPATH(calling-&gt;cc, vm_call_cfunc_with_frame,
+                        !rb_splat_or_kwargs_p(ci) &amp;&amp; !calling-&gt;kw_splat);
+
+        return vm_call_cfunc_with_frame(ec, reg_cfp, calling);
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/83">
+
+<div class="notes">These two lines in the normal case, when you are not passing a large argument splat, use the standard argument setup functions.</div>
+<pre class="sh_c" style="font-size: 16px; margin-top: 28px; margin-left: 20px; columns: 2;"><code>static VALUE
+vm_call_cfunc_setup_argv_ary(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+              struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+    long len = RARRAY_LEN(ary);
+
+    if (UNLIKELY(len + argc &gt; VM_ARGC_STACK_MAX)) {
+        vm_check_canary(ec, cfp-&gt;sp);
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        VALUE argv_ary = rb_ary_new_capa(len + argc - 1);
+        rb_obj_hide(argv_ary);
+        rb_ary_cat(argv_ary, argv, argc-1);
+        rb_ary_cat(argv_ary, ptr, len);
+        cfp-&gt;sp -= argc - 1;
+        cfp-&gt;sp[-1] = argv_ary;
+        calling-&gt;argc = 1;
+
+        return argv_ary;
+    }
+    else {
+        return Qfalse;
+    }
+}
+
+static VALUE
+vm_call_cfunc(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+              struct rb_calling_info *calling)
+{
+    const struct rb_callinfo *ci = calling-&gt;ci;
+    RB_DEBUG_COUNTER_INC(ccf_cfunc);
+
+    VALUE argv_ary;
+
+    if (UNLIKELY(IS_ARGS_SPLAT(ci)) &amp;&amp; (argv_ary = vm_call_cfunc_setup_argv_ary(ec, reg_cfp, calling))) {
+        // special case of CALLER_SETUP_ARG
+        if (!IS_ARGS_KW_OR_KW_SPLAT(ci)) {
+            long hash_idx = RARRAY_LEN(argv_ary) - 1;
+            VALUE final_hash = RARRAY_AREF(argv_ary, hash_idx);
+
+            if (RB_TYPE_P(final_hash, T_HASH) &amp;&amp;
+                (((struct RHash *)final_hash)-&gt;basic.flags &amp; RHASH_PASS_AS_KEYWORDS)) {
+                if (RHASH_EMPTY_P(final_hash)) {
+                    rb_ary_pop(argv_ary);
+                }
+                else {
+                    final_hash = rb_hash_dup(final_hash);
+                    RARRAY_ASET(argv_ary, hash_idx, final_hash);
+                    calling-&gt;kw_splat = 1;
+                }
+            }
+        }
+
+        if (UNLIKELY(IS_ARGS_KW_OR_KW_SPLAT(ci))) {
+            VM_ASSERT(!IS_ARGS_KEYWORD(ci)); // should be KW_SPLAT
+
+            long hash_idx = RARRAY_LEN(argv_ary) - 1;
+            VALUE keyword_hash = RARRAY_AREF(argv_ary, hash_idx);
+
+            if (!RB_TYPE_P(keyword_hash, T_HASH)) {
+                /* Convert a non-hash keyword splat to a new hash */
+                RARRAY_ASET(argv_ary, hash_idx, rb_hash_dup(rb_to_hash_type(keyword_hash)));
+            }
+            else if (!IS_ARGS_KW_SPLAT_MUT(ci)) {
+                /* Convert a hash keyword splat to a new hash unless
+                 * a mutable keyword splat was passed.
+                 */
+                RARRAY_ASET(argv_ary, hash_idx, rb_hash_dup(keyword_hash));
+            }
+        }
+
+        // special case of CALLER_REMOVE_EMPTY_KW_SPLAT()
+        if (UNLIKELY(calling-&gt;kw_splat)) {
+            VALUE kw_hash = RARRAY_AREF(argv_ary, RARRAY_LEN(argv_ary)-1);
+            if (RHASH_EMPTY_P(kw_hash)) {
+                rb_ary_pop(argv_ary);
+                calling-&gt;kw_splat = false;
+            }
+        }
+
+        int argc = RARRAY_LENINT(argv_ary);
+        VALUE *argv = (void *)RARRAY_CONST_PTR_TRANSIENT(argv_ary);
+        VALUE *stack_bottom = reg_cfp-&gt;sp - 2;
+
+        VM_ASSERT(calling-&gt;argc == 1);
+        VM_ASSERT(RB_TYPE_P(argv_ary, T_ARRAY));
+        VM_ASSERT(RBASIC_CLASS(argv_ary) == 0); // hidden ary
+
+        return vm_call_cfunc_with_frame_(ec, reg_cfp, calling, argc, argv, stack_bottom);
+    }
+    else {
+<b class="block">        CALLER_SETUP_ARG(reg_cfp, calling, ci);
+        CALLER_REMOVE_EMPTY_KW_SPLAT(reg_cfp, calling, ci);</b>
+        CC_SET_FASTPATH(calling-&gt;cc, vm_call_cfunc_with_frame,
+                        !rb_splat_or_kwargs_p(ci) &amp;&amp; !calling-&gt;kw_splat);
+
+        return vm_call_cfunc_with_frame(ec, reg_cfp, calling);
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/84">
+
+<div class="notes">Those two lines are replaced with expanded and customized versions in the case where you are splatting a large array.</div>
+<pre class="sh_c" style="font-size: 16px; margin-top: 28px; margin-left: 20px; columns: 2;"><code><b class="block">static VALUE
+vm_call_cfunc_setup_argv_ary(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+              struct rb_calling_info *calling)
+{
+    int argc = calling-&gt;argc;
+    VALUE *argv = cfp-&gt;sp - argc;
+    VALUE ary = argv[argc-1];
+    long len = RARRAY_LEN(ary);
+
+    if (UNLIKELY(len + argc &gt; VM_ARGC_STACK_MAX)) {
+        vm_check_canary(ec, cfp-&gt;sp);
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        VALUE argv_ary = rb_ary_new_capa(len + argc - 1);
+        rb_obj_hide(argv_ary);
+        rb_ary_cat(argv_ary, argv, argc-1);
+        rb_ary_cat(argv_ary, ptr, len);
+        cfp-&gt;sp -= argc - 1;
+        cfp-&gt;sp[-1] = argv_ary;
+        calling-&gt;argc = 1;
+
+        return argv_ary;
+    }
+    else {
+        return Qfalse;
+    }
+}</b>
+
+static VALUE
+vm_call_cfunc(rb_execution_context_t *ec, rb_control_frame_t *reg_cfp,
+              struct rb_calling_info *calling)
+{
+    const struct rb_callinfo *ci = calling-&gt;ci;
+    RB_DEBUG_COUNTER_INC(ccf_cfunc);
+
+    VALUE argv_ary;
+
+    if (UNLIKELY(IS_ARGS_SPLAT(ci)) &amp;&amp; (argv_ary = vm_call_cfunc_setup_argv_ary(ec, reg_cfp, calling))) {
+<b class="block">        // special case of CALLER_SETUP_ARG
+        if (!IS_ARGS_KW_OR_KW_SPLAT(ci)) {
+            long hash_idx = RARRAY_LEN(argv_ary) - 1;
+            VALUE final_hash = RARRAY_AREF(argv_ary, hash_idx);
+
+            if (RB_TYPE_P(final_hash, T_HASH) &amp;&amp;
+                (((struct RHash *)final_hash)-&gt;basic.flags &amp; RHASH_PASS_AS_KEYWORDS)) {
+                if (RHASH_EMPTY_P(final_hash)) {
+                    rb_ary_pop(argv_ary);
+                }
+                else {
+                    final_hash = rb_hash_dup(final_hash);
+                    RARRAY_ASET(argv_ary, hash_idx, final_hash);
+                    calling-&gt;kw_splat = 1;</b>
+<b class="block">                }
+            }
+        }
+
+        if (UNLIKELY(IS_ARGS_KW_OR_KW_SPLAT(ci))) {
+            VM_ASSERT(!IS_ARGS_KEYWORD(ci)); // should be KW_SPLAT
+
+            long hash_idx = RARRAY_LEN(argv_ary) - 1;
+            VALUE keyword_hash = RARRAY_AREF(argv_ary, hash_idx);
+
+            if (!RB_TYPE_P(keyword_hash, T_HASH)) {
+                /* Convert a non-hash keyword splat to a new hash */
+                RARRAY_ASET(argv_ary, hash_idx, rb_hash_dup(rb_to_hash_type(keyword_hash)));
+            }
+            else if (!IS_ARGS_KW_SPLAT_MUT(ci)) {
+                /* Convert a hash keyword splat to a new hash unless
+                 * a mutable keyword splat was passed.
+                 */
+                RARRAY_ASET(argv_ary, hash_idx, rb_hash_dup(keyword_hash));
+            }
+        }
+
+        // special case of CALLER_REMOVE_EMPTY_KW_SPLAT()
+        if (UNLIKELY(calling-&gt;kw_splat)) {
+            VALUE kw_hash = RARRAY_AREF(argv_ary, RARRAY_LEN(argv_ary)-1);
+            if (RHASH_EMPTY_P(kw_hash)) {
+                rb_ary_pop(argv_ary);
+                calling-&gt;kw_splat = false;
+            }
+        }
+
+        int argc = RARRAY_LENINT(argv_ary);
+        VALUE *argv = (void *)RARRAY_CONST_PTR_TRANSIENT(argv_ary);
+        VALUE *stack_bottom = reg_cfp-&gt;sp - 2;
+
+        VM_ASSERT(calling-&gt;argc == 1);
+        VM_ASSERT(RB_TYPE_P(argv_ary, T_ARRAY));
+        VM_ASSERT(RBASIC_CLASS(argv_ary) == 0); // hidden ary</b>
+
+        return vm_call_cfunc_with_frame_(ec, reg_cfp, calling, argc, argv, stack_bottom);
+    }
+    else {
+        CALLER_SETUP_ARG(reg_cfp, calling, ci);
+        CALLER_REMOVE_EMPTY_KW_SPLAT(reg_cfp, calling, ci);
+        CC_SET_FASTPATH(calling-&gt;cc, vm_call_cfunc_with_frame,
+                        !rb_splat_or_kwargs_p(ci) &amp;&amp; !calling-&gt;kw_splat);
+
+        return vm_call_cfunc_with_frame(ec, reg_cfp, calling);
+    }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/85">
+
+<div class="notes">There is a maintainability tradeoff here.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 232px; left: 350px;">Tradeoff</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/86">
+
+<div class="notes">One option is to add features to generic functions, making the functions more complicated. This can make the generic functions slower, and it make it more difficult to debug code that does not benefit from the features. On the plus side, this can make maintenance easier, especially if future code can also benefit from the features added to the generic functions. My approach choose this tradeoff.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 432px; left: 350px;">Complicate</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/87">
+
+<div class="notes">Another option is to duplicate the parts of the generic functions you need, and modify them for the specific use case. This can result in faster code, and it localizes the change. However, it can make maintenance more challenging if you need to make the same change in multiple places. Sasada-san’s approach chose this tradeoff.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 632px; left: 350px;">Duplicate</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/88">
+
+<div class="notes">Sasada-san’s patch was merged in January, ensuring that the second oldest bug</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Second</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 393px; left: 82px;">Oldest</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 154px;">Bug</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/89">
+
+<div class="notes">will be fixed in Ruby 3.3.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Second</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 393px; left: 82px;">Oldest</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 154px;">Bug</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 740px; left: 74px;">Fixed<span class="red">!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/90">
+
+<div class="notes">At least, that is what I thought when I started working on this presentation. It turns out, this bug is not a single bug, but a general class of bugs, and my initial patch and Sasada-san’s committed patch only fixed a single instance of this class of bugs.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Second</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 393px; left: 82px;">Oldest</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 154px;">Bug</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 740px; left: 74px;">Fixed<span class="red">?</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/91">
+
+<div class="notes">So the bug was not fixed, or at least not completely fixed. I will go over some code that still raised SystemStackError for large argument splats after the patch was committed.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Second</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 393px; left: 82px;">Oldest</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 154px;">Bug</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 740px; left: 74px;"><span class="strike">Fixed</span></h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/92">
+
+<div class="notes">I mentioned earlier that Sasada-san made changes in Ruby 2.2 to allow this code to work.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/93">
+
+<div class="notes">However, if you replace the normal singleton method definition</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+<b class="block">def self.a(*ary)
+  ary.length
+end</b>
+
+a(*1380888.times)
+# =&gt; 1380888
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/94">
+
+<div class="notes">with the equivalent define_singleton_method call</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+<b class="block">define_singleton_method(:a) do |*ary|
+  ary.length
+end</b>
+
+a(*1380888.times)
+# =&gt; 1380888
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/95">
+
+<div class="notes">it raised a SystemStackError.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+define_singleton_method(:a) do |*ary|
+  ary.length
+end
+
+a(*1380888.times)
+# <b>SystemStackError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/96">
+
+<div class="notes">To understand why the normal method definition approach worked but the block based approach failed, you need to understand that Ruby has multiple method types, each of which is handled differently internally.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 24px; left: 150px;">Method</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 212px; left: 220px;">Types</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/97">
+
+<div class="notes">Ruby has a C function named vm_call_method_each_type, which handles all of the different method types that Ruby supports. A simplified version of this method is shown here.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/98">
+
+<div class="notes">This function uses a C switch statement on the type of the method, similar to a Ruby case expression.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    <b>switch (cme-&gt;def-&gt;type)</b> {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/99">
+
+<div class="notes">Normal ruby methods defined with def use the iseq method type.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case <b>VM_METHOD_TYPE_ISEQ</b>:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/100">
+
+<div class="notes">Logic specific to calling iseq methods is in vm_call_iseq_setup. This is the code path that Sasada-san fixed in Ruby 2.2 to allow normal methods to accept large argument splats.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return <b>vm_call_iseq_setup(ec, cfp, calling)</b>;
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/101">
+
+<div class="notes">Ruby methods defined by C functions use the cfunc method type.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case <b>VM_METHOD_TYPE_CFUNC</b>:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/102">
+
+<div class="notes">Logic specific to calling cfunc methods is in vm_call_cfunc. This is the code path that was fixed by my initial patch and Sasada-san’s patch.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return <b>vm_call_cfunc(ec, cfp, calling)</b>;
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/103">
+
+<div class="notes">Ruby methods defined with define_method or define_singleton_method use the bmethod type. I think bmethod is short for block method, since these are methods defined by blocks.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case <b>VM_METHOD_TYPE_BMETHOD</b>:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/104">
+
+<div class="notes">Logic specific to calling bmethods is in vm_call_bmethod. This is one code path that had not been fixed, which is why calling a bmethod with a large argument splat raised SystemStackError even after Sasada-san’s patch was merged.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return <b>vm_call_bmethod(ec, cfp, calling)</b>;
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/105">
+
+<div class="notes">Unrelated to the current bug, but useful to know, is that Ruby uses a call cache to improve performance. The first time you call a method, the call cache directs you to the slower generic method dispatch function.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    <b>const struct rb_callcache *cc = calling-&gt;cc;</b>
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/106">
+
+<div class="notes">However, once Ruby figures out a more specific method handler, it updates the call cache, so that future method calls at the same callsite can jump directly to the specific method handler.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        <b>CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);</b>
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        <b>CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);</b>
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        <b>CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);</b>
+        return vm_call_bmethod(ec, cfp, calling);
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/107">
+
+<div class="notes">Going back to the vm_call_bmethod function, we need to determine why it fails.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_each_type(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                         struct rb_calling_info *calling)
+{
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+
+    switch (cme-&gt;def-&gt;type) {
+      case VM_METHOD_TYPE_ISEQ:
+        CC_SET_FASTPATH(cc, vm_call_iseq_setup, TRUE);
+        return vm_call_iseq_setup(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_CFUNC:
+        CC_SET_FASTPATH(cc, vm_call_cfunc, TRUE);
+        return vm_call_cfunc(ec, cfp, calling);
+
+      case VM_METHOD_TYPE_BMETHOD:
+        CC_SET_FASTPATH(cc, vm_call_bmethod, TRUE);
+        return <b>vm_call_bmethod(ec, cfp, calling)</b>;
+      // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/108">
+
+<div class="notes">Here is the definition of the vm_call_bmethod function. There is one similarity here with the vm_call_cfunc function before we fixed the bug for cfunc methods.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci);
+    argc = calling-&gt;argc;
+    argv = ALLOCA_N(VALUE, argc);
+    MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+    cfp-&gt;sp += - argc - 1;
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/109">
+
+<div class="notes">That similarity is in the use of the CALLER_SETUP_ARG function.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    <b>CALLER_SETUP_ARG(cfp, calling, ci);</b>
+    argc = calling-&gt;argc;
+    argv = ALLOCA_N(VALUE, argc);
+    MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+    cfp-&gt;sp += - argc - 1;
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/110">
+
+<div class="notes">Looking back at the backtrace for the stack overflow for cfunc methods, we see that the stack overflow happens during a call to the CALLER_SETUP_ARG function. It turns out that all callers of this function are vulnerable to this issue. In Ruby 3.2, all method types other than iseq use CALLER_SETUP_ARG, which is why they were all vulnerable to this issue.</div>
+<pre style="font-size: 40px; margin-top: 48px; margin-left: 20px;"><code>(gdb) backtrace
+#0  ec_stack_overflow at ./vm_insnhelper.c:61
+#1  vm_stackoverflow at ./vm_insnhelper.c:81
+#2  vm_caller_setup_arg_splat at ./vm_args.c:795
+#3  <b>CALLER_SETUP_ARG</b> at ./vm_insnhelper.c:2545
+#4  vm_call_cfunc at ./vm_insnhelper.c:3286
+#5  vm_call_method_each_type at ./vm_insnhelper.c:3920
+#6  vm_call_method at ./vm_insnhelper.c:4044
+#7  vm_call_general at ./vm_insnhelper.c:4088
+#8  vm_sendish at ./vm_insnhelper.c:5080
+#9  vm_exec_core at insns.def:820
+#10 rb_vm_exec at vm.c:2374
+#11 rb_iseq_eval_main at vm.c:2633
+#12 rb_ec_exec_node at eval.c:289
+#13 ruby_run_node at eval.c:330
+#14 rb_main at ./main.c:38
+#15 main at ./main.c:57
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/111">
+
+<div class="notes">I mentioned earlier that my initial patch to fix this issue made the generic argument setup code more complicated,</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 432px; left: 350px;">Complicate</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/112">
+
+<div class="notes">while Sasada-san’s patch was less invasive because it only modified the logic for cfunc methods. The duplication approach may be preferable when you only have a problem in a specific case. However, because all usage of CALLER_SETUP_ARG is vulnernable to this issue, the duplication approach is not maintainable.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 632px; left: 350px;">Duplicate</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/113">
+
+<div class="notes">The only maintainable approach that fixes the issue for all cases requires complicating the generic code.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 432px; left: 350px;">Complicate</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/114">
+
+<div class="notes">Here is the initial code I discussed earlier to avoid the SystemStackError. Between when I originally submitted my pull request and when I started working on this presentation and found the additional bugs, Sasada-san had modified the related code to significantly improve peformance.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+<b class="block">            VALUE argv_array = rb_ary_new_capa(len + argc - 1);
+            rb_obj_hide(argv_array);
+            rb_ary_cat(argv_array, argv, argc-1);
+            rb_ary_cat(argv_array, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_array;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = 1;</b>
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/115">
+
+<div class="notes">I had to make some changes to my original patch to adjust for Sasada-san’s changes. One of the changes is at the point this code is called, the VM stack has already removed the array. Another of the changes is that any keyword splat is passed as a separate argument and not as the last element of the array.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+<b class="block">            VALUE *argv = cfp-&gt;sp - argc;
+            VALUE argv_ary = rb_ary_hidden_new(len + argc + 1);
+            rb_ary_cat(argv_ary, argv, argc);
+            rb_ary_cat(argv_ary, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_ary;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = argv_ary;</b>
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/116">
+
+<div class="notes">Instead of separate rb_ary_new_capa and rb_obj_hide functions, I found there was an rb_ary_hidden_new function that combined the two features, so I switched to calling that.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE *argv = cfp-&gt;sp - argc;
+            VALUE argv_ary = <b>rb_ary_hidden_new(len + argc + 1);</b>
+            rb_ary_cat(argv_ary, argv, argc);
+            rb_ary_cat(argv_ary, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_ary;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = argv_ary;
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/117">
+
+<div class="notes">The capacity of the temporary array is set to the number of arguments before the splat, plus the number of arguments in the array being splatted, with one extra for a possible keyword hash.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE *argv = cfp-&gt;sp - argc;
+            VALUE argv_ary = rb_ary_hidden_new(<b>len + argc + 1</b>);
+            rb_ary_cat(argv_ary, argv, argc);
+            rb_ary_cat(argv_ary, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_ary;
+            calling-&gt;argc = 1;
+            calling-&gt;heap_argv = argv_ary;
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/118">
+
+<div class="notes">The other important change is that I switched to storing a pointer to the temporary array in the calling structure, instead of only storing the pointer on the VM stack. This was mostly for simplicitly so I could easily reference it later.</div>
+<pre class="sh_c" style="font-size: 36px; margin-top: 18px; margin-left: 20px;"><code>
+        const VALUE *ptr = RARRAY_CONST_PTR_TRANSIENT(ary);
+        long len = RARRAY_LEN(ary), i;
+
+        if (argc + len &gt; 1000) {
+            VALUE *argv = cfp-&gt;sp - argc;
+            VALUE argv_ary = rb_ary_hidden_new(len + argc + 1);
+            rb_ary_cat(argv_ary, argv, argc);
+            rb_ary_cat(argv_ary, ptr, len);
+            cfp-&gt;sp -= argc - 1;
+            cfp-&gt;sp[-1] = argv_ary;
+            calling-&gt;argc = 1;
+            <b>calling-&gt;heap_argv = argv_ary;</b>
+       }
+        else {
+            CHECK_VM_STACK_OVERFLOW(cfp, len);
+
+            for (i = 0; i &lt; len; i++) {
+                *cfp-&gt;sp++ = ptr[i];
+            }
+            calling-&gt;argc += i - 1;
+        }
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/119">
+
+<div class="notes">If we go back to the vm_call_bmethod function, we can modify it to use this new approach.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci);
+    argc = calling-&gt;argc;
+    argv = ALLOCA_N(VALUE, argc);
+    MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+    cfp-&gt;sp += - argc - 1;
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/120">
+
+<div class="notes">Here are the changes needed.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+<b class="block">    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {</b>
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    <b>}</b>
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/121">
+
+<div class="notes">The first change is the addition of an argument to CALLER_SETUP_ARG for whether it is safe to use a temporary array for the arguments. In this case, it is.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, <b>ALLOW_HEAP_ARGV</b>);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/122">
+
+<div class="notes">If there was temporary array created to handle a large argument splat,</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(<b>calling-&gt;heap_argv</b>)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/123">
+
+<div class="notes">then we get a pointer to the first element in the array.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        <b>argv = RARRAY_PTR(calling-&gt;heap_argv);</b>
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/124">
+
+<div class="notes">This is instead of allocating space on the C stack, and copying the arguments from the VM stack to the C stack.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+<b class="block">      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);</b>
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/125">
+
+<div class="notes">We need to decrement the stack pointer by 2, since the array is considered one argument.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        <b>cfp-&gt;sp -= 2;</b>
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/126">
+
+<div class="notes">This is to match the stack pointer adjustment in the normal case. Failure to adjust the stack pointer correctly results in sp/bp mismatch errors or failing cfp consistency checks, both of which are time consuming to debug.|Unfortunately, this change did not fix the stack overflow issue for bmethods. That is because we have a similar issue later in the VM.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      <b>cfp-&gt;sp += - argc - 1;</b>
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/127">
+
+<div class="notes">3 nested function calls after calling vm_call_bmethod_body,</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return <b>vm_call_bmethod_body(ec, calling, argv);</b>
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/128">
+
+<div class="notes">the VM calls a function named invoke_iseq_block_from_c</div>
+<pre class="sh_c" style="font-size: 30px; margin-top: 48px; margin-left: 20px;"><code> static inline VALUE
+invoke_iseq_block_from_c(rb_execution_context_t *ec, const struct rb_captured_block *captured,
+                         VALUE self, int argc, const VALUE *argv, int kw_splat, VALUE passed_block_handler,
+                         const rb_cref_t *cref, int is_lambda, const rb_callable_method_entry_t *me)
+{
+    // ...
+
+    CHECK_VM_STACK_OVERFLOW(cfp, argc);
+    vm_check_canary(ec, sp);
+    cfp-&gt;sp = sp + argc;
+    for (i=0; i&lt;argc; i++) {
+        sp[i] = argv[i];
+    }
+
+    opt_pc = vm_yield_setup_args(ec, iseq, argc, sp, kw_splat, passed_block_handler,
+                                 (is_lambda ? arg_setup_method : arg_setup_block));
+
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/129">
+
+<div class="notes">which also copies all arguments to the VM stack.</div>
+<pre class="sh_c" style="font-size: 30px; margin-top: 48px; margin-left: 20px;"><code> static inline VALUE
+invoke_iseq_block_from_c(rb_execution_context_t *ec, const struct rb_captured_block *captured,
+                         VALUE self, int argc, const VALUE *argv, int kw_splat, VALUE passed_block_handler,
+                         const rb_cref_t *cref, int is_lambda, const rb_callable_method_entry_t *me)
+{
+    // ...
+
+    CHECK_VM_STACK_OVERFLOW(cfp, argc);
+    vm_check_canary(ec, sp);
+<b class="block">    cfp-&gt;sp = sp + argc;
+    for (i=0; i&lt;argc; i++) {
+        sp[i] = argv[i];
+    }</b>
+
+    opt_pc = vm_yield_setup_args(ec, iseq, argc, sp, kw_splat, passed_block_handler,
+                                 (is_lambda ? arg_setup_method : arg_setup_block));
+
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/130">
+
+<div class="notes">First raising a SystemStackError if copying the arguments would overflow the stack.</div>
+<pre class="sh_c" style="font-size: 30px; margin-top: 48px; margin-left: 20px;"><code> static inline VALUE
+invoke_iseq_block_from_c(rb_execution_context_t *ec, const struct rb_captured_block *captured,
+                         VALUE self, int argc, const VALUE *argv, int kw_splat, VALUE passed_block_handler,
+                         const rb_cref_t *cref, int is_lambda, const rb_callable_method_entry_t *me)
+{
+    // ...
+
+    <b>CHECK_VM_STACK_OVERFLOW(cfp, argc);</b>
+    vm_check_canary(ec, sp);
+    cfp-&gt;sp = sp + argc;
+    for (i=0; i&lt;argc; i++) {
+        sp[i] = argv[i];
+    }
+
+    opt_pc = vm_yield_setup_args(ec, iseq, argc, sp, kw_splat, passed_block_handler,
+                                 (is_lambda ? arg_setup_method : arg_setup_block));
+
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/131">
+
+<div class="notes">I worked around this issue using the same approach used in the CALLER_SETUP_ARG code, by creating a temporary hidden Ruby array to store the arguments.</div>
+<pre class="sh_c" style="font-size: 30px; margin-top: 48px; margin-left: 20px;"><code> static inline VALUE
+invoke_iseq_block_from_c(rb_execution_context_t *ec, const struct rb_captured_block *captured,
+                         VALUE self, int argc, const VALUE *argv, int kw_splat, VALUE passed_block_handler,
+                         const rb_cref_t *cref, int is_lambda, const rb_callable_method_entry_t *me)
+{
+    // ...
+<b class="block">    int flags = (kw_splat ? VM_CALL_KW_SPLAT : 0);
+    VALUE *use_argv = (VALUE *)argv;
+    VALUE av[2];
+
+    if (UNLIKELY(argc &gt; VM_ARGC_STACK_MAX)) {
+        use_argv = vm_argv_ruby_array(av, argv, &amp;flags, &amp;argc, kw_splat);
+    }</b>
+
+    CHECK_VM_STACK_OVERFLOW(cfp, argc);
+    vm_check_canary(ec, sp);
+    cfp-&gt;sp = sp + argc;
+    for (i=0; i&lt;argc; i++) {
+        sp[i] = <b>use_argv</b>[i];
+    }
+
+    opt_pc = vm_yield_setup_args(ec, iseq, argc, sp, <b>flags</b>, passed_block_handler,
+                                 (is_lambda ? arg_setup_method : arg_setup_block));
+
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/132">
+
+<div class="notes">If the number of arguments provided is over the limit,</div>
+<pre class="sh_c" style="font-size: 30px; margin-top: 48px; margin-left: 20px;"><code> static inline VALUE
+invoke_iseq_block_from_c(rb_execution_context_t *ec, const struct rb_captured_block *captured,
+                         VALUE self, int argc, const VALUE *argv, int kw_splat, VALUE passed_block_handler,
+                         const rb_cref_t *cref, int is_lambda, const rb_callable_method_entry_t *me)
+{
+    // ...
+    int flags = (kw_splat ? VM_CALL_KW_SPLAT : 0);
+    VALUE *use_argv = (VALUE *)argv;
+    VALUE av[2];
+
+    if (UNLIKELY(<b>argc &gt; VM_ARGC_STACK_MAX</b>)) {
+        use_argv = vm_argv_ruby_array(av, argv, &amp;flags, &amp;argc, kw_splat);
+    }
+
+    CHECK_VM_STACK_OVERFLOW(cfp, argc);
+    vm_check_canary(ec, sp);
+    cfp-&gt;sp = sp + argc;
+    for (i=0; i&lt;argc; i++) {
+        sp[i] = use_argv[i];
+    }
+
+    opt_pc = vm_yield_setup_args(ec, iseq, argc, sp, flags, passed_block_handler,
+                                 (is_lambda ? arg_setup_method : arg_setup_block));
+
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/133">
+
+<div class="notes">we call a newly added vm_argv_ruby_array function to create a temporary Ruby array, copy the arguments from argv into it, and then return a pointer to the Ruby array.</div>
+<pre class="sh_c" style="font-size: 30px; margin-top: 48px; margin-left: 20px;"><code> static inline VALUE
+invoke_iseq_block_from_c(rb_execution_context_t *ec, const struct rb_captured_block *captured,
+                         VALUE self, int argc, const VALUE *argv, int kw_splat, VALUE passed_block_handler,
+                         const rb_cref_t *cref, int is_lambda, const rb_callable_method_entry_t *me)
+{
+    // ...
+    int flags = (kw_splat ? VM_CALL_KW_SPLAT : 0);
+    VALUE *use_argv = (VALUE *)argv;
+    VALUE av[2];
+
+    if (UNLIKELY(argc &gt; VM_ARGC_STACK_MAX)) {
+        use_argv = <b>vm_argv_ruby_array</b>(av, argv, &amp;flags, &amp;argc, kw_splat);
+    }
+
+    CHECK_VM_STACK_OVERFLOW(cfp, argc);
+    vm_check_canary(ec, sp);
+    cfp-&gt;sp = sp + argc;
+    for (i=0; i&lt;argc; i++) {
+        sp[i] = use_argv[i];
+    }
+
+    opt_pc = vm_yield_setup_args(ec, iseq, argc, sp, flags, passed_block_handler,
+                                 (is_lambda ? arg_setup_method : arg_setup_block));
+
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/134">
+
+<div class="notes">We actually always pass an array of two arguments in this case. The first argument is that temporary array. The second argument is always a keyword hash.</div>
+<pre class="sh_c" style="font-size: 30px; margin-top: 48px; margin-left: 20px;"><code> static inline VALUE
+invoke_iseq_block_from_c(rb_execution_context_t *ec, const struct rb_captured_block *captured,
+                         VALUE self, int argc, const VALUE *argv, int kw_splat, VALUE passed_block_handler,
+                         const rb_cref_t *cref, int is_lambda, const rb_callable_method_entry_t *me)
+{
+    // ...
+    int flags = (kw_splat ? VM_CALL_KW_SPLAT : 0);
+    VALUE *use_argv = (VALUE *)argv;
+    <b>VALUE av[2];</b>
+
+    if (UNLIKELY(argc &gt; VM_ARGC_STACK_MAX)) {
+        use_argv = vm_argv_ruby_array(av, argv, &amp;flags, &amp;argc, kw_splat);
+    }
+
+    CHECK_VM_STACK_OVERFLOW(cfp, argc);
+    vm_check_canary(ec, sp);
+    cfp-&gt;sp = sp + argc;
+    for (i=0; i&lt;argc; i++) {
+        sp[i] = use_argv[i];
+    }
+
+    opt_pc = vm_yield_setup_args(ec, iseq, argc, sp, flags, passed_block_handler,
+                                 (is_lambda ? arg_setup_method : arg_setup_block));
+
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/135">
+
+<div class="notes">If kw_splat is true, that means the last argument of the array is keyword arguments, so it is removed from the array and stored as a separate argument. If kw_splat is false, we add an empty hash for keyword arguments, so that Ruby will not treat a flagged keyword hash passed as a regular argument as a keyword splat.</div>
+<pre class="sh_c" style="font-size: 30px; margin-top: 48px; margin-left: 20px;"><code> static inline VALUE
+invoke_iseq_block_from_c(rb_execution_context_t *ec, const struct rb_captured_block *captured,
+                         VALUE self, int argc, const VALUE *argv, int kw_splat, VALUE passed_block_handler,
+                         const rb_cref_t *cref, int is_lambda, const rb_callable_method_entry_t *me)
+{
+    // ...
+    int flags = (<b>kw_splat</b> ? VM_CALL_KW_SPLAT : 0);
+    VALUE *use_argv = (VALUE *)argv;
+    VALUE av[2];
+
+    if (UNLIKELY(argc &gt; VM_ARGC_STACK_MAX)) {
+        use_argv = vm_argv_ruby_array(av, argv, &amp;flags, &amp;argc, kw_splat);
+    }
+
+    CHECK_VM_STACK_OVERFLOW(cfp, argc);
+    vm_check_canary(ec, sp);
+    cfp-&gt;sp = sp + argc;
+    for (i=0; i&lt;argc; i++) {
+        sp[i] = use_argv[i];
+    }
+
+    opt_pc = vm_yield_setup_args(ec, iseq, argc, sp, flags, passed_block_handler,
+                                 (is_lambda ? arg_setup_method : arg_setup_block));
+
+    // ...
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/136">
+
+<div class="notes">With those changes, you can now call methods defined with define_method or define_singleton_method with large array splats. However, that was not the only case that previously failed, there were other cases that failed as well.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+define_singleton_method(:a) do |*ary|
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/137">
+
+<div class="notes">While passing a large array splat worked with normal method definition starting working in Ruby 2.2,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/138">
+
+<div class="notes">If you called the same method using send,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+
+<b>send(:a, *1380888.times)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/139">
+
+<div class="notes">you got a SystemStackError.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+
+send(:a, *1380888.times)
+# <b>SystemStackError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/140">
+
+<div class="notes">If you used Symbol#to_proc and called the resulting proc with a large array splat,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+
+<b>:a.to_proc.(self, *1380888.times)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/141">
+
+<div class="notes">you got a SystemStackError.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+
+:a.to_proc.(self, *1380888.times)
+# <b>SystemStackError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/142">
+
+<div class="notes">If you created a Method object for the method, and called that with a large array splat,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+
+<b>method(:a).(*1380888.times)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/143">
+
+<div class="notes">you got a SystemStackError.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+# =&gt; 1380888
+
+method(:a).(*1380888.times)
+# <b>SystemStackError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/144">
+
+<div class="notes">If you defined method_missing,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+<b class="block">def self.method_missing(method, *ary)
+  ary.length
+end</b>
+
+a(*1380888.times)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/145">
+
+<div class="notes">then called a method that did not exist with a large array splat,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.method_missing(method, *ary)
+  ary.length
+end
+
+<b>a(*1380888.times)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/146">
+
+<div class="notes">you got a SystemStackError. Additionally, passing a large number of arguments in a C extension using rb_yield_block also resulted in a SystemStackError. Those were the most important cases that needed to be handled where it could be useful to pass a large number of arguments.|There were also some cases where the method type only accepts 0 or 1 argument, where passing a large array splat resulted in a SystemStackError instead of an ArgumentError.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.method_missing(method, *ary)
+  ary.length
+end
+
+a(*1380888.times)
+# <b>SystemStackError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/147">
+
+<div class="notes">If we go back to the normal method definition,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(*ary)
+  ary.length
+end
+
+a(*1380888.times)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/148">
+
+<div class="notes">and change the argument splat,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(<b>*ary</b>)
+  ary.length
+end
+
+a(*1380888.times)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/149">
+
+<div class="notes">to a regular argument,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(<b>ary</b>)
+  ary.length
+end
+
+a(*1380888.times)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/150">
+
+<div class="notes">when calling the method with a large array splat</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(ary)
+  ary.length
+end
+
+<b>a(*1380888.times)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/151">
+
+<div class="notes">It would be best to have an ArgumentError raised,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(ary)
+  ary.length
+end
+
+a(*1380888.times)
+# <b>ArgumentError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/152">
+
+<div class="notes">but Ruby would raise a SystemStackError in that case.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+def self.a(ary)
+  ary.length
+end
+
+a(*1380888.times)
+# <b>SystemStackError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/153">
+
+<div class="notes">Similarly, if you have a class that uses attr_reader</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+class A
+  attr_reader :a
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/154">
+
+<div class="notes">calling the method defined with a large array splat</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+class A
+  attr_reader :a
+end
+
+<b>A.new.a(*1380888.times)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/155">
+
+<div class="notes">raises a SystemStackError instead of an ArgumentError. The same issue is true for attr_writer.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+class A
+  attr_reader :a
+end
+
+A.new.a(*1380888.times)
+# <b>SystemStackError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/156">
+
+<div class="notes">If you create a Struct class,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+A = Struct.new(:a)
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/157">
+
+<div class="notes">Calling the member reader method for an instance of the Struct with a large array splat</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+A = Struct.new(:a)
+
+<b>A.new.a(*1380888.times)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/158">
+
+<div class="notes">raises a SystemStackError instead of an ArgumentError. The same issue is true for the member setter method.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 220px;"><code>
+A = Struct.new(:a)
+
+A.new.a(*1380888.times)
+# <b>SystemStackError</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/159">
+
+<div class="notes">Squashing this bug, both for the method types that could accept a large number of arguments, and to get the correct exception raised for method types that only accept 0 or 1 argument, took quite a long time.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 50px; left: 150px;">Squashing</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 270px; left: 450px;">the</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 270px; left: 200px;">Bug</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/160">
+
+<div class="notes">One reason for this is this issue is not really a single bug, but a whole class of related bugs.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 50px; left: 150px;">Squashing</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 270px; left: 450px;">the</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 270px; left: 200px;">Bugs</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/161">
+
+<div class="notes">One thing to be aware of is that almost no code in Ruby’s test suite passes a large array splat. So running the test suites that come with Ruby would be unlikely to catch issues with the changes I was making.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 150px; left: 150px;">Testing</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 335px; left: 320px;">Rare</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 480px; left: 150px;">Cases</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/162">
+
+<div class="notes">To get a higher level of confidence that the bug fixes were actually working, I did most of my debugging by forcing temporary array usage for all method calls with splats, instead of the default behavior of only using a temporary array for splats of large arrays.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 350px; left: 150px;">Forcing</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 530px; left: 150px;">Temporary</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 710px; left: 150px;">Arrays</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/163">
+
+<div class="notes">Eventually, I was able to get the entire test suite passing, fixing all cases I was aware of where passing a large array splat raised SystemStackError. However, just because all bugs have been fixed does not mean that the fixes should necessarily be committed.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 70px; left: 50px;">All</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 250px; left: 150px;">Bugs</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 450px; left: 250px;">Fixed<span class="red">!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/164">
+
+<div class="notes">When deciding whether to commit anything, you need to have an understanding of the costs and benefits of committing, and you should feel that the benefits are worth the costs.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 100px; left: 150px;">Costs</h1>
+<h1 class="red" style="font-size: 150px; position: absolute; top: 280px; left: 300px;">vs.</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 330px; left: 150px;">Benefits</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/165">
+
+<div class="notes">In this case, the benefit is you can splat an array when calling any Ruby method, and you should get the expected behavior regardless of the size of the array. I think that is a significant benefit, but the actual need to pass a large array splat is rare, and it is almost always better to pass a large array of arguments as a normal argument, instead of splatting the array.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 330px; left: 150px;">Benefits</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/166">
+
+<div class="notes">There are significant costs associated with the fixes.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 110px; left: 150px;">Costs</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/167">
+
+<div class="notes">For one, the fixes are invasive, much more so than my initial attempt to fix the issue for cfunc methods.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 460px; right: 424px;">Invasive</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/168">
+
+<div class="notes">For another, there is a minor slowdown associated with this change. With all of the work to improve Ruby’s performance, commiting this patch can feel like a step backward.|I thought it would be unlikely that committers would accept a minor slowdown to fix these corner cases. Thankfully, during my work fixing these bugs, I learned a lot about Ruby’s internals.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 360px; left: 624px;">Minor</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 540px; left: 624px;">Slowdown</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/169">
+
+<div class="notes">With what I learned, I developed a series of patches to optimize method calling in certain cases. My goal with this series of patches was to offset the minor slowdown introduced by the bug fixes.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 370px; left: 284px;">Optimizations</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/170">
+
+<div class="notes">One of the optimizations was to bmethod calling. Here is the code for vm_call_bmethod again.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/171">
+
+<div class="notes">One thing to notice is that this function always calls CALLER_SETUP_ARG.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    <b>CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);</b>
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/172">
+
+<div class="notes">The reason it does this is so it can flatten the arguments into a C array, and pass a pointer to the first argument to vm_call_bmethod_body.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, <b>argv</b>);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/173">
+
+<div class="notes">I determined that this call to CALLER_SETUP_ARG is not actually needed in the common case where the block for the bmethod is defined in Ruby. However, it is needed in other cases where the block for the bmethod is defined in C or was created by Symbol#to_proc.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    VALUE *argv;
+    int argc;
+    const struct rb_callinfo *ci = calling-&gt;ci;
+
+    <b>CALLER_SETUP_ARG(cfp, calling, ci, ALLOW_HEAP_ARGV);</b>
+    if (UNLIKELY(calling-&gt;heap_argv)) {
+        argv = RARRAY_PTR(calling-&gt;heap_argv);
+        cfp-&gt;sp -= 2;
+    }
+    else {
+      argc = calling-&gt;argc;
+      argv = ALLOCA_N(VALUE, argc);
+      MEMCPY(argv, cfp-&gt;sp - argc, VALUE, argc);
+      cfp-&gt;sp += - argc - 1;
+    }
+
+    return vm_call_bmethod_body(ec, calling, argv);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/174">
+
+<div class="notes">So I decided to split bmethod call handling into two paths, one to handle the case where the block is defined in Ruby, and another for other blocks.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+    VALUE procv = cme-&gt;def-&gt;body.bmethod.proc;
+    rb_proc_t *proc;
+    GetProcPtr(procv, proc);
+    const struct rb_block *block = &amp;proc-&gt;block;
+
+    while (vm_block_type(block) == block_type_proc) {
+        block = vm_proc_block(block-&gt;as.proc);
+    }
+    if (vm_block_type(block) == block_type_iseq) {
+        CC_SET_FASTPATH(cc, vm_call_iseq_bmethod, TRUE);
+        return vm_call_iseq_bmethod(ec, cfp, calling);
+    }
+
+    CC_SET_FASTPATH(cc, vm_call_noniseq_bmethod, TRUE);
+    return vm_call_noniseq_bmethod(ec, cfp, calling);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/175">
+
+<div class="notes">All of this code is necessary to determine whether the block was defined in Ruby.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+<b class="block">    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+    VALUE procv = cme-&gt;def-&gt;body.bmethod.proc;
+    rb_proc_t *proc;
+    GetProcPtr(procv, proc);
+    const struct rb_block *block = &amp;proc-&gt;block;
+
+    while (vm_block_type(block) == block_type_proc) {
+        block = vm_proc_block(block-&gt;as.proc);
+    }
+    if (vm_block_type(block) == block_type_iseq) {</b>
+        CC_SET_FASTPATH(cc, vm_call_iseq_bmethod, TRUE);
+        return vm_call_iseq_bmethod(ec, cfp, calling);
+    }
+
+    CC_SET_FASTPATH(cc, vm_call_noniseq_bmethod, TRUE);
+    return vm_call_noniseq_bmethod(ec, cfp, calling);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/176">
+
+<div class="notes">If the block was defined in Ruby, we can call an optimized function that does not need to use CALLER_SETUP_ARG.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+    VALUE procv = cme-&gt;def-&gt;body.bmethod.proc;
+    rb_proc_t *proc;
+    GetProcPtr(procv, proc);
+    const struct rb_block *block = &amp;proc-&gt;block;
+
+    while (vm_block_type(block) == block_type_proc) {
+        block = vm_proc_block(block-&gt;as.proc);
+    }
+    if (vm_block_type(block) == block_type_iseq) {
+        CC_SET_FASTPATH(cc, vm_call_iseq_bmethod, TRUE);
+        return <b>vm_call_iseq_bmethod(ec, cfp, calling)</b>;
+    }
+
+    CC_SET_FASTPATH(cc, vm_call_noniseq_bmethod, TRUE);
+    return vm_call_noniseq_bmethod(ec, cfp, calling);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/177">
+
+<div class="notes">If the block was not defined in Ruby, we call another function that uses CALLER_SETUP_ARG, which is similar to the previous implementation.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+    VALUE procv = cme-&gt;def-&gt;body.bmethod.proc;
+    rb_proc_t *proc;
+    GetProcPtr(procv, proc);
+    const struct rb_block *block = &amp;proc-&gt;block;
+
+    while (vm_block_type(block) == block_type_proc) {
+        block = vm_proc_block(block-&gt;as.proc);
+    }
+    if (vm_block_type(block) == block_type_iseq) {
+        CC_SET_FASTPATH(cc, vm_call_iseq_bmethod, TRUE);
+        return vm_call_iseq_bmethod(ec, cfp, calling);
+    }
+
+    CC_SET_FASTPATH(cc, vm_call_noniseq_bmethod, TRUE);
+    return <b>vm_call_noniseq_bmethod(ec, cfp, calling)</b>;
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/178">
+
+<div class="notes">In either case, before calling the function, we update the call cache.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+    VALUE procv = cme-&gt;def-&gt;body.bmethod.proc;
+    rb_proc_t *proc;
+    GetProcPtr(procv, proc);
+    const struct rb_block *block = &amp;proc-&gt;block;
+
+    while (vm_block_type(block) == block_type_proc) {
+        block = vm_proc_block(block-&gt;as.proc);
+    }
+    if (vm_block_type(block) == block_type_iseq) {
+        <b>CC_SET_FASTPATH(cc, vm_call_iseq_bmethod, TRUE)</b>;
+        return vm_call_iseq_bmethod(ec, cfp, calling);
+    }
+
+    <b>CC_SET_FASTPATH(cc, vm_call_noniseq_bmethod, TRUE)</b>;
+    return vm_call_noniseq_bmethod(ec, cfp, calling);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/179">
+
+<div class="notes">The reason we update the call cache is so future calls at the same callsite can jump directly to the optimized method, and skip all of this code.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_bmethod(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                struct rb_calling_info *calling)
+{
+<b class="block">    RB_DEBUG_COUNTER_INC(ccf_bmethod);
+
+    const struct rb_callcache *cc = calling-&gt;cc;
+    const rb_callable_method_entry_t *cme = vm_cc_cme(cc);
+    VALUE procv = cme-&gt;def-&gt;body.bmethod.proc;
+    rb_proc_t *proc;
+    GetProcPtr(procv, proc);
+    const struct rb_block *block = &amp;proc-&gt;block;
+
+    while (vm_block_type(block) == block_type_proc) {
+        block = vm_proc_block(block-&gt;as.proc);
+    }
+    if (vm_block_type(block) == block_type_iseq) {</b>
+        CC_SET_FASTPATH(cc, vm_call_iseq_bmethod, TRUE);
+        return vm_call_iseq_bmethod(ec, cfp, calling);
+    }
+
+    CC_SET_FASTPATH(cc, vm_call_noniseq_bmethod, TRUE);
+    return vm_call_noniseq_bmethod(ec, cfp, calling);
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/180">
+
+<div class="notes">I added some benchmarks</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/181">
+
+<div class="notes">and found that these changes improved bmethod calling by 40% in simple cases, and up to 180% in keyword cases.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 620px; right: 1100px;">bmethod:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 620px; left: 860px;">40-180<span class="blue">%</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/182">
+
+<div class="notes">Another of the optimizations was to method missing calls. Here is the top of vm_call_method_missing_body before the bug fix and optimization.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_missing_body(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                            struct rb_calling_info *calling, const struct rb_callinfo *orig_ci,
+                            enum method_missing_reason reason)
+{
+    RB_DEBUG_COUNTER_INC(ccf_method_missing);
+
+    VALUE *argv = STACK_ADDR_FROM_TOP(calling-&gt;argc);
+    unsigned int argc;
+
+    CALLER_SETUP_ARG(reg_cfp, calling, orig_ci);
+    argc = calling-&gt;argc + 1;
+
+    unsigned int flag = VM_CALL_FCALL | VM_CALL_OPT_SEND |
+                        (calling-&gt;kw_splat ? VM_CALL_KW_SPLAT : 0);
+    calling-&gt;argc = argc;
+    // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/183">
+
+<div class="notes">I determined that the CALLER_SETUP_ARG function call here is unnecessary, as method_missing calls do not need to modify existing arguments, they just need to add an argument before those arguments.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_missing_body(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                            struct rb_calling_info *calling, const struct rb_callinfo *orig_ci,
+                            enum method_missing_reason reason)
+{
+    RB_DEBUG_COUNTER_INC(ccf_method_missing);
+
+    VALUE *argv = STACK_ADDR_FROM_TOP(calling-&gt;argc);
+    unsigned int argc;
+
+    <b>CALLER_SETUP_ARG(reg_cfp, calling, orig_ci);</b>
+    argc = calling-&gt;argc + 1;
+
+    unsigned int flag = VM_CALL_FCALL | VM_CALL_OPT_SEND |
+                        (calling-&gt;kw_splat ? VM_CALL_KW_SPLAT : 0);
+    calling-&gt;argc = argc;
+    // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/184">
+
+<div class="notes">So the call to CALLER_SETUP_ARG can be removed completely.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_missing_body(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                            struct rb_calling_info *calling, const struct rb_callinfo *orig_ci,
+                            enum method_missing_reason reason)
+{
+    RB_DEBUG_COUNTER_INC(ccf_method_missing);
+
+    VALUE *argv = STACK_ADDR_FROM_TOP(calling-&gt;argc);
+    unsigned int argc;
+
+    
+    argc = calling-&gt;argc + 1;
+
+    unsigned int flag = VM_CALL_FCALL | VM_CALL_OPT_SEND |
+                        (calling-&gt;kw_splat ? VM_CALL_KW_SPLAT : 0);
+    calling-&gt;argc = argc;
+    // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/185">
+
+<div class="notes">However, you do need to fix the calling flags. The calling flags include information about whether the call includes an argument splat or keyword arguments. Since CALLER_SETUP_ARG was used previously, new calling flags were created.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_missing_body(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                            struct rb_calling_info *calling, const struct rb_callinfo *orig_ci,
+                            enum method_missing_reason reason)
+{
+    RB_DEBUG_COUNTER_INC(ccf_method_missing);
+
+    VALUE *argv = STACK_ADDR_FROM_TOP(calling-&gt;argc);
+    unsigned int argc;
+
+    
+    argc = calling-&gt;argc + 1;
+
+    unsigned int flag = VM_CALL_FCALL | VM_CALL_OPT_SEND |
+                        <b>(calling-&gt;kw_splat ? VM_CALL_KW_SPLAT : 0)</b>;
+    calling-&gt;argc = argc;
+    // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/186">
+
+<div class="notes">However, when removing the CALLER_SETUP_ARG function call, you can just copy the calling flags from the original method call that resulted in method_missing, and that fixes the issue.</div>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>static VALUE
+vm_call_method_missing_body(rb_execution_context_t *ec, rb_control_frame_t *cfp,
+                            struct rb_calling_info *calling, const struct rb_callinfo *orig_ci,
+                            enum method_missing_reason reason)
+{
+    RB_DEBUG_COUNTER_INC(ccf_method_missing);
+
+    VALUE *argv = STACK_ADDR_FROM_TOP(calling-&gt;argc);
+    unsigned int argc;
+
+    
+    argc = calling-&gt;argc + 1;
+
+    unsigned int flag = VM_CALL_FCALL | VM_CALL_OPT_SEND |
+                        <b>vm_ci_flag(orig_ci)</b>;
+    calling-&gt;argc = argc;
+    // ...
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/187">
+
+<div class="notes">That simple change improved method missing calls by 10% for simple calls, and up to 100% for calls involving keyword arguments.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 620px; right: 1100px;">bmethod:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 620px; left: 860px;">40-180<span class="blue">%</span>
+</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 720px; right: 1100px;">method_missing:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 720px; left: 860px;">10-110<span class="blue">%</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/188">
+
+<div class="notes">I made a similar change for calls to symbol procs, which are procs created by Symbol#to_proc. That improved performance 5% for simple calls and up to 100% for keyword argument calls.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 620px; right: 1100px;">bmethod:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 620px; left: 860px;">40-180<span class="blue">%</span>
+</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 720px; right: 1100px;">method_missing:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 720px; left: 860px;">10-110<span class="blue">%</span>
+</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 820px; right: 1100px;">symproc:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 820px; left: 860px;">5-100<span class="blue">%</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/189">
+
+<div class="notes">I also made a similar change to method calls using send, which improved performance 5% for simple calls and up to 115% for keyword argument calls.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 620px; right: 1100px;">bmethod:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 620px; left: 860px;">40-180<span class="blue">%</span>
+</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 720px; right: 1100px;">method_missing:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 720px; left: 860px;">10-110<span class="blue">%</span>
+</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 820px; right: 1100px;">symproc:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 820px; left: 860px;">5-100<span class="blue">%</span>
+</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 920px; right: 1100px;">send:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 920px; left: 860px;">5-115<span class="blue">%</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/190">
+
+<div class="notes">To see the overall effect of the bug fixes combined with the performance optimizations, I used yjit-bench. yjit-bench was developed by Shopify to test yjit performance, but is also very useful as a set of general benchmarks. It contains 33 separate benchmarks.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 620px; right: 1100px;">yjit-bench</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/191">
+
+<div class="notes">Results showed that performance was about the same in 12 benchmarks.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 620px; right: 1100px;">yjit-bench</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 720px; right: 1100px;">same:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 720px; left: 860px;">12</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/192">
+
+<div class="notes">8 benchmarks got slower in spite of the optimizations, up to 3% slower in the worst case.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 620px; right: 1100px;">yjit-bench</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 720px; right: 1100px;">same:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 720px; left: 860px;">12</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 820px; right: 1100px;">slower:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 820px; left: 860px;">8 (1-3<span class="blue">%</span>)</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/193">
+
+<div class="notes">However, 13 benchmarks got faster, up to 10% faster, because the performance increase from the optimizations was higher than the performance decrease from the bug fixes.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 10px; left: 24px;">Method</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 190px; left: 124px;">Calling</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 350px; left: 360px;">Benchmarks</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 620px; right: 1100px;">yjit-bench</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 720px; right: 1100px;">same:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 720px; left: 860px;">12</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 820px; right: 1100px;">slower:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 820px; left: 860px;">8 (1-3<span class="blue">%</span>)</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 920px; right: 1100px;">faster:</h1>
+<h1 class="red" style="font-size: 100px; position: absolute; top: 920px; left: 860px;">13 (1-10<span class="blue">%</span>)</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/194">
+
+<div class="notes">After finishing those method calling optimizations, I brought the issue up as a topic last month during the monthly developer meeting. This way other committers could provide feedback, and matz could decide whether the benefits were worth the costs. There was some concern over the performance and the invasiveness of the changes.</div>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 60px; left: 324px;">Developer</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 240px; left: 454px;">Meeting</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/195">
+
+<div class="notes">However, I ultimately received approval to merge the changes. There was one main issue.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 360px; left: 110px;">Merge</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 520px; left: 424px;">Approval<span class="red">!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/196">
+
+<div class="notes">I mentioned earlier that I fixed all bugs I was aware of, but there should be a caveat added. In truth, I fixed all bugs in the virtual machine,</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 70px; left: 50px;">All</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 250px; left: 150px;">Bugs</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 450px; left: 250px;">Fixed<span class="red">!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/197">
+
+<div class="notes">but it turns out that yjit did not support the change I was making. The yjit tests on arm64 generally failed, with occasional failures on amd64. I discussed the issue with the yjit team, and thankfully they were able to fix the yjit issues. After the yjit issues were fixed, and one last round of testing,</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 70px; left: 50px;">All</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 250px; left: 150px;">Bugs</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 450px; left: 250px;">Fixed<span class="red">!</span>
+</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 655px; left: 152px;">(except <span class="blue">yjit</span>)</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/198">
+
+<div class="notes">I was able to merge the changes.</div>
+<h1 class="blue" style="font-size: 420px; position: absolute; top: 560px; left: 124px;">Merged<span class="red">!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/199">
+
+<div class="notes">Ensuring that the second oldest bug, in all of its incarnations, will finally be fixed in Ruby 3.3.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Second</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 393px; left: 82px;">Oldest</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 154px;">Bug</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 740px; left: 74px;">Fixed<span class="red">!!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/200">
+
+<div class="notes">Here are the lessons I learned from my experience fixing these bugs.</div>
+<h1 class="blue" style="font-size: 210px; position: absolute; top: 232px; left: 450px;">Lessons</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 340px; left: 350px;">Learned</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/201">
+
+<div class="notes">First, just because a bug is old, does not mean it cannot be fixed. Splatting a very large array in a method call has been a problem since Ruby supported splatting arrays, and this issue was known for over a decade before I started work on fixing it. In general, it just takes one person with the determination to fix the bug.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 24px; left: 150px;">Old Bugs</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 212px; left: 220px;">Can Be Fixed</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/202">
+
+<div class="notes">Second, fixing an old bug is often a learning process that teaches you useful things you probably would not have learned otherwise. Without the experience I gained from fixing these bugs, I would not have been able to implement the performance optimizations I discussed.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 24px; left: 150px;">Old Bugs</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 222px; left: 350px;">Teach</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 410px; left: 370px;">New <span class="blue">Tricks</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/203">
+
+<div class="notes">Finally, do not worry if you cannot fix any Ruby bug perfectly by yourself. As this issue showed, other committers will likely be available to help improve your bug fixes so they can be committed.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 360px; left: 550px;">Help Is</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 560px; left: 350px;">Available<span class="red">!</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/204">
+
+<div class="notes">Ruby currently has over 80 open bugs in the bug tracker that are over 5 years old, just waiting for you to fix. We look forward to your contibutions!</div>
+<h1 class="red" style="font-size: 650px; position: absolute; top: 222px; left: 50px;">80+</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 300px; left: 1100px;">Old</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 600px; left: 1100px;">Bugs</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/205">
+
+<div class="notes">I hope you had fun learning about Ruby’s second oldest bug, and how we fixed it in Ruby 3.3.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">The</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Second</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 393px; left: 82px;">Oldest</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 154px;">Bug</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/206">
+
+<div class="notes">If you enjoyed this presentation, and want to read more of my thoughts on Ruby programming, please consider picking up a copy of Polished Ruby Programming.</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 100px; height: 1031px; width: 822px;"></p>
+
+<p><img src="./file/polished-ruby-programming-cover-jp.png" style="position: absolute; top: 20px; right: 100px; height: 1031px; width: 726px;"></p>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/207">
+
+<div class="notes">That concludes my presentation. I would like to thank all of you for listening to me.</div>
+<h1 class="blue" style="font-family: NotoSansJP; font-size: 150px; position: absolute; top: 432px; left: 150px;">ありがとうございました</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/208">
+
+<div class="notes">A special thank you to Shopify and Cookpad for sponsoring my travel to RubyKaigi. If you have any questions, please ask me during the break.</div>
+<h1 class="blue" style="font-family: NotoSansJP; font-size: 150px; position: absolute; top: 432px; left: 150px;">ありがとうございました</h1>
+<p><img src="./file/shopify.svg" style="position: absolute; top: 60px; left: 150px; height: 280px; width: 1024px;"></p>
+
+<p><img src="./file/cookpad.svg" style="position: absolute; top: 680px; left: 750px; height: 280px; width: 1024px;"></p>
+</div>
+</div>
+</body></html>
+</div>
+
+</body>
+</html>
