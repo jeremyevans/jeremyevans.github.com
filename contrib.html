@@ -256,6 +256,7 @@
     <li>Fix access to arbitrary .png files in ruby 1.8 development mode (e727b17930f0b3c1a4e666c5901d45d04f68a2d6)</li>
     <li>Make route params available during error handler (10cc6089468a67c13ad5c5ac448f26424f4046c7)</li>
     <li>Unify not_found and error 404 behavior (8f398cda1b4c40c3e1848264fde1312775039f5f)</li>
+    <li>Remove use of Tilt::Cache (8e80d67073e3778fb2b56412061fec7c46b326f4)</li>
   </ul></li>
   <li><a href="http://sinatrarb.com/">sinatra-recipes</a>: Remove preload_app config line from example unicorn config (996c5c07b137db8fc78474a1fd9f99107e498214)</li>
   <li><a href="https://github.com/johnnagro/spider">Spider</a>: Use Integer instead of Fixnum to avoid warning on ruby 2.4+ (4eaab2c3e104cc9682e414ca4f83fbe12ac616b2)</li>
@@ -279,7 +280,9 @@
     <li>Make Worker#user support different process primary group and log file group (47fddb53aa0b7763f353ba515cf3fb5b2059f4f7)</li>
     <li>Support default_middleware configuration option (5985dd50a9bd72388dd5ca4886d6dffc083f87d4)</li>
     <li>Fix unicorn_rails to work with change in arity to Unicorn.builder lambda (6836d0674efdb1a6b79953285f10d8edd7e20432)</li>
+    <li>Support Rack 3 and fix tests on Rack 3 (9d7bab0bc2211b20806d4d0289a7ea992e49a8a1)</li>
   </ul></li>
+  <li><a href="https://github.com/github/trilogy">trilogy</a>: Fix build with LibreSSL (ebefb7e4f924307913ac46e03dcff6c0018ae941)</li>
   <li><a href="https://github.com/fny/xorcist">xorcist</a>: Simplify xorcist.c (5bf56fd163bd4226131f21885fabaeeac09a32e6)</li>
 </ul>
 
