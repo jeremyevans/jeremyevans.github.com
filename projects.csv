@@ -1,12 +1,12 @@
 tilt,jeremyevans/tilt,test_cov,888,888,188,188,2023-09-14
 rack-test,rack/rack-test,spec_cov,394,394,123,122,2023-04-12
 erubi,jeremyevans/erubi,spec_cov,157,157,90,90,2022-12-22
-sequel,jeremyevans/sequel,spec_cov,19507,19507,7682,7682,2023-10-31
+sequel,jeremyevans/sequel,spec_cov,19530,19530,7686,7686,2023-11-29
 warning,jeremyevans/ruby-warning,test_cov,70,70,19,19,2022-07-14
 american_date,jeremyevans/ruby-american_date,spec_cov,26,26,9,9,2023-07-13
 minitest-hooks,jeremyevans/minitest-hooks,spec_cov,74,74,17,17,2023-07-27
 sequel_pg,jeremyevans/sequel_pg,spec_cov,118,118,35,35,2022-10-05
-roda,jeremyevans/roda,spec_cov,5390,5390,1800,1800,2023-11-13
+roda,jeremyevans/roda,spec_cov,5448,5448,1842,1842,2023-12-13
 sequel-annotate,jeremyevans/sequel-annotate,spec_cov,141,141,90,90,2022-07-12
 sequel_postgresql_triggers,jeremyevans/sequel_postgresql_triggers,spec_cov,126,126,4,4,2022-07-12
 rodauth,jeremyevans/rodauth,spec_cov,4835,4835,1238,1238,2023-10-20
