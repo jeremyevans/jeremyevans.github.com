@@ -9,7 +9,7 @@ sequel_pg,jeremyevans/sequel_pg,spec_cov,118,118,35,35,2022-10-05
 roda,jeremyevans/roda,spec_cov,5448,5448,1842,1842,2023-12-13
 sequel-annotate,jeremyevans/sequel-annotate,spec_cov,141,141,90,90,2022-07-12
 sequel_postgresql_triggers,jeremyevans/sequel_postgresql_triggers,spec_cov,126,126,4,4,2022-07-12
-rodauth,jeremyevans/rodauth,spec_cov,4835,4835,1238,1238,2023-10-20
+rodauth,jeremyevans/rodauth,spec_cov,4838,4838,1230,1230,2023-12-20
 rack-unreloader,jeremyevans/rack-unreloader,spec_cov,348,348,118,118,2023-01-18
 fixture_dependencies,jeremyevans/fixture_dependencies,spec_cov,208,208,100,100,2022-07-12
 cicphash,jeremyevans/ruby-cicphash,test_cov,239,239,73,73,2022-07-12
@@ -21,7 +21,7 @@ hanna,jeremyevans/hanna,test_cov,169,169,20,20,2023-08-10
 autoforme,jeremyevans/autoforme,spec_cov,1140,1140,391,391,2022-07-12
 minitest-parallel_fork,jeremyevans/minitest-parallel_fork,spec_cov,108,108,23,23,2023-11-08
 thamble,jeremyevans/thamble,spec_cov,106,106,21,21,2022-07-12
-refrigerator,jeremyevans/ruby-refrigerator,spec_cov,18,18,2,2,2023-04-18
+refrigerator,jeremyevans/ruby-refrigerator,spec_cov,18,18,2,2,2023-12-28
 enum_csv,jeremyevans/enum_csv,spec_cov,21,21,10,10,2023-09-19
 subset_sum,jeremyevans/ruby-subset_sum,spec_cov,34,34,20,20,2022-07-12
 vorbis_comment,jeremyevans/ruby-vorbis_comment,test_cov,42,42,6,6,2022-07-12
