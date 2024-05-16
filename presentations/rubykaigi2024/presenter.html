@@ -1,0 +1,3715 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Reducing Implicit Allocations During Method Calling</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1920px;
+          height: 1080px;
+        }
+        #footer { width: 1901px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+      <script type="text/javascript" src="./js/sh_lang/sh_c.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+  <link rel="stylesheet" href="./css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src="./js/presenter.js"></script>
+
+    <style type="text/css">
+      #preview div.zoomed { zoom: 48%;}
+    </style>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/1">
+
+<div class="notes">Hello everyone! In this presentation, I will be discussing changes we made in Ruby 3.3 and 3.4 to reduce implicit allocations during method calling.</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 70px; left: 114px;">Reducing</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 220px; left: 154px;">Implicit Allocations</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 373px; left: 114px;">During</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 530px; left: 182px;">Method Calling</h1>
+<h1 class="blue" style="font-size: 108px; position: absolute; top: 762px; right: 90px; text-align: right;">
+<span class="red">Ruby</span>Kaigi 2024</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/2">
+
+<div class="notes">My name is Jeremy Evans. I am a Ruby committer who focuses on fixing bugs in Ruby.</div>
+
+<p><img class="profile-pic" src="./file/jeremy.jpg" style="position: absolute; top: 292px; left: 246px;"></p>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 432px; left: 750px;">GitHub:  <span class="blue mono"> jeremyevans</span>
+</h1>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 507px; left: 750px;">Twitter:  <span class="blue mono">@jeremyevans0</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/3">
+
+<div class="notes">I am also the author of Polished Ruby Programming, which was published in English a few years ago, and was published in Japanese last year. This book is aimed at intermediate Ruby programmers and focuses on teaching principles of Ruby programming, as well as trade-offs to consider when making implementation decisions.</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 100px; height: 1031px; width: 822px;"></p>
+
+<p><img src="./file/polished-ruby-programming-cover-jp.png" style="position: absolute; top: 20px; right: 100px; height: 1031px; width: 726px;"></p>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/4">
+
+<div class="notes">If we want to reduce implicit allocations,</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 70px; left: 114px;">Reducing</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 220px; left: 154px;">Implicit Allocations</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/5">
+
+<div class="notes">the first step is to measure the implicit allocations. If you do not know how many objects a method call implicitly allocates, you cannot determine whether it is possible to reduce the number of allocations.</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 70px; left: 284px;">Measuring</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 220px; left: 154px;">Implicit Allocations</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/6">
+
+<div class="notes">Here is a method that displays how many arrays and hashes are allocated inside a block. Unfortunately, I do not have enough time to explain how it works.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>COUNTS = {}
+def objects_allocated
+  ObjectSpace.count_objects(COUNTS)
+  arrays = COUNTS[:T_ARRAY]
+  hashes = COUNTS[:T_HASH]
+  yield
+  ObjectSpace.count_objects(COUNTS)
+  arrays -= COUNTS[:T_ARRAY]
+  hashes -= COUNTS[:T_HASH]
+  puts "Allocates: #{-arrays} arrays, #{-hashes} hashes"
+end
+
+GC.start
+GC.disable
+objects_allocated do
+  # nothing
+end
+# Allocates: 0 arrays, 0 hashes
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/7">
+
+<div class="notes">The important part is you can call the objects_allocated method with a block.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>COUNTS = {}
+def objects_allocated
+  ObjectSpace.count_objects(COUNTS)
+  arrays = COUNTS[:T_ARRAY]
+  hashes = COUNTS[:T_HASH]
+  yield
+  ObjectSpace.count_objects(COUNTS)
+  arrays -= COUNTS[:T_ARRAY]
+  hashes -= COUNTS[:T_HASH]
+  puts "Allocates: #{-arrays} arrays, #{-hashes} hashes"
+end
+
+GC.start
+GC.disable
+<b class="block">objects_allocated do
+  # nothing
+end</b>
+# Allocates: 0 arrays, 0 hashes
+
+</code></pre>
+<p>method</p>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/8">
+
+<div class="notes">And it will print the number of arrays and hashes allocated by the block. Using the objects_allocated method, we can examine how many objects are allocated for certain types of method calls.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>COUNTS = {}
+def objects_allocated
+  ObjectSpace.count_objects(COUNTS)
+  arrays = COUNTS[:T_ARRAY]
+  hashes = COUNTS[:T_HASH]
+  yield
+  ObjectSpace.count_objects(COUNTS)
+  arrays -= COUNTS[:T_ARRAY]
+  hashes -= COUNTS[:T_HASH]
+  puts "Allocates: #{-arrays} arrays, #{-hashes} hashes"
+end
+
+GC.start
+GC.disable
+objects_allocated do
+  # nothing
+end
+<b># Allocates: 0 arrays, 0 hashes</b>
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/9">
+
+<div class="notes">The first allocation reduction optimization we will examine I am calling Keyword Splat Separation. This technique was implemented by Sasada-san early in the Ruby 3.3 development cycle.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 70px; left: 114px;">Keyword</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 220px; left: 174px;">Splat</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 363px; left: 114px;">Separation</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/10">
+
+<div class="notes">Consider this code example.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a
+
+end
+
+ary = []
+kw = {}
+
+objects_allocated do
+  a(*ary, **kw)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/11">
+
+<div class="notes">We are going to call an empty method that takes no arguments.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code><b class="block">def a
+
+end</b>
+
+ary = []
+kw = {}
+
+objects_allocated do
+  a(*ary, **kw)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/12">
+
+<div class="notes">We are going to create an empty array and hash,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a
+
+end
+
+<b class="block">ary = []
+kw = {}</b>
+
+objects_allocated do
+  a(*ary, **kw)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/13">
+
+<div class="notes">and then splat the array and keyword splat the hash when calling the method. Any guesses as to how many objects this method call allocates?</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a
+
+end
+
+ary = []
+kw = {}
+
+objects_allocated do
+  <b>a(*ary, **kw)</b>
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/14">
+
+<div class="notes">It turns out that Ruby 3.2 allocates 4 arrays and 1 hash for this call. Considering that delegating arguments to other methods is commonly done via splats and keyword splats, this unnecessary object allocation can result in a significant slowdown.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a
+
+end
+
+ary = []
+kw = {}
+
+objects_allocated do
+  a(*ary, **kw)
+end
+# Ruby 3.2: <b>Allocates: 4 arrays, 1 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/15">
+
+<div class="notes">Ruby 3.3 fixes this, avoiding any allocation for this type of call.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a
+
+end
+
+ary = []
+kw = {}
+
+objects_allocated do
+  a(*ary, **kw)
+end
+# Ruby 3.2: Allocates: 4 arrays, 1 hashes
+# Ruby 3.3: <b>Allocates: 0 arrays, 0 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/16">
+
+<div class="notes">We can examine why this type of call allocates so many objects in Ruby 3.2.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a
+
+end
+
+ary = []
+kw = {}
+
+objects_allocated do
+  <b>a(*ary, **kw)</b>
+end
+# Ruby 3.2: Allocates: 4 arrays, 1 hashes
+# Ruby 3.3: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/17">
+
+<div class="notes">We can run ruby with the –dump instructions option, which will dump the virtual machine instructions used,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>$ ruby32 <b>--dump=insns</b> -e '
+ary = []
+kw = {}
+a(*ary, **kw)
+'
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/18">
+
+<div class="notes">and pass the code to evaluate with the -e option.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>$ ruby32 --dump=insns <b>-e</b> '
+<b class="block">ary = []
+kw = {}
+a(*ary, **kw)</b>
+'
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/19">
+
+<div class="notes">Here are the dumped instructions.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+putspecialobject        1
+newhash                 0
+getlocal_WC_0           kw@1
+opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE
+newarray                1
+concatarray
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/20">
+
+<div class="notes">The method call starts with putself and ends with the second opt_send_without_block instruction. Let us go through these instructions to see where the allocations are.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+<b class="block">putself
+getlocal_WC_0           ary@0
+splatarray              true
+putspecialobject        1
+newhash                 0
+getlocal_WC_0           kw@1
+opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE
+newarray                1
+concatarray
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT</b>
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/21">
+
+<div class="notes">The first array allocation during the method call is for splatarray true, which will duplicate the ary local variable.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+<b>splatarray              true</b>
+putspecialobject        1
+newhash                 0
+getlocal_WC_0           kw@1
+opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE
+newarray                1
+concatarray
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/22">
+
+<div class="notes">This newhash instruction allocates a new hash</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+putspecialobject        1
+<b>newhash</b>                 0
+getlocal_WC_0           kw@1
+opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE
+newarray                1
+concatarray
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/23">
+
+<div class="notes">and this instruction copies the contents of the kw local variable into the newly allocated hash.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+putspecialobject        1
+newhash                 0
+getlocal_WC_0           kw@1
+<b>opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE</b>
+newarray                1
+concatarray
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/24">
+
+<div class="notes">This newarray instruction wraps that newly allocated hash in a newly allocated array.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+putspecialobject        1
+newhash                 0
+getlocal_WC_0           kw@1
+opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE
+<b>newarray</b>                1
+concatarray
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/25">
+
+<div class="notes">This concatarray instruction allocates a new array when concating the array containing the keyword splat to the array produced by splatarray true, even though splatarray true has already allocated a new array for this purpose. However, something does not add up here.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+putspecialobject        1
+newhash                 0
+getlocal_WC_0           kw@1
+opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE
+newarray                1
+<b>concatarray</b>
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/26">
+
+<div class="notes">These instructions should only result in 3 array allocations and 1 hash allocation. Where does the 4th array allocation take place?</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+<b>splatarray              true</b>
+putspecialobject        1
+<b>newhash</b>                 0
+getlocal_WC_0           kw@1
+opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE
+<b>newarray</b>                1
+<b>concatarray</b>
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/27">
+
+<div class="notes">The final array allocation is on the callee-side of the method, which duplicates the array of arguments, because it is going to remove the empty keyword splat from the array.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+putspecialobject        1
+newhash                 0
+getlocal_WC_0           kw@1
+opt_send_without_block  core#hash_merge_kwd, 2, ARGS_SIMPLE
+newarray                1
+concatarray
+<b>opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT</b>
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/28">
+
+<div class="notes">Ruby 3.2 treats code with both a positional splat and a keyword splat</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+a(*ary, **kw)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/29">
+
+<div class="notes">as a splat of a single array containing the positional splat and keyword splat hash, and was not efficient about allocation when doing that.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+a(*[*ary, **kw])
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/30">
+
+<div class="notes">As I mentioned, Sasada-san fixed this in Ruby 3.3. So if you generate the instructions in Ruby 3.3:</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>$ <b>ruby33</b> --dump=insns -e '
+ary = []
+kw = {}
+a(*ary, **kw)
+'
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/31">
+
+<div class="notes">You get much simpler instructions.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+splatarray              false
+getlocal_WC_0           kw@1
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/32">
+
+<div class="notes">Because the keyword splat is not combined into the positional splat array, the callee-side does not need to modify the positional splat array, so it avoids the callee-side array allocation.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+splatarray              false
+getlocal_WC_0           kw@1
+<b>opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT</b>
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/33">
+
+<div class="notes">My first change to reduce implicit allocations was making this particular change. After Sasada-san’s changes, this instruction still used splatarray true, which allocates an array. I determined that it was unnecessary to allocate a new array now that Ruby is no longer appending the keyword splat to it, so I changed it to use splatarray false, making the call allocationless.|As I was working on that fix, I saw that it affected other cases, and I decided to do something about this issue. First, I decided on a goal I think Ruby should have regarding implicit object allocations.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>newarray                0
+setlocal_WC_0           ary@0
+newhash                 0
+setlocal_WC_0           kw@1
+putself
+getlocal_WC_0           ary@0
+<b>splatarray              false</b>
+getlocal_WC_0           kw@1
+opt_send_without_block  a, 1, ARGS_SPLAT|FCALL|KW_SPLAT
+leave
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/34">
+
+<div class="notes">That goal is to have no unnecessary object allocations. I think Ruby should only allocate an object if it is necessary to do so. This goal has two corollaries.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 70px; left: 114px;">No</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 220px; left: 114px;">Unnecessary</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 373px; left: 114px;">Allocations</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/35">
+
+<div class="notes">The first corollary is Ruby should allocate at most 1 array implicitly during method calling. There are cases where Ruby needs to allocate an array, such as for a positional splat parameter, but there should be no reason to allocate multiple arrays implicitly.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 70px; left: 114px;">At Most</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 220px; left: 114px;">1 Array</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 373px; left: 114px;">Allocation</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/36">
+
+<div class="notes">Similarly, the second corollary is Ruby should allocate at most 1 hash implicitly during method calling. A keyword splat parameter may require a hash allocation, but there should be no reason to allocate multiple hashes implicitly.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 70px; left: 114px;">At Most</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 220px; left: 114px;">1 Hash</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 373px; left: 114px;">Allocation</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/37">
+
+<div class="notes">My first steps towards reducing allocations were to fix additional cases where Ruby was using splatarray true, when splatarray false would work, since an array allocation was not necessary.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 70px; left: 264px;">Unnecessary</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 220px; left: 114px;"><code>splatarray true</code></h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 373px; left: 364px;">Allocations</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/38">
+
+<div class="notes">Here is an example where Ruby 3.2 did not need to allocate any objects during a method call.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(b=nil)
+
+end
+
+ary = []
+
+
+objects_allocated do
+  a(*ary)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/39">
+
+<div class="notes">We have a method that accepts an optional positional argument</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code><b class="block">def a(b=nil)
+
+end</b>
+
+ary = []
+
+
+objects_allocated do
+  a(*ary)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/40">
+
+<div class="notes">We call that method with a positional splat.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(b=nil)
+
+end
+
+ary = []
+
+
+objects_allocated do
+  <b>a(*ary)</b>
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/41">
+
+<div class="notes">Even if Ruby 3.2, this does not allocate any objects.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(b=nil)
+
+end
+
+ary = []
+
+
+objects_allocated do
+  a(*ary)
+end
+# Ruby 3.2: Allocates: <b>0 arrays, 0 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/42">
+
+<div class="notes">However, if you change the call to pass both a positional argument and a positional argument splat.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(b=nil)
+
+end
+
+ary = []
+
+
+objects_allocated do
+  a(<b>1, </b>*ary)
+end
+# Ruby 3.2: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/43">
+
+<div class="notes">Then Ruby 3.2 will allocate an array. The cause is the same as in the earlier example, where Ruby 3.2 uses splatarray true instead of splatarray false. So I assumed the fix would be similar.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(b=nil)
+
+end
+
+ary = []
+
+
+objects_allocated do
+  a(1, *ary)
+end
+# Ruby 3.2: Allocates: <b>1 arrays</b>, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/44">
+
+<div class="notes">When I first started work on these splatarray optimizations, I tried to make the changes directly in the compiler. That ended up being challenging.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 100px; left: 364px;">Updating</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 250px; left: 554px;">the</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 373px; left: 364px;">Compiler</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/45">
+
+<div class="notes">The compiler is the third step in converting your Ruby source code to virtual machine instructions.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 373px; left: 364px;">Compiler</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/46">
+
+<div class="notes">The first step is the lexer, which takes your source code and separates it into a stream of tokens.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 90px; left: 364px;">Lexer</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/47">
+
+<div class="notes">The second step is the parser, which takes that token stream, and builds an abstract syntax tree.</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 220px; left: 364px;">Parser</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/48">
+
+<div class="notes">The compiler takes the abstract syntax tree, and creates virtual machine instructions.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 373px; left: 364px;">Compiler</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/49">
+
+<div class="notes">There is a fourth step, the optimizer, which takes the virtual machine instructions generated by the compiler, and potentially modifies the instructions to use more optimized instructions that have the same effect.</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 523px; left: 364px;">Optimizer</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/50">
+
+<div class="notes">If you want to optimize code depending on the abstract syntax tree, then it is best to make that change in the compiler.</div>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 373px; left: 364px;">Compiler</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/51">
+
+<div class="notes">However, if you want to optimize code for all cases where specific combinations of instructions are used, regardless of the abstract syntax tree that generated the instructions, those changes are best made in the optimizer.</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 523px; left: 364px;">Optimizer</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/52">
+
+<div class="notes">For this method call,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(b=nil)
+
+end
+
+ary = []
+
+
+objects_allocated do
+  <b>a(1, *ary)</b>
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/53">
+
+<div class="notes">these are the virtual machine instructions.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+splatarray              true
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/54">
+
+<div class="notes">To remove the unnecessary array allocation, we need to change this splatarray true to splatarray false. However, you cannot change splatarray true to splatarray false in all cases. There are cases where splatarray true is necessary for correct behavior.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+<b>splatarray              true</b>
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/55">
+
+<div class="notes">For the optimization to work correctly, you need to look at what instructions follow the splatarray instruction. If the splatarray instruction is followed directly by a send instruction, and that send instruction supports an argument splat but does not use keywords or a block, then it is safe to change splatarray true to splatarray false.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+<b class="block">splatarray              true
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/56">
+
+<div class="notes">To implement the change of splatarray true to splatarray false, I added the following code to the optimizer. I will walk through each part of the code.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+splatarray              true
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/57">
+
+<div class="notes">The way the optimizer works is that it goes through every generated instruction. The optimization we added does not need to consider these instructions, so during the optimization pass, these would be ignored by the new optimization.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+<b class="block">putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0</b>
+splatarray              true
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/58">
+
+<div class="notes">This is the instruction we want to change, splatarray with an argument of true.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+<b>splatarray              true</b>
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/59">
+
+<div class="notes">So in the optimizer we check whether the current instruction is a splatarray instruction</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+<b>splatarray</b>              true
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (<b>IS_INSN_ID(iobj, splatarray)</b> &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/60">
+
+<div class="notes">and if so, whether it has an argument of true. These are potential candidates for switching the argument to false, assuming that doing so is safe.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+splatarray              <b>true</b>
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; <b>OPERAND_AT(iobj, 0) == Qtrue</b>) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/61">
+
+<div class="notes">In this optimization, we only want to change the splatarray instruction argument if it is directly followed by a send instruction.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+splatarray              true
+<b>opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL</b>
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/62">
+
+<div class="notes">So the optimizer checks if the next instruction is a send instruction.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+splatarray              true
+opt_send_without_block  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (<b>IS_NEXT_INSN_ID(niobj, send)</b>) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/63">
+
+<div class="notes">There is a disconnect here, since the instruction shown in the output is opt_send_without_block, and the instruction the optimizer looks for is send. The reason for this disconnect is that the instructions shown are the instructions after optimization, not the instructions before optimization.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject_INT2FIX_1_
+getlocal_WC_0           ary@0
+splatarray              true
+<b>opt_send_without_block</b>  a, argc:2, ARGS_SPLAT|FCALL
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, <b>send</b>)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/64">
+
+<div class="notes">So when working in the optimizer, it is often useful to get Ruby to output the instructions before optimization, which you can access via the insns_without_opt argument for the dump option. Note that this dump option is changing in Ruby 3.4.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>$ ruby32 <b>--dump=insns_without_opt</b> -e '
+ary = []
+a(1, *ary)
+'
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/65">
+
+<div class="notes">In Ruby 3.4, you’ll need to use this value for the dump option.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>$ ruby34 <b>--dump=insns,-opt</b> -e '
+ary = []
+a(1, *ary)
+'
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/66">
+
+<div class="notes">Here are the instructions for the method call before optimization.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    true
+send          a, argc:2, ARGS_SPLAT|FCALL, nil
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/67">
+
+<div class="notes">The change from send to opt_send_without_block happens in a later optimization pass, so at the point this optimization is run, the instruction is still send, so it will match.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    true
+<b>send</b>          a, argc:2, ARGS_SPLAT|FCALL, nil
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, <b>send</b>)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/68">
+
+<div class="notes">This code extracts the callinfo flags from the send instruction.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    true
+send          a, argc:2, ARGS_SPLAT|FCALL, nil
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    <b>unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));</b>
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/69">
+
+<div class="notes">These are the callinfo flags, which contain information about the method call.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    true
+send          a, argc:2, <b>ARGS_SPLAT|FCALL</b>, nil
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/70">
+
+<div class="notes">ARGS_SPLAT means the method call contains a positional splat.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    true
+send          a, argc:2, <b>ARGS_SPLAT</b>|FCALL, nil
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/71">
+
+<div class="notes">FCALL means the method call does not have an explicit receiver, or the explicit receiver is self. send instructions with the FCALL flag are allowed to call private methods.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    true
+send          a, argc:2, ARGS_SPLAT|<b>FCALL</b>, nil
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/72">
+
+<div class="notes">We are looking for instructions that have the ARGS_SPLAT callinfo flag, so the optimizer code checks for that flag.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    true
+send          a, argc:2, <b>ARGS_SPLAT</b>|FCALL, nil
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((<b>flag &amp; VM_CALL_ARGS_SPLAT</b>) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/73">
+
+<div class="notes">Additionally, this optimization is only safe if the method call does not pass keywords or a block, so we need to check that those flags are not present.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    true
+send          a, argc:2, ARGS_SPLAT|FCALL, nil
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; <b>!(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG)</b>)) {
+      OPERAND_AT(iobj, 0) = Qfalse;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/74">
+
+<div class="notes">Finally, to eliminate the array allocation, we update the splatarray instruction argument to false. This makes the call allocationless.</div>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      ary@0, 0
+splatarray    <b>false</b>
+send          a, argc:2, ARGS_SPLAT|FCALL, nil
+</code></pre>
+<pre class="sh_c" style="font-size: 32px; margin-top: 48px; margin-left: 20px;"><code>if (IS_INSN_ID(iobj, splatarray) &amp;&amp; OPERAND_AT(iobj, 0) == Qtrue) {
+  if (IS_NEXT_INSN_ID(niobj, send)) {
+    niobj = niobj-&gt;next;
+    unsigned int flag = vm_ci_flag((const struct rb_callinfo *)OPERAND_AT(niobj, 0));
+    if ((flag &amp; VM_CALL_ARGS_SPLAT) &amp;&amp; !(flag &amp; (VM_CALL_KW_SPLAT|VM_CALL_ARGS_BLOCKARG))) {
+      <b>OPERAND_AT(iobj, 0) = Qfalse</b>;
+    }
+  }
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/75">
+
+<div class="notes">All of that code was added to avoid the unnecessary array allocation in this case, where you had one or more positional arguments, followed by a positional splat, with no keywords and no block.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/76">
+
+<div class="notes">If a block is passed, that case needs to be optimized separately.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+<b>a(1, *ary, &amp;block)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/77">
+
+<div class="notes">The instructions generated in that case look like this.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      a@0, 0
+splatarray    true
+getlocal      block@0, 0
+send          a, argc:2, ARGS_SPLAT|ARGS_BLOCKARG|FCALL, nil
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/78">
+
+<div class="notes">Between the splatarray and send instructions, there is an instruction to get the local variable for the block.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      a@0, 0
+splatarray    true
+<b>getlocal      block@0, 0</b>
+send          a, argc:2, ARGS_SPLAT|ARGS_BLOCKARG|FCALL, nil
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/79">
+
+<div class="notes">And when checking the send instruction callinfo flags, you need to check for the presence of ARGS_BLOCKARG, instead of the absence of the flag.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+putobject     1
+getlocal      a@0, 0
+splatarray    true
+getlocal      block@0, 0
+send          a, argc:2, ARGS_SPLAT|<b>ARGS_BLOCKARG</b>|FCALL, nil
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/80">
+
+<div class="notes">Note that this optimization only affects cases where block is a local variable or an instance variable. It is not used if block is a method call. The reason for that is that if block is a method call,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;<b>block</b>)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/81">
+
+<div class="notes">calling the method could result in a modification of the ary object, and modifications after the object has been splatted should not have an effect on the splat.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *<b>ary</b>, &amp;block)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/82">
+
+<div class="notes">In addition to these two cases, there were other cases optimized. For lack of time, I will just go over the cases without discussing the instruction changes for each.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/83">
+
+<div class="notes">The next case is when a positional splat is followed by a keyword splat. I mentioned this case earlier when discussing Keyword Splat Separation. I originally developed the optimization for this case as a compiler change, but switched it to an optimizer change after adding the optimizer changes for the other cases.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+<b>a(*ary, **kw)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/84">
+
+<div class="notes">The next case is when a positional splat, keyword splat, and block are all used.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+a(*ary, **kw)
+<b>a(*ary, **kw, &amp;block)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/85">
+
+<div class="notes">The next case is when a positional splat and literal keywords are used. This is similar to the keyword splat case, as CRuby passes a implicit keyword splat for literal keywords if they follow a positional splat. The only difference here is that CRuby uses a different instruction to generate the keyword splat hash.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+a(*ary, **kw)
+a(*ary, **kw, &amp;block)
+<b>a(*ary, kw: 1)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/86">
+
+<div class="notes">The final splatarray optimization was when a positional splat, literal keywords, and a block are all used.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+a(*ary, **kw)
+a(*ary, **kw, &amp;block)
+a(*ary, kw: 1)
+<b>a(*ary, kw: 1, &amp;block)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/87">
+
+<div class="notes">Unfortunately, it turns out that optimizing these cases of a literal keyword after a positional splat caused a bug.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary)
+a(1, *ary, &amp;block)
+a(*ary, **kw)
+a(*ary, **kw, &amp;block)
+<b class="block">a(*ary, kw: 1)
+a(*ary, kw: 1, &amp;block)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/88">
+
+<div class="notes">If the method being called accepts an positional splat parameter, but does not accept keywords.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+def a(<b>*ary</b>)
+end
+
+a(*ary, kw: 1)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/89">
+
+<div class="notes">The hash for the keyword splat</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+def a(*ary)
+end
+
+a(*ary, <b>kw: 1</b>)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/90">
+
+<div class="notes">would be appened to the argument being splatted, instead of a copy of the argument. This issue was hidden before, because Ruby would always duplicate the positional splat argument on the caller-side. I fixed this case by duplicating the positional splat argument on the callee-side.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+def a(*ary)
+end
+
+a(*<b>ary</b>, kw: 1)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/91">
+
+<div class="notes">I mentioned earlier that optimizing this case, with a positional splat and block, could result in issues</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary, &amp;block)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/92">
+
+<div class="notes">in the case where block is a method call, as calling block may modify the positional splat argument. This type of issue is called an evaluation order issue.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(1, *ary, &amp;<b>block</b>)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/93">
+
+<div class="notes">During this optimization work, I found that this type of call, with a keyword splat and a block, also had an evaluation order issue, because if the keyword splat argument was not a hash and the block was not a proc, block.to_proc would be called before kw.to_hash.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(**kw, &amp;block)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/94">
+
+<div class="notes">Ruby 3.2 would generate the following instructions for this method call.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(**kw, &amp;block)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0  kw@0
+getlocal_WC_0  block@1
+send           a, argc:1, ARGS_BLOCKARG|FCALL|KW_SPLAT, nil
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/95">
+
+<div class="notes">Both block.to_proc and kw.to_hash would be called inside the send instruction, but block.to_proc would be called first.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(**kw, &amp;block)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0  kw@0
+getlocal_WC_0  block@1
+<b>send           a, argc:1, ARGS_BLOCKARG|FCALL|KW_SPLAT, nil</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/96">
+
+<div class="notes">I fixed this case by adding a new instruction named splatkw, which is issued directly before send instructions that have both keyword splats and block arguments. If the keyword splat object is not a hash, this instruction calls to_hash on it, ensuring to_hash is called before send calls block.to_proc.|Unfortunately, the introduction of this instruction broke some of the optimizations I made previously, and I did not fix those cases until after the release of Ruby 3.3.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(**kw, &amp;block)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0  kw@0
+getlocal_WC_0  block@1
+<b>splatkw</b>
+send           a, argc:1, ARGS_BLOCKARG|FCALL|KW_SPLAT, nil
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/97">
+
+<div class="notes">While analyzing additional cases to fix, I found that super calls with explicit arguments also had this evaluation order issue, so I fixed those as well.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+a(**kw, &amp;block)
+<b>super</b>(**kw, &amp;block)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/98">
+
+<div class="notes">I also found that you could pass both a keyword splat and block using operator assignment syntax. However, this would result in a TypeError exception being raised.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+obj[**kw, &amp;block] += 1
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/99">
+
+<div class="notes">This was true even if not passing a block.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+obj[**kw, &amp;block] += 1
+<b>obj[**kw] += 1</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/100">
+
+<div class="notes">And if you passed literal keywords when using operator assignment syntax, it would segfault the compiler.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+obj[**kw, &amp;block] += 1
+obj[**kw] += 1
+<b>obj[kw: 1] += 1</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/101">
+
+<div class="notes">I fixed all of these cases, so they all work in Ruby 3.3. However, support for both blocks and keywords in the operator assignment syntax has already been removed from the master branch, so these will all result in a SyntaxError in Ruby 3.4.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>
+obj[**kw, &amp;block] += 1
+obj[**kw] += 1
+obj[kw: 1] += 1
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/102">
+
+<div class="notes">Another bug I found when I first starting working on the splatarray optimizations was introduced by Keyword Splat Separation, and affected this code.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>o = Object.new
+
+def o.to_hash
+  {a: 1}
+end
+
+def f(*a, **kw)
+  kw
+end
+
+f(*[], **o)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/103">
+
+<div class="notes">Here we have a plain object.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code><b>o = Object.new</b>
+
+def o.to_hash
+  {a: 1}
+end
+
+def f(*a, **kw)
+  kw
+end
+
+f(*[], **o)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/104">
+
+<div class="notes">We define a to_hash method on the object that returns a hash</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>o = Object.new
+
+<b class="block">def o.to_hash
+  {a: 1}
+end</b>
+
+def f(*a, **kw)
+  kw
+end
+
+f(*[], **o)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/105">
+
+<div class="notes">If you call a method with a positional splat, and a keyword splat of the object implementing to_hash,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>o = Object.new
+
+def o.to_hash
+  {a: 1}
+end
+
+def f(*a, **kw)
+  kw
+end
+
+<b>f(*[], **o)</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/106">
+
+<div class="notes">and the method accepts both a positional splat and keyword splat parameter,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>o = Object.new
+
+def o.to_hash
+  {a: 1}
+end
+
+def <b>f(*a, **kw)</b>
+  kw
+end
+
+f(*[], **o)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/107">
+
+<div class="notes">Ruby would call the to_hash method on the keyword splat argument to check that it returned a hash,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>o = Object.new
+
+<b class="block">def o.to_hash
+  {a: 1}
+end</b>
+
+def f(*a, **kw)
+  kw
+end
+
+f(*[], **o)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/108">
+
+<div class="notes">but the value of the keyword splat parameter</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>o = Object.new
+
+def o.to_hash
+  {a: 1}
+end
+
+def f(*a, **kw)
+  <b>kw</b>
+end
+
+f(*[], **o)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/109">
+
+<div class="notes">would be the keyword splat argument, not the hash produced by to_hash. Once I found this, it was easy to fix by using the result of to_hash as the keyword splat parameter, instead of ignoring the result of the to_hash method.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>o = Object.new
+
+def o.to_hash
+  {a: 1}
+end
+
+def f(*a, **kw)
+  kw <b># =&gt; o !!!</b>
+end
+
+f(*[], **o)
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/110">
+
+<div class="notes">The final bug I discovered during this optimization work was introduced by my keyword argument separation changes in Ruby 3.0.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def f(obj)
+  obj
+end
+
+ary = []
+kw = {a: 1}
+
+f(*ary, **kw)
+
+
+f(**kw)
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/111">
+
+<div class="notes">We have a method that returns the object it has been passed.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code><b class="block">def f(obj)
+  obj
+end</b>
+
+ary = []
+kw = {a: 1}
+
+f(*ary, **kw)
+
+
+f(**kw)
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/112">
+
+<div class="notes">If we call the method with both an empty positional splat and a keyword splat,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def f(obj)
+  obj
+end
+
+ary = []
+kw = {a: 1}
+
+<b>f(*ary, **kw)</b>
+
+
+f(**kw)
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/113">
+
+<div class="notes">the return value of the method is a copy of the keyword splat argument, as expected.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def f(obj)
+  obj
+end
+
+ary = []
+kw = {a: 1}
+
+f(*ary, **kw)
+<b># =&gt; kw.dup</b>
+
+f(**kw)
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/114">
+
+<div class="notes">However, if you call the method with a keyword splat and no positional splat.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def f(obj)
+  obj
+end
+
+ary = []
+kw = {a: 1}
+
+f(*ary, **kw)
+# =&gt; kw.dup
+
+<b>f(**kw)</b>
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/115">
+
+<div class="notes">it would pass the keyword splat argument directly instead of making a copy of it, as if you had passed the keyword splat as a positional argument. Even though this behavior made no sense and completely goes against keyword argument separation, it turns out there were specs added for it, making users who reviewed the specs think this was intended. Thankfully, fixing this was approved, and easily done by duplicating the keyword splat hash on the callee-side.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def f(obj)
+  obj
+end
+
+ary = []
+kw = {a: 1}
+
+f(*ary, **kw)
+# =&gt; kw.dup
+
+f(**kw)
+<b># =&gt; kw</b>
+
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/116">
+
+<div class="notes">Up to now, all of the optimizations and bug fixes I have discussed are available in Ruby 3.3.</div>
+<h1 class="blue" style="font-size: 210px; position: absolute; top: 232px; left: 450px;">
+<span class="red">Ruby</span> 3.3</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/117">
+
+<div class="notes">The rest of the presentation will discuss some of the implicit allocation reduction optimizations I worked on that will be in Ruby 3.4.</div>
+<h1 class="blue" style="font-size: 210px; position: absolute; top: 232px; left: 450px;">
+<span class="red">Ruby</span> 3.4</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/118">
+
+<div class="notes">I will start with this example.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(*ary, *ary)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/119">
+
+<div class="notes">This passes multiple positional splats when calling a method.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(<b>*ary, *ary</b>)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/120">
+
+<div class="notes">The method itself has a positional splat parameter.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(<b>*ary</b>)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(*ary, *ary)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/121">
+
+<div class="notes">In Ruby 3.3, this allocates 3 arrays.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(*ary, *ary)
+end
+<b># Ruby 3.3: Allocates: 3 arrays, 0 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/122">
+
+<div class="notes">Here are the instructions generated for the method call.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+<b>a(*ary, *ary)</b>
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/123">
+
+<div class="notes">The first thing to be aware of is that Ruby’s internal method calling API does not support multiple splats, it only supports a single splat.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(<b>*ary, *ary</b>)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/124">
+
+<div class="notes">Ruby implicitly combines the multiple splats into an single array, and calls the method with a splatted version of the generated array.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(<b>*[*ary, *ary]</b>)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/125">
+
+<div class="notes">The first array allocation during the method call is for splatarray true, which will duplicate the ary local variable for the first positional splat. You cannot eliminate this allocation, because Ruby does need to provide a single array to splat when calling the method, and it cannot modify either of the splatted arrays.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(<b>*ary</b>, *ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+<b>splatarray              true</b>
+getlocal_WC_0           ary@0
+splatarray              false
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/126">
+
+<div class="notes">The second positional splat uses the splatarray false instruction, so it does not allocate an array.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, <b>*ary</b>)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+<b>splatarray              false</b>
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/127">
+
+<div class="notes">Ruby combines the two positional splats into a single array, and the instruction it uses for this is concatarray.|If the first positional splat is already an array, concatarray will make a copy of that array before the concatenation. So this is the second array allocation. This allocation is unnecessary, since Ruby already allocated a new array in the splatarray true instruction.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(<b>*[*ary, *ary]</b>)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+<b>concatarray</b>
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/128">
+
+<div class="notes">The final array allocation is in the opt_send_without_block instruction, and this is because the method accepts a positional splat parameter. Positional splat parameters should never be the same object as the positional splat argument, so Ruby duplicates the positional splat argument when setting the positional splat parameter value.|Ruby’s method call interface did not support the ability for the caller to tell the callee that it already allocated a new array for the positional splat argument. I first worked on removing this unnecessary allocation.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(<b>*ary</b>)
+
+end
+
+a(*ary, *ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+concatarray
+<b>opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/129">
+
+<div class="notes">To eliminate the allocation, I added an ARGS_SPLAT_MUT callinfo flag. This callinfo flag is used for method calls where a new array for the splat is allocated caller-side before the method call, and indicates to the callee that they can use the passed positional splat argument directly instead of duplicating it.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, *ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|<b>ARGS_SPLAT_MUT</b>|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/130">
+
+<div class="notes">So the ARGS_SPLAT_MUT optimization makes this call only allocate 2 arrays. However, that is still more than the goal of at most 1 array allocation.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+<b>a(*ary, *ary)</b>
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/131">
+
+<div class="notes">I mentioned that you cannot eliminate the array allocation for splatarray true, because Ruby does need to allocate an array on the caller side.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, *ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+<b>splatarray              true</b>
+getlocal_WC_0           ary@0
+splatarray              false
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/132">
+
+<div class="notes">So to achieve our goal, we need to eliminate the array allocation for concatarray. Unfortunately, Ruby did not have another virtual machine instruction that can be used to combine arrays. There were two possible ways to fix this.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, *ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+<b>concatarray</b>
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/133">
+
+<div class="notes">One way is to have the concatarray instruction require an argument, which it could use to determine whether it needs to duplicate the array being concatenated to.|The main issue with this approach is that it is invasive, since all calling code needs to be adjusted. When all code you need to modify was only in the virtual machine, this was not as challenging, but now that YJIT optimizes pretty much all instructions, this would require changes to both YJIT and the virtual machine.|Additionally, this approach is slower, as it requires checking the instruction argument value. So I did not use this approach.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, *ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+<b>concatarray             false</b>
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/134">
+
+<div class="notes">Instead, I chose to add a new instruction, named concattoarray. This instruction would only be used when you are directly mutating an existing array when concatenating, and it could assume the array being concatenated to is already an array, saving an additional type check.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, *ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+splatarray              false
+<b>concattoarray</b>
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/135">
+
+<div class="notes">With these changes, the method call that used to allocate 3 arrays in Ruby 3.3 now only allocates a single array, achieving our goal.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(*ary, *ary)
+end
+# Ruby 3.3: Allocates: 3 arrays, 0 hashes
+<b># Ruby 3.4: Allocates: 1 arrays, 0 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/136">
+
+<div class="notes">Now that the multiple splat case was optimized, I moved onto the next case,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(<b>*ary, *ary</b>)
+end
+# Ruby 3.3: Allocates: 3 arrays, 0 hashes
+# Ruby 3.4: Allocates: 1 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/137">
+
+<div class="notes">which is where a positional argument follows a positional splat.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(<b>*ary, ary</b>)
+end
+# Ruby 3.3: Allocates: 
+# Ruby 3.4: Allocates: 
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/138">
+
+<div class="notes">Suprisingly, this allocates more arrays than the multiple splat case in Ruby 3.3, with 4 array allocations.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(*ary, ary)
+end
+# Ruby 3.3: Allocates: <b>4 arrays, 0 hashes</b>
+# Ruby 3.4: Allocates: 
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/139">
+
+<div class="notes">Here are the instructions generated for this method call.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+<b>a(*ary, ary)</b>
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+newarray                1
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/140">
+
+<div class="notes">If you notice, these are exactly the same instructions as the multiple splat method call, except for this newarray instruction. The reason for this instruction is that Ruby did not have a virtual machine instruction for pushing objects onto an array. So in cases where Ruby needed to push an object onto an existing array, it would wrap that object in an new array, and then concatenate that new array to the existing array.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+<b>newarray                1</b>
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/141">
+
+<div class="notes">Ruby treats the method call like this, wrapping the argument after the splat in a separate array before combining it.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*[*ary, <b>*[ary]</b>])
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+newarray                1
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/142">
+
+<div class="notes">The previous optimization for mutable positional splats already removed the callee-side array allocation, bringing the total down to three array allocations.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+newarray                1
+concatarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|<b>ARGS_SPLAT_MUT</b>|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/143">
+
+<div class="notes">I could have switched the concatarray instruction to concattoarray to bring this down to only two array allocations.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+newarray                1
+<b>concattoarray</b>
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/144">
+
+<div class="notes">But then it would not have been possible to eliminate the newarray instruction array allocation. This would mean we could not achieve our goal of at most one array allocation.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+<b>newarray                1</b>
+concattoarray
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/145">
+
+<div class="notes">To achieve our goal, we need to eliminate the allocations for both of these instructions.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+<b class="block">newarray                1
+concatarray</b>
+opt_send_without_block  a, argc:1, ARGS_SPLAT|<b>ARGS_SPLAT_MUT</b>|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/146">
+
+<div class="notes">I achieved the goal by adding a pushtoarray instruction. This instruction is similar to the newarray instruction, in that pops the given number of objects off the stack. However, instead of creating a new array with the objects, it pushes each object to the array then currently at the top of the stack.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+<b>pushtoarray             1</b>
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/147">
+
+<div class="notes">In this case, that is the array created by splatarray true.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+<b>splatarray              true</b>
+getlocal_WC_0           ary@0
+pushtoarray             1
+opt_send_without_block  a, argc:1, ARGS_SPLAT|ARGS_SPLAT_MUT|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/148">
+
+<div class="notes">So with the combination of ARGS_SPLAT_MUT and pushtoarray,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+a(*ary, ary)
+</code></pre>
+<pre style="font-size: 44px; margin-top: 48px; margin-left: 100px;"><code>
+putself
+getlocal_WC_0           ary@0
+splatarray              true
+getlocal_WC_0           ary@0
+<b>pushtoarray</b>             1
+opt_send_without_block  a, argc:1, ARGS_SPLAT|<b>ARGS_SPLAT_MUT</b>|FCALL
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/149">
+
+<div class="notes">Ruby 3.4 will only allocate a single array for the call, achieving our goal.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 48px; margin-left: 100px;"><code>def a(*ary)
+
+end
+
+ary = []
+
+objects_allocated do
+  a(*ary, ary)
+end
+# Ruby 3.3: Allocates: 4 arrays, 0 hashes
+# Ruby 3.4: Allocates: <b>1 arrays, 0 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/150">
+
+<div class="notes">In this example, we have a method that accepts a positional splat parameter.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>def a(*c)
+  # ...
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/151">
+
+<div class="notes">It is not possible to avoid allocating an array for this parameter.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>def a(<b>*c</b>)
+  # ...
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/152">
+
+<div class="notes">That is because any code inside the method could access the c variable. While working on these optimizations, I realized that if you could remove the ability to access the variable, then it would be possible to avoid the allocation. It turns out Ruby already supports that,</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>def a(*<b>c</b>)
+  # ...
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/153">
+
+<div class="notes">using the anonymous splat parameter syntax introduced in Ruby 3.2. Technically, using anonymous splat parameters in method definitions is allowed in earlier versions of Ruby.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>def a(<b>*</b>)
+  # ...
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/154">
+
+<div class="notes">What Ruby 3.2 added was support for using the anonymous splat parameter as a splat argument when calling other methods.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>def a(*)
+  <b>p(*)</b>
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/155">
+
+<div class="notes">This was supported for keyword splats in addition to positional splats.</div>
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 348px; margin-left: 100px;"><code>def a(*, <b>**</b>)
+  p(*, <b>**</b>)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/156">
+
+<div class="notes">Here is an example with anonymous splat parameters.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:)
+  a + b
+end
+
+def f(*, **)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/157">
+
+<div class="notes">We have a method that accepts a positional argument and a keyword argument.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code><b class="block">def g(a, b:)
+  a + b
+end</b>
+
+def f(*, **)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/158">
+
+<div class="notes">We have a method that delegates all positional arguments and keyword arguments to that method using anonymous splats.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:)
+  a + b
+end
+
+<b class="block">def f(*, **)
+  g(*, **)
+end</b>
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/159">
+
+<div class="notes">When we call the method with a positional splat and keyword splat,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:)
+  a + b
+end
+
+def f(*, **)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  <b>f(*a, **kw)</b>
+end
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/160">
+
+<div class="notes">We can see that Ruby 3.3 allocates both an array and a hash.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:)
+  a + b
+end
+
+def f(*, **)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# <b>Ruby 3.3: Allocates: 1 arrays, 1 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/161">
+
+<div class="notes">The array is allocated for the anonymous positional splat.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:)
+  a + b
+end
+
+def f(<b>*</b>, **)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/162">
+
+<div class="notes">The hash is allocated for the anonymous keyword splat.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:)
+  a + b
+end
+
+def f(*, <b>**</b>)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/163">
+
+<div class="notes">Both of these allocations are unnecessary, as we can be sure the method is not able to access the objects directly, only pass them as splats when calling other methods. So my next task was to eliminate these allocations.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:)
+  a + b
+end
+
+def f(<b>*</b>, <b>**</b>)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/164">
+
+<div class="notes">To do so, I first needed to track whether the method uses anonymous splats or not, and the easiest way to track that is using iseq parameter flags. For every method defined in Ruby, there is an instruction sequence or iseq, and each iseq method has a set of parameter flags.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 24px; left: 150px;">ISEQ</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 222px; left: 450px;">Parameter</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 410px; left: 410px;">Flags</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/165">
+
+<div class="notes">The g method in this example has two parameter flags set</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def <b>g(a, b:)</b>
+  a + b
+end
+
+def f(*, **)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/166">
+
+<div class="notes">The has_lead flag is set, because the method has a mandatory positional argument.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(<b>a</b>, b:) # <b>has_lead</b>
+  a + b
+end
+
+def f(*, **)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/167">
+
+<div class="notes">The has_kw flag is set, because the method accepts a keyword argument.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, <b>b:</b>) # has_lead, <b>has_kw</b>
+  a + b
+end
+
+def f(*, **)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/168">
+
+<div class="notes">For the f method,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(<b>*, **</b>)
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/169">
+
+<div class="notes">The has_rest flag is set, since the method accepts a positional splat.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(<b>*</b>, **) # <b>has_rest</b>
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/170">
+
+<div class="notes">The has_kwrest flag is set, since the method accepts a keyword splat.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(*, <b>**</b>) # has_rest, <b>has_kwrest</b>
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/171">
+
+<div class="notes">To start the optimization process, I added an anon_rest flag, since the positional splat is anonymous.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(<b>*</b>, **) # has_rest, has_kwrest, <b>anon_rest</b>
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/172">
+
+<div class="notes">I also added an anon_kwrest flag, since the keyword splat is anonymous.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(*, <b>**</b>) # has_rest, has_kwrest, anon_rest, <b>anon_kwrest</b>
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/173">
+
+<div class="notes">Then I implemented the anonymous positional splat optimization. When calling a method with a positional splat, if that method has the anon_rest parameter flag set, and it is possible to use the positional splat argument directly as the positional splat parameter, then the duplication of positional splat argument is eliminated. Note that it is not always possible to use the positional splat argument directly.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(*, **) # has_rest, has_kwrest, <b>anon_rest</b>, anon_kwrest
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(<b>*a</b>, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/174">
+
+<div class="notes">For example, if the method you are calling accepts a mandatory positional argument,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(<b>a</b>, *, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/175">
+
+<div class="notes">but that was not provided separately when calling the method, then you cannot eliminate the allocation, because you need to remove the first element of the splatted array,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(a, *, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(<b>*a</b>, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/176">
+
+<div class="notes">as that element becomes the positional argument parameter.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(<b>a</b>, *, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/177">
+
+<div class="notes">Next I implemented the anonymous keyword splat optimization. If calling a method with a keyword splat, when the anon_kwrest flag is set, and the method does not have named keyword parameters, this avoids the duplication of the keyword splat hash.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(*, **) # has_rest, has_kwrest, anon_rest, <b>anon_kwrest</b>
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, <b>**kw</b>)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/178">
+
+<div class="notes">With those changes, Ruby 3.4 will not allocate any objects for that method call.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(*, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+# Ruby 3.4: <b>Allocates: 0 arrays, 0 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/179">
+
+<div class="notes">One of the nice things about this optimization is that it works even with multiple levels of indirection, as long as each level uses anonymous splats.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+
+def f(*, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/180">
+
+<div class="notes">If we add a level of indirection via an h method, which uses anonymous positional and keyword splats, and delegates to g,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+<b>def h(*, **) = g(*, **)</b>
+def f(*, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  g(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/181">
+
+<div class="notes">and we change f to call h instead of g,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(*, **) = g(*, **)
+def f(*, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  <b>h</b>(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 1 arrays, 1 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/182">
+
+<div class="notes">Ruby 3.3 would allocate 2 arrays and 2 hashes, one for each indirection level.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(*, **) = g(*, **)
+def f(*, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  h(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: <b>2 arrays, 2 hashes</b>
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/183">
+
+<div class="notes">But Ruby 3.4 would still not allocate any objects for this method call.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(*, **) = g(*, **)
+def f(*, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  h(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 2 arrays, 2 hashes
+# Ruby 3.4: Allocates: <b>0 arrays, 0 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/184">
+
+<div class="notes">In Ruby 3.2 and 3.3, using anonymous parameters was purely for nicer syntax, but starting in Ruby 3.4, it offers better performance in some cases, granting Ruby users an additional way to optimize their code.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(<b>*, **</b>) = g(*, **)
+def f(*, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  h(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 2 arrays, 2 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/185">
+
+<div class="notes">I really like this optimization, and have given it a name, Allocationless Anonymous Splat Forwarding.</div>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 90px; left: 154px;">Allocationless</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 54px;">Anonymous</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 393px; left: 482px;">Splat</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 560px; left: 482px;">Forwarding</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/186">
+
+<div class="notes">The final optimization I will discuss is a change to generic argument forwarding.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(*, **) = g(*, **)
+def f(*, **) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  h(*, **)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 2 arrays, 2 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/187">
+
+<div class="notes">If we switch these anonymous splats,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(<b>*, **</b>) = g(<b>*, **</b>)
+def f(<b>*, **</b>) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  h(<b>*, **</b>)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 2 arrays, 2 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/188">
+
+<div class="notes">To use generic argument forwarding.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(<b>...</b>) = g(<b>...</b>)
+def f(<b>...</b>) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  h(<b>...</b>)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 2 arrays, 2 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/189">
+
+<div class="notes">Ruby 3.3 would allocate 3 arrays and 3 hashes. The reason this uses more arrays and hashes in Ruby 3.3,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(...) = g(...)
+def f(...) # has_rest, has_kwrest, anon_rest, anon_kwrest
+  h(...)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: <b>3 arrays, 3 hashes</b>
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/190">
+
+<div class="notes">is that generic argument forwarding is implemented via ruby2_keywords, which is not optimized as well as separate positional and keyword splats after Keyword Splat Separation.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(...) = g(...)
+def f(<b>...</b>) # <b>def f(*, &amp;); ruby2_keywords :f</b>
+  h(...)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 3 arrays, 3 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/191">
+
+<div class="notes">I switched generic argument forwarding to use an anonymous keyword splat internally,</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(...) = g(...)
+def f(<b>...</b>) # <b>def f(*, **, &amp;)</b>
+  h(...)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 3 arrays, 3 hashes
+# Ruby 3.4: Allocates: 0 arrays, 0 hashes
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/192">
+
+<div class="notes">so on Ruby 3.4, these calls are also allocationless.</div>
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 28px; margin-left: 100px;"><code>def g(a, b:) # has_lead, has_kw
+  a + b
+end
+def h(...) = g(...)
+def f(...) # def f(*, **, &amp;)
+  h(...)
+end
+
+a = [1]
+kw = {b: 2}
+
+objects_allocated do
+  f(*a, **kw)
+end
+# Ruby 3.3: Allocates: 3 arrays, 3 hashes
+# Ruby 3.4: Allocates: <b>0 arrays, 0 hashes</b>
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/193">
+
+<div class="notes">Here are a couple of closing thoughts related to my experience working on these optimizations and fixing the bugs I discovered during that process.</div>
+<h1 class="blue" style="font-size: 210px; position: absolute; top: 200px; left: 220px;">Closing</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 360px; left: 400px;">Thoughts</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/194">
+
+<div class="notes">First, working on optimizations is a great way to find bugs. To optimize code, you really need to understand how the code works, and once you understand how the code works, the cases that could be problematic often become more obvious.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 24px; left: 150px;">Optimizations</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 232px; left: 420px;">Find</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 420px; left: 420px;">Bugs</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/195">
+
+<div class="notes">Second, once a bug is found, fixing that bug takes priority over the optimization work. In this presentation, I discussed the Ruby 3.3 optimizations before the bug fixes, but the bug fixes were committed either before or at the same time as the optimizations. We must always remember that performance comes after correctness, not before.</div>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 232px; left: 420px;">Fixing</h1>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 420px; left: 420px;">Bugs</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 632px; left: 120px;">Takes Priority</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/196">
+
+<div class="notes">I hope you had fun learning about the implicit allocation reductions in Ruby 3.3 and Ruby 3.4.</div>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 70px; left: 114px;">Reducing</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 220px; left: 154px;">Implicit Allocations</h1>
+<h1 class="red" style="font-size: 180px; position: absolute; top: 373px; left: 114px;">During</h1>
+<h1 class="blue" style="font-size: 180px; position: absolute; top: 530px; left: 182px;">Method Calling</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/197">
+
+<div class="notes">There are bunch of additional allocation reduction optimizations I worked on that will be in Ruby 3.4, so possibly there will be a part two of this presentation at the next RubyKaigi.</div>
+<h1 class="red" style="font-size: 250px; position: absolute; top: 24px; left: 150px;">To Be</h1>
+<h1 class="blue" style="font-size: 250px; position: absolute; top: 222px; left: 350px;">Continued<span class="red">?</span>
+</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/198">
+
+<div class="notes">If you enjoyed this presentation, and want to read more of my thoughts on Ruby programming, please consider picking up a copy of Polished Ruby Programming.</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 100px; height: 1031px; width: 822px;"></p>
+
+<p><img src="./file/polished-ruby-programming-cover-jp.png" style="position: absolute; top: 20px; right: 100px; height: 1031px; width: 726px;"></p>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/199">
+
+<div class="notes">That concludes my presentation. I would like to thank all of you for listening to me.</div>
+<h1 class="blue" style="font-family: NotoSansJP; font-size: 150px; position: absolute; top: 432px; left: 150px;">ありがとうございました</h1>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/200">
+
+<div class="notes">A special thank you to Shopify for sponsoring my travel to RubyKaigi. If you have any questions, please ask me during the break.</div>
+<h1 class="blue" style="font-family: NotoSansJP; font-size: 150px; position: absolute; top: 432px; left: 150px;">ありがとうございました</h1>
+<p><img src="./file/shopify.svg" style="position: absolute; top: 60px; left: 150px; height: 280px; width: 1024px;"></p>
+</div>
+</div>
+</body></html>
+</div>
+
+</body>
+</html>
