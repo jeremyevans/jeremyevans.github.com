@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>code.jeremyevans.net - Adding IPv6 to My Home Network (2024-11-03)</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="navbar">
+  <div class="container">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-nav" id="toggle-nav">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a href="index.html" class="navbar-brand">code.jeremyevans.net</a>
+
+    <ul class="navbar-nav navbar-collapse" id="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="openbsd.html">OpenBSD</a></li>
+      <li class="nav-item"><a class="nav-link" href="ruby.html">Ruby</a></li>
+      <li class="nav-item"><a class="nav-link" href="http://github.com/jeremyevans?tab=repositories">GitHub</a></li>
+      <li class="nav-item"><a class="nav-link" href="contrib.html">Contributions</a></li>
+      <li class="nav-item"><a class="nav-link" href="presentations.html">Presentations</a></li>
+      <li class="nav-item"><a class="nav-link" href="interviews.html">Press</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+<h1>Adding IPv6 to My Home Network (2024-11-03)</h1>
+
+<h2>Background</h2>
+
+<p>So there I was, going through life without giving a second thought to IPv6.  IPv4 worked fine for me, and why change what isn't broken, right?  Well, sometimes life changes, and you start work for a new company, and that company actually uses IPv6. At that point, learning IPv6 becomes important, I think we'll all agree.</p>
+
+<p>This documents how I added IPv6 to my home network, which runs <a href="https://www.openbsd.org">OpenBSD</a>, using OpenBSD's <a href="https://man.openbsd.org/ifconfig.8">ifconfig</a>, <a href="https://man.openbsd.org/slaacd.8">slaacd</a>, <a href="https://man.openbsd.org/dhcp6leased.8">dhcp6leased</a>, <a href="https://man.openbsd.org/rad.8">rad</a>, and <a href="https://man.openbsd.org/unbound.8">unbound</a>.  This should serve as a guide to other people in the same situation, but be aware you need to be running at least <a href="https://www.openbsd.org/76.html">OpenBSD 7.6</a>, as that is the version that added support for <code>dhcp6leased</code> and updated <code>rad</code> to handle DHCPv6 PD (prefix delegation).  For older OpenBSD versions, you'll have to use ports, and there are multiple guides for that, use your friendly neighborhood search engine.</p>
+
+<p>I use AT&amp;T as my internet service provider, and am stuck with DSL, as AT&amp;T still, in this day and age, does not support fiber at my address.  The firewall for my home network has two physical interfaces, <code>em0</code> (internal network) and <code>em1</code> (connection to the AT&amp;T DSL modem, a <a href="https://www.amazon.com/BGW210-802-11b-Wireless-Gateway-Required/dp/B09J432DDY">BGW-210</a>).</p>
+
+<h2>IPv6 Setup</h2>
+
+<p>Not wanting to use IPv6 previously, on my firewall, I had the following in <code>/etc/hostname.em1</code>:</p>
+
+<pre><code>-inet6
+dhcp
+</code></pre>
+
+<p>and the following in <code>/etc/hostname.em0</code>:</p>
+
+<pre><code>-inet6
+inet 10.XX.YY.1 255.255.255.0 NONE
+</code></pre>
+
+<p>I don't think the <code>-inet6</code> lines were actually needed, as that's the default behavior for interfaces on OpenBSD, except for <code>lo0</code>.</p>
+
+<p>So as a first step, I needed to enable IPv6 on both interfaces, and set <code>autoconf</code> on the external interface. On the internal interface, I also added an IPv6 ULA alias, so that computers in the internal network can use a static IPv6 address to access the firewall, in addition to the dynamic internet-routable IPv6 address:</p>
+
+<pre><code># ifconfig em1 inet6 autoconf
+# ifconfig em0 inet6
+# ifconfig em0 inet6 alias fd00:XXYY::1/64
+</code></pre>
+
+<p>As <code>slaacd</code> is enabled by default on OpenBSD, I had previously disabled it in <a href="https://man.openbsd.org/rc.conf.local.8">rc.conf.local</a>:</p>
+
+<pre><code>slaacd_flags=NO
+</code></pre>
+
+<p>So I needed to start <code>slaacd</code>:</p>
+
+<pre><code># rcctl -f start slaacd # -f to force starting as it is disabled
+</code></pre>
+
+<p>Unfortunately, using <code>ifconfig</code> and <code>slaacd</code> did not result in getting a public IPv6 address, only a link-local IPv6 address.  With some help from my friends, and some more searching online, I found I needed to update <a href="https://man.openbsd.org/pf.conf.5">pf.conf</a> to add a firewall rule for <code>slaacd</code> to work, and another would that would be needed later for DHCPv6 to work:</p>
+
+<pre><code>pass in on $ei inet6 proto icmp6 all
+pass in on $ei inet6 proto udp from fe80::/10 port dhcpv6-server to fe80::/10 port dhcpv6-client no state
+</code></pre>
+
+<p>This type of firewall rule isn't needed in the IPv4 case, because <a href="https://man.openbsd.org/dhcpleased.8">dhcpleased</a> (used for DHCPv4 on OpenBSD) uses <a href="https://man.openbsd.org/bpf.4">bpf</a>, which is not subject to firewall rules.</p>
+
+<p>Anyway, after updating <code>/etc/pf.conf</code>, and then reloading the firewall rules:</p>
+
+<pre><code># pfctl -f /etc/pf.conf
+</code></pre>
+
+<p>I was able to get a public IPv6 address on the external interface of the firewall.</p>
+
+<p>Next step was allowing the firewall to route IPv6 traffic:</p>
+
+<pre><code># sysctl net.inet6.ip6.forwarding=1
+</code></pre>
+
+<p>To get DHCPv6 PD to work, I needed to use <code>dhcp6leased</code>, which is configured through a simple <a href="https://man.openbsd.org/dhcp6leased.conf.5">dhcp6leased.conf</a> configuration file, which only requires one line:</p>
+
+<pre><code>request prefix delegation on em1 for { em0 }
+</code></pre>
+
+<p>Then I needed to start <code>dhcp6leased</code>:</p>
+
+<pre><code># rcctl -f start dhcp6leased
+</code></pre>
+
+<p>To assign IPv6 addresses to clients on the internal network, I had to create a <a href="https://man.openbsd.org/rad.conf.5">rad.conf</a> configuration file, which was more complex than <code>dhcp6leased.conf</code>, but still not too bad:</p>
+
+<pre><code>managed address configuration yes
+other configuration yes
+
+dns {
+  nameserver {
+    fd00:XXYY::1
+  }
+}
+
+interface em0
+</code></pre>
+
+<p>Anyway, after editing that configuration file, I needed to start <code>rad</code>:</p>
+
+<pre><code># rcctl -f start rad
+</code></pre>
+
+<p>After that change, devices on my internal network could get both public IPv6 addresses as well as ULA addresses.  For my OpenBSD desktop, I had to allow IPv6 (<code>ifconfig em0 inet6 autoconf</code>), and also start <code>slaacd</code>.</p>
+
+<p>After getting everything working, I needed to make sure the changes stick around after a reboot.  So on the firewall, I edited the <code>/etc/hostname.em1</code> (replacing <code>dhcp</code> with the more modern <code>inet autoconf</code>):</p>
+
+<pre><code>inet autoconf
+inet6 autoconf
+</code></pre>
+
+<p>and <code>/etc/hostname.em0</code> files:</p>
+
+<pre><code>inet 10.XX.YY.1 255.255.255.0 NONE
+inet6
+inet6 alias fd00:XXYY::1/64
+</code></pre>
+
+<p>I also set <code>slaacd</code>, <code>dhcp6leased</code>, and <code>rad</code> to be automatically enabled at boot:</p>
+
+<pre><code># rcctl enable slaacd dhcp6leased rad
+</code></pre>
+
+<p>I also needed to allow IPv6 routing by default by adding the following to <a href="https://man.openbsd.org/sysctl.conf.5">sysctl.conf</a>:</p>
+
+<pre><code>net.inet6.ip6.forwarding=1
+</code></pre>
+
+<p>For my desktop, I updated <code>hostname.em0</code>:</p>
+
+<pre><code>inet 10.XX.YY.1 255.255.255.0 NONE
+inet6 autoconf
+</code></pre>
+
+<p>and enabled <code>slaacd</code> there as well:</p>
+
+<pre><code># rcctl enable slaacd
+</code></pre>
+
+<h2>DNS</h2>
+
+<p>Just in case I wanted to have a IPv6-only client in my internal network, and I wanted that client to be able to resolve non-public DNS names, I needed my DNS infrastructure to handle IPv6.  My existing <a href="https://man.openbsd.org/unbound.conf.5">unbound.conf</a> configuration started with:</p>
+
+<pre><code>server:
+        interface: 0.0.0.0
+        num-threads: 1
+        do-ip6: no
+
+        access-control: 0.0.0.0/0 refuse
+        access-control: 127.0.0.0/8 allow
+        access-control: 10.XX.YY.0/24 allow
+</code></pre>
+
+<p>I needed to edit it to allow IPv6:</p>
+
+<pre><code>server:
+        interface: 0.0.0.0
+        interface: ::0
+        num-threads: 1
+        do-ip6: yes
+
+        access-control: 0.0.0.0/0 refuse
+        access-control: 127.0.0.0/8 allow
+        access-control: 10.XX.YY.0/24 allow
+
+        access-control: ::0/0 refuse
+        access-control: ::1/128 allow
+        access-control: fd00:XXYY::0/16 allow
+</code></pre>
+
+<p>Then I added IPv6 entries for the existing IPv4 entries, in the form: <code>local-data: "host.domain.local. IN AAAA fd00:XXYY::1"</code></p>
+
+<p>Then I needed to restart <a href="https://man.openbsd.org/unbound.8">unbound</a> (not just reload, due to the interface addition):</p>
+
+<pre><code># rcctl restart unbound
+</code></pre>
+
+<p>Then I could resolve DNS address using IPv6, both on the same machine and from other machines, served by my local DNS server:</p>
+
+<pre><code>$ dig @fd00:XXYY::1 +short AAAA host.domain.local
+fd00:XXYY::1
+</code></pre>
+
+
+<h2>Conclusion</h2>
+
+<p>Overall, IPv6 and DHCPv6 PD is very easy to setup on OpenBSD 7.6, using only tools provided in the base system, with no need for ports. Using both dynamic global IPv6 addresses as well as static ULA IPv6 addresses works fairly well.  It's still additional complexity, since you still have to run an IPv4 network to connect to IPv4-only hosts.  However, if some day in the future, IPv4 goes away, at least I'm prepared.  Also, I can now to to <a href="https://ipv6.google.com/">ipv6.google.com</a> in my browser and have it load!</p>
+
+</div>
+
+<script src="/nav.js"></script>
+</body>
+</html>
