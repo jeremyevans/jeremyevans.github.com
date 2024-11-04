@@ -105,10 +105,7 @@ pass in on $ei inet6 proto udp from fe80::/10 port dhcpv6-server to fe80::/10 po
 
 <p>To assign IPv6 addresses to clients on the internal network, I had to create a <a href="https://man.openbsd.org/rad.conf.5">rad.conf</a> configuration file, which was more complex than <code>dhcp6leased.conf</code>, but still not too bad:</p>
 
-<pre><code>managed address configuration yes
-other configuration yes
-
-dns {
+<pre><code>dns {
   nameserver {
     fd00:XXYY::1
   }
@@ -206,6 +203,16 @@ fd00:XXYY::1
 <h2>Conclusion</h2>
 
 <p>Overall, IPv6 and DHCPv6 PD is very easy to setup on OpenBSD 7.6, using only tools provided in the base system, with no need for ports. Using both dynamic global IPv6 addresses as well as static ULA IPv6 addresses works fairly well.  It's still additional complexity, since you still have to run an IPv4 network to connect to IPv4-only hosts.  However, if some day in the future, IPv4 goes away, at least I'm prepared.  Also, I can now to to <a href="https://ipv6.google.com/">ipv6.google.com</a> in my browser and have it load!</p>
+
+<h2>Update (2024-11-04)</h2>
+
+<p>After I posted this, a fellow OpenBSD developer pointed out that I didn't need the following lines in <code>rad.conf</code>:</p>
+
+<pre><code>managed address configuration yes
+other configuration yes
+</code></pre>
+
+<p>These lines are used when you are running a DHCPv6 server on your network, and I'm only running a DHCPv6 client.  So I removed these lines from the <code>rad.conf</code> configuration above.</p>
 
 </div>
 
