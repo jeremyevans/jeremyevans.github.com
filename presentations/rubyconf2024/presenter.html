@@ -1,0 +1,3742 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>10 Years of Roda</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1920px;
+          height: 1080px;
+        }
+        #footer { width: 1901px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+  <link rel="stylesheet" href="./css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src="./js/presenter.js"></script>
+
+    <style type="text/css">
+      #preview div.zoomed { zoom: 48%;}
+    </style>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/1">
+<div class="notes">Hello everyone!  I'm super happy to be here at RubyConf to talk about Roda.  Roda is a web toolkit that I launched in 2014. I had the pleasure of presenting the newly launched Roda at RubyConf 2014, and it's great to be back at RubyConf, 10 years later, to discuss Roda's progress.  In this presentation, I'll be going over the advantages of using Roda, discussing the progress made in the 10 years since launch, and looking at how some open source software uses Roda.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; right: 154px;">
+<span class="red">10</span> Years of <span class="red">Roda</span>
+</h1>
+<h1 class="blue" style="font-size: 108px; position: absolute; top: 762px; right: 90px; text-align: right;">
+<span class="red">Ruby</span>Conf 2024</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/2">
+<div class="notes">My name is Jeremy Evans. I maintain Roda and many other Ruby libraries.  I am also a Ruby committer who focuses on fixing bugs in Ruby.</div>
+
+<p><img src="./file/jeremy.jpg" class="profile-pic" style="position: absolute; top: 292px; left: 246px;"></p>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 432px; left: 750px;">GitHub:  <span class="blue mono"> jeremyevans</span>
+</h1>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 507px; left: 750px;">Twitter:  <span class="blue mono">@jeremyevans0</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/3">
+<div class="notes">Additionally, I am the author of Polished Ruby Programming, a book aimed at intermediate Ruby programmers.</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 581px; height: 1031px; width: 822px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/4">
+<div class="notes">Before discussing the first 10 years of Roda,</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; right: 154px;">
+<span class="red">10</span> Years of <span class="red">Roda</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/5">
+<div class="notes">I'm going to dive right into a simple Roda example, in case you are not familiar with it. While a little more complex than hello world, this example shows Roda's key advantage over other Ruby web frameworks, which is the ability to handle requests during routing, instead of separating the routing process from the request handling process.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/6">
+<div class="notes">With Roda, all requests to the application are yielded to the route block.  The route block is responsible for handling all requests. By convention, Roda uses r as the route block variable.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do <b>|r|</b>
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/7">
+<div class="notes">At any point in the route block, you can do processing related to the request. For example, if you want to check access by IP, you could have that check at the top of your route block.  This would be the equivalent of an application-level before hook in other frameworks.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  <b>access_check!(r.ip)</b>
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/8">
+<div class="notes">Assuming we pass the access check, we get to the first routing method. The r.on method is used to handle branches in the routing tree.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  <b>r.on</b> "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/9">
+<div class="notes">In this example, the r.on method is passed two arguments, called matchers.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on <b>"employee", Integer</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/10">
+<div class="notes">The first is the string employee, which will match if the next segment in the remaining path is employee.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on <b>"employee"</b>, Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/11">
+<div class="notes">The second is the class Integer, which will match if the next segment in the remaining path is an integer.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", <b>Integer</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/12">
+<div class="notes">So if we look at the combination of these two matchers.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on <b>"employee", Integer</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/13">
+<div class="notes">They will match a request path such as /employee/7.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+<b class="block">  # Matches:
+  # /employee/7</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/14">
+<div class="notes">Since the entire request path has been consumed by the two matchers, the remaining path is empty.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+  # Matches:
+  # /employee/7 # <b>with remaining path ""</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/15">
+<div class="notes">the matchers will also match a request path such as /employee/7/name.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+  # Matches:
+  # /employee/7 # with remaining path ""
+  # <b>/employee/7/name</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/16">
+<div class="notes">The remaining path after this would be /name, which is what routing methods inside this block will operate on.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+  # Matches:
+  # /employee/7 # with remaining path ""
+  # /employee/7/name # <b>with remaining path "/name"</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/17">
+<div class="notes">It would not match a path such as /vendor/9, since the first segment is not employee.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on <b>"employee"</b>, Integer do |employee_id|
+  # Matches:
+  # /employee/7
+  # /employee/7/name
+  #
+<b class="block">  # Does Not Match:
+  # /vendor/9</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/18">
+<div class="notes">It would also not match a path such as /employee/name, since name is not an integer.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", <b>Integer</b> do |employee_id|
+  # Matches:
+  # /employee/7
+  # /employee/7/name
+  #
+  # Does Not Match:
+  # /vendor/9
+  # <b>/employee/name</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/19">
+<div class="notes">If the request does not match the r.on call, r.on will return nil without yielding to the block.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  <b>r.on</b> "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/20">
+<div class="notes">In this example, it would reach the end of the route block, resulting in a 404 response, because the request was never handled.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+<b>end</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/21">
+<div class="notes">If the request does match the r.on call, it will yield to the provided block.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer <b>do |employee_id|</b>
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/22">
+<div class="notes">Because the Integer class matcher was used,</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", <b>Integer</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/23">
+<div class="notes">The block will be yielded that segment of the request path, converted to an integer.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |<b>employee_id</b>|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/24">
+<div class="notes">For a GET request for /employee/7/name</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| <b># GET /employee/7/name</b>
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/25">
+<div class="notes">The employee_id block variable will be the integer 7.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/<b>7</b>/name
+  access_check!(r.ip)
+  r.on "employee", <b>Integer</b> do |employee_id| # <b>7</b>
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/26">
+<div class="notes">Inside the block, the first line is this code, which shows the primary advantage of Roda, which is that at any point during routing, you can do processing related the request.  In this case, we are using that employee_id block variable to look up the employee by id, and then setting the employee variable.  All routes under this block can then access the employee.|You can get similar behavior in other frameworks using before hooks, but this provides a simpler approach that avoids indirection.  If you have ever had to debug issues involving the use of before hooks, I think you can appreciate this approach.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    <b>next unless employee = Employee[employee_id]</b>
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/27">
+<div class="notes">What if there is no matching employee for the id?</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless <b>employee = Employee[employee_id]</b>
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/28">
+<div class="notes">In that case, you can use the next keyword to return nil from the block, which Roda will treat as a 404 response.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    <b>next</b> unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/29">
+<div class="notes">This ensures that there is a valid employee for the rest of the block.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+<b class="block">    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end</b>
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/30">
+<div class="notes">The next routing method is r.is with a string name matcher.  r.is is similar to r.on, except that it requires the request path be fully consumed after all matchers have been applied.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    <b>r.is "name"</b> do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/31">
+<div class="notes">For our request, since the employee and 7 segments have already been consumed, the remaining path is /name.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7<b>/name</b>
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/32">
+<div class="notes">The string name matcher will match that segment.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is <b>"name"</b> do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/33">
+<div class="notes">Since the entire request path has now been consumed by the matchers given to the routing methods,</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET <b>/employee/7/name</b>
+  access_check!(r.ip)
+  r.on <b>"employee", Integer</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is <b>"name"</b> do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/34">
+<div class="notes">the r.is method will match, and it will yield to the block.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    <b>r.is</b> "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/35">
+<div class="notes">Inside the r.is block, the first method call is r.get, which will match,</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      <b>r.get</b> do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/36">
+<div class="notes">because the request being handled uses the GET request method.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # <b>GET</b> /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/37">
+<div class="notes">The r.get block returns the string Hello followed by the employee's name.  As the block returns a string, this string will be used as the response body.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # GET /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        <b>"Hello #{employee.name}"</b>
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/38">
+<div class="notes">Let's see how a POST request to the same path will be handled.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # <b>POST</b> /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/39">
+<div class="notes">The path of the request will still be fully consumed by the matchers given to the r.on and r.is methods.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # POST /employee/7/name
+  access_check!(r.ip)
+  <b>r.on "employee", Integer</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    <b>r.is "name"</b> do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/40">
+<div class="notes">However, the r.get method call will not match, as this is a POST request and not a GET request.  So r.get will return nil without yielding to the block.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # POST /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      <b>r.get</b> do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/41">
+<div class="notes">The next method call in the block is r.post, which will match, since this request is a POST request.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # POST /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      <b>r.post do</b>
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/42">
+<div class="notes">So r.post will yield to the block.  In this case, we will use the name parameter to update the employee's name.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # POST /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        <b>employee.update(name: r.params['name'])</b>
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/43">
+<div class="notes">Then we will redirect the request.  Since no arguments are given, this will redirect to the same path, but using a GET request and not a POST request.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r| # POST /employee/7/name
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        <b>r.redirect</b>
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/44">
+<div class="notes">Hopefully, this example was able to give you a basic idea about how Roda's routing tree works.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/45">
+<div class="notes">The most important part to remember, is that Roda gives you the power to do processing related to the request at any point during the routing process, which reduces duplication and indirection, and results in applications that are simpler and easier to understand.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  <b>access_check!(r.ip)</b>
+  r.on "employee", Integer do |employee_id|
+    <b>next unless employee = Employee[employee_id]</b>
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/46">
+<div class="notes">Simplicity is one of Roda's four goals.  After 10 years developing Roda, I still think that the primary benefit of Roda is it allows the  same application to be built more simply than in other frameworks.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 154px;">Simplicity</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/47">
+<div class="notes">Another of Roda's goals is performance.  Unlike the simplicity goal, where the benefits are subjective, you can see objective differences between the performance of Roda and other web frameworks.  We'll look at two benchmarks.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Performance</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/48">
+<div class="notes">The first is r10k, a synthetic benchmark which measures per-request overhead and scalability for large numbers of routes. r10k benchmarks applications with 10, 100, 1000, and 10,000 routes.  To avoid web server overhead, it tests using the rack API directly.</div>
+
+<h1 style="font-size: 401px; text-align: center; margin-top: 120px;">
+<span class="red">r</span>10k</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/49">
+<div class="notes">Here are the request per second results for Roda, Rails, Sinatra, Hanami, and Camping.  It shows Roda is much faster than other frameworks.  Unfortunately, The scale of the graph makes it difficult to see how the other frameworks compare.</div>
+
+<p><img src="./file/rps.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/50">
+<div class="notes">Here's the same graph, but using a logarithmic scale.  This still shows Roda as much faster, but it also shows that Roda, Rails, and Hanami all scale well to large numbers of routes. It shows that Sinatra and Camping do not scale well for large numbers of routes, which is because both use a linear search of routes during request handling.</div>
+
+<p><img src="./file/log_rps.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/51">
+<div class="notes">r10k also provides memory benchmarks. These show that Roda uses less memory than other frameworks. Rails uses about 3 to 4 times more memory than Roda in this benchmark.</div>
+
+<p><img src="./file/memory.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/52">
+<div class="notes">While the r10k benchmarks are useful, they don't tell you much about real world performance differences.</div>
+
+<h1 style="font-size: 401px; text-align: center; margin-top: 120px;">
+<span class="red">r</span>10k</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/53">
+<div class="notes">For that, the TechEmpower web framework benchmarks do a better job. TechEmpower has been benchmarking web frameworks in many languages for over 10 years.  Roda has led the Ruby web framework benchmarks ever since it was added in 2017.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Tech<span class="blue">Empower</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/54">
+<div class="notes">Here are the composite score results of the most recent round of TechEmpower benchmarks for Ruby web frameworks.  Roda leads in every category. The weighted score for Roda is almost double the weighted score for Rails. This lines up with results I've seen in applications converted from Rails to Roda, where the converted Roda application is about twice as fast.</div>
+
+<p><img src="./file/techempower.png" style="position: absolute; top: 400px; left: 109px; width: 1702px; height: 282px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/55">
+<div class="notes">As the benchmarks show, Roda achieves its performance goal.  It's is the fastest Ruby web framework, scales well, and uses the least memory.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Performance</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/56">
+<div class="notes">It is the fastest framework mostly because it has the lowest per-request overhead.  Roda is designed to minimize the amount of work between when it receives the rack request environment and when it starts processing the routing tree.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 170px; left: 154px;">Fastest</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/57">
+<div class="notes">Roda scales well because it uses a routing tree. As soon as a branch of the routing tree is taken, other branches at the same level are no longer considered.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 554px;">Scales</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 554px;">Well</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/58">
+<div class="notes">Finally, Roda uses the least amount of memory because it is designed around a small core.  The small core handles basic routing and request handling.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 560px; left: 1154px;">Least</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 690px; left: 954px;">Memory</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/59">
+<div class="notes">All other features are added via plugins. Roda's core is itself a plugin. Plugins can override any part of core Roda and any previously loaded plugins.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 620px; left: 154px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/60">
+<div class="notes">As an example of its minimalism, Roda's core does not include template rendering.  Template rendering is supported via a plugin.  It's common to use this plugin when developing applications targetting browsers. However, if you are designing an application that just serves API responses via JSON, you wouldn't need it.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 554px;">Template</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 604px;">Rendering</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/61">
+<div class="notes">In that case, you would want to use the JSON plugin, which allows route blocks to return arrays or hashes, and have those converted to JSON and used as response bodies.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 120px; left: 1254px;">JSON</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/62">
+<div class="notes">The reason I refer to Roda as a toolkit is you can think of each plugin as a tool.  Different applications require different tools, and with Roda, you only pay the overhead cost for the tools you choose to use.  Roda ships with over 120 plugins to handle the needs of a wide variety of web applications, and there are numerous external Roda plugins to handle additional needs.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 654px;">Toolkit</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/63">
+<div class="notes">This approach of having a small core, and shipping all optional features as plugins is how Roda achieves its goal of extensibility.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 420px; left: 554px;">Extensibility</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/64">
+<div class="notes">Roda's final goal is reliability.  Roda achieves this goal by combining two development approaches.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 520px; left: 754px;">Reliability</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/65">
+<div class="notes">The first development approach is immutability.  Roda applications are designed to be frozen in production and when testing.  This reduces the possibility for thread safety issues, as well as memory leaks due to unexpected object retention.|Immutability is not just for reliability in Roda either.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Immutability</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/66">
+<div class="notes">In Roda, immutability also improves performance. When you freeze your Roda application, Roda knows there will be no future configuration changes to it.  Roda then determines whether methods designed for extensibility have not been overridden, and in that case, it overrides the default extensible methods with optimized methods.  This gives you the best of both worlds.  Extensibility when you need it, and maximum performance when you don't.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Immutability</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 500px; left: 354px;">→ Performance</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/67">
+<div class="notes">The second development approach related to reliability I refer to as pollution control.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 554px;">Pollution</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 554px;">Control</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/68">
+<div class="notes">More explicitly, namespace pollution control.  Roda limits pollution of your constant, method, and instance variable namespaces inside your application.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 554px;">Namespace</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 554px;">Pollution</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 554px;">Control</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/69">
+<div class="notes">All internal constants in the Roda class start with Roda, to avoid conflicting with user-defined constants.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 170px; left: 154px;">Constants</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/70">
+<div class="notes">Roda limits instance variable pollution by prefixing all internal instance variables in route block scope with an underscore. If you've ever developed a Sinatra application and tried to use request or response instance variables, you will appreciate this.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 320px; left: 554px;">Instance</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 500px; left: 554px;">Variables</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/71">
+<div class="notes">Roda limits method pollution by defining only 6 methods in Roda block scope, beyond the methods defined in Object and some private methods that begin with an underscore. This makes it less likely a user-defined method will conflict with a Roda method.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 560px; left: 954px;">Methods</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/72">
+<div class="notes">Now that I've given you a brief taste of Roda and discussed how Roda achieves its goals,</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; right: 154px;">Roda</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/73">
+<div class="notes">I can start discussing the first 10 years of Roda.  Roda's first release was on July 30, 2014, and it's most recent release, the 125th release, was three days ago.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; right: 154px;">
+<span class="red">10</span> Years of <span class="red">Roda</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/74">
+<div class="notes">I don't like waiting long to use new features, so Roda follows a simple to understand release schedule.  There is a new Roda release every month, around the middle of the month, ever since 2014.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 230px; right: 154px;">New Release</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 400px; right: 154px;">Every Month</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/75">
+<div class="notes">I also don't like when changes to a library break my applications, so Roda places a high priority on backwards compatibility.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 420px; right: 354px;">Backwards</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 600px; right: 354px;">Compatibility</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/76">
+<div class="notes">I think the compatibility is so good that the majority of applications that worked with the first release, Roda 0.9, would still work if you upgraded them to latest release, Roda 3.86, with one main exception.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 420px; right: 354px;">Almost 100%</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 600px; right: 354px;">Compatibility</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/77">
+<div class="notes">If we go back to our first example,</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/78">
+<div class="notes">We see that it uses the Integer class matcher. However, Roda did not support using the Integer class as a matcher until Roda 2.27.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", <b>Integer</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/79">
+<div class="notes">Before Roda 2.27, this type of matcher would generally be written using what is referred to as a placeholder string, with placeholders in the string being prefixed by a colon.  However, this style resulted in two issues.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on <b>"employee/:employee_id"</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/80">
+<div class="notes">First, it resulted in redundancy.  Most developers would name the placeholders similar to the block variables.  This isn't technically a problem, but it is a tad annoying.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee/<b>:employee_id</b>" do |<b>employee_id</b>|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/81">
+<div class="notes">The actual problem was a performance problem, which is that you needed to scan all strings used as matchers to see if they contain placeholders, and treat the string differently if it had a placeholder.  Strings are the most common type of matcher, so this check resulted in a measurable slowdown even if you weren't using placeholders.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on <b>"employee/:employee_id"</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/82">
+<div class="notes">Roda 3 removed support for placeholders in string matchers by default.  In order to support backwards compatibility, Roda 3 shipped with a placeholder_string_matchers plugin.|I analyzed a couple of my open source applications, checking out the commit where the application was converted from Sinatra or Rails to Roda 0.9, and trying it with the current version of Roda.  In both cases, adding the placeholder_string_matchers plugin was the only Roda-related change needed to get the specs passing with the current version of Roda.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :placeholder_string_matchers
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/83">
+<div class="notes">I mentioned that one of the reasons for breaking backwards compatibility was to improve performance.  How much did this change and other changes improve Roda's performance over the last 10 years?</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Performance</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/84">
+<div class="notes">To determine that, we're going to look at some more r10k benchmark results, to see how Roda's performance has improved over time.  Additionally, as Roda is a fork of another web framework named Cuba, we're also going to compare Roda to Cuba.</div>
+
+<h1 style="font-size: 401px; text-align: center; margin-top: 120px;">
+<span class="red">r</span>10k</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/85">
+<div class="notes">Let's start with Roda's initial release, compared against the current Cuba release at the time.  As you can see, the performance is basically the same.  For the initial release, I was focused on differences in the route block handling, handling block responses, and getting the plugin system working.  I wasn't focused on performance, since Cuba was already much faster than other Ruby web frameworks at the time.</div>
+
+<p><img src="./file/rps-0.9.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/86">
+<div class="notes">Less than a month after the initial release, I released Roda 1.0.  This had a massive boost in performance over the initial release, with a number of additional optimizations.  At the time, most matchers in Roda were based on regular expression scanning, and the most important optimization was the caching of the regular expressions, instead of generating a new regular expression for every matcher.</div>
+
+<p><img src="./file/rps-1.0.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/87">
+<div class="notes">About 6 months after releasing Roda 1.0, I released Roda 2.0, which improved performance over 1.0 by about 20%.  This performance improvement was due to reducing allocations and operations during matching, so that each match attempt did not modify the request environment.</div>
+
+<p><img src="./file/rps-2.0.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/88">
+<div class="notes">About two and a half years after that, I released Roda 3.0, which improved performance over 2.0 by about 40%.  This performance improvement was mostly due to avoiding regular expressions during matching, and the removal of placeholders during string matching.  Instead of regular expressions, string methods such as start_with? and index are used.  This idea was taken from syro, a routing library by the same author as Cuba.</div>
+
+<p><img src="./file/rps-3.0.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/89">
+<div class="notes">By January 2021, with the release of Roda 3.40, performance had increased another 15%. The performance increase was due to a couple of optimizations.  During this time period is when I added the optimization during application freezing.  Additionally, the performance of string and segment matching was improved by about 15%, and terminal matching by about 400%.</div>
+
+<p><img src="./file/rps-3.40.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/90">
+<div class="notes">Between Roda 3.40 and 3.60, performance increased another 30%.  This was due to additional optimizations on the most common matchers.  Roda's current performance is about the same as 3.60.|Between Roda's initial release and the current release, performance in this benchmark improved by a factor of 12. I think that's pretty amazing considering that even at Roda's initial release, it was one of the fastest frameworks. However, this isn't the limit of Roda's performance.</div>
+
+<p><img src="./file/rps-3.60.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/91">
+<div class="notes">Using the optimized_string_matchers, optimized_segment_matchers, and plain_hash_response_headers Roda plugins, performance can be improved an additional 35%.  This does require some small sacrifices in usability, though.</div>
+
+<p><img src="./file/rps-opt.png" style="position: absolute; top: 0px; left: 0px; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/92">
+<div class="notes">r10k is a routing and per-request overhead benchmark, and Roda has improved greatly over the years at those. However, that's not the only way Roda has improved performance.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Performance</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/93">
+<div class="notes">Many of the plugins that ship with Roda have been optimized as well.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Performance</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/94">
+<div class="notes">For example, the render plugin has shipped with every release of Roda, but it and other related plugins were extensively optimized a few years ago. For simple templates, the render plugin is about 4 times faster than it was originally.</div>
+
+<h1 class="red mono" style="font-size: 160px; position: absolute; top: 30px; left: 274px;">render</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 354px;">Performance</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/95">
+<div class="notes">Speaking of plugins,</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/96">
+<div class="notes">Roda 0.9.0 shipped with 15 plugins.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 0.9.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins: <span class="red">15</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/97">
+<div class="notes">Roda 3.86 ships with over 120 plugins, more than 8 times as many as the initial release.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 3.86.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins: <span class="red">120+</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/98">
+<div class="notes">I'm going to take you on a quick tour of the last 10 years of Roda plugins</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; right: 154px;">
+<span class="red">10</span> Years of <span class="red">Roda</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 400px; right: 154px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/99">
+<div class="notes">In the initial release, in addition to rendering, Roda shipped with plugins for</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 0.9.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/100">
+<div class="notes">handling exceptions,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 0.9.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :error_handler
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/101">
+<div class="notes">customizing default headers and</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 0.9.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :error_handler
+plugin :default_headers
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/102">
+<div class="notes">404 responses,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 0.9.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :error_handler
+plugin :default_headers
+plugin :not_found
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/103">
+<div class="notes">handling flash messages,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 0.9.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :error_handler
+plugin :default_headers
+plugin :not_found
+plugin :flash
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/104">
+<div class="notes">streaming responses,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 0.9.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :error_handler
+plugin :default_headers
+plugin :not_found
+plugin :flash
+plugin :streaming
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/105">
+<div class="notes">and operating as rack middleware.  However, one of most important plugins was the ability to use separate routing blocks.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 0.9.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :error_handler
+plugin :default_headers
+plugin :not_found
+plugin :flash
+plugin :streaming
+plugin :middleware
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/106">
+<div class="notes">If you remember back to our initial example.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/107">
+<div class="notes">I mentioned that all requests are yielded to the route block, and the route block determines the response.  In Ruby, you cannot split a block between multiple files, and having all routes in a single file only makes sense for small applications.  To handle large applications, you need a way to separate the route block.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.<b>route do |r|</b>
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+<b>end</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/108">
+<div class="notes">Even the very first release of Roda supported that, via the multi_route plugin.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :multi_route
+
+Roda.route do |r|
+  access_check!(r.ip)
+  r.multi_route
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/109">
+<div class="notes">With the multi_route plugin, you could call r.multi_route in your main routing block, and it would dispatch to separate routing blocks based on the next segment in the remaining path.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :multi_route
+
+Roda.route do |r|
+  access_check!(r.ip)
+  <b>r.multi_route</b>
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/110">
+<div class="notes">Those routing blocks would generally be stored in separate files based on the route segment name, like this.  This made it simple to organize large applications in Roda, and allowed even the first release of Roda to scale from simple single file applications to decent sized applications.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>Roda.route("employee") do
+  r.on Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/111">
+<div class="notes">Roda 1.0 added 11 new plugins not in the initial release.  These included plugins for</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.0.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/112">
+<div class="notes">returning arrays and hashes as json,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.0.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :json
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/113">
+<div class="notes">cross site request forgery protection,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.0.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :json
+plugin :csrf
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/114">
+<div class="notes">rendering a collection of partials in one call,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.0.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :json
+plugin :csrf
+plugin :render_each
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/115">
+<div class="notes">and having a separate view subdirectory for separate branches of the routing tree.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.0.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :json
+plugin :csrf
+plugin :render_each
+plugin :view_subdirs # now :view_options
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/116">
+<div class="notes">Additionally, the render plugin was expanded to support the automatic escaping of output in templates, greatly reducing the likelihood of cross site scripting issues.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.0.0</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :json
+plugin :csrf
+plugin :render_each
+plugin :view_subdirs # now :view_options
+plugin :render, escape: true
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/117">
+<div class="notes">I think my favorite plugin addition in 1.0 is symbol_views.  The symbol_views plugin is very simple, but it allows you to replace manual calls to view to render templates,</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>
+
+
+route do |r|
+  r.get do
+    <b>view('employee')</b>
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/118">
+<div class="notes">and just have the route block return a symbol.  This small change DRYs up a lot of route code, and makes the common case of rendering a template inside a layout even simpler than it is in Sinatra or Rails.|Now, not everyone is in favor of this terse style.  However, just because I think a particular style is nicer does not mean I think I should force it on all Roda users.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>
+<b>plugin :symbol_views</b>
+
+route do |r|
+  r.get do
+    <b>:employee</b>
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/119">
+<div class="notes">Between Roda 1.1 and 1.3, 25 more plugins were added, including plugins for</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.1-1.3</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/120">
+<div class="notes">managing HTTP caching,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.1-1.3</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :caching
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/121">
+<div class="notes">incrementally rendering templates,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.1-1.3</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :caching
+plugin :chunked
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/122">
+<div class="notes">and compiling, compressing, and serving asset files.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 1.1-1.3</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :caching
+plugin :chunked
+plugin :assets
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/123">
+<div class="notes">Roda 1.2 added the mailer plugin, which brought the benefit of routing trees to sending emails from applications.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+  plugin :mailer
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/124">
+<div class="notes">Here's an example that uses the mailer plugin.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class Mailer &lt; Roda
+  plugin :mailer
+  plugin :render
+  plugin :symbol_views
+
+  Roda.route do |r|
+    r.on "employee", Integer do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+      from "app@example.com"
+      to employee.email
+
+      r.mail "time_off" do
+        subject "Time Off Request Approved"
+        :time_off
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/125">
+<div class="notes">Generally, you use the mailer plugin in a Roda subclass designed specifically for sending emails.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class <b>Mailer &lt; Roda</b>
+  plugin :mailer
+  plugin :render
+  plugin :symbol_views
+
+  Roda.route do |r|
+    r.on "employee", Integer do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+      from "app@example.com"
+      to employee.email
+
+      r.mail "time_off" do
+        subject "Time Off Request Approved"
+        :time_off
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/126">
+<div class="notes">Unlike a Roda web application, which is designed to handle HTTP requests, a Roda mail application is designed to handle internal requests.  However, sending mail with the mailer plugin is done by providing a path, just like with an HTTP request.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class Mailer &lt; Roda
+  plugin :mailer
+  plugin :render
+  plugin :symbol_views
+  # <b>Mailer.sendmail("/employee/7/time_off")</b>
+  Roda.route do |r|
+    r.on "employee", Integer do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+      from "app@example.com"
+      to employee.email
+
+      r.mail "time_off" do
+        subject "Time Off Request Approved"
+        :time_off
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/127">
+<div class="notes">A Roda mail application uses the same basic routing methods that a Roda web application uses.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class Mailer &lt; Roda
+  plugin :mailer
+  plugin :render
+  plugin :symbol_views
+  # Mailer.sendmail("/employee/7/time_off")
+  Roda.route do |r|
+    <b>r.on "employee", Integer</b> do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+      from "app@example.com"
+      to employee.email
+
+      r.mail "time_off" do
+        subject "Time Off Request Approved"
+        :time_off
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/128">
+<div class="notes">Just like in a Roda web application, at any point when handling a mail request, the Roda mail application can do processing related to the mail.  Here, we are setting the sender and recipient addresses, so they don't need to be duplicated inside every mail handling block.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class Mailer &lt; Roda
+  plugin :mailer
+  plugin :render
+  plugin :symbol_views
+  # Mailer.sendmail("/employee/7/time_off")
+  Roda.route do |r|
+    r.on "employee", Integer do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+<b class="block">      from "app@example.com"
+      to employee.email</b>
+
+      r.mail "time_off" do
+        subject "Time Off Request Approved"
+        :time_off
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/129">
+<div class="notes">The r.mail method is used to handle mail routes, and operates similarly to r.get and r.post.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class Mailer &lt; Roda
+  plugin :mailer
+  plugin :render
+  plugin :symbol_views
+  # Mailer.sendmail("/employee/7/time_off")
+  Roda.route do |r|
+    r.on "employee", Integer do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+      from "app@example.com"
+      to employee.email
+
+      <b>r.mail "time_off"</b> do
+        subject "Time Off Request Approved"
+        :time_off
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/130">
+<div class="notes">In this case, the time_off matcher matches the remaining path,</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class Mailer &lt; Roda
+  plugin :mailer
+  plugin :render
+  plugin :symbol_views
+  # Mailer.sendmail("/employee/7/<b>time_off</b>")
+  Roda.route do |r|
+    r.on "employee", Integer do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+      from "app@example.com"
+      to employee.email
+
+      r.mail <b>"time_off"</b> do
+        subject "Time Off Request Approved"
+        :time_off
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/131">
+<div class="notes">so the method will yield to the block.  The block sets the subject for the mail, and returns the symbol for the mail template to render.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class Mailer &lt; Roda
+  plugin :mailer
+  plugin :render
+  plugin :symbol_views
+  # Mailer.sendmail("/employee/7/time_off")
+  Roda.route do |r|
+    r.on "employee", Integer do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+      from "app@example.com"
+      to employee.email
+
+      r.mail "time_off" do
+<b class="block">        subject "Time Off Request Approved"
+        :time_off</b>
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/132">
+<div class="notes">Returning a symbol works because this mail application also uses the symbol_views plugin.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>class Mailer &lt; Roda
+  plugin :mailer
+  plugin :render
+  <b>plugin :symbol_views</b>
+  # Mailer.sendmail("/employee/7/time_off")
+  Roda.route do |r|
+    r.on "employee", Integer do |employee_id|
+      no_mail! unless employee = Employee[employee_id]
+
+      from "app@example.com"
+      to employee.email
+
+      r.mail "time_off" do
+        subject "Time Off Request Approved"
+        <b>:time_off</b>
+      end
+
+      r.mail "expense_claim" do
+        subject "Expense Claim Approved"
+        :expense_claim
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/133">
+<div class="notes">Between Roda 2.0 and 2.29, 22 more plugins were added.  These included support for</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 2.0-2.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/134">
+<div class="notes">sending preload headers for assets,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 2.0-2.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :assets_preloading
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/135">
+<div class="notes">serving public files at specific places in the routing tree,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 2.0-2.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :assets_preloading
+plugin :public
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/136">
+<div class="notes">rewriting paths prior to routing,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 2.0-2.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :assets_preloading
+plugin :public
+plugin :path_rewriter
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/137">
+<div class="notes">parsing JSON request bodies to parameters,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 2.0-2.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :assets_preloading
+plugin :public
+plugin :path_rewriter
+plugin :json_parser
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/138">
+<div class="notes">fast O(1) routing to static paths,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 2.0-2.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :assets_preloading
+plugin :public
+plugin :path_rewriter
+plugin :json_parser
+plugin :static_routing
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/139">
+<div class="notes">and having the routing tree support file extensions in the request path specially.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 852px;">Roda 2.0-2.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :assets_preloading
+plugin :public
+plugin :path_rewriter
+plugin :json_parser
+plugin :static_routing
+plugin :type_routing
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/140">
+<div class="notes">Roda 2.27 added a class_matchers plugin, which allows you to specify handling of arbitrary classes used as matchers.</div>
+
+<h1 class="blue mono" style="font-size: 100px; position: absolute; top: 230px; left: 74px;">plugin :class_matchers</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/141">
+<div class="notes">Going back to our initial example,</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/142">
+<div class="notes">We see that we are using the Integer matcher, which yields an integer.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", <b>Integer</b> do |<b>employee_id</b>|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/143">
+<div class="notes">We are then looking up the employee using the integer,</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = <b>Employee[employee_id]</b>
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/144">
+<div class="notes">and have to manually handle the case where the lookup fails.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    <b>next unless</b> employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/145">
+<div class="notes">Using the class matchers plugin, we can simplify this.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code><b>Roda.plugin :class_matchers</b>
+
+Roda.class_matcher Employee, Integer do |employee_id|
+  Employee[employee_id]
+end
+
+Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Employee do |employee|
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/146">
+<div class="notes">We can register the Employee class as a matcher, and build on top of the Integer matcher.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :class_matchers
+
+Roda.class_matcher <b>Employee, Integer</b> do |employee_id|
+  Employee[employee_id]
+end
+
+Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Employee do |employee|
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/147">
+<div class="notes">If there is a match by the Integer matcher, the value is yielded to the block as an integer.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :class_matchers
+
+Roda.class_matcher Employee, <b>Integer</b> do |<b>employee_id</b>|
+  Employee[employee_id]
+end
+
+Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Employee do |employee|
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/148">
+<div class="notes">This block can do the employee lookup.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :class_matchers
+
+Roda.class_matcher Employee, Integer do |employee_id|
+  <b>Employee[employee_id]</b>
+end
+
+Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Employee do |employee|
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/149">
+<div class="notes">This allows the routing tree to be simpler.  Every case where you are trying to match an employee, you can pass the Employee class as a matcher, and it will yield the Employee object to the routing block if the segment was for a valid employee.  If the segment was not for a valid employee, it just wouldn't match.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :class_matchers
+
+Roda.class_matcher Employee, Integer do |employee_id|
+  Employee[employee_id]
+end
+
+Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", <b>Employee do |employee|</b>
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/150">
+<div class="notes">Between Roda 3.0 and 3.29, 12 more plugins were added, including support for</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/151">
+<div class="notes">encrypted sessions,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 340px; margin-left: 50px;"><code>
+plugin :sessions
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/152">
+<div class="notes">early hints,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 340px; margin-left: 50px;"><code>
+plugin :sessions
+plugin :early_hints
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/153">
+<div class="notes">content security policies,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 340px; margin-left: 50px;"><code>
+plugin :sessions
+plugin :early_hints
+plugin :content_security_policy
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/154">
+<div class="notes">processing incoming emails using a routing tree,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 340px; margin-left: 50px;"><code>
+plugin :sessions
+plugin :early_hints
+plugin :content_security_policy
+plugin :mail_processor
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/155">
+<div class="notes">logging in common log format,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 340px; margin-left: 50px;"><code>
+plugin :sessions
+plugin :early_hints
+plugin :content_security_policy
+plugin :mail_processor
+plugin :common_logger
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/156">
+<div class="notes">showing nice exception handling pages in development,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 340px; margin-left: 50px;"><code>
+plugin :sessions
+plugin :early_hints
+plugin :content_security_policy
+plugin :mail_processor
+plugin :common_logger
+plugin :exception_page
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/157">
+<div class="notes">splitting the routing tree into sub trees without using regular expressions,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 340px; margin-left: 50px;"><code>
+plugin :sessions
+plugin :early_hints
+plugin :content_security_policy
+plugin :mail_processor
+plugin :common_logger
+plugin :exception_page
+plugin :hash_routes
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/158">
+<div class="notes">and supporting stronger cross site request forgery protection, using tokens specific to the request method and path.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.0-3.29</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 140px; left: 274px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 340px; margin-left: 50px;"><code>
+plugin :sessions
+plugin :early_hints
+plugin :content_security_policy
+plugin :mail_processor
+plugin :common_logger
+plugin :exception_page
+plugin :hash_routes
+plugin :route_csrf
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/159">
+<div class="notes">Roda 3.3 added a typecast_params plugin for handling the typecasting of submitted parameters to expected types</div>
+
+<h1 class="red mono" style="font-size: 100px; position: absolute; top: 430px; left: 74px;">plugin :typecast_params</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/160">
+<div class="notes">Here's an example of use, showing automatic conversion of a given parameter to a positive integer, ensuring that attackers cannot try to submit an array or hash.  typecast_params has support for nested parameters, typecasting arrays of values to specific types, and custom parameter types.  It's designed to be simple and not verbose.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>
+  employee_id = typecast_params(:pos_int, "employee_id")
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/161">
+<div class="notes">Between Roda 3.30 and 3.59, 17 more plugins were added. These included support for</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.30-3.59</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 289px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/162">
+<div class="notes">host authorization,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.30-3.59</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 289px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :host_authorization
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/163">
+<div class="notes">trying multiple render engines and</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.30-3.59</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 289px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :host_authorization
+plugin :additional_render_engines
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/164">
+<div class="notes">multiple view directories when rendering templates,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.30-3.59</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 289px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :host_authorization
+plugin :additional_render_engines
+plugin :additional_view_directories
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/165">
+<div class="notes">using abitrary objects as matchers during routing,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.30-3.59</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 289px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :host_authorization
+plugin :additional_render_engines
+plugin :additional_view_directories
+plugin :custom_matchers
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/166">
+<div class="notes">supporting multiple directories for public file serving at different places in the routing tree,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.30-3.59</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 289px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :host_authorization
+plugin :additional_render_engines
+plugin :additional_view_directories
+plugin :custom_matchers
+plugin :multi_public
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/167">
+<div class="notes">and simpler approach to dispatching to separate routing trees,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.30-3.59</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 289px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :host_authorization
+plugin :additional_render_engines
+plugin :additional_view_directories
+plugin :custom_matchers
+plugin :multi_public
+plugin :hash_branches
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/168">
+<div class="notes">which can automatically set the view subdirectory during the dispatch.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 822px;">Roda 3.30-3.59</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 289px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :host_authorization
+plugin :additional_render_engines
+plugin :additional_view_directories
+plugin :custom_matchers
+plugin :multi_public
+plugin :hash_branches
+plugin :hash_branch_view_subdir
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/169">
+<div class="notes">Between Roda 3.60 and the current version, 3.86, 19 more plugins were added. These plugins added support for</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 792px;">Roda 3.60-3.86</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 300px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/170">
+<div class="notes">handling arbitrary objects returned from route blocks,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 792px;">Roda 3.60-3.86</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 300px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :custom_block_results
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/171">
+<div class="notes">autoloading hash branches for faster development and testing,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 792px;">Roda 3.60-3.86</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 300px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :custom_block_results
+plugin :autoload_hash_branches
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/172">
+<div class="notes">setting a permissions policy,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 792px;">Roda 3.60-3.86</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 300px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :custom_block_results
+plugin :autoload_hash_branches
+plugin :permissions_policy
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/173">
+<div class="notes">enforcing cookie flags,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 792px;">Roda 3.60-3.86</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 300px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :custom_block_results
+plugin :autoload_hash_branches
+plugin :permissions_policy
+plugin :cookie_flags
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/174">
+<div class="notes">handling invalid request bodies,</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 792px;">Roda 3.60-3.86</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 300px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :custom_block_results
+plugin :autoload_hash_branches
+plugin :permissions_policy
+plugin :cookie_flags
+plugin :invalid_request_body
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/175">
+<div class="notes">and measuring line and branch coverage of templates, even in Ruby versions that do not support coverage for evaled code.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 15px; right: 792px;">Roda 3.60-3.86</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 160px; left: 300px;">Plugins</h1>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 400px; margin-left: 50px;"><code>
+plugin :custom_block_results
+plugin :autoload_hash_branches
+plugin :permissions_policy
+plugin :cookie_flags
+plugin :invalid_request_body
+plugin :render_coverage
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/176">
+<div class="notes">Roda 3.79 added an hmac_paths plugin, which allows you to easily prevent path enumeration by including an HMAC in the path</div>
+
+<h1 class="blue mono" style="font-size: 100px; position: absolute; top: 730px; left: 74px;">plugin :hmac_paths</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/177">
+<div class="notes">Going back to our initial example,</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on "employee", Integer do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/178">
+<div class="notes">We see that this allows anyone to issue requests for the branch.  What if you want to prevent someone with access to the application from enumerating your employees?</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.route do |r|
+  access_check!(r.ip)
+  r.on <b>"employee", Integer</b> do |employee_id|
+    next unless employee = Employee[employee_id]
+
+    r.is "name" do
+      r.get do
+        "Hello #{employee.name}"
+      end
+
+      r.post do
+        employee.update(name: r.params['name'])
+        r.redirect
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/179">
+<div class="notes">Using the hmac_paths plugin, you can wrap that routing block in r.hmac_path.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :hmac_paths, secret: ENV['SECRET']
+
+Roda.route do |r|
+  access_check!(r.ip)
+  <b>r.hmac_path do</b>
+    r.on "employee", Integer do |employee_id|
+      next unless employee = Employee[employee_id]
+
+      r.is "name" do
+        r.get do
+          "Hello #{employee.name}"
+        end
+
+        r.post do
+          employee.update(name: r.params['name'])
+          r.redirect
+        end
+      end
+    end
+  <b>end</b>
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/180">
+<div class="notes">When generating paths in your application, you would call the hmac_path method with the path, which would prefix an HMAC and some metadata to the path, such that r.hmac_path will consider it valid.  The hmac_paths plugin was expanded in Roda 3.80 to support session specific HMACs, so that paths valid for one logged in user would not work for a different logged in user.  It was expanded again in Roda 3.81 to support paths that are only valid for a limited time.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>Roda.plugin :hmac_paths, secret: ENV['SECRET']
+# <b>hmac_path("/employee/7")</b>
+Roda.route do |r|
+  access_check!(r.ip)
+  r.hmac_path do
+    r.on "employee", Integer do |employee_id|
+      next unless employee = Employee[employee_id]
+
+      r.is "name" do
+        r.get do
+          "Hello #{employee.name}"
+        end
+
+        r.post do
+          employee.update(name: r.params['name'])
+          r.redirect
+        end
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/181">
+<div class="notes">So that's a brief tour of plugins Roda has added in its first 10 years.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; right: 154px;">
+<span class="red">10</span> Years of <span class="red">Roda</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 400px; right: 154px;">Plugins</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/182">
+<div class="notes">I want to finish up this presentation by briefly discussing two open source applications that are built on top of Roda, and how they are using Roda's features.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 40px; right: 154px;">Open Source</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; right: 154px;">using Roda</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/183">
+<div class="notes">The first application is Karafka-web, which is the web front end for karafka, a Ruby gem for working with Kafka, a distributed publish-subscribe queue.</div>
+
+<p><img src="./file/karafka-web.png" style="position: absolute; top: 1px; left: 0px; width: 1920px; height: 1078px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/184">
+<div class="notes">Karafka-web ships all asset files inside the gem. It uses Roda's public plugin, and serves the assets using a path based on the gem version.  This automatically handles cache invalidation, by using a new path for each gem version.</div>
+
+<pre class="sh_ruby" style="font-size: 44px; margin-top: 40px; margin-left: 50px;"><code>plugin(
+  :public,
+  root: Karafka::Web.gem_root.join('lib/karafka/web/ui/public'),
+  headers: { 'Cache-Control' =&gt; 'max-age=31536000, immutable' },
+  gzip: true,
+  brotli: true
+)
+
+route do |r|
+  r.on 'assets', Karafka::Web::VERSION do
+    r.public
+  end
+
+  # ...
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/185">
+<div class="notes">Karafka-web uses the custom_block_results plugin, so that route blocks can return Karafka-web specific objects, which are translated to HTTP responses.  This reduces duplication inside the route blocks.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>plugin :custom_block_results
+
+handle_block_result Controllers::Responses::Render do |result|
+  render_response(result)
+end
+
+handle_block_result Controllers::Responses::Redirect do |result|
+  result.flashes.each { |key, value| flash[key] = value }
+
+  response.redirect result.back? ? request.referer : root_path(result.path)
+end
+
+handle_block_result Controllers::Responses::File do |result|
+  response.headers['Content-Type'] = 'application/octet-stream'
+  response.headers['Content-Disposition'] = "attachment; filename=\"#{result.file_name}\""
+  response.write result.content
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/186">
+<div class="notes">The second application is Ubicloud.  Ubicloud is an open source alternative to Amazon web services.  It's being developed by a startup also named Ubicloud.</div>
+
+<p><img src="./file/ubicloud.png" style="position: absolute; top: 140px; left: 330px; width: 1280px; height: 800px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/187">
+<div class="notes">Ubicloud uses the Rodauth authentication framework to handle authentication.  Rodauth is Ruby's most advanced authentication framework</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>plugin :rodauth do
+  enable :argon2, :change_login, :change_password, :close_account, :create_account,
+    :lockout, :login, :logout, :remember, :reset_password,
+    :disallow_password_reuse, :password_grace_period, :active_sessions,
+    :verify_login_change, :change_password_notify, :confirm_password,
+    :otp, :webauthn, :recovery_codes
+
+# ...
+
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/188">
+<div class="notes">With built-in support for multifactor authentication such as TOTP and Webauthn.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>plugin :rodauth do
+  enable :argon2, :change_login, :change_password, :close_account, :create_account,
+    :lockout, :login, :logout, :remember, :reset_password,
+    :disallow_password_reuse, :password_grace_period, :active_sessions,
+    :verify_login_change, :change_password_notify, :confirm_password,
+    <b>:otp, :webauthn</b>, :recovery_codes
+
+# ...
+
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/189">
+<div class="notes">Rodauth is a Roda plugin, but you can use Rodauth even in non-Roda applications, by using Roda's middleware plugin and using the Roda application as middleware.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code><b>plugin :rodauth</b> do
+  enable :argon2, :change_login, :change_password, :close_account, :create_account,
+    :lockout, :login, :logout, :remember, :reset_password,
+    :disallow_password_reuse, :password_grace_period, :active_sessions,
+    :verify_login_change, :change_password_notify, :confirm_password,
+    :otp, :webauthn, :recovery_codes
+
+# ...
+
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/190">
+<div class="notes">Ubicloud uses multiple Rodauth configurations, as it uses Rodauth to handle authentication for both browser logins as well as its JSON API.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>plugin :rodauth do
+  enable :argon2, :change_login, :change_password, :close_account, :create_account,
+    :lockout, :login, :logout, :remember, :reset_password,
+    :disallow_password_reuse, :password_grace_period, :active_sessions,
+    :verify_login_change, :change_password_notify, :confirm_password,
+    :otp, :webauthn, :recovery_codes
+
+# ...
+
+end
+
+<b class="block">plugin :rodauth, name: :api do
+  enable :argon2, :json, :jwt, :active_sessions, :login</b>
+
+# ...
+
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/191">
+<div class="notes">This is the section of Ubicloud's main route block which designed to handle browser requests and GitHub webhooks.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+  r.public
+  r.assets
+
+  r.on "webhook" do
+    r.hash_branches(:webhook_prefix)
+  end
+
+  r.rodauth
+
+  check_csrf!
+  rodauth.load_memory
+  rodauth.check_active_session
+
+  r.root do
+    r.redirect rodauth.login_route
+  end
+  rodauth.require_authentication
+
+  r.hash_branches("")
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/192">
+<div class="notes">Ubicloud is a decent sized application, so it uses the hash_branches plugin to separate routing trees.  It actually has two separate dispatches to routing trees.  This one is for the main application, and used for logged in users.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+  r.public
+  r.assets
+
+  r.on "webhook" do
+    r.hash_branches(:webhook_prefix)
+  end
+
+  r.rodauth
+
+  check_csrf!
+  rodauth.load_memory
+  rodauth.check_active_session
+
+  r.root do
+    r.redirect rodauth.login_route
+  end
+  rodauth.require_authentication
+
+  <b>r.hash_branches("")</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/193">
+<div class="notes">Webhooks dispatch to a different set of routing trees,</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+  r.public
+  r.assets
+
+  r.on "webhook" do
+    <b>r.hash_branches(:webhook_prefix)</b>
+  end
+
+  r.rodauth
+
+  check_csrf!
+  rodauth.load_memory
+  rodauth.check_active_session
+
+  r.root do
+    r.redirect rodauth.login_route
+  end
+  rodauth.require_authentication
+
+  r.hash_branches("")
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/194">
+<div class="notes">as they do not need cross site request forgery checks, nor do they require the same authentication as logged in users.  This type of setup is possible in other frameworks, but it's significantly simpler in Roda.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+  r.public
+  r.assets
+
+  r.on "webhook" do
+    r.hash_branches(:webhook_prefix)
+  end
+
+  r.rodauth
+
+  <b>check_csrf!</b>
+  rodauth.load_memory
+  rodauth.check_active_session
+
+  r.root do
+    r.redirect rodauth.login_route
+  end
+  <b>rodauth.require_authentication</b>
+
+  r.hash_branches("")
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/195">
+<div class="notes">So that's how some production open source applications are using Roda to simplify their web development.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 40px; right: 154px;">Open Source</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; right: 154px;">using Roda</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/196">
+<div class="notes">As we get near the end of the presentation, I'm happy to announce that after 10 years,</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">
+<span class="red">10</span> Years of <span class="red">Roda</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/197">
+<div class="notes">Roda recently passed 10 million downloads! So if you haven't already tried using Roda, now is a great time to start.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">
+<span class="red">10</span> Million</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 400px; left: 380px;">Downloads</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/198">
+<div class="notes">If you are wondering about the future of Roda, I'm happy to announce</div>
+
+<h1 class="blue" style="font-size: 200px; position: absolute; top: 220px; left: 50px;">
+<span class="red">The</span> Future of <span class="red">Roda</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/199">
+<div class="notes">that I've joined Ubicloud, and part of my job is continuing to maintain Roda and other open source libraries on top of which Ubicloud is built.</div>
+
+<p><img src="./file/jeremy.jpg" class="profile-pic" style="position: absolute; top: 282px; left: 70px;"></p>
+<h1 class="blue" style="font-size: 172px; position: absolute; top: 362px; left: 500px;">@</h1>
+<p><img src="./file/ubicloud.svg" style="position: absolute; top: 390px; left: 670px; width: 1180px; height: 149px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/200">
+<div class="notes">I hope you had fun learning about the first 10 years of Roda.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">
+<span class="red">10</span> Years of <span class="red">Roda</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/201">
+<div class="notes">If you are looking at reducing your cloud spend, or want an easy way to deploy Ruby apps to the cloud with Kamal, stop by the Ubicloud booth and talk to us.  We would love to work with you on it.</div>
+
+<p><img src="./file/ubicloud.svg" style="position: absolute; top: 465px; left: 370px; width: 1180px; height: 149px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/202">
+<div class="notes">That concludes my presentation.  I would like to thank all of you for listening to me.</div>
+
+<h1 class="blue" style="font-size: 300px; position: absolute; top: 432px; left: 150px;">Thank You<span class="red">!</span>
+</h1>
+</div>
+</div>
+</body></html>
+</div>
+
+</body>
+</html>
