@@ -9,7 +9,7 @@ sequel_pg,jeremyevans/sequel_pg,spec_cov,118,118,35,35,2022-10-05
 roda,jeremyevans/roda,spec_cov,5801,5801,2002,2002,2024-11-11
 sequel-annotate,jeremyevans/sequel-annotate,spec_cov,141,141,90,90,2022-07-12
 sequel_postgresql_triggers,jeremyevans/sequel_postgresql_triggers,spec_cov,126,126,4,4,2024-01-18
-rodauth,jeremyevans/rodauth,spec_cov,5061,5061,1283,1283,2024-07-22
+rodauth,jeremyevans/rodauth,spec_cov,5071,5071,1278,1278,2024-11-18
 rack-unreloader,jeremyevans/rack-unreloader,spec_cov,348,348,118,118,2023-01-18
 fixture_dependencies,jeremyevans/fixture_dependencies,spec_cov,208,208,100,100,2022-07-12
 cicphash,jeremyevans/ruby-cicphash,test_cov,239,239,73,73,2022-07-12
