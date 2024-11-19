@@ -1,0 +1,68 @@
+/* Screen */
+@media screen {
+  body {
+    overflow: scroll;
+  }
+
+  .slide {
+      margin: 10px;
+      padding: 0;
+      width: 1920px;
+      height: 1080px;
+      max-height: 1080px !important;
+      margin-left:auto; 
+      margin-right:auto;
+      overflow:hidden;
+      position: relative;
+      border: 1px solid #333;
+      page-break-after: always;
+      zoom: 50%;
+  }
+}
+
+/* Print */
+@media print {
+  .slide, .preso {
+      margin: 10px;
+      padding: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow:hidden;
+      border: none;
+      position: relative;
+      page-break-after: always;
+      zoom: 50%;
+  }
+}
+
+/* iPhone */
+/* Portrait */
+@media screen and (max-width: 320px)
+{
+  .preso { 
+      margin: 10px;
+      padding: 0;
+      width: 320px;
+      min-height: 480px;
+      margin-left:auto; 
+      margin-right:auto;
+/*      overflow:hidden;*/
+      border: 1px solid #333;
+      page-break-after: always
+  }
+}
+/* Landscape */
+@media screen and (min-width: 321px)
+{
+  .preso { 
+      margin: 10px;
+      padding: 0;
+      width: 480px;
+      min-height: 320px;
+      margin-left:auto; 
+      margin-right:auto;
+/*      overflow:hidden;*/
+      border: 1px solid #333;
+      page-break-after: always
+  }
+}
