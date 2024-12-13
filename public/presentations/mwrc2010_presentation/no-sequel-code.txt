@@ -1,0 +1,266 @@
+$:.unshift('sequel/lib')
+$:.unshift('sequel-mongo/lib')
+
+require 'rubygems'
+require 'sequel'
+require 'benchmark'
+
+SQLITE = Sequel.sqlite('nosequel.sqlite')
+MONGO = Sequel.connect('mongo:///nosequel')
+SQLITE_LOG = Object.new
+def SQLITE_LOG.info(msg, args=[])
+  puts "SQLite: #{msg}"
+end
+MONGO_LOG = Object.new
+def MONGO_LOG.info(msg, args=[])
+  puts " Mongo: #{msg}"
+end
+OBJ_MAP = {SQLITE=>'SQlite: ', MONGO=>' Mongo: '}
+
+SQLITE.create_table!(:t) do
+  primary_key :_id
+  Integer :a
+  Integer :b
+  String :c
+end
+class ST < Sequel::Model(SQLITE[:t])
+  many_to_one :square_root, :class=>self, :key=>:a, :primary_key=>:b
+end
+
+MONGO[:t].insert(:a=>1, :b=>2, :c=>3)
+class MT < Sequel::Model(MONGO[:t])
+  many_to_one :square_root, :class=>self, :key=>:a, :primary_key=>:b
+end
+MONGO[:t].delete
+
+M = {MONGO=>MT, SQLITE=>ST}
+
+def both_log(code)
+  both(code, :log=>true)
+end
+
+def both_quiet(code)
+  both(code, :quiet=>true)
+end
+
+def both(code, opts={})
+  puts "Code: #{code}" unless opts[:quiet]
+  rs = [[SQLITE, SQLITE_LOG], [MONGO, MONGO_LOG]].map do |db, log|
+    db.loggers << log if opts[:log]
+    begin
+      eval(code)
+    rescue => e
+      "#{db.class.name} raised exception: #{e}"
+    ensure
+      db.loggers.clear
+    end
+  end
+  unless opts[:quiet]
+    r1 = rs.first
+    if rs.all?{|r| r == r1}
+      puts "Same answer for all databases: #{r1.inspect}"
+    else
+      puts "Different answers:"
+      puts [SQLITE, MONGO].zip(rs).map{|obj, r| "#{OBJ_MAP[obj]}#{r.inspect}"}
+    end
+    puts ""
+  end
+end
+
+def puts_eval(s)
+  puts s
+  eval s
+end
+
+# Total slides
+$ts = 0
+SLIDES = {}
+def slide(n, &block)
+  SLIDES[$ts] = n
+  Object.send(:define_method, "s#{$ts}", &block)
+  $ts += 1
+end
+
+def last_slide
+  send("s#{$ts-1}")
+end
+
+# Current slide
+$cs = 0
+def n
+  s = SLIDES[$cs]
+  puts s
+  puts('-' * s.length)
+  send("s#{$cs}")
+  $cs += 1
+end
+
+slide("NoSequel") do
+  puts "Sequel = The Database Toolkit for Ruby"
+  puts "NoSQL = (Not at all|Not only) SQL Databases"
+  puts "NoSequel = Using NoSQL databases with Sequel"
+  puts "Me = Jeremy Evans, Sequel maintainer"
+end
+
+slide("MongoDB") do
+  puts "MongoDB = NoSQL Document Store"
+  puts "sequel-mongo = MongoDB driver for Sequel"
+end
+
+slide("How?") do
+  puts "1) Sequel uses a DSL instead of literal SQL strings."
+  puts "2) DSL produces objects that represent concepts."
+  puts "3) Treat those objects specially in the sequel-mongo driver."
+  puts "4) Compile filter objects to javascript instead of SQL."
+end
+
+slide("Selecting Records") do
+  both_log "db[:t].map(:a)"
+end
+
+slide("Inserting Records") do
+  both_log "db[:t].insert(:a=>1, :b=>2)"
+  both "db[:t].map(:a)"
+end
+
+slide("Updating Records") do
+  both_log "db[:t].update(:a=>10, :b=>20)"
+  both "db[:t].map(:a)"
+end
+
+slide("Deleting Records") do
+  both_log "db[:t].delete"
+  both "db[:t].map(:a)"
+end
+
+slide("Add Some More Data") do
+  puts '10.times{|i| db[:t].insert(:a=>i, :b=>i * i)}'
+  10.times{|i| both_quiet "db[:t].insert(:a=>#{i}, :b=>#{i * i})"}
+end
+
+slide("Ordering") do
+  both_log "db[:t].order(:b.desc).map{|x| x.values_at(:a, :b)}"
+end
+
+slide("Equals") do
+  both_log "db[:t].filter(:a=>5).map(:b)"
+end
+
+slide("Not Equals") do
+  both_log "db[:t].exclude(:a=>5).order(:b).map(:b)"
+end
+
+slide("Inequality") do
+  both_log "db[:t].filter{a > 5}.order(:b).map(:b)"
+end
+
+slide("IS NULL/undefined") do
+  both "db[:t].insert(:b=>100)"
+  both_log "db[:t].filter(:a=>nil).order(:b).map(:b)"
+  both_log "db[:t].exclude(:a=>nil).order(:b).map(:b)"
+  both "db[:t].filter(:b=>100).delete"
+end
+
+slide("Limits") do
+  both_log "db[:t].filter{a < 5}.order(:b.desc).limit(2).map(:b)"
+end
+
+slide("Offsets") do
+  both_log "db[:t].filter{a < 5}.order(:b.desc).limit(2, 1).map(:b)"
+end
+
+slide("Selecting only certain columns") do
+  both_log "db[:t].filter{a < 5}.order(:b.desc).select(:a).all"
+end
+
+slide("Counting") do
+  both_log "db[:t].filter{a < 5}.count"
+end
+ 
+slide("Standard math operators") do
+  both_log "db[:t].filter((:a + 1) * 5 - :b > 0).order(:b).map(:b)"
+end
+
+slide("Bitwise math operators") do
+  both_log "db[:t].filter((:a.sql_number << 2) / (:b.sql_number | 3) >= 1).order(:b).map(:b)"
+end
+
+slide("Add some strings to the table") do
+  puts_eval "NAMES =%w'Joe Jim Bob John Pat Kat Don Paul Alex Ali'"
+  puts "NAMES.each_with_index{|n,i| db[:t].filter(:a=>i).update(:c=>n)"
+  NAMES.each_with_index{|n,i| both_quiet "db[:t].filter(:a=>#{i}).update(:c=>#{n.inspect})"}
+  both "db[:t].order(:a).map{|x| x.values_at(:a, :c)}"
+end
+
+slide("Search with Regexps") do
+  both_log "db[:t].filter(:c=>/^J/).order(:c).map(:c)"
+end
+
+slide("Search with LIKE") do
+  both_log "db[:t].filter(:c.like('J%')).order(:c).map(:c)"
+end
+
+slide("String concatenation") do
+  both_log "db[:t].filter([:c, :c].sql_string_join(' ').like('J% Jo%')).order(:c).map(:c)"
+end
+
+slide("IN/NOT IN with array") do
+  both_log "db[:t].filter(:c=>%w'Ali Alex').order(:c).map(:c)"
+  both_log "db[:t].exclude(:c=>%w'Ali Alex').order(:c).map(:c)"
+end
+
+slide("Complex Expression Example 1") do
+  both_log "db[:t].filter{a < 3}.or{a > 6}.order(:a).map(:a)"
+end
+
+slide("Complex Expression Example 2") do
+  both_log "db[:t].filter{((a > 3) & c.like('A%')) | {b=>[4, 9, 16]}}.order(:a).map(:a)"
+end
+
+slide("Complex Expression Example 3") do
+  both_log "db[:t].filter{((a * 3 + (b.sql_number >> 1) > b - 10) & ~c.ilike('%a%')) | ({b=>[4, 9, 16]} & {a=>3, :b=>16}.sql_or)}.order(:a).map(:a)"
+end
+
+slide("Case Statements") do
+  both_log "db[:t].filter({1=>9, 5=>0}.case(1, :a) * :b * 10 > 90).order(:a).map(:a)"
+end
+
+slide("Casting") do
+  both_log "db[:t].filter(:a.cast_string + :a.cast_string => '11').order(:a).map(:a)"
+  both_log "db[:t].filter(\"'1'\".lit.cast_numeric + :a => 3).order(:a).map(:a)"
+end
+
+slide("Models and attribute access") do
+  both_log "a = M[db].order(:a.desc).first; a.a"
+end
+
+slide("Model associations") do
+  both_log "M[db].order(:a.desc).first.square_root.a"
+end
+
+slide("Doesn't Work: Updating multi objects with a filter") do
+  both_log "db[:t].filter{a < 5}.update(:b=>30)"
+  both "db[:t].order(:a).map(:b)"
+end
+
+slide("The necessary completely flawed benchmark") do
+  both_quiet "db[:t].delete"
+  puts "SQLite"
+  n = 200
+  Benchmark.bm(25) do |x|
+    x.report("SQLite #{n/10} inserts:"){(n/10).times{|i| SQLITE[:t].insert(:a=>i, :b=>n - i)}}
+    x.report("Mongo #{n} inserts:"){n.times{|i| MONGO[:t].insert(:a=>i, :b=>n - i)}}
+    x.report("SQLite #{(n/10)} lookups by id:"){(n/10).times{|i| SQLITE[:t][:a=>i]}}
+    x.report("Mongo #{n} lookups by id:"){n.times{|i| MONGO[:t][:a=>i]}}
+    x.report("SQLite #{n/10} select alls:"){(n/10).times{|i| SQLITE[:t].all}}
+    x.report("Mongo #{n/10} select alls:"){(n/10).times{|i| MONGO[:t].all}}
+    x.report("SQLite #{(n/10)} updates:"){(n/10).times{|i| SQLITE[:t].filter(:a=>i).update(:b=>i)}}
+    x.report("Mongo #{n} updates:"){n.times{|i| MONGO[:t].filter(:a=>i).update(:b=>i)}}
+    x.report("SQLite #{(n/10)} deletes:"){(n/10).times{|i| SQLITE[:t].filter(:a=>i).delete}}
+    x.report("Mongo #{n} deletes:"){n.times{|i| MONGO[:t].filter(:a=>i).delete}}
+  end
+end
+
+slide("The End") do
+  puts "sequel-mongo: http://github.com/jeremyevans/sequel-mongo"
+end
