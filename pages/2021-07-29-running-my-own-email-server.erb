@@ -338,3 +338,15 @@ match from local action relay_to_local
 <h3>MTA-STS</h3>
 
 <p>bentley@ also mentioned setting up MTA-STS, to force the use of TLS when transferring mail.  I looked into this, but it doesn't work with self signed certificates on the MX, and I don't want to be bothered to setup <a href="https://man.openbsd.org/acme-client">acme-client</a> and run <a href="https://man.openbsd.org/httpd">httpd</a> on the VM. I consider the risk added by those, while very small, to be still higher than the risk of someone attempting a MITM attack on my email server.</p>
+
+<h2 id="epilogue">Epilogue II (2025-06-16)</h2>
+
+<h3>Going Multicloud</h3>
+
+<p>One thing I become more uncomfortable with over time in the setup described above is that the virtual machine handling inbound email is a single point of failure.  If it crashes, it would only take an hour or so to setup a new virtual machine. However, if I want to change the DNS records, I would have a problem, as my DNS registrar requires email verification of all DNS changes, and it doesn't appear to be possible to disable that. If I can't receive email, I can't change the DNS records to point to the new server.  I should probably move to a different DNS registrar.  I did setup a backup user on a different domain, that is allowed to update DNS settings, and that did address that issue. However, even with a more sane DNS register, being unable to receive email until I have a spare hour to rebuild the virtual machine is suboptimal.</p>
+
+<p>Since you don't want all of your eggs in one basket, it's a bad idea to have your backup email server use the same infrastructure as your primary email server.  I ended up going with <a href="https://www.hetzner.com/cloud/">Hetzner</a> for my backup email server. They weren't the cheapest option, but the were the best value, at $5.59/month for a 2VCPU/2GB RAM machine running in Oregon.  They at least implicitly support OpenBSD, as OpenBSD is one of the installation ISO options they have.  As the Hetzner machine has 4x the RAM as the Vultr machine, I moved <a href="2022-09-02-migrating-off-heroku.html">the web services I was hosting on the Vultr machine</a> over to the Hetzner machine.</p>
+
+<h3>SendGrid &rarr; SMTP2GO</h3>
+
+<p>SendGrid announced recently that they are discontinuing their free plan, so I had to switch to another provider to send outbound emails. I found that <a href="https://www.smtp2go.com/">SMTP2GO</a> also <a href="https://www.smtp2go.com/pricing/">offers a free plan</a>.  Moreover, <a href="https://www.smtp2go.com/blog/sendgrid-has-ended-its-free-plan-we-have-got-you-covered/">SMTP2GO explicitly encourages users of SendGrid's free plan to migrate</a>. Setting up SMTP2GO was very easy. I didn't even need to worry about SPF or DKIM, since <a href="https://www.smtp2go.com/blog/spf-record/">SMTP2GO uses Variable Envelope Return Path</a>.  I'm now a happy user of SMTP2GO, and recommend them.</p>
