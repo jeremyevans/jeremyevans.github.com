@@ -1,0 +1,2497 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>The Thin CLIent Approach</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1920px;
+          height: 1080px;
+        }
+        #footer { width: 1901px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+  <link rel="stylesheet" href="./css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src="./js/presenter.js"></script>
+
+    <style type="text/css">
+      #preview div.zoomed { zoom: 48%;}
+    </style>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/1">
+<div class="notes">Hello everyone!  I'm super happy to be here to talk about using a thin CLIent approach to build command line interfaces that interact with web services.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 40px; left: 100px;">The</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">Thin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">CLI<span class="blue">ent</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Approach</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; bottom: 50px; right: 50px; text-align: right;">2025 San Francisco <span class="red">Ruby</span> Conference</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/2">
+<div class="notes">My name is Jeremy Evans. I'm a Ruby committer. I'm also the maintainer of Sequel, Roda, Rodauth, and many other gems.</div>
+
+<p><img src="./file/jeremy.jpg" class="profile-pic" style="position: absolute; top: 282px; left: 70px;"></p>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 422px; left: 750px;">GitHub:  <span class="blue mono"> jeremyevans</span>
+</h1>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 497px; left: 750px;">Twitter:  <span class="blue mono">@jeremyevans0</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/3">
+<div class="notes">I am a principal software engineer at Ubicloud. We are building an open source alternative to Amazon Web Services.</div>
+
+<p><img src="./file/jeremy.jpg" class="profile-pic" style="position: absolute; top: 282px; left: 70px;"></p>
+<h1 class="blue" style="font-size: 172px; position: absolute; top: 362px; left: 500px;">@</h1>
+<p><img src="./file/ubicloud.svg" style="position: absolute; top: 390px; left: 670px; width: 1180px; height: 149px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/4">
+<div class="notes">Since shortly after Ubicloud was founded in 2023, it supported provisioning resources such as virtual machines using both a browser interface and an API.</div>
+
+<h1 class="blue" style="font-size: 128px; position: absolute; top: 272px; left: 150px;">Web</h1>
+<h1 class="blue" style="font-size: 128px; position: absolute; top: 412px; left: 150px;">API</h1>
+<h1 class="blue" style="font-size: 172px; position: absolute; top: 362px; left: 500px;">@</h1>
+<p><img src="./file/ubicloud.svg" style="position: absolute; top: 390px; left: 670px; width: 1180px; height: 149px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/5">
+<div class="notes">Earlier this year, we decided to add a command line interface that used that API, so users can do things like add and remove virtual machines from the command line, without any custom programming.</div>
+
+<h1 class="red" style="font-size: 128px; position: absolute; top: 272px; left: 150px;">Web</h1>
+<h1 class="red" style="font-size: 128px; position: absolute; top: 412px; left: 150px;">API</h1>
+<h1 class="blue" style="font-size: 128px; position: absolute; top: 562px; left: 150px;">CLI</h1>
+<h1 class="blue" style="font-size: 172px; position: absolute; top: 362px; left: 500px;">@</h1>
+<p><img src="./file/ubicloud.svg" style="position: absolute; top: 390px; left: 670px; width: 1180px; height: 149px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/6">
+<div class="notes">I was assigned responsibility for implementing the command line interface. While I've written numerous command line programs in my career, I had not yet written one that was nearly as large as the intended scope.</div>
+
+<h1 class="blue" style="font-size: 128px; position: absolute; top: 562px; left: 150px;">CLI</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/7">
+<div class="notes">One way to create such a command line program is to use what I'll call the traditional approach.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">Traditional</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Approach</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/8">
+<div class="notes">Here's what the traditional approach looks like.</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/9">
+<div class="notes">In this diagram, client is the command line program running on the user's machine.</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+<div class="blur" style="position: absolute; top: 150px; left: 610px; width: 1310px; height: 785px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 0; width: 840px; height: 285px;"></div>
+<div class="blur" style="position: absolute; top: 650px; left: 0; width: 840px; height: 285px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/10">
+<div class="notes">And target is the API endpoint the client needs to send the request to.</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+<div class="blur" style="position: absolute; top: 150px; left: 0; width: 1310px; height: 785px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 1280px; width: 640px; height: 285px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/11">
+<div class="notes">When you run the client, it processes the array of arguments, determines what type of request is being made, and determines the target endpoint to contact.</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+<div class="blur" style="position: absolute; top: 400px; left: 610px; width: 1310px; height: 585px;"></div>
+<div class="blur" style="position: absolute; top: 650px; left: 0; width: 840px; height: 285px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 1280px; width: 640px; height: 285px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/12">
+<div class="notes">After determining the endpoint to contact, the client prepares the body of the request, assuming the request needs a body. Then it sends the request to the target endpoint.</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+<div class="blur" style="position: absolute; top: 550px; left: 610px; width: 610px; height: 585px;"></div>
+<div class="blur" style="position: absolute; top: 650px; left: 0; width: 840px; height: 285px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 1280px; width: 640px; height: 285px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/13">
+<div class="notes">The target endpoint handles the request and performs the appropriate action,</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+<div class="blur" style="position: absolute; top: 550px; left: 610px; width: 610px; height: 585px;"></div>
+<div class="blur" style="position: absolute; top: 650px; left: 0; width: 840px; height: 285px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/14">
+<div class="notes">and then returns a response in json format.</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+<div class="blur" style="position: absolute; top: 650px; left: 0; width: 840px; height: 285px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/15">
+<div class="notes">The client parses the json response, and formats the text to display to the user.|So this is what the traditional approach looks like when creating a command line interface to interact with web services.</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/16">
+<div class="notes">I think the biggest advantage of the traditional approach</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 300px; left: 100px;">Advantage</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/17">
+<div class="notes">is that it is simple. There are only two parts involved, the client and the target endpoint.  All else being equal, simpler solutions are better than more complex solutions.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 200px;">Simple</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/18">
+<div class="notes">However, all else is not equal in this case, as there are some significant disadvantages to the traditional approach.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 300px; right: 100px;">Disadvantages</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/19">
+<div class="notes">I think the main disadvantage when using the traditional approach is that if you add a new API feature, such as a new target endpoint,</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+<div class="blur" style="position: absolute; top: 150px; left: 0; width: 1310px; height: 785px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 1280px; width: 640px; height: 285px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/20">
+<div class="notes">the client running on the user's machine cannot use it.  The user would need to update their client to a version that supports the new API feature. Forcing users to update their client to use new API features results in increased friction.</div>
+
+<p><img src="./file/traditional-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 785px;"></p>
+<div class="blur" style="position: absolute; top: 150px; left: 610px; width: 1310px; height: 785px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 0; width: 840px; height: 285px;"></div>
+<div class="blur" style="position: absolute; top: 650px; left: 0; width: 840px; height: 285px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/21">
+<div class="notes">One approach to addressing this disadvantage is to use an auto-updating program. However, this adds complexity and opens up security issues for users, and many users would not want a command line program like this to auto-update.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 320px; left: 1000px;">Auto</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 1000px;">Update<span class="red">?</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/22">
+<div class="notes">With the traditional approach, you lose the primary advantage of web-based software development over traditional software development, which is as soon as you put a new feature into production, it is immediately usable by users of the web site.|Now, imagine if every time you added a feature to your website, you had to have your users update their browser in order to use it. Preposterous, right? And yet, that's basically what the traditional approach requires.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 370px; left: 360px;">No</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 300px;">Instant</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 680px; left: 300px;">Deployment</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/23">
+<div class="notes">The other, less important disadvantage is in error handling. With the traditional approach, errors that occur in parsing the command line arguments, building the request body, and parsing the response from the target endpoint all occur on the user's machine. You have to hope the users report the errors.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 620px; left: 800px;">Error</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 800px; left: 800px;">Handling</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/24">
+<div class="notes">You can have errors auto reported, but many users are against that kind of telemetry, and there can always be bugs in the auto reporter that prevent notifications about the errors.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 260px; left: 800px;">Auto</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 440px; left: 800px;">Report</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 620px; left: 800px;">Errors<span class="blue">?</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/25">
+<div class="notes">Now that I've discussed the traditional approach,</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">Traditional</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Approach</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/26">
+<div class="notes">let's examine the thin CLIent approach, and see how it compares.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">Thin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">CLI<span class="blue">ent</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Approach</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/27">
+<div class="notes">Here's what the thin CLIent approach looks likes.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/28">
+<div class="notes">The client in this diagram is still the command line program, and the target is still the API endpoint.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 150px; left: 305px; width: 1135px; height: 569px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 1430px; width: 490px; height: 210px;"></div>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 375px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/29">
+<div class="notes">The thin CLIent approach introduces the idea of the gateway endpoint. Most of the logic that is in the client program in the traditional approach is performed by the gateway endpoint in the thin CLIent approach.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 330px; left: 300px; width: 402px; height: 200px;"></div>
+<div class="blur" style="position: absolute; top: 330px; left: 950px; width: 490px; height: 200px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 210px;"></div>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 1920px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/30">
+<div class="notes">With the thin CLIent approach, the client doesn't even parse the array of arguments it receives. Instead, it formats them as a json array, and sends a POST request to the gateway endpoint with that json array in the request body.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 430px; left: 300px; width: 402px; height: 200px;"></div>
+<div class="blur" style="position: absolute; top: 330px; left: 950px; width: 490px; height: 200px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 210px;"></div>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 1920px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/31">
+<div class="notes">The gateway endpoint is a single HTTP route that accepts a JSON array of strings, which are the command line arguments passed to the client. The gateway endpoint parses this JSON array and determines the target endpoint to contact.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 430px; left: 300px; width: 402px; height: 100px;"></div>
+<div class="blur" style="position: absolute; top: 330px; left: 950px; width: 490px; height: 200px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 1400px; width: 520px; height: 210px;"></div>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 1920px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/32">
+<div class="notes">The gateway endpoint formats a request body if needed and then sends the request to the target endpoint.|There is no requirement that the gateway endpoint be running in the same process as the target endpoint, though they are in Ubicloud's case. In Ubicloud's implementation, instead of sending an HTTP request to the target endpoint, the gateway endpoint calls the target endpoint Rack application directly with a rack environment hash.|However, you could easily implement a gateway endpoint that ran on a different machine and contacted the target endpoints using HTTP requests.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 430px; left: 300px; width: 402px; height: 100px;"></div>
+<div class="blur" style="position: absolute; top: 430px; left: 950px; width: 490px; height: 100px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 1400px; width: 520px; height: 210px;"></div>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 1920px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/33">
+<div class="notes">The target endpoint does the same processing it did previously. There is no difference in how the target endpoint handles requests.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 430px; left: 300px; width: 402px; height: 100px;"></div>
+<div class="blur" style="position: absolute; top: 430px; left: 950px; width: 490px; height: 100px;"></div>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 1920px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/34">
+<div class="notes">There is also no difference in the json response returned by the target endpoint. No changes to the target endpoint are needed when introducing the thin CLIent approach. The gateway endpoint is operating as a normal client from the perspective of the target endpoint.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 430px; left: 300px; width: 402px; height: 100px;"></div>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 1920px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/35">
+<div class="notes">Instead of the client parsing the json response and formatting it, the gateway parses the json response and formats it as a plain text response that is suitable for the client to print directly.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 430px; left: 300px; width: 402px; height: 100px;"></div>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 420px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/36">
+<div class="notes">The gateway then sends the plain text response to the client program.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 520px; left: 0; width: 420px; height: 185px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/37">
+<div class="notes">All the client needs to do is print that preformatted text response to the standard output, or if the HTTP response status indicates there was an error, to the standard error.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/38">
+<div class="notes">Because the client does so little when using the thin CLIent approach, it can be very small.  It only needs to know how to submit an HTTPS request, how to format JSON, and how to print to the standard output or standard error.|It doesn't need to know how to parse JSON or how to format the text to be printed. It does not need to have any logic specific to the api being contacted. It just prints the response body to the terminal.|A minimal thin CLIent in Ruby could probably be under 50 lines, and probably under a couple hundred lines in a lower level language.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 150px; left: 690px; width: 1230px; height: 569px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/39">
+<div class="notes">Almost all logic that was in the client in the traditional approach is moved to the gateway endpoint in the thin CLIent approach. This is what gives the thin CLIent approach its advantages.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+<div class="blur" style="position: absolute; top: 150px; left: 0; width: 690px; height: 569px;"></div>
+<div class="blur" style="position: absolute; top: 150px; left: 1430px; width: 490px; height: 569px;"></div>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/40">
+<div class="notes">The main advantage is instant deployment.  When adding a new target endpoint, you can update the gateway endpoint to allow CLI access to the new target endpoint at the same time. Users can use the new CLI features without updating their client program.  This brings the advantages of web deployment to command line interfaces.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 300px;">Instant</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 680px; left: 300px;">Deployment</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/41">
+<div class="notes">Most non-network errors that occur in the client program in the traditional approach instead occur on the gateway endpoint in the thin CLIent approach.|This is better, because the gateway endpoint is running on a server you control, and you can record and process any exceptions raised by the gateway endpoint in the same manner you would handle any errors that occur during server-side processing.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 620px; left: 800px;">Error</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 800px; left: 800px;">Handling</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/42">
+<div class="notes">As the client is small, it is simple to port to other languages. This is useful, because in general it is best to provide dependency-free static executables to users, and not all languages make that easy.|If all of the logic has to be in the client, you have a tough choice between wanting to use a friendly language for that logic, versus needing to use a language that can build dependency-free static executables.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 300px; left: 700px;">Small</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 480px; left: 700px;">Client</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/43">
+<div class="notes">Because all of the logic moves from the client to the gateway endpoint, you can implement the logic in the same language that you use to implement the target endpoints, which for Ubicloud, and I assume for most of you, is Ruby.|When you consider command line argument parsing, determining the target endpoints, handling responses from the target endpoints, and formatting those responses into plain text, I think it's vastly more preferable to use Ruby for those things than it would be to use a lower-level language that makes it easy to build dependency-free static executables.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 500px; left: 700px;">Use</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 680px; left: 700px;">Ruby</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/44">
+<div class="notes">A small advantage of the thin CLIent approach is less latency if the command requires accessing multiple target endpoints. With the traditional approach, if the client needs to send multiple requests to separate target endpoints, where the output of the first target endpoint is necessary to determine the next target endpoint, each of those requests could have significant latency.|With the thin CLIent approach, the client only needs to make a single request to the gateway endpoint, and gateway endpoint handles the internal requests to the target endpoints. In general, the gateway has much less latency to the target endpoint than the client does, so any requests that require multiple target endpoints generally have lower overall latency with the thin CLIent approach.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 120px; left: 300px;">Less</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 300px; left: 300px;">Latency</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/45">
+<div class="notes">The flip side of this is that since there is no logic on the client, all program executions require a request to the gateway endpoint.  This includes commands for help or to get the program version. In the traditional approach, the client can provide the expected output without submitting a request, but when using the thin CLIent approach, it requires a request.|Additionally, if a command requires confirmation, the traditional approach can ask for the confirmation up front, before submitting a request, while the thin CLIent approach requires multiple requests, since the server must respond to the original request asking for confirmation.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 120px; left: 300px;">More</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 300px; left: 300px;">Latency</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/46">
+<div class="notes">If the client needs to execute external programs, you have other issues to consider.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/47">
+<div class="notes">For example, Ubicloud's client supports executing ssh, sftp, and scp to connect to created virtual machines.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 500px; left: 50px;">
+<span class="red">VMs:</span> <code>ssh sftp scp</code>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/48">
+<div class="notes">It also supports executing psql, pg_dump, and pg_dumpall to connect to created PostgreSQL databases.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 500px; left: 50px;">
+<span class="red">VMs:</span> <code>ssh sftp scp</code>
+</h1>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 700px; left: 50px;">
+<span class="red" style="font-size: 120px">PostgreSQL:</span> <code>psql pg_dump pg_dumpall</code>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/49">
+<div class="notes">When executing external programs based on a server response, you cannot trust the server.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 380px; left: 50px;">Security</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/50">
+<div class="notes">If the server tells the client to delete all files in the user's home directory, you don't want the client to do that.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 600px; left: 350px;"><code>rm -rf ~/* ~/.*</code></h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/51">
+<div class="notes">Safe external program execution requires deviating from a pure thin CLient approach, and implementing API-specific logic in the client.|The majority of logic in Ubicloud's CLI program deals with checking the program and arguments the server is asking the client to execute.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 380px; left: 50px;">Checks</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/52">
+<div class="notes">In order to execute an external program, Ubicloud's client requires the program name to exactly match one of these 6. It also requires that the program name requested by the server be one of the command line arguments passed to the client, so there is a clear indication the user running the client is expecting external program execution.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 600px; left: 50px;"><code>ssh sftp scp</code></h1>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 800px; left: 50px;"><code>psql pg_dump pg_dumpall</code></h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/53">
+<div class="notes">Additionally, at most one argument to the executed program can be new.  All other arguments to the executed program must already be included in the command line arguments passed to the client.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 600px; left: 150px;">At Most One New Argument</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/54">
+<div class="notes">The arguments to the executed program must include dash dash to separate command line options from command line arguments, except for pg_dumpall, which doesn't support this.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 600px; left: 150px;">Must include <code class="red">--</code><br>(except <span class="red">pg_dumpall</span>)</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/55">
+<div class="notes">The new argument must appear after dash dash. This allows the server to provide a new argument to the executed program, but not a new option to the executed program.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 600px; left: 150px;">New argument after <code class="red">--</code>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/56">
+<div class="notes">pg_dumpall doesn't support this, so for pg_dumpall, the new argument must start with -d.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 600px; left: 150px;">
+<span class="red">pg_dumpall</span>: new argument starts with <code class="red">-d</code>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/57">
+<div class="notes">Those restrictions are sufficient to allow Ubicloud's client to safely execute all 6 programs.  These restrictions are hard coded into the client, so if we want to support additional external programs in the future, users will have to update their clients.|That would negate the main advantage of the thin CLIent approach, but it is expected that adding new external programs will be infrequent, and executing programs on user's machines without these checks is too dangerous. So this seems like a reasonable compromise.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 20px; left: 50px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 200px; left: 50px;">Execution</h1>
+<h1 class="blue" style="font-size: 120px; position: absolute; top: 500px; left: 50px;">
+<span class="red">VMs:</span> <code>ssh sftp scp</code>
+</h1>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 700px; left: 50px;">
+<span class="red" style="font-size: 120px">PostgreSQL:</span> <code>psql pg_dump pg_dumpall</code>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/58">
+<div class="notes">Using the thin CLIent approach requires you to consider how to configure the client. Ubicloud's client requires an authentication token to work at all. For testing, or to use a custom server, you would want to configure the gateway endpoint to contact.|With a pure thin CLIent approach, you cannot configure the program using a command line option, because the client does not parse command line arguments.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">Thin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">CLI<span class="blue">ent</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Configuration</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/59">
+<div class="notes">It is possible to support configuration via a configuration file. However, you would have to hard code the configuration file location, you could not provide a configuration file location using a command line option.|This was considered too limiting for Ubicloud, and as the only required configuration option is a security token, we assume many enterprise security teams would not want it stored in a file.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">Thin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">CLI<span class="blue">ent</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Configuration</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 760px; left: 100px;">File</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/60">
+<div class="notes">We chose to handle all configuration using environment variables. This allows users to choose their own approach based on their risk preference.  Users with a large risk appetite may want to set the environment variables in their shell for ease of use. My risk appetite isn't that large, so I use a wrapper script that sets the environment variables and executes the program.|A wrapper script isn't necessarily better than a configuration file, but the important thing is that the user has control over how to provide configuration.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">Thin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">CLI<span class="blue">ent</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Configuration</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 780px; left: 100px;">Environment Variables</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/61">
+<div class="notes">After deciding to use the thin CLIent approach, I started building a prototype of the client program.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">Thin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">CLI<span class="blue">ent</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Program</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 760px; left: 100px;">Development</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/62">
+<div class="notes">Unsurprisingly, I built the prototype in Ruby.  We still maintain the Ruby version in our repository. It uses only the net/http and json libraries, no external gems, and runs correctly on Ruby 2.4 and later. While this doesn't have any dependencies other than Ruby, Ruby itself is a dependency.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 1100px;">Ruby</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/63">
+<div class="notes">We want to provide the user a dependency-free static executable. While Ruby is great at a lot of things, building dependency-free static executables is not one of them.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 100px;">Dependency-free</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 100px;">Static</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Executables</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/64">
+<div class="notes">That may be changing in the future due to Tebako, a recently developed packaging tool. However, packaging Ruby applications with Tebako produces relatively large executables, and using Tebako requires some other restrictions that make it suboptimal for our usage.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 380px; right: 100px;">Tebako</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/65">
+<div class="notes">Now, while the standard Ruby implementation is not good at building dependency-free static executables, mruby allows you to compile your Ruby code to C, and then build a dependency-free static executable using a C compiler.|This static executable will embed the mruby virtual machine to execute the Ruby code, but from a user perspective, it is similar to other static executables, and it does not require any dependencies installed on the user's machine.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 220px;">mruby</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/66">
+<div class="notes">Unfortunately, I quickly found that while mruby is for the most part syntax compatible with Ruby, it is not library compatible with Ruby. There is no require, and the net/http and json libraries are not standard libraries in mruby.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 220px;">mruby</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 380px; left: 930px;">≠</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 1100px;">Ruby</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/67">
+<div class="notes">For json, I found an mruby-json library, which worked fine and was API compatible for my usage.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 220px;">mruby-<span class="blue">json</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/68">
+<div class="notes">Replacing net/http was slightly more challenging, but after trying a couple mruby libraries, I did get mruby-curl to work.  It is not API compatible with net/http, so it required some code changes, but they weren't extensive.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 220px;">mruby-<span class="blue">curl</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/69">
+<div class="notes">When building an executable that embeds mruby, the recommended approach is to use mrbc with -B to compile your Ruby code to mruby bytecode that is stored in a C array.  Then you write a small C program that sets up the mruby virtual machine, and then has the virtual machine execute the bytecode stored in the C array.  Then you use a C compiler to compile that C program. As long as you tell the C compiler to compile a static executable, you should end up with a dependency-free static executable.</div>
+
+<h1 class="red" style="font-size: 200px; position: absolute; top: 380px; left: 120px;">mrbc <span class="blue">-Bsym</span> file.rb</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/70">
+<div class="notes">However, that didn't work on my system, because I didn't have static libraries for libcurl or libssl installed.  It would likely have worked if I did, but I realized something before trying that.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 220px;">mruby-<span class="blue">curl</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/71">
+<div class="notes">We didn't just want a dependency-free static executable for the operating system and platform I was running.  We wanted dependency-free static executables for all common operating systems and platforms. What we really wanted,</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 100px;">Dependency-free</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 100px;">Static</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Executables</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/72">
+<div class="notes">was cross compiled dependency-free static executables. Because when building 7 separate executables to provide to users, it's much simpler to cross compile them from a single machine than it is to maintain 7 separate build machines.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 0; left: 100px;">Cross Compiled</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 100px;">Dependency-free</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 100px;">Static</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Executables</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/73">
+<div class="notes">Doing that with mruby-curl would require building cross compilation environments for libcurl and libssl.  Not having significant experience in cross compiling C code, and honestly not eager to get experience with it, I decided to try other another language that supports cross compilation as a built-in feature.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 220px;">mruby-<span class="blue">curl</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/74">
+<div class="notes">I chose Zig. I had no previous Zig experience, but I had heard good things about the language, and Zig is known for good cross compilation support.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Zig</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/75">
+<div class="notes">I decided to port the prototype Ruby program to Zig.  It was only about 100 lines, so it shouldn't be that difficult.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Zig</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/76">
+<div class="notes">I decided to enlist the help of an AI service for the initial porting. This definitely saved time.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Zig</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 250px;">Perplexity <span class="red">AI</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/77">
+<div class="notes">What it didn't result in was working code.  The generated Zig code had typical issues when using older AI.  It called functions that were not defined, and defined functions that were not called.|Zig's syntax is not forgiving. It took 2 solid hours of fixing the AI generated code before it would even compile successfully. When I finally got it compile successfully, I felt like Sisyphus finally getting his boulder to the top of the hill. This is an especially appropriate metaphor, because when I ran the code</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Zig</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 250px;">Perplexity <span class="red">AI</span>
+</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 660px; left: 200px;">Syntax <span class="blue">Errors</span>!</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/78">
+<div class="notes">it segfaulted. I determined this wasn't a problem with my Zig installation, but in the AI generated code or my changes, because I could compile simple Zig programs and run them fine.|However, because I didn't have any Zig experience, and didn't start from a working simple implementation and gradually add complexity, I wasn't well qualified to debug the issue. So I decided to try another language.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Zig</h1>
+<h1 class="red" style="font-size: 320px; position: absolute; top: 510px; left: 250px;">Segfault!</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/79">
+<div class="notes">I picked Go.  Go is a higher level language, and while it had been over a decade since I last used it, I still had some familiarity with it.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/80">
+<div class="notes">Again, I started by porting the Ruby prototype to Go,</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/81">
+<div class="notes">using the same AI service.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 250px;">Perplexity <span class="red">AI</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/82">
+<div class="notes">This had about the same result as with Zig.  It defined functions that weren't called, and called functions that weren't defined. It also didn't require necessary libraries, and required unnecessary ones. However, it was a decent start. I took about an hour to fix all of the syntax errors to get it to compile successfully. Then the moment of truth came. I ran the program</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 250px;">Perplexity <span class="red">AI</span>
+</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 660px; left: 200px;">Syntax <span class="blue">Errors</span>!</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/83">
+<div class="notes">and it didn't segfault!  Now, it didn't work correctly, it printed an error, but after another hour of debugging, it passed the test suite I had built for the prototype.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="red" style="font-size: 320px; position: absolute; top: 510px; left: 100px;">No Segfault!</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/84">
+<div class="notes">Additionally, the test suite ran 30x faster with the Go version than with the prototype Ruby version, mostly due to avoiding Ruby startup overhead.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="red" style="font-size: 320px; position: absolute; top: 510px; left: 200px;">
+<span class="blue">30x</span> Faster</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/85">
+<div class="notes">To see how far AI has come this year, I tried using Claude Code to do the same Ruby to Go conversion earlier this month.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 250px;">Claude <span class="red">Code</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/86">
+<div class="notes">This is the prompt I gave it, Convert the bin/ubi Ruby program to a bin/ubi.go Go program while keeping identical behavior as much as possible.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 250px;">Claude <span class="red">Code</span>
+</h1>
+<h1 class="blue" style="font-size: 80px; position: absolute; top: 730px; left: 250px; line-height: 1.2;">Convert the bin/ubi <span class="red">Ruby</span> program to a bin/ubi.go Go program while keeping identical behavior as much as possible.</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/87">
+<div class="notes">The generated Go code compiled correctly after removing a single unused variable.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 250px;">Claude <span class="red">Code</span>
+</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 730px; left: 350px;">
+<span class="red">1</span> Unused Variable</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/88">
+<div class="notes">The generated executable passed over 2/3 of the tests. Quite the improvement over the results from earlier this year.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 250px;">Claude <span class="red">Code</span>
+</h1>
+<h1 class="blue" style="font-size: 100px; position: absolute; top: 730px; left: 350px;">23 examples, <span class="red">7 failures</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/89">
+<div class="notes">Now, cross compiling with Go is very easy. You just need to pass a couple environment variables, GOOS and GOARCH, when compiling.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 180px; left: 340px;">Ruby →</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 1100px;">Go</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 510px; left: 500px;">GOOS</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 690px; left: 500px;">GOARCH</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/90">
+<div class="notes">Within another 15 minutes, I had cross compiled dependency-free static executables for all common operating systems and platforms. We released the initial version of these static executables in March, and so far, we have only updated them once.|We've made many improvements and added many new features to our CLI since March, but none of those improvements required a new client. If you use the original client, it still works. In general, we can add CLI features at any time, and have users benefit from them immediately after deployment.|Because the executables are statically linked, security issues in one of the embedded libraries may require users download a new program to be protected. However, because the client program is small and uses only the Go standard library, security issues should hopefully be infrequent.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 0; left: 100px;">Cross Compiled</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 100px;">Dependency-free</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 100px;">Static</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Executables</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/91">
+<div class="notes">In order to handle a CLI request, the first step is parsing command line arguments on the gateway endpoint in order to determine what request is being made, and what target endpoints should be contacted.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 100px;">Command Line</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 100px;">Argument</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Parsing</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/92">
+<div class="notes">Here are examples of the type of commands we want to support.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+ubi help [options] [command [subcommand]]
+ubi pg list [options]
+ubi pg (location/pg-name | pg-id) add-firewall-rule cidr
+ubi pg (location/pg-name | pg-id) add-metric-destination username password url
+ubi pg location/pg-name create [options]
+ubi pg (location/pg-name | pg-id) delete-firewall-rule rule-id
+ubi pg (location/pg-name | pg-id) delete-metric-destination md-id
+ubi pg (location/pg-name | pg-id) destroy [options]
+ubi pg (location/pg-name | pg-id) [options] pg_dump [pg_dump-options]
+ubi pg (location/pg-name | pg-id) [options] pg_dumpall [pg_dumpall-options]
+ubi pg (location/pg-name | pg-id) [options] psql [psql-options]
+ubi pg (location/pg-name | pg-id) reset-superuser-password new-password
+ubi pg (location/pg-name | pg-id) restart
+ubi pg (location/pg-name | pg-id) restore new-db-name restore-time
+ubi pg (location/pg-name | pg-id) show [options]
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/93">
+<div class="notes">We want to support top-level commands, mainly for easy help output. Each command needs to be able to support options and either a fixed or variable number of arguments.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+<b>ubi help [options] [command [subcommand]]</b>
+ubi pg list [options]
+ubi pg (location/pg-name | pg-id) add-firewall-rule cidr
+ubi pg (location/pg-name | pg-id) add-metric-destination username password url
+ubi pg location/pg-name create [options]
+ubi pg (location/pg-name | pg-id) delete-firewall-rule rule-id
+ubi pg (location/pg-name | pg-id) delete-metric-destination md-id
+ubi pg (location/pg-name | pg-id) destroy [options]
+ubi pg (location/pg-name | pg-id) [options] pg_dump [pg_dump-options]
+ubi pg (location/pg-name | pg-id) [options] pg_dumpall [pg_dumpall-options]
+ubi pg (location/pg-name | pg-id) [options] psql [psql-options]
+ubi pg (location/pg-name | pg-id) reset-superuser-password new-password
+ubi pg (location/pg-name | pg-id) restart
+ubi pg (location/pg-name | pg-id) restore new-db-name restore-time
+ubi pg (location/pg-name | pg-id) show [options]
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/94">
+<div class="notes">We want to support subcommands, and have the same ability for subcommands that we have for commands.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+ubi help [options] [command [subcommand]]
+<b>ubi pg list [options]</b>
+ubi pg (location/pg-name | pg-id) add-firewall-rule cidr
+ubi pg (location/pg-name | pg-id) add-metric-destination username password url
+ubi pg location/pg-name create [options]
+ubi pg (location/pg-name | pg-id) delete-firewall-rule rule-id
+ubi pg (location/pg-name | pg-id) delete-metric-destination md-id
+ubi pg (location/pg-name | pg-id) destroy [options]
+ubi pg (location/pg-name | pg-id) [options] pg_dump [pg_dump-options]
+ubi pg (location/pg-name | pg-id) [options] pg_dumpall [pg_dumpall-options]
+ubi pg (location/pg-name | pg-id) [options] psql [psql-options]
+ubi pg (location/pg-name | pg-id) reset-superuser-password new-password
+ubi pg (location/pg-name | pg-id) restart
+ubi pg (location/pg-name | pg-id) restore new-db-name restore-time
+ubi pg (location/pg-name | pg-id) show [options]
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/95">
+<div class="notes">We also want an approach where subcommands can follow command arguments. This allows the user to think about the object being modified, and then the action to take on that object, which in many cases is more natural than thinking about what action to take and then thinking about which object to perform the action on. I consider this a more object-oriented command line style.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+ubi help [options] [command [subcommand]]
+ubi pg list [options]
+<b class="block">ubi pg (location/pg-name | pg-id) add-firewall-rule cidr
+ubi pg (location/pg-name | pg-id) add-metric-destination username password url
+ubi pg location/pg-name create [options]
+ubi pg (location/pg-name | pg-id) delete-firewall-rule rule-id
+ubi pg (location/pg-name | pg-id) delete-metric-destination md-id
+ubi pg (location/pg-name | pg-id) destroy [options]
+ubi pg (location/pg-name | pg-id) [options] pg_dump [pg_dump-options]
+ubi pg (location/pg-name | pg-id) [options] pg_dumpall [pg_dumpall-options]
+ubi pg (location/pg-name | pg-id) [options] psql [psql-options]
+ubi pg (location/pg-name | pg-id) reset-superuser-password new-password
+ubi pg (location/pg-name | pg-id) restart
+ubi pg (location/pg-name | pg-id) restore new-db-name restore-time
+ubi pg (location/pg-name | pg-id) show [options]</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/96">
+<div class="notes">When using this style, we want to be able to provide options between command arguments and subcommands, so that subcommands can share option parsing.</div>
+
+<pre class="sh_ruby" style="font-size: 36px; margin-top: 40px; margin-left: 50px;"><code>
+ubi help [options] [command [subcommand]]
+ubi pg list [options]
+ubi pg (location/pg-name | pg-id) add-firewall-rule cidr
+ubi pg (location/pg-name | pg-id) add-metric-destination username password url
+ubi pg location/pg-name create [options]
+ubi pg (location/pg-name | pg-id) delete-firewall-rule rule-id
+ubi pg (location/pg-name | pg-id) delete-metric-destination md-id
+ubi pg (location/pg-name | pg-id) destroy [options]
+ubi pg (location/pg-name | pg-id) <b>[options]</b> pg_dump [pg_dump-options]
+ubi pg (location/pg-name | pg-id) <b>[options]</b> pg_dumpall [pg_dumpall-options]
+ubi pg (location/pg-name | pg-id) <b>[options]</b> psql [psql-options]
+ubi pg (location/pg-name | pg-id) reset-superuser-password new-password
+ubi pg (location/pg-name | pg-id) restart
+ubi pg (location/pg-name | pg-id) restore new-db-name restore-time
+ubi pg (location/pg-name | pg-id) show [options]
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/97">
+<div class="notes">There are numerous Ruby libraries dedicated to parsing command line arguments, and I did a review of the most popular ones to determine whether they would meet our needs.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 100px;">Command Line</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 100px;">Argument</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Parsing</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 780px; left: 200px;">Libraries</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/98">
+<div class="notes">Two popular libraries, commander and gli, appeared to support commands but not subcommands.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 180px; left: 100px;">commander</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 100px;">gli</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/99">
+<div class="notes">dry-cli supports both commands and subcommands. However, it didn't appear to be support options between commands and subcommands, or subcommands after command arguments.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">dry-cli</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/100">
+<div class="notes">Thor is the most popular command line argument processor for Ruby, and it supports both commands and subcommands, and supports option parsing at each level.  However, it did not appear to support subcommands after command arguments.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 780px; left: 100px;">thor</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/101">
+<div class="notes">So I did what any self-respecting programmer does when they cannot find a library to do what they need, and wrote my own argument parsing library.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 280px; left: 700px;">DIY</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/102">
+<div class="notes">Parsing command line arguments is in many ways similar to parsing paths for web requests, and I have a lot of experience doing that in Roda. I originally played around with writing the argument parsing library as a Roda plugin. While it worked, it was suboptimal, mostly because it is expensive to build the option parsers per request. That is a problem you don't have when parsing paths.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 700px;">Roda</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/103">
+<div class="notes">I ultimately ended up building a Roda-ish library to handle the argument parsing. This allows for a separation of the static and dynamic parts of parsing command line arguments.|The static parts would be the help text and option parser.  The dynamic parts would be handling the parsed options and command arguments, and returning results or calling subcommands.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 700px;">Roda<span class="blue">-ish</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/104">
+<div class="notes">This library was originally developed as part of Ubicloud, but earlier this year, it was released as a separate library named rodish. In addition to being Roda-ish, the sh part of the name indicates it is related to the command line.</div>
+
+<h1 class="red" style="font-size: 220px; position: absolute; top: 380px; left: 700px;">Rodi<span class="blue">sh</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/105">
+<div class="notes">Let's look at a rodish Hello World.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/106">
+<div class="notes">Rodish is designed to be installed into an existing class.  Instances of this class serve as the context for the argument parsing.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+<b>class CliExample</b>
+  Rodish.processor(self)
+
+  on do
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/107">
+<div class="notes">Installing rodish into a class requires calling Rodish.processor with that class.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  <b>Rodish.processor(self)</b>
+
+  on do
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/108">
+<div class="notes">Starting a new argument parse is done by calling the process class method with the array of arguments. This creates a new instance of CliExample that will be used for the argument parsing.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+<b>CliExample.process(ARGV)</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/109">
+<div class="notes">The class-level on method sets up the root of the command parsing. If you don't have separate commands or subcommands, you can use the root command to handle all argument parsing. The block to on is executed in the context of the root command, and is used for configuring the command.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  <b>on</b> do
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/110">
+<div class="notes">The run method sets the code to be executed when this command is run. The block is executed in the context of the CliExample instance that was created in the CliExample.process call.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    <b>run</b> do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/111">
+<div class="notes">So if you run this program with no arguments, it will print Hello World.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    run do
+      <b>puts "Hello World!"</b>
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb
+Hello World!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/112">
+<div class="notes">Let's add support for a command named hello. This will allow us to say hello to a specific person.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+<b class="block">    on "hello" do
+      args 1
+      run do |person|
+        puts "Hello #{person}!"
+      end
+    end</b>
+
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/113">
+<div class="notes">This command will accept 1 argument, instead of the default of 0 arguments.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    on "hello" do
+      <b>args 1</b>
+      run do |person|
+        puts "Hello #{person}!"
+      end
+    end
+
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/114">
+<div class="notes">This subcommand will have its own run block, which will be called when the subcommand is executed.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    on "hello" do
+      args 1
+<b class="block">      run do |person|
+        puts "Hello #{person}!"
+      end</b>
+    end
+
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/115">
+<div class="notes">We can run the program with hello and Jeremy as the arguments.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    on "hello" do
+      args 1
+      run do |person|
+        puts "Hello #{person}!"
+      end
+    end
+
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+<b>$ ruby cli-example.rb hello Jeremy</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/116">
+<div class="notes">The root command will dispatch to the hello subcommand, because the first argument is hello.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    on "<b>hello</b>" do
+      args 1
+      run do |person|
+        puts "Hello #{person}!"
+      end
+    end
+
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb <b>hello</b> Jeremy
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/117">
+<div class="notes">The remaining command line argument is Jeremy, which is yielded to the hello command's run block.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    on "hello" do
+      args 1
+      run do |<b>person</b>|
+        puts "Hello #{person}!"
+      end
+    end
+
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb hello <b>Jeremy</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/118">
+<div class="notes">So this will print Hello Jeremy. You can nest subcommands inside commands, with no limit on the depth of nesting.  However, this doesn't show the unique feature of Rodish, which is subcommands after command arguments.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    on "hello" do
+      args 1
+      run do |person|
+        <b>puts "Hello #{person}!"</b>
+      end
+    end
+
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb hello Jeremy
+<b>Hello Jeremy!</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/119">
+<div class="notes">Let's change this to support an object-oriented style, where you pass the object to operate on, before the action to take on the object.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+
+  on do
+    on "hello" do
+      args 1
+      run do |person|
+        puts "Hello #{person}!"
+      end
+    end
+
+    run do
+      puts "Hello World!"
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb <b>Jeremy hello</b>
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/120">
+<div class="notes">Here's what that looks like.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/121">
+<div class="notes">We start with loading the post_commands plugin.  Rodish, like Roda, Rodauth, and Sequel, ships with many plugins. Not all programs need to support this object-oriented style, so it is included in a plugin that ships with Rodish, instead of being part of the core Rodish functionality.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  <b>plugin :post_commands</b>
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/122">
+<div class="notes">The hello command now uses run_on instead of on. This will register it as a post subcommand and not a normal subcommand.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    <b>run_on</b> "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/123">
+<div class="notes">Because post subcommands may support both options and arguments, when using post subcommands, you generally want to accept a range of arguments.  Typically, you would require at least two, the first to specify the object to operate on, the second to specify the subcommand name.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    <b>args(2..)</b>
+    run do |(name, *args), options, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/124">
+<div class="notes">As you allow a range of arguments and not a fixed number of arguments, the arguments are yielded to the run block as an array.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |<b>(name, *args)</b>, options, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/125">
+<div class="notes">The options argument would be the options hash parsed by the option parser. There are no options for this command,</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), <b>options</b>, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/126">
+<div class="notes">but in general you pass the same options hash from commands to subcommands, and the option parsing supports disambiguating which command the options came from.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), <b>options</b>, command|
+      @name = name
+      command.run(self, <b>options</b>, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/127">
+<div class="notes">The final argument is the command object,</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, <b>command</b>|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/128">
+<div class="notes">which will be used to dispatch to subcommands.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, <b>command</b>|
+      @name = name
+      <b>command</b>.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/129">
+<div class="notes">In this case, we take the first command line argument and assign it to an instance variable.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      <b>@name = name</b>
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/130">
+<div class="notes">Then we dispatch to the post subcommands.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      @name = name
+      <b>command.run(self, options, args)</b>
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/131">
+<div class="notes">As the subcommand given was hello, this will dispatch to the hello post subcommand.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    <b>run_on "hello" do</b>
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy <b>hello</b>
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/132">
+<div class="notes">This run block is executed in the same context as the run block for the root subcommand,</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      <b>run</b> do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+Hello Jeremy!
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/133">
+<div class="notes">so it can use the instance variable already defined. So this will print Hello Jeremy.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        <b>puts "Hello #{@name}!"</b>
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      @name = name
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+<pre style="position: absolute; font-size: 32px; top: 40px; left: 750px;"><code>
+$ ruby cli-example.rb Jeremy hello
+<b>Hello Jeremy!</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/134">
+<div class="notes">The key advantage is really this line. Using this approach, you can share logic easily, so that you don't need to repeat the logic in each subcommand.  This brings the primary benefit of Roda's routing tree to command line argument parsing.|I don't have time to do a deeper dive into Rodish in this presentation, but hopefully you can see that Rodish is low ceremony and quite flexible. You may want to consider it if you are building a command line application.</div>
+
+<pre class="sh_ruby" style="font-size: 32px; margin-top: 40px; margin-left: 50px;"><code>
+require 'rodish'
+
+class CliExample
+  Rodish.processor(self)
+  plugin :post_commands
+
+  on do
+    run_on "hello" do
+      run do
+        puts "Hello #{@name}!"
+      end
+    end
+
+    args(2..)
+    run do |(name, *args), options, command|
+      <b>@name = name</b>
+      command.run(self, options, args)
+    end
+  end
+end
+
+CliExample.process(ARGV)
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/135">
+<div class="notes">So using the Go-based command line program for the client, and using Rodish to process command line arguments on the gateway endpoint, we added a command line interface to support our entire API command set.|While this made it possible to interact with Ubicloud from the command line, asking people to install a command line program without allowing them to test it out first is a bit of an ask.</div>
+
+<h1 class="red" style="font-size: 128px; position: absolute; top: 272px; left: 150px;">Web</h1>
+<h1 class="red" style="font-size: 128px; position: absolute; top: 412px; left: 150px;">API</h1>
+<h1 class="blue" style="font-size: 128px; position: absolute; top: 562px; left: 150px;">CLI</h1>
+<h1 class="blue" style="font-size: 172px; position: absolute; top: 362px; left: 500px;">@</h1>
+<p><img src="./file/ubicloud.svg" style="position: absolute; top: 390px; left: 670px; width: 1180px; height: 149px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/136">
+<div class="notes">I realized that because there is almost no client side logic, we could easily offer a web based version of our CLI, so that users could test the CLI just by logging into our web application. This allows users to see how easy it is to use, so they will be more inclined to spend the time to download it.</div>
+
+<h1 class="red" style="font-size: 128px; position: absolute; top: 272px; left: 150px;">Web</h1>
+<h1 class="blue" style="font-size: 128px; position: absolute; top: 562px; left: 150px;">CLI</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/137">
+<div class="notes">Here's what Ubicloud's web shell looks like.</div>
+
+<p><img src="./file/web-shell-1.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/138">
+<div class="notes">You can input a command into the web shell, such as vm list to list virtual machines, and when you run it,</div>
+
+<p><img src="./file/web-shell-2.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/139">
+<div class="notes">You see the command you ran, and the output of the command. In this case, the vm list display includes the location, name, id, and ip addresses of the virtual machines.</div>
+
+<p><img src="./file/web-shell-3.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/140">
+<div class="notes">Most ids in command output are linked to the related page, so if you click on the link for this virtual machine.</div>
+
+<p><img src="./file/web-shell-4.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/141">
+<div class="notes">It takes you to the page to manage that virtual machine.</div>
+
+<p><img src="./file/web-shell-5.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/142">
+<div class="notes">Going back to the previous page,</div>
+
+<p><img src="./file/web-shell-3.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/143">
+<div class="notes">You may notice the multiple commands button.</div>
+
+<p><img src="./file/web-shell-6.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/144">
+<div class="notes">This takes you to a page where you can input multiple commands.</div>
+
+<p><img src="./file/web-shell-7.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/145">
+<div class="notes">Let's say I want to create a firewall.</div>
+
+<p><img src="./file/web-shell-8.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/146">
+<div class="notes">And create a private subnet using that firewall.</div>
+
+<p><img src="./file/web-shell-9.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/147">
+<div class="notes">And then create a virtual machine attached to that private subnet. If I click the Run button.</div>
+
+<p><img src="./file/web-shell-10.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/148">
+<div class="notes">It will run the command to create the firewall, and show you the output. It will also fill in the next command to execute, and show you the remaining commands to be executed. If you click the Run button on this screen.</div>
+
+<p><img src="./file/web-shell-11.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/149">
+<div class="notes">It will run the command to create the private subnet, and show you the output. It will also fill in the next command to execute, which will create the virtual machine.|This provides a simple way for users to walk through a multistep setup process.  Once users see how easy and powerful the web shell is, they are more inclined to install the command line program, so they can interact with Ubicloud from the command line.|One important thing to note is because almost all logic is in the gateway endpoint, it took very little work to add this web shell. A working prototype of the web shell was written during a company hackathon in about an hour.</div>
+
+<p><img src="./file/web-shell-12.png" style="position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/150">
+<div class="notes">I hope you had fun learning about The Thin CLIent Approach.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 40px; left: 100px;">The</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 220px; left: 100px;">Thin</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 400px; left: 100px;">CLI<span class="blue">ent</span>
+</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 580px; left: 100px;">Approach</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/151">
+<div class="notes">The key point to remember is that moving almost all of the logic from the client to a gateway endpoint allows for the advantages of web deployment and simplifies maintenance.</div>
+
+<p><img src="./file/thin-cli.jpg" style="position: absolute; top: 150px; left: 0; width: 1920px; height: 569px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/152">
+<div class="notes">If you enjoyed this presentation, and want to read more of my thoughts on Ruby programming, please consider picking up a copy of Polished Ruby Programming.</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 581px; height: 1031px; width: 822px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/153">
+<div class="notes">That concludes my presentation.  I would like to thank all of you for listening to me.</div>
+
+<h1 class="blue" style="font-size: 300px; position: absolute; top: 432px; left: 150px;">Thank You<span class="red">!</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/154">
+<div class="notes">If you have any questions, I'll be happy to answer them during the break.</div>
+
+<h1 class="red" style="font-size: 300px; position: absolute; top: 432px; left: 150px;">Questions<span class="blue">?</span>
+</h1>
+</div>
+</div>
+</body></html>
+</div>
+
+</body>
+</html>
