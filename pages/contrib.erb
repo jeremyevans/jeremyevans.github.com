@@ -202,24 +202,6 @@
     <li>Avoid spurious keyword argument warning on Ruby 2.7 (0242f3194c15d10ad5037d4581e78cb70b13b648)</li>
     <li>Avoid another Ruby 2.7 keyword warning (6eac3d4164f4e3a70c810c8c7f48e551486763a2)</li>
   </ul></li>
-  <li><a href="http://rubygems.org/">Rubygems</a>:<ul>
-    <li>Fix test failures when :format_executable is set to true by default (968626d59a56e7703b4c589fea04fed1099c4c99)</li>
-    <li>Handle gem specification encoding that doesn't convert to internal encoding (cedac8117d5fd10e2cc6dbd501894733b0e6e3f7)</li>
-    <li>Keep previously loaded specs as active when refreshing gems (b61c621fb2e00e215bcc8ad7d9fe45433881da14)</li>
-    <li>Make existing executable check respect --format-executable (20fc72349aa788f95d73d7ed11f7a5ad49f14be8)</li>
-    <li>Install files starting with '.' (caa95666f698a4a5f1c73216f357e5b1b7216fb3)</li>
-    <li>Add --no-lock option to not write Gemfile.lock (b70cccab4b40bc3ee5a696ba3aacb788ec4da33c)</li>
-    <li>Make gem -g Gemfile respect --conservative (9fdffcafd6b8a11246ce44b48372d765dd8719b5)</li>
-    <li>Make gem install --local not attempt remote access (4196d4fb3c60c579d12874d53b4a17be702d2bbb)</li>
-    <li>Don't output mkmf.log warning message if compilation did not fail (769290c456e429e70923ffc7bb134711879f79fa, 3b08533fbf475102889c17be848d112f448c98c5)</li>
-    <li>Fix tests when --program-suffix and similar ruby configure options are used (e5f2fbe51c78a1ab62ae9bd7a7b58616707e5f8c)</li>
-    <li>Fix another test when --program-suffix and similar ruby configure options are used (763bef10988f7a0283704e5f80aeb8ed79179f05)</li>
-    <li>Fix tests when ruby --program-suffix is used without rubygems --format-executable (154c79cc6815c64db544c1376a6ab7a23090f03b)</li>
-    <li>Fix setup command if format_executable is true by default (ec3c64a3de4048bec588896819df647c616cc6a8)</li>
-    <li>Fix Kernel#warn override (2041b591d17f8b4a2d7139c2f0f0fcb7621615cf)</li>
-    <li>Fix Kernel#warn override to handle backtrace location with nil path (511935645af83bd2b6a8ab9888a291e3b5d0452f)</li>
-    <li>Add Bundler#Definition.no_lock accessor (bbc2128df769af7af62815f97cf874990abb0834)</li>
-  </ul></li>
   <li><a href="https://github.com/sass/sass">sass</a>: Work with ruby 2.3's --enable-frozen-string-literal (3bde119f7976c64dd93b51feea110f7cacaf2d16)</li>
   <li><a href="https://github.com/SciRuby/statsample">stat_sample</a>: Remove bad check in cronbach_alpha calculation (3eaa53e072c71856932533ea584ecec887aca503)</li>
   <li><a href="https://github.com/simplecov-ruby/simplecov-html">simplecov</a>: Print branch coverage with line coverage (0838045193f615007620f0b4eda25584d4fb513d)</li>
