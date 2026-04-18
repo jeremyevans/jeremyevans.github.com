@@ -1,0 +1,3287 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Implementing Core Set</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" />
+  <link type="text/css" href="./css/tipsy.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+    <style type="text/css">
+      @media screen {
+        #preso, .slide {
+          width: 1920px;
+          height: 1080px;
+        }
+        #footer { width: 1901px; }
+      }
+    </style>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+  <script type="text/javascript" src="./js/jquery.parsequery.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+  <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+  <script type="text/javascript" src="./js/coffee-script.js"></script>
+
+      <script type="text/javascript" src="./js/sh_lang/sh_ruby.min.js"></script>
+      <script type="text/javascript" src="./js/sh_lang/sh_c.min.js"></script>
+
+    <link rel="stylesheet" href="./file/fonts.css" type="text/css"/>
+    <link rel="stylesheet" href="./file/something.css" type="text/css"/>
+
+
+  <script type="text/javascript">
+  $(function(){
+      if(!('slaveWindow' in window) && window.name !== 'toolbar' && $(window).width() < $(document).width()) {
+        no_resize = true;
+        $('body').css("zoom", ""+($(window).width()*100.0)/$(document).width()+"%");
+        $('body').css("overflow-y", "auto");
+        $('body').css("overflow-x", "hidden");
+        $('#notesInfo').css("font-size", ""+$(document).width()*14.0/$(window).width()+"px");
+        $('#notesInfo').css("line-height", ""+$(document).width()*20.0/$(window).width()+"px");
+      }
+      setupPreso(false, '.');
+  });
+  </script>
+
+  <link rel="stylesheet" href="./css/presenter.css" type="text/css"/>
+  <script type="text/javascript" src="./js/presenter.js"></script>
+
+    <style type="text/css">
+      #preview div.zoomed { zoom: 48%;}
+    </style>
+
+</head>
+
+<body>
+
+<div id="help">
+  <table>
+    <tr><td class="key">z, ?</td><td>toggle help (this)</td></tr>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">shift-space, &larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>toggle debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+  </table>
+</div>
+
+<div id="main" class="container_12">
+  <div id="topbar" class="grid_12">
+    <div id="slideSource">
+      Source: <span id="slideFile"></span>
+    </div>
+    <span id="links">
+      <span class="desktop">
+        <a id="slaveWindow" href="javascript:toggleSlave();" title="Enable the slave window.">Enable Slave Window</a>
+        <a id="onePage" href="/onepage" title="Load the single page view. Useful for printing.">Single Page</a>
+      </span>
+      <span class="mobile">
+        <a id="update" href="">Update</a>
+      </span>
+    </span>
+  </div>
+
+  <div id="center">
+    <div id="sidebar" class="grid_4">
+      <div id="slidemenu">
+        <div id="navigation" class="menu"></div>
+      </div>
+    </div>
+    <div id="preview" class="grid_8">
+      <img id="disconnected" src="/css/disconnected-large.png" />
+      <div id="preso" class="zoomed">loading presentation...</div>
+    </div>
+  </div>
+
+  <div id="bottom" class="grid_12">
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/1">
+<div class="notes">Hello everyone!  In this presentation, I will be discussing how the Set class was reimplemented as a core class in Ruby 4.0.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">Implementing</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 280px; left: 114px;">Core <span class="red">Set</span>
+</h1>
+<h1 class="blue" style="font-size: 108px; position: absolute; bottom: 50px; right: 50px; text-align: right;">
+<span class="red">Ruby</span>Kaigi 2026</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/2">
+<div class="notes">My name is Jeremy Evans. I am a Ruby committer. I am also the maintainer of Sequel, Roda, Rodauth, and many other gems.</div>
+
+<p><img src="./file/jeremy.jpg" class="profile-pic" style="position: absolute; top: 292px; left: 246px;"></p>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 432px; left: 750px;">GitHub:  <span class="blue mono"> jeremyevans</span>
+</h1>
+<h1 class="red" style="font-size: 72px; position: absolute; top: 507px; left: 750px;">Twitter:  <span class="blue mono">@jeremyevans0</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/3">
+<div class="notes">I work at Ubicloud as a Principal Software Engineer.  We are building an open source alternative to Amazon Web Services.</div>
+
+<p><img src="./file/jeremy.jpg" class="profile-pic" style="position: absolute; top: 282px; left: 70px;"></p>
+<h1 class="blue" style="font-size: 172px; position: absolute; top: 362px; left: 500px;">@</h1>
+<p><img src="./file/ubicloud.svg" style="position: absolute; top: 390px; left: 670px; width: 1180px; height: 149px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/4">
+<div class="notes">Let me first give a brief history of the Set class.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">History</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/5">
+<div class="notes">Set was added as a standard library in Ruby 1.8.0.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">Added</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 300px; left: 114px;">in <span class="red">Ruby</span> 1.8.0</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/6">
+<div class="notes">When Set was added, it used a hash for storage, where each element of the set is a key in the hash,</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">Elements</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 300px; left: 114px;">Are Hash Keys</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/7">
+<div class="notes">and all of the hash values are true.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 280px; left: 114px;">All Hash Values</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 100px;">Are <span class="red mono">true</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/8">
+<div class="notes">In Ruby 3.2, Set became an autoloaded constant. So while the Set standard library was not loaded by default, you could use Set without requiring it, so from a user perspective, it appeared to be a core class.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">Autoloaded</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 300px; left: 114px;">in <span class="red">Ruby</span> 3.2</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/9">
+<div class="notes">Set's basic design did not change between when it was introduced in Ruby 1.8.0 and Ruby 3.4, though there have been some methods added to set over the years. Considering the constraints that Set needed to operate within, I do not think it could have been designed better. However, there were a couple issues with it.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 380px; left: 114px;">Design</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 600px; left: 114px;">Unchanged</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/10">
+<div class="notes">The first was that set used more memory than was theoretically necessary.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 280px; left: 114px;">Excessive</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 450px; left: 100px;">Memory Use</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/11">
+<div class="notes">This is due to the fact that for each element in the set, there is space taken to store a true value in the hash, even though this value is the same for all elements. While true itself is an immediate object and does not take space by itself, the hash entry must reserve space for the hash value. This reserved space is basically wasted for set elements.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 280px; left: 114px;">All Hash Values</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 430px; left: 100px;">Are <span class="red mono">true</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/12">
+<div class="notes">The second issue was certain set methods return incorrect values if called concurrently by multiple threads.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 480px; left: 114px;">Thread</h1>
+<h1 class="red" style="font-size: 220px; position: absolute; top: 650px; left: 195px;">Safety</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/13">
+<div class="notes">Here is an definition of one such method, add predicate, which has been functionally the same since Ruby 1.8.0.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    add(o) unless include?(o)
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/14">
+<div class="notes">The sole reason that add predicate exists is so that the caller can tell the difference between adding a new element to the set, or making no change to the set as the element was already in the set.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def <b>add?(o)</b>
+    add(o) unless include?(o)
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/15">
+<div class="notes">The method first checks whether the set already includes the element.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    add(o) unless <b>include?(o)</b>
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/16">
+<div class="notes">If the element is already included in the set, include is true, so the unless conditional results in the method returning nil and making no changes.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    add(o) <b>unless</b> include?(o)
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/17">
+<div class="notes">If the set does not already include the element, it adds the element to the set. add returns the set itself, so the caller can differentiate between the cases when a new element was added and when the element already existed.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    <b>add(o)</b> unless include?(o)
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/18">
+<div class="notes">Unfortunately, this code has an issue if the set is being updated concurrently by multiple threads. If two threads call add predicate concurrently, both could check whether the element is already included in the set, which could be false for both threads.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    add(o) unless <b>include?(o)</b>
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/19">
+<div class="notes">Then, both threads call add and both return the set. This is a thread safety issue, since the method should return nil for one of the threads.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    <b>add(o)</b> unless include?(o)
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/20">
+<div class="notes">Unfortuantely, there is no way to avoid this issue, because Ruby's hash does not provide a method that allows for thread safe behavior in this case. There have been multiple proposals to add such a method to hash, in some cases specifically to allow for a thread safe version of this method, but they were never merged.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    add(o) unless include?(o)
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/21">
+<div class="notes">Note that this method also has a minor performance issue, because it does two separate hash lookups instead of a single hash lookup, which makes the method slower.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    <b>add(o)</b> unless <b>include?(o)</b>
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/22">
+<div class="notes">Now that you know about the issues with the previous standard library implementation, I can discuss the new implementation of Set in Ruby 4.0. Note that while the implementation changed completely,</div>
+
+<h1 class="red" style="font-size: 260px; position: absolute; top: 75px; left: 144px;">New</h1>
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 280px; left: 114px;">Implementation</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/23">
+<div class="notes">the underlying design of the library remains the same.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 280px; left: 714px;">Using</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 480px; left: 714px;">Same</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 690px; left: 714px;">Design</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/24">
+<div class="notes">One of the primary goals of the new implementation is to reduce the memory usage for large sets. As I mentioned, the excessive memory use is because we are storing an unnecessary true value for each set element.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 180px; left: 314px;">Reduce</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 380px; left: 314px;">Memory</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 590px; left: 314px;">Usage</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/25">
+<div class="notes">Each entry you store in a Ruby hash actually stores three separate values.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct st_table_entry {
+    st_hash_t hash;
+    st_data_t key;
+    st_data_t record;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/26">
+<div class="notes">The first value stored is the hash code for the entry. These would be based on the integer returned by calling the hash method on the key.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct st_table_entry {
+    st_hash_t <b>hash</b>;
+    st_data_t key;
+    st_data_t record;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/27">
+<div class="notes">The key is stored separately from the hash, because multiple keys may have the same hash value.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct st_table_entry {
+    st_hash_t hash;
+    st_data_t <b>key</b>;
+    st_data_t record;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/28">
+<div class="notes">Finally, the value for the hash entry is stored in the record member. For the standard library set implementation, this member is always true.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct st_table_entry {
+    st_hash_t hash;
+    st_data_t key;
+    st_data_t <b>record</b>;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/29">
+<div class="notes">Of the three members, only the first two are needed for sets.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct st_table_entry {
+<b class="block">    st_hash_t hash;
+    st_data_t key;</b>
+    st_data_t record;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/30">
+<div class="notes">The record entry is not needed, and this is what resulted in large sets taking 1/3 more memory than they actually need.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct st_table_entry {
+    st_hash_t hash;
+    st_data_t key;
+    <b>st_data_t record;</b>
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/31">
+<div class="notes">We can fix this issue for sets by removing this member.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct st_table_entry {
+    st_hash_t hash;
+    st_data_t key;
+    <b>                 </b>
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/32">
+<div class="notes">Obviously, we need a different struct for set table entries than we use for hash table entries, so we'll change the prefix from st</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct <b>st</b>_table_entry {
+    st_hash_t hash;
+    st_data_t key;
+
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/33">
+<div class="notes">to set. Now, that we've have the new data structure for set elements, we need to start using it. So we need to create a data structure for the entire set.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>struct <b>set</b>_table_entry {
+    st_hash_t hash;
+    st_data_t key;
+
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/34">
+<div class="notes">We will base that on the data structure used for hashes, named st_table. When copying and modifying this structure for sets, only two changes are needed.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct st_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    const struct st_hash_type *type;
+    st_index_t num_entries;
+    st_index_t *bins;
+    st_index_t entries_start, entries_bound;
+    st_table_entry *entries;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/35">
+<div class="notes">First, we change the name of the struct from st_table to set_table.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct <b>set</b>_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    const struct st_hash_type *type;
+    st_index_t num_entries;
+    st_index_t *bins;
+    st_index_t entries_start, entries_bound;
+    st_table_entry *entries;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/36">
+<div class="notes">Second, we change the type of the entries from st_table_entry to set_table_entry. Those are the only changes needed to the data structure to convert it from storing hash information to storing set information.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct set_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    const struct st_hash_type *type;
+    st_index_t num_entries;
+    st_index_t *bins;
+    st_index_t entries_start, entries_bound;
+    <b>set</b>_table_entry *entries;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/37">
+<div class="notes">The data structures are the easiest part of the change. Much of the work requires copying the functions that operate on the hash data structure, and modifying them to work on the set data structure. Now, some functions are easy.</div>
+
+<h1 class="red" style="font-size: 260px; position: absolute; top: 480px; left: 314px;">Functions</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/38">
+<div class="notes">Consider this function, named st_free_table. This is used for freeing memory after the hash table is no longer used. This also only takes two simple changes to modify for use in sets.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+void
+st_free_table(st_table *tab)
+{
+    free(tab-&gt;bins);
+    free(tab-&gt;entries);
+    free(tab);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/39">
+<div class="notes">First, we change the prefix in the function name.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+void
+<b>set</b>_free_table(st_table *tab)
+{
+    free(tab-&gt;bins);
+    free(tab-&gt;entries);
+    free(tab);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/40">
+<div class="notes">Next, we change the type of the argument.  However, note that the body of the function does not change in this case. There are actually a significant number of hash table functions that only take minimal changes like these to convert to set table functions.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+void
+set_free_table(<b>set_table</b> *tab)
+{
+    free(tab-&gt;bins);
+    free(tab-&gt;entries);
+    free(tab);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/41">
+<div class="notes">Another piece of good news is not all hash table functions need to be copied and modified. For example, a hash table function like this does not need to be converted.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+st_index_t
+rb_st_values(st_table *table,
+             st_data_t *values,
+             st_index_t size);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/42">
+<div class="notes">That is because this function deals with the hash entry values, and set entries have no values. So the equivalent function is not needed for set tables. Unfortunately, not all hash functions are trivial to convert or can be ignored.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+st_index_t
+rb_st_<b>values</b>(st_table *table,
+             st_data_t *<b>values</b>,
+             st_index_t size);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/43">
+<div class="notes">This function is a general function used for iterating over a Ruby hash table in C. A number of other C functions call this function internally.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+static inline int
+st_general_foreach(st_table *tab,
+                   st_foreach_check_callback_func *func,
+                   st_update_callback_func *replace,
+                   st_data_t arg, int check_p);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/44">
+<div class="notes">All of these types are specific to hash tables and need to be updated for set tables.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+static inline int
+st_general_foreach(<b>st_table</b> *tab,
+                   <b>st_foreach_check_callback_func</b> *func,
+                   <b>st_update_callback_func</b> *replace,
+                   st_data_t arg, int check_p);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/45">
+<div class="notes">Changing the name of the function and the argument types is the simple part of the change.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+static inline int
+<b>set</b>_general_foreach(<b>set</b>_table *tab,
+                    <b>set</b>_foreach_check_callback_func *func,
+                    <b>set</b>_update_callback_func *replace,
+                    st_data_t arg, int check_p);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/46">
+<div class="notes">Here is an example where code needs to be updated inside the body of the function to make it work correctly with sets.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, curr_entry_ptr-&gt;record, arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+    st_data_t value;
+    value = curr_entry_ptr-&gt;record;
+    retval = (*replace)(&amp;key, &amp;value, arg, TRUE);
+    curr_entry_ptr-&gt;key = key;
+    curr_entry_ptr-&gt;record = value;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/47">
+<div class="notes">Our first problem in this code is here. This references the record member of the hash table entry, which does not exist for set table entries.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, <b>curr_entry_ptr-&gt;record,</b> arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+    st_data_t value;
+    value = curr_entry_ptr-&gt;record;
+    retval = (*replace)(&amp;key, &amp;value, arg, TRUE);
+    curr_entry_ptr-&gt;key = key;
+    curr_entry_ptr-&gt;record = value;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/48">
+<div class="notes">As set entries do not have values, we do not need this argument, and we would like to eliminate it.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, <b>                       </b> arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+    st_data_t value;
+    value = curr_entry_ptr-&gt;record;
+    retval = (*replace)(&amp;key, &amp;value, arg, TRUE);
+    curr_entry_ptr-&gt;key = key;
+    curr_entry_ptr-&gt;record = value;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/49">
+<div class="notes">However, eliminating this argument requires changing the definition of the function pointer type.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (<b>*func</b>)(key, arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+    st_data_t value;
+    value = curr_entry_ptr-&gt;record;
+    retval = (*replace)(&amp;key, &amp;value, arg, TRUE);
+    curr_entry_ptr-&gt;key = key;
+    curr_entry_ptr-&gt;record = value;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/50">
+<div class="notes">If we go back to the prototype, we can see the function pointer type is set_foreach_callback_func.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+static inline int
+set_general_foreach(set_table *tab,
+                   <b>set_foreach_check_callback_func</b> *func,
+                   set_update_callback_func *replace,
+                   st_data_t arg, int check_p);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/51">
+<div class="notes">The type definition for the equivalent function pointer for hash tables takes 4 arguments.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+typedef int
+st_foreach_check_callback_func(st_data_t, st_data_t,
+                               st_data_t, int);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/52">
+<div class="notes">The second argument is the value of the hash table entry.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+typedef int
+st_foreach_check_callback_func(st_data_t, <b>st_data_t</b>,
+                               st_data_t, int);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/53">
+<div class="notes">When converting the function pointer type for sets, in addition to changing the type name, we need to eliminate that argument as one of the function's arguments.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+typedef int
+<b>set</b>_foreach_check_callback_func(st_data_t, <b>         </b>
+                               st_data_t, int);
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/54">
+<div class="notes">If that callback function returns ST_REPLACE, that indicates the entry should be replaced with a different entry.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, arg, 0);
+
+if (retval == <b>ST_REPLACE</b> &amp;&amp; replace) {
+    st_data_t value;
+    value = curr_entry_ptr-&gt;record;
+    retval = (*replace)(&amp;key, &amp;value, arg, TRUE);
+    curr_entry_ptr-&gt;key = key;
+    curr_entry_ptr-&gt;record = value;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/55">
+<div class="notes">In this case, the code gets the current value of the hash table entry.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+<b class="block">    st_data_t value;
+    value = curr_entry_ptr-&gt;record;</b>
+    retval = (*replace)(&amp;key, &amp;value, arg, TRUE);
+    curr_entry_ptr-&gt;key = key;
+    curr_entry_ptr-&gt;record = value;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/56">
+<div class="notes">Then it calls the other callback function, which is designed to be called when the key or value of a hash entry changes.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+    st_data_t value;
+    value = curr_entry_ptr-&gt;record;
+    retval = <b>(*replace)(&amp;key, &amp;value, arg, TRUE);</b>
+    curr_entry_ptr-&gt;key = key;
+    curr_entry_ptr-&gt;record = value;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/57">
+<div class="notes">After that, we update the values inside the hash entry.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+    st_data_t value;
+    value = curr_entry_ptr-&gt;record;
+    retval = (*replace)(&amp;key, &amp;value, arg, TRUE);
+<b class="block">    curr_entry_ptr-&gt;key = key;
+    curr_entry_ptr-&gt;record = value;</b>
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/58">
+<div class="notes">When converting this code to work with set tables, all of the code that deals with hash entry values is no longer necessary,</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+<b class="block">    st_data_t value;
+    value = curr_entry_ptr-&gt;record;</b>
+    retval = (*replace)(&amp;key, <b>&amp;value,</b> arg, TRUE);
+    curr_entry_ptr-&gt;key = key;
+    <b>curr_entry_ptr-&gt;record = value;</b>
+}
+</code></pre>
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/59">
+<div class="notes">and we can just delete it. Pretty much all of the conversions of hash table functions to set table functions followed one of the patterns shown earlier. Rename the function, update the data types from hash table types to set table types, and remove any code related to hash entry values.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>
+hash = curr_entry_ptr-&gt;hash;
+retval = (*func)(key, arg, 0);
+
+if (retval == ST_REPLACE &amp;&amp; replace) {
+<b class="block">                    
+                                      </b>
+    retval = (*replace)(&amp;key, <b>           </b> arg, TRUE);
+    curr_entry_ptr-&gt;key = key;
+    <b>                                  </b>
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/60">
+<div class="notes">Copying and modifying the hash table data structures and functions accounts for about a third of the changes need for core set.</div>
+
+<h1 class="blue" style="font-size: 660px; position: absolute; top: 180px; right: 702px;">⅓</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/61">
+<div class="notes">So what about the other 2/3?</div>
+
+<h1 class="blue" style="font-size: 660px; position: absolute; top: 180px; right: 700px;">⅔</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/62">
+<div class="notes">Well, the other 2/3 was spent reimplementing Set methods, so that instead of storing data in a hash, it directly accessed a set_table, similar to how hash works.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">Implementing</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 300px; left: 100px;">
+<span class="red">Set</span> Methods</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/63">
+<div class="notes">There were two basic approaches I considered for converting the standard library set methods into core set methods.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">
+<span class="red">2</span> Approaches</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/64">
+<div class="notes">One approach is keeping the existing Ruby implementation, but changing methods that access the hash instance variable to instead call an internal function that accesses the set_table using Primitive.|This is generally a better approach for methods with keyword arguments and methods that use rescue or ensure, as Ruby can use optimizations in these cases that are not available in C functions. It can also result in more optimized calls to other Ruby methods, by using inline method call caches.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">
+<span class="red">Ruby</span> with</h1>
+<h1 class="blue mono" style="font-size: 260px; position: absolute; top: 300px; left: 100px;">Primitive</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/65">
+<div class="notes">The alternative approach is to write the methods in C using Ruby's C-API. To avoid the performance issues with methods calling other methods, methods written in C generally call the underlying C functions directly instead of calling methods. This is how most methods for array and hash are implemented.|I chose this approach when implementing core Set, as I expected it would result in the best performance and make it easier to avoid thread safety problems.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 280px; left: 314px;">
+<span class="red">C</span>-API</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 490px; left: 200px;">Methods</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/66">
+<div class="notes">If you remember back to the add predicate method I discussed earlier, the one with the thread safety issues, let me go over how this is implemented in C.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>  def add?(o)
+    add(o) unless include?(o)
+  end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/67">
+<div class="notes">Here is what that implementation of that method looks like in C. It is significantly more complex than the Ruby version, but I will walk through most of it.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/68">
+<div class="notes">The first thing the function does is check whether the set is frozen. This check did not exist in the Ruby implementation, because it would ultimately be handled when the trying to update the underlying hash, which would be frozen for a frozen set.|There is actually a behavior difference here. The add predicate method in core set will always raise a FrozenError if the set is frozen, while in standard library set, the add predicate method only raises a FrozenError if you call it with an element not already in the set.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    <b>rb_check_frozen(set);</b>
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/69">
+<div class="notes">We then call the set_iterating_p function, which determines whether this set is currently being iterated over. If the set is currently being iterated over, you cannot safely insert a record into it. Many of Ruby's hash methods have a similar check.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (<b>set_iterating_p(set)</b>) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/70">
+<div class="notes">If we are currently iterating over the set, we can still lookup elements in it, just not insert elements. This looks up the element in the set.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!<b>set_table_lookup(RSET_TABLE(set), (st_data_t)item)</b>) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/71">
+<div class="notes">If the element is already in the set, it returns Qnil, which is how nil is represented in Ruby's C-API.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        <b>return Qnil</b>;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/72">
+<div class="notes">However, if the element is not already in the set, it cannot be safely added. So the method calls the no_new_item function, which raises a RuntimeError.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            <b>no_new_item()</b>;
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/73">
+<div class="notes">If the set is not being iterated over, which will be the typical case when calling the add predicate method, it calls the set_insert_wb function.  This will insert the element into the set, and return 1 if the element was already in the set, or 0 if the element was not in the set.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return <b>set_insert_wb(set, item, NULL)</b> ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/74">
+<div class="notes">If the element was already in the set, the method returns nil.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? <b>Qnil</b> : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/75">
+<div class="notes">If the element was not already in the set, the method returns the set.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : <b>set</b>;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/76">
+<div class="notes">Now that I've gone over the implementation, I'd like to point out the two significant advantages of this code compared to the previous Ruby code.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/77">
+<div class="notes">The first is that the thread safety issue has been fixed. Instead of a 2 accesses to the underlying hash table, where a separate thread could change the underlying table between the two calls, there is a single access to the underlying set table in this function call. Because this function is written in C, and does not release the global VM lock, the only thread that could be operating on the set during the execution of this function is the current thread.|This also fixes the performance issue. Instead of 2 hash table accesses, there is only a single set table access, so the method is significantly faster in addition to being more thread safe.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return <b>set_insert_wb(set, item, NULL)</b> ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/78">
+<div class="notes">Now that you've seen how the add predicate method is defined, let me go over how sets are initialized in C. Here is the function that implements Set.allocate. As you can see, it is fairly simple.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>static VALUE
+set_s_alloc(VALUE klass)
+{
+    return set_alloc_with_size(klass, 0);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/79">
+<div class="notes">It calls a set_alloc_with_size function, passing the underlying class, which may be Set or a subclass of Set.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>static VALUE
+set_s_alloc(VALUE klass)
+{
+    return <b>set_alloc_with_size(klass</b>, 0);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/80">
+<div class="notes">The second argument specifies the initial capacity for the set. Since Set.allocate does not provide any hint as to the desired size of the set, we call the function with 0, creating the smallest possible set. Other code that needs to allocate a new set may know the expected size of the set up front, and can specify a larger number.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 50px;"><code>static VALUE
+set_s_alloc(VALUE klass)
+{
+    return set_alloc_with_size(klass, <b>0</b>);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/81">
+<div class="notes">Here is the implementation of the set_alloc_with_size function. There are a few interesting parts here, so I will walk through this.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/82">
+<div class="notes">First is this line, which defines a local variable for the underlying C structure containing the data for the set.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    <b>struct set_object *sobj</b>;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/83">
+<div class="notes">In this case, the C structure only wraps the underlying set table and no other data. We might be able to use the set_table directly, but this makes it easier to add data for Ruby set objects without affecting the underlying set_table implementation, which may be used for things other than Ruby objects.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 30px;"><code>
+struct set_object {
+    set_table table;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/84">
+<div class="notes">The next interesting thing is this call to TypedData_Make_Struct. This is a C function that creates a new Ruby instance of</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = <b>TypedData_Make_Struct</b>(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/85">
+<div class="notes">a given class,</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(<b>klass</b>, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/86">
+<div class="notes">which stores the information for the instance using the given C type.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, <b>struct set_object</b>,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/87">
+<div class="notes">The third argument here provides information about the type.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                <b>&amp;set_data_type</b>, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/88">
+<div class="notes">Here is what that information looks like.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    .wrap_struct_name = "set",
+    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },
+    .flags = RUBY_TYPED_EMBEDDABLE |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_WB_PROTECTED |
+             RUBY_TYPED_FROZEN_SHAREABLE
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/89">
+<div class="notes">This sets an internal name for the wrapped struct.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    <b>.wrap_struct_name = "set"</b>,
+    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },
+    .flags = RUBY_TYPED_EMBEDDABLE |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_WB_PROTECTED |
+             RUBY_TYPED_FROZEN_SHAREABLE
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/90">
+<div class="notes">These are callback functions related to the struct, mostly related to integration with the garbage collector. This lets the garbage collector know which elements this set is referencing, so it does not free the elements while the set still contains them.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    .wrap_struct_name = "set",
+<b class="block">    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },</b>
+    .flags = RUBY_TYPED_EMBEDDABLE |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_WB_PROTECTED |
+             RUBY_TYPED_FROZEN_SHAREABLE
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/91">
+<div class="notes">These are flags related to the data type, which changes how Ruby will interact with it.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    .wrap_struct_name = "set",
+    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },
+<b class="block">    .flags = RUBY_TYPED_EMBEDDABLE |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_WB_PROTECTED |
+             RUBY_TYPED_FROZEN_SHAREABLE</b>
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/92">
+<div class="notes">For example, the frozen shareable flag allows frozen instances to be shared between ractors. I will discuss a couple of these other flags later.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    .wrap_struct_name = "set",
+    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },
+    .flags = RUBY_TYPED_EMBEDDABLE |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_WB_PROTECTED |
+             RUBY_TYPED_<b>FROZEN_SHAREABLE</b>
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/93">
+<div class="notes">Going back to set_alloc_with_size, the fourth argument is the local variable pointer that should be updated to point to the C structure for the created object.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, <b>sobj</b>);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/94">
+<div class="notes">The TypedData_Make_Struct function returns the allocated set. At this point, memory for the set has been allocated, but the set is not usable.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    <b>set</b> = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/95">
+<div class="notes">In order for the set to be usable, it must be initialized using the set_init_table_with_size function.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    <b>set_init_table_with_size</b>(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/96">
+<div class="notes">This function is passed the memory location where the table should be initialized.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(<b>&amp;sobj-&gt;table</b>, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/97">
+<div class="notes">As well as the comparison and hash functions that should be used for the set elements. Set elements use the same comparison and hash functions that are used for hash keys.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, <b>&amp;objhash</b>, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/98">
+<div class="notes">This passes through the size argument, so the table will be initialized with the correct size.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, <b>size</b>);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/99">
+<div class="notes">After this, the set instance is fully usable, so it is returned.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(&amp;sobj-&gt;table, &amp;objhash, size);
+
+    <b>return set</b>;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/100">
+<div class="notes">I'd like to take a few steps back to the table initialization. I mentioned that this first argument specifies the memory location at which to initialize the table.|This is a bit unusual, as many methods that initialize new objects in C would not request the memory for the object be initialized at a specific location. Instead, they would expect the function to allocate new memory, initialize the newly allocated memory, and return a pointer to that memory. So why do we use a different approach here?</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 128px; margin-left: 15px;"><code>static VALUE
+set_alloc_with_size(VALUE klass, st_index_t size)
+{
+    VALUE set;
+    struct set_object *sobj;
+
+    set = TypedData_Make_Struct(klass, struct set_object,
+                                &amp;set_data_type, sobj);
+    set_init_table_with_size(<b>&amp;sobj-&gt;table</b>, &amp;objhash, size);
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/101">
+<div class="notes">This comes back to one of the type flags that we are using,</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    .wrap_struct_name = "set",
+    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },
+    .flags = RUBY_TYPED_EMBEDDABLE |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_WB_PROTECTED |
+             RUBY_TYPED_FROZEN_SHAREABLE
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/102">
+<div class="notes">specifically, the embeddable type flag. This type flag allows for an optimization. Instead of the Ruby object and the data related to the Ruby object being stored at two different places in memory, embeddable types allow for storing the data for the Ruby object in the same slot in memory as the Ruby object.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    .wrap_struct_name = "set",
+    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },
+    .flags = RUBY_TYPED_<b>EMBEDDABLE</b> |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_WB_PROTECTED |
+             RUBY_TYPED_FROZEN_SHAREABLE
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/103">
+<div class="notes">This builds on a feature named variable width allocation, which allows for different sized objects. Historically, there would not be a way to embed sets inside Ruby objects, because the set table metadata would be too large. With variable width allocation, the object can be large enough to embed the set table metadata. Embedding provides an performance advantage as it improves cache-locality, which speeds up access to the memory.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 180px; left: 514px;">Variable</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 390px; left: 514px;">Width</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 600px; left: 514px;">Allocation</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/104">
+<div class="notes">When I say the metadata is embedded, what am I talking about?</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 380px; left: 314px;">Metadata</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 590px; left: 314px;">Embedded<span class="blue">?</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/105">
+<div class="notes">Well, if we remember back to the set_table structure, it includes all of this information.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct set_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    const struct st_hash_type *type;
+    st_index_t num_entries;
+    st_index_t *bins;
+    st_index_t entries_start, entries_bound;
+    set_table_entry *entries;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/106">
+<div class="notes">Note that these three members are pointers. While the pointers themselves are embedded, the memory they point to is not embedded.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct set_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    <b>const struct st_hash_type *type</b>;
+    st_index_t num_entries;
+    <b>st_index_t *bins</b>;
+    st_index_t entries_start, entries_bound;
+    <b>set_table_entry *entries</b>;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/107">
+<div class="notes">The hash type pointer is static, and it points to the static data given when you created the instance.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct set_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    <b>const struct st_hash_type *type</b>;
+    st_index_t num_entries;
+    st_index_t *bins;
+    st_index_t entries_start, entries_bound;
+    set_table_entry *entries;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/108">
+<div class="notes">However, these pointers point to dynamically allocated memory on the C heap. If the set table is resized due to objects being added to the set, these pointers can change to point to new memory locations.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct set_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    const struct st_hash_type *type;
+    st_index_t num_entries;
+    <b>st_index_t *bins</b>;
+    st_index_t entries_start, entries_bound;
+    <b>set_table_entry *entries</b>;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/109">
+<div class="notes">Another Ruby feature that the core set implementation supports natively is incremental and generational garbage collection. In order for garbage collection to work optimally, you need to track when objects are modified to reference other objects. In addition to improving garbage collection,</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 60px; left: 114px;">Incremental &amp;</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 270px; left: 114px;">Generational</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 480px; left: 114px;">Garbage</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 700px; left: 314px;">Collection</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/110">
+<div class="notes">this tracking is also necessary for the objects to support garbage compaction. While Ruby objects backed by C structures are not required to support these garbage collection features, doing so can significantly improve garbage collection performance.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 480px; left: 114px;">Garbage</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 700px; left: 314px;">Compaction</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/111">
+<div class="notes">Let us again go back to the type flags that we are using.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    .wrap_struct_name = "set",
+    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },
+    .flags = RUBY_TYPED_EMBEDDABLE |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_WB_PROTECTED |
+             RUBY_TYPED_FROZEN_SHAREABLE
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/112">
+<div class="notes">This time, we'll be looking at the WB protected flag. The WB here stands for write barrier. Using a write barrier, when one Ruby object is modified to reference another object, Ruby can inform the garbage collector about it, so that the garbage collector will not free the object while it is still actively used.|Using this flag results in a significant amount of risk, because it means that all use of this type correctly uses write barriers. If you include this flag, and miss adding a write barrier where it should be added, Ruby can crash with a hard to debug error.</div>
+
+<pre class="sh_c" style="font-size: 52px; margin-top: 78px; margin-left: 30px;"><code>static const rb_data_type_t set_data_type = {
+    .wrap_struct_name = "set",
+    .function = {
+        .dmark = set_mark,
+        .dfree = set_free,
+        .dsize = set_size,
+        .dcompact = set_update_references,
+    },
+    .flags = RUBY_TYPED_EMBEDDABLE |
+             RUBY_TYPED_FREE_IMMEDIATELY |
+             RUBY_TYPED_<b>WB_PROTECTED</b> |
+             RUBY_TYPED_FROZEN_SHAREABLE
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/113">
+<div class="notes">If we go back to the core Set implementation of the add predicate method.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return set_insert_wb(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/114">
+<div class="notes">Notice that the set_insert_wb function was called. As you can probably guess, this function, in addition to inserting the element into the set, also ensures that a write barrier is used.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static VALUE
+set_i_add_p(VALUE set, VALUE item)
+{
+    rb_check_frozen(set);
+    if (set_iterating_p(set)) {
+        if (!set_table_lookup(RSET_TABLE(set), (st_data_t)item)) {
+            no_new_item();
+        }
+        return Qnil;
+    }
+    else {
+        return <b>set_insert_wb</b>(set, item, NULL) ? Qnil : set;
+    }
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/115">
+<div class="notes">Here is the definition of the set_insert_wb function. As you can see, it is pretty simple.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_insert_wb(VALUE set, VALUE key, VALUE *key_addr)
+{
+    return set_table_insert_wb(RSET_TABLE(set), set,
+                               key, key_addr);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/116">
+<div class="notes">We call another function named set_table_insert_wb,</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_insert_wb(VALUE set, VALUE key, VALUE *key_addr)
+{
+    return <b>set_table_insert_wb</b>(RSET_TABLE(set), set,
+                               key, key_addr);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/117">
+<div class="notes">Passing the set_table for the set object as the first argument.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_insert_wb(VALUE set, VALUE key, VALUE *key_addr)
+{
+    return set_table_insert_wb(<b>RSET_TABLE(set)</b>, set,
+                               key, key_addr);
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/118">
+<div class="notes">Here is the definition of the set_table_insert_wb function, which is significantly more complex. There are a few things I want to point out here.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        if (key_addr) *key_addr = key;
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/119">
+<div class="notes">First is this call, which inserts the element into the set table. Again, the element may already exist in the table. If it does, ret will be 1. If it does not already exist, ret will be 0.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        if (key_addr) *key_addr = key;
+    }
+    <b>int ret = set_insert(tab, (st_data_t)key);</b>
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/120">
+<div class="notes">If ret is 0, that means the element was added to the set, and the set now has a reference to the element. As we are using the WB protected flag, we must tell the Ruby runtime that the set now references the element, which we do by calling RB_OBJ_WRITTEN.|This is actually the only usage of RB_OBJ_WRITTEN in the set implementation, because all set methods that add an element to a set call into this function. I thought this was a good design, because it means Set is unlikely to miss write barriers.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        if (key_addr) *key_addr = key;
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    <b>if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);</b>
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/121">
+<div class="notes">Unfortunately, there was another place where a write barrier was needed, which was found and fixed by John Hawthorn.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 380px; left: 314px;">
+<span class="red">@</span>jhawthorn</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/122">
+<div class="notes">This place was inside set_i_initialize_copy, used to implement the dup, clone, collect bang, and replace instance methods.</div>
+
+<pre class="sh_c" style="font-size: 40px; margin-top: 80px; margin-left: 50px;"><code>static VALUE
+set_i_initialize_copy(VALUE set, VALUE other)
+{
+    if (set == other) return set;
+
+    if (set_iterating_p(set)) {
+        rb_raise(rb_eRuntimeError, "cannot replace set during iteration");
+    }
+
+    struct set_object *sobj;
+    TypedData_Get_Struct(set, struct set_object, &amp;set_data_type, sobj);
+
+    set_free_embedded_table(&amp;sobj-&gt;table);
+    set_copy(&amp;sobj-&gt;table, RSET_TABLE(other));
+    
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/123">
+<div class="notes">This function used the set_copy function to populate the current set with all elements in an existing set. After this function call, the current set potentially references objects that it didn't previously reference. As we did not inform the garbage collector about this and we are using the WB protected flag, this resulted in nondeterministic crashes.</div>
+
+<pre class="sh_c" style="font-size: 40px; margin-top: 80px; margin-left: 50px;"><code>static VALUE
+set_i_initialize_copy(VALUE set, VALUE other)
+{
+    if (set == other) return set;
+
+    if (set_iterating_p(set)) {
+        rb_raise(rb_eRuntimeError, "cannot replace set during iteration");
+    }
+
+    struct set_object *sobj;
+    TypedData_Get_Struct(set, struct set_object, &amp;set_data_type, sobj);
+
+    set_free_embedded_table(&amp;sobj-&gt;table);
+    <b>set_copy</b>(&amp;sobj-&gt;table, RSET_TABLE(other));
+
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/124">
+<div class="notes">The fix in this case is to call the rb_gc_writebarrier_remember function. This function tells the garbage collector to rescan the entire object to see what elements it references. Thankfully, after this fix, there have been no other write barrier issues found since core Set was merged.</div>
+
+<pre class="sh_c" style="font-size: 40px; margin-top: 80px; margin-left: 50px;"><code>static VALUE
+set_i_initialize_copy(VALUE set, VALUE other)
+{
+    if (set == other) return set;
+
+    if (set_iterating_p(set)) {
+        rb_raise(rb_eRuntimeError, "cannot replace set during iteration");
+    }
+
+    struct set_object *sobj;
+    TypedData_Get_Struct(set, struct set_object, &amp;set_data_type, sobj);
+
+    set_free_embedded_table(&amp;sobj-&gt;table);
+    set_copy(&amp;sobj-&gt;table, RSET_TABLE(other));
+    <b>rb_gc_writebarrier_remember(set);</b>
+
+    return set;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/125">
+<div class="notes">What about this code? This is not related to write barriers, but I think it is still an interesting part of the implementation. In order to keep backwards compatibility with the standard library set, which used a hash for storage, the core set implementation does the same thing that hash does if you use an unfrozen string as a hash key, it makes a frozen copy of the string.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+<b class="block">    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        if (key_addr) *key_addr = key;
+    }</b>
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/126">
+<div class="notes">This is not done for sets that use compare_by_identity, just as hashes that use compare_by_identity do not make copies of strings.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+    if (<b>tab-&gt;type != &amp;identhash</b> &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        if (key_addr) *key_addr = key;
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/127">
+<div class="notes">It is only done for instances of the String class, not for string subclasses.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            <b>rb_obj_class(key) == rb_cString</b> &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        if (key_addr) *key_addr = key;
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/128">
+<div class="notes">It is only done if the string is not frozen.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            <b>!RB_OBJ_FROZEN(key)</b>) {
+        key = rb_hash_key_str(key);
+        if (key_addr) *key_addr = key;
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/129">
+<div class="notes">If those three things are true, the core set code calls the same function that hash uses to make a frozen copy of the string.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        <b>key = rb_hash_key_str(key)</b>;
+        if (key_addr) *key_addr = key;
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/130">
+<div class="notes">This code is used so that if a non-frozen string was passed, the memory location of the passed non-frozen string can be updated to point to the frozen string. However, when trying to come up with an example of a situation where this was actually needed, I could not find one. All callers that passed a key_addr argument did not seem to actually need to do so.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key, VALUE *key_addr)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        <b>if (key_addr) *key_addr = key;</b>
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/131">
+<div class="notes">So I was able to take this code.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key<b>, VALUE *key_addr</b>)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        <b>if (key_addr) *key_addr = key;</b>
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/132">
+<div class="notes">and delete it. I then fixed all callers not to pass the argument. This change will be included in Ruby 4.1.</div>
+
+<pre class="sh_c" style="font-size: 46px; margin-top: 100px; margin-left: 50px;"><code>static int
+set_table_insert_wb(set_table *tab, VALUE set,
+                    VALUE key<b>                     </b>)
+{
+    if (tab-&gt;type != &amp;identhash &amp;&amp;
+            rb_obj_class(key) == rb_cString &amp;&amp;
+            !RB_OBJ_FROZEN(key)) {
+        key = rb_hash_key_str(key);
+        <b>                                  </b>
+    }
+    int ret = set_insert(tab, (st_data_t)key);
+    if (ret == 0) RB_OBJ_WRITTEN(set, Qundef, key);
+    return ret;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/133">
+<div class="notes">One thing I was happy to see after introducing core Set was the use of set_table as a replacement for st_table to save on memory.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 70px; left: 64px;">Internal Use of</h1>
+<h1 class="red mono" style="font-size: 260px; position: absolute; top: 280px; left: 120px;">set_table</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/134">
+<div class="notes">Jean Boussier found a couple places where Ruby was previously using an st_table with all true values, which could easily be replaced with a set_table.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 480px; right: 414px;">
+<span class="red">@</span>byroot</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/135">
+<div class="notes">One of these places was constant caches, used to speed up constant lookup.</div>
+
+<h1 class="red" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">Constant</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 290px; left: 120px;">Caches</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/136">
+<div class="notes">Another place was storing locations of unused block warnings, which ensure we do not warn the same location twice.</div>
+
+<h1 class="red" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">Unused</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 290px; left: 120px;">Block</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 500px; left: 114px;">Warnings</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/137">
+<div class="notes">After the core set implementation was merged, there were relatively few reported problems, which were generally fixed quickly.</div>
+
+<h1 class="red" style="font-size: 260px; position: absolute; top: 380px; left: 114px;">Set</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/138">
+<div class="notes">However, one issue that remained until shortly before release was how to handle Set subclasses.</div>
+
+<h1 class="red" style="font-size: 260px; position: absolute; top: 380px; left: 114px;">Set</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 590px; left: 120px;">Subclasses</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/139">
+<div class="notes">Obviously, if the set subclasses tried to access the hash instance variable, that was no longer going to work.</div>
+
+<h1 class="blue mono" style="font-size: 360px; position: absolute; top: 280px; left: 414px;">
+<span class="red">@</span>hash</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/140">
+<div class="notes">However, one user who tried out the core set implementation found it broke their subclass, even though his subclass did not access the hash instance variable. The user provided this code.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class MySet &lt; Set
+  def initialize(enum = nil)
+    compare_by_identity
+    super
+  end
+end
+
+MySet.new.compare_by_identity?
+# =&gt; true
+MySet[].compare_by_identity?
+# =&gt; false
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/141">
+<div class="notes">Here, the user creates a subclass of set,</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class <b>MySet &lt; Set</b>
+  def initialize(enum = nil)
+    compare_by_identity
+    super
+  end
+end
+
+MySet.new.compare_by_identity?
+# =&gt; true
+MySet[].compare_by_identity?
+# =&gt; false
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/142">
+<div class="notes">and overrides the initialize method,</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class MySet &lt; Set
+  def <b>initialize</b>(enum = nil)
+    compare_by_identity
+    super
+  end
+end
+
+MySet.new.compare_by_identity?
+# =&gt; true
+MySet[].compare_by_identity?
+# =&gt; false
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/143">
+<div class="notes">to call compare_by_identity. The user's expectation is that all instances of this set subclass will compare by identity.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class MySet &lt; Set
+  def initialize(enum = nil)
+    <b>compare_by_identity</b>
+    super
+  end
+end
+
+MySet.new.compare_by_identity?
+# =&gt; true
+MySet[].compare_by_identity?
+# =&gt; false
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/144">
+<div class="notes">They find that with core Set, this works if the class new method is called.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class MySet &lt; Set
+  def initialize(enum = nil)
+    compare_by_identity
+    super
+  end
+end
+
+<b class="block">MySet.new.compare_by_identity?
+# =&gt; true</b>
+MySet[].compare_by_identity?
+# =&gt; false
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/145">
+<div class="notes">But it does not work if the class aref method is called. This is because core Set was deliberately implemented similarly to Array and Hash. Just as the Array and Hash class aref methods do not call initialize, the core Set class aref method does not call initialize. Personally, I believe that expecting the class aref method to call initialize was relying on implementation details.|However, there was significant enough reliance on the implementation details of standard library Set in subclasses, by this user and a number of other users, that something had to be done to keep backwards compatibility.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class MySet &lt; Set
+  def initialize(enum = nil)
+    compare_by_identity
+    super
+  end
+end
+
+MySet.new.compare_by_identity?
+# =&gt; true
+<b class="block">MySet[].compare_by_identity?
+# =&gt; false</b>
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/146">
+<div class="notes">To handle backwards compatibility, I added a module named Set::SubclassCompatible.</div>
+
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 64px;">Set<span class="red">::</span>SubclassCompatible</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/147">
+<div class="notes">Here is an example of how the SubclassCompatible module works.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class Set
+  module SubclassCompatible
+    module ClassMethods
+      def [](*ary)
+        new(ary)
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/148">
+<div class="notes">It redefines the class aref method,</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class Set
+  module SubclassCompatible
+    module ClassMethods
+      def <b>[](*ary)</b>
+        new(ary)
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/149">
+<div class="notes">so that the method calls new. This is a copy of the class aref method in standard library Set.|In addition to being used for the class aref method, the same approach was used for majority of Set's instance methods.</div>
+
+<pre class="sh_ruby" style="font-size: 64px; margin-top: 50px; margin-left: 50px;"><code>class Set
+  module SubclassCompatible
+    module ClassMethods
+      def [](*ary)
+        <b>new(ary)</b>
+      end
+    end
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/150">
+<div class="notes">To ensure Set subclasses automatically use this backwards compatibility layer, we use C code that is equivalent to this Ruby code.</div>
+
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 50px; margin-left: 50px;"><code>
+
+def Set.inherited(subclass)
+  if self == Set
+    subclass.include SubclassCompatible
+    subclass.extend SubclassCompatible::ClassMethods
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/151">
+<div class="notes">We override Set.inherited, which is called every time that Set is subclassed with the subclass.</div>
+
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 50px; margin-left: 50px;"><code>
+
+def <b>Set.inherited(subclass)</b>
+  if self == Set
+    subclass.include SubclassCompatible
+    subclass.extend SubclassCompatible::ClassMethods
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/152">
+<div class="notes">We only make changes if this is a direct subclass of Set. The changes are not needed for subclasses of subclasses of Set, due to how method lookup works.</div>
+
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 50px; margin-left: 50px;"><code>
+
+def Set.inherited(subclass)
+  <b>if self == Set</b>
+    subclass.include SubclassCompatible
+    subclass.extend SubclassCompatible::ClassMethods
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/153">
+<div class="notes">We include the SubclassCompatible module into the subclass, so the instance methods in that module override the instance methods inherited from Set.</div>
+
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 50px; margin-left: 50px;"><code>
+
+def Set.inherited(subclass)
+  if self == Set
+    <b>subclass.include SubclassCompatible</b>
+    subclass.extend SubclassCompatible::ClassMethods
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/154">
+<div class="notes">We also extend the subclass with the ClassMethods module, so the class aref method works as expected for subclasses. This fixed pretty much all backwards compatibility issues with Set subclasses, though it did result in less optimized code. For Set subclasses that do not need the slower backwards compatibility layer,</div>
+
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 50px; margin-left: 50px;"><code>
+
+def Set.inherited(subclass)
+  if self == Set
+    subclass.include SubclassCompatible
+    <b>subclass.extend SubclassCompatible::ClassMethods</b>
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/155">
+<div class="notes">before setting the inherited hook, we create a subclass of Set named CoreSet. Since we do this before defining the inherited method, CoreSet does not have the backwards compatibility layer applied to it. This allows subclasses that do not need the backwards compatibility layer to inherit from CoreSet.</div>
+
+<pre class="sh_ruby" style="font-size: 52px; margin-top: 50px; margin-left: 50px;"><code><b>Set::CoreSet = Class.new(Set)</b>
+
+def Set.inherited(subclass)
+  if self == Set
+    subclass.include SubclassCompatible
+    subclass.extend SubclassCompatible::ClassMethods
+  end
+end
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/156">
+<div class="notes">Earlier, I explained how the core Set implementation results in a 33% memory savings for large sets.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 170px; left: 120px;">Large</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 380px; left: 114px;">Sets</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/157">
+<div class="notes">However, what about memory usage for small sets? Ideally, we want to improve that as well.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 170px; left: 120px;">Small</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 380px; left: 114px;">Sets</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/158">
+<div class="notes">We should first discuss memory usage for the standard library Set implementation.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 170px; left: 120px;">stdlib</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 380px; left: 114px;">Set</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/159">
+<div class="notes">With the standard library, every Set instance allocates 2 objects.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">2 Objects</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/160">
+<div class="notes">There would be one T_OBJECT object for the set itself, which takes 40 bytes.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">T_OBJECT:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 1000px;">40 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/161">
+<div class="notes">There would be a T_HASH object for the internal hash, which takes 160 bytes. So a total of 200 bytes.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">T_OBJECT:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 1000px;">40 bytes</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">T_HASH:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">160 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/162">
+<div class="notes">When I first implemented core Set, unfortunately, the results were worse</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 170px; left: 120px;">Core</h1>
+<h1 class="red" style="font-size: 260px; position: absolute; top: 380px; left: 114px;">Set</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/163">
+<div class="notes">The set table structure was 56 bytes.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">set_table:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 1000px;">56 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/164">
+<div class="notes">Wrapping the set table structure in a Ruby object added 32 bytes. That is a total of 88 bytes for the embedded object. However, that is over the limit for an 80 byte object slot, which means</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">set_table:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 1000px;">56 bytes</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">wrapping:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">32 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/165">
+<div class="notes">That set objects require a 160 byte object slot. This does not sound so bad, right, as 160 bytes is still less than the 200 for standary library set.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">T_DATA:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 1000px;">160 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/166">
+<div class="notes">However, this is only the size of the Ruby object slot. As I mentioned earlier, this only holds the metadata for the set. The actual data is stored elsewhere in memory.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">T_DATA:</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">embedded:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">160 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/167">
+<div class="notes">For sets with fewer than 5 elements, including empty sets, the actual data takes 64 bytes. So combined, core sets would use 224 bytes of memory, or 12% more memory than standard library sets.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">T_DATA:</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">embedded:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">160 bytes</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 500px; right: 1000px;">malloc:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 500px; left: 1000px;">64 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/168">
+<div class="notes">This is, of course, unacceptable. I had to find a way to reduce the memory usage of small sets.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 280px; right: 114px;">
+<span class="red">Unacceptable</span>!</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/169">
+<div class="notes">I decided to tackle the problem by looking at the 32 bytes of wrapping.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">wrapping:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">32 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/170">
+<div class="notes">The underlying data structure for this type of Ruby object looks like this.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+struct RTypedData {
+  struct RBasic basic;
+  const rb_data_type_t *const type;
+  const VALUE typed_flag;
+  void *data;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/171">
+<div class="notes">It starts with the basic information all Ruby objects start with, which is 16 bytes.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+struct RTypedData {
+  <b>struct RBasic basic</b>;
+  const rb_data_type_t *const type;
+  const VALUE typed_flag;
+  void *data;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/172">
+<div class="notes">It has a pointer to the information for the specific type of object, this is 8 bytes.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+struct RTypedData {
+  struct RBasic basic;
+  <b>const rb_data_type_t *const type;</b>
+  const VALUE typed_flag;
+  void *data;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/173">
+<div class="notes">It stored 8 bytes for the typed flag. This flag was used mostly used to differentiate between RTypedData objects and the older RData objects, but it also recorded whether the object was embedded.|The value was always set to either 1 or 3 for RTypedData objects. This looked like a natural candidate for removal, if there was some other way to differentiate between RData and RTypedData objects. I determined it was possible to embed this information</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+struct RTypedData {
+  struct RBasic basic;
+  const rb_data_type_t *const type;
+  <b>const VALUE typed_flag;</b>
+  void *data;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/174">
+<div class="notes">using the low bits of the type pointer. Since the low 2 bits of a type pointer are always 0 due to alignment reasons, they are basically available to use.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+struct RTypedData {
+  struct RBasic basic;
+  <b>const rb_data_type_t *const type;</b>
+  const VALUE typed_flag;
+  void *data;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/175">
+<div class="notes">That allowed removal of the typed_flag argument, saving 8 bytes.</div>
+
+<pre class="sh_c" style="font-size: 64px; margin-top: 128px; margin-left: 100px;"><code>
+struct RTypedData {
+  struct RBasic basic;
+  const rb_data_type_t *const type;
+  <b>                       </b>
+  void *data;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/176">
+<div class="notes">That reduced the amount of wrapping bytes from 32 to 24.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">wrapping:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">24 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/177">
+<div class="notes">When combined with the size of set table, it now totaled 80.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">set_table:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 1000px;">56 bytes</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">wrapping:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">24 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/178">
+<div class="notes">This meant the size of small sets is only 80 plus 64, or 144 bytes. That is a 28% reduction in the memory usage of small sets.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">T_DATA:</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">embedded:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">80 bytes</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 500px; right: 1000px;">malloc:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 500px; left: 1000px;">64 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/179">
+<div class="notes">That is definitely acceptable. Unfortunately, we later found a problem.</div>
+
+<h1 class="blue" style="font-size: 220px; position: absolute; top: 280px; right: 114px;">Acceptable<span class="red">!</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/180">
+<div class="notes">The problem was not in RTypedData, that was fine.</div>
+
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 50px;"><code>struct RTypedData {
+  struct RBasic basic;
+  const rb_data_type_t *const type;
+  void *data;
+
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/181">
+<div class="notes">The problem was in RData, which for implementation reasons has to have a compatible structure with RTypedData.</div>
+
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 50px;"><code>struct RTypedData {
+  struct RBasic basic;
+  const rb_data_type_t *const type;
+  void *data;
+
+}
+</code></pre>
+<pre class="sh_c outline" style="position: absolute; font-size: 46px; top: 128px; left: 1160px;"><code>struct RData {
+  struct RBasic basic;
+  RUBY_DATA_FUNC dmark;
+  void *data;
+  RUBY_DATA_FUNC dfree;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/182">
+<div class="notes">The problem with using low bits in RTypedData's type member.</div>
+
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 50px;"><code>struct RTypedData {
+  struct RBasic basic;
+  <b>const rb_data_type_t *const type;</b>
+  void *data;
+
+}
+</code></pre>
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 1160px;"><code>struct RData {
+  struct RBasic basic;
+  RUBY_DATA_FUNC dmark;
+  void *data;
+  RUBY_DATA_FUNC dfree;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/183">
+<div class="notes">Is you must ensure there are no low bits set in RData's dmark member. Unfortunately, while normal pointers do not have low bits set due to alignment, function pointers can have low bits set, and this is a function pointer.</div>
+
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 50px;"><code>struct RTypedData {
+  struct RBasic basic;
+  const rb_data_type_t *const type;
+  void *data;
+
+}
+</code></pre>
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 1160px;"><code>struct RData {
+  struct RBasic basic;
+  <b>RUBY_DATA_FUNC dmark;</b>
+  void *data;
+  RUBY_DATA_FUNC dfree;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/184">
+<div class="notes">We ended up fixing this by storing the RTypedData flag using 1 bit of the general object flags. General object flags are limited in number and we do not have many to spare, but we were able to find and use an available one.</div>
+
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 50px;"><code>struct RTypedData {
+  <b>struct RBasic basic</b>;
+  const rb_data_type_t *const type;
+  void *data;
+
+}
+</code></pre>
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 1160px;"><code>struct RData {
+  struct RBasic basic;
+  RUBY_DATA_FUNC dmark;
+  void *data;
+  RUBY_DATA_FUNC dfree;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/185">
+<div class="notes">We are still storing the embedded information using the low bit of the type pointer, so we only have to use 1 general object flag and not 2.</div>
+
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 50px;"><code>struct RTypedData {
+  struct RBasic basic;
+  <b>const rb_data_type_t *const type;</b>
+  void *data;
+
+}
+</code></pre>
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 1160px;"><code>struct RData {
+  struct RBasic basic;
+  RUBY_DATA_FUNC dmark;
+  void *data;
+  RUBY_DATA_FUNC dfree;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/186">
+<div class="notes">Later in the development cycle, Jean wanted to speed up instance variable access for RTypedData.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 480px; right: 414px;">
+<span class="red">@</span>byroot</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/187">
+<div class="notes">He added a new member to RTypedData to allow that.</div>
+
+<pre class="sh_c" style="position: absolute; font-size: 46px; top: 128px; left: 50px;"><code>struct RTypedData {
+  struct RBasic basic;
+  <b>VALUE fields_obj;</b>
+  const rb_data_type_t *const type;
+  void *data;
+}
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/188">
+<div class="notes">Unfortunately, that would have undone my memory saving changes for small sets, by setting the wrapping bytes back to 32.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">set_table:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 1000px;">56 bytes</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">wrapping:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">32 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/189">
+<div class="notes">However, Jean figured out a way around that. He took the bins pointer for the set table struct.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct set_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    const struct st_hash_type *type;
+    st_index_t num_entries;
+    <b>st_index_t *bins;</b>
+    st_index_t entries_start, entries_bound;
+    st_table_entry *entries;
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/190">
+<div class="notes">And instead allocated that data directly after the end of the entries pointer, and changed the related code to use pointer arithmetic to find the location for the bins.</div>
+
+<pre class="sh_c" style="font-size: 56px; margin-top: 78px; margin-left: 100px;"><code>
+struct set_table {
+    unsigned char entry_power, bin_power, size_ind;
+    unsigned int rebuilds_num;
+    const struct st_hash_type *type;
+    st_index_t num_entries;
+    <b>                     </b>
+    st_index_t entries_start, entries_bound;
+    <b>st_table_entry *entries;</b>
+};
+</code></pre>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/191">
+<div class="notes">This reduced the size of the set_table struct to 48 bytes, allowing core set objects to continue to fit in an 80 byte object slot.</div>
+
+<h1 class="red" style="font-size: 160px; position: absolute; top: 80px; right: 1000px;">set_table:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; left: 1000px;">48 bytes</h1>
+<h1 class="red" style="font-size: 160px; position: absolute; top: 290px; right: 1000px;">wrapping:</h1>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 290px; left: 1000px;">32 bytes</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/192">
+<div class="notes">I hope you had fun learning about the implementation of core Set in Ruby 4.0.</div>
+
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 80px; left: 114px;">Implementing</h1>
+<h1 class="blue" style="font-size: 260px; position: absolute; top: 280px; left: 114px;">Core <span class="red">Set</span>
+</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/193">
+<div class="notes">If you enjoyed this presentation, and want to read more of my thoughts on Ruby programming, please consider picking up a copy of Polished Ruby Programming. However, you may want to wait a bit, because</div>
+
+<p><img src="./file/polished-ruby-programming-cover.png" style="position: absolute; top: 20px; left: 100px; height: 1031px; width: 822px;">
+<img src="./file/polished-ruby-programming-cover-jp.png" style="position: absolute; top: 20px; right: 100px; height: 1031px; width: 726px;"></p>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/194">
+<div class="notes">I am excited to announce that I've been working on a second edition of Polished Ruby Programming, which is scheduled for release in July, and is now available to preorder. I am hoping this edition will also be translated into Japanese.</div>
+
+<p><img src="./file/polished-ruby-programming-v2-cover.png" style="position: absolute; top: 20px; left: 49px; height: 1031px; width: 822px;"></p>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; right: 159px;">Preorders</h1>
+
+</div>
+</div>
+</body></html><html><body>
+<div id="slides/slides" class="slide " data-transition="none">
+<div class="content " ref="slides/slides/195">
+<div class="notes">That concludes my presentation.  I would like to thank all of you for listening to me. If you have any questions, please ask me during the break.</div>
+
+<p><img src="./file/polished-ruby-programming-v2-cover.png" style="position: absolute; top: 20px; left: 49px; height: 1031px; width: 822px;"></p>
+<h1 class="blue" style="font-size: 160px; position: absolute; top: 80px; right: 159px;">Preorders</h1>
+<h1 class="blue" style="font-family: NotoSansJP; font-size: 80px; position: absolute; bottom: 80px; right: 100px;">ありがとうございました</h1>
+</div>
+</div>
+</body></html>
+</div>
+
+</body>
+</html>
